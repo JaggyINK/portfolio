@@ -29,23 +29,56 @@ const CG_KEY = import.meta?.env?.VITE_COINGECKO_KEY || "";
    Sources & People
    ============================ */
 const TOP_SITES = [
-  { name: "Ars Technica", url: "https://arstechnica.com" },
-  { name: "The Verge", url: "https://www.theverge.com" },
-  { name: "TechCrunch", url: "https://techcrunch.com" },
-  { name: "Wired", url: "https://www.wired.com" },
-  { name: "MIT Technology Review", url: "https://www.technologyreview.com" },
-  { name: "Numerama", url: "https://www.numerama.com" },
-  { name: "L’Usine Digitale", url: "https://www.usine-digitale.fr" },
-  { name: "ZDNet FR", url: "https://www.zdnet.fr" },
-  { name: "The Register", url: "https://www.theregister.com" },
-  { name: "LWN.net (kernel)", url: "https://lwn.net" },
-  { name: "Cloudflare Blog", url: "https://blog.cloudflare.com" },
-  { name: "OpenAI Blog", url: "https://openai.com/blog" },
-  { name: "Google AI Blog", url: "https://ai.googleblog.com" },
-  { name: "Meta AI", url: "https://ai.meta.com/blog/" },
-  { name: "Microsoft Security", url: "https://www.microsoft.com/security/blog/" },
-  { name: "BleepingComputer (sec)", url: "https://www.bleepingcomputer.com" },
-  { name: "The Record (sec)", url: "https://therecord.media" },
+  /* ================  GENERAL / NEWS  ================ */
+  { name: "Ars Technica", url: "https://arstechnica.com", tags: ["general", "deep-tech"], desc: "Analyses longues, hardware, politique tech, droit." },
+  { name: "The Verge", url: "https://www.theverge.com", tags: ["general", "product", "culture"], desc: "News produits, reviews, culture numérique." },
+  { name: "TechCrunch", url: "https://techcrunch.com", tags: ["general", "startups"], desc: "Actu startups, levées de fonds, interviews fondateurs." },
+  { name: "Wired", url: "https://www.wired.com", tags: ["general", "sci-fi", "culture"], desc: "Tech + société + futur. Rédaction longue forme." },
+  { name: "MIT Technology Review", url: "https://www.technologyreview.com", tags: ["general", "deep-tech"], desc: "MIT – IA, biotech, énergie, listes « 10 breakthrough »." },
+  { name: "IEEE Spectrum", url: "https://spectrum.ieee.org", tags: ["general", "hardware", "robotics"], desc: "IEEE – robotique, semi-conducteurs, normes." },
+  { name: "The Register", url: "https://www.theregister.com", tags: ["general", "datacenter", "UK"], desc: "Angleterre – humour acide, infra, breaches, cloud." },
+  { name: "Hackaday", url: "https://hackaday.com", tags: ["hardware", "DIY", "maker"], desc: "Projets hardware open-source, tutos, concours." },
+
+  /* ================  AI / ML  ================ */
+  { name: "OpenAI Blog", url: "https://openai.com/blog", tags: ["AI", "research"], desc: "Communiqués officiels, papiers, GPT, DALL·E, API." },
+  { name: "Google AI Blog", url: "https://ai.googleblog.com", tags: ["AI", "research"], desc: "Travaux Google Research – PaLM, Gemini, Imagen, TPUs." },
+  { name: "Meta AI", url: "https://ai.meta.com/blog/", tags: ["AI", "research"], desc: "LLaMA, SAM, FAIR papers, diffusion models, PyTorch." },
+  { name: "Anthropic News", url: "https://www.anthropic.com/news", tags: ["AI", "safety", "Claude"], desc: "Claude 3, Constitutional AI, alignment, papers." },
+  { name: "Hugging Face Blog", url: "https://huggingface.co/blog", tags: ["AI", "OSS", "models"], desc: "Nouveaux modèles, datasets, papers, events, courses." },
+  { name: "DeepMind Blog", url: "https://deepmind.google/discover/blog/", tags: ["AI", "research"], desc: "AlphaFold, Gemini, Gato, généralité, santé, jeux." },
+  { name: "Apple Machine Learning", url: "https://machinelearning.apple.com", tags: ["AI", "on-device", "CoreML"], desc: "ML on-device, ANE, Core ML, papers, MLX framework." },
+
+  /* ================  SECURITY  ================ */
+  { name: "BleepingComputer", url: "https://www.bleepingcomputer.com", tags: ["security", "malware"], desc: "Brèches, rançongiciels, vuln, tutos removal." },
+  { name: "The Record", url: "https://therecord.media", tags: ["security", "gov"], desc: "Cyber-guérilla, APT, lois, interviews CISO." },
+  { name: "Krebs on Security", url: "https://krebsonsecurity.com", tags: ["security", "investigation"], desc: "Enquêtes approfondies, leaks, dark web, carte bancaire." },
+  { name: "Dark Reading", url: "https://www.darkreading.com", tags: ["security", "enterprise"], desc: "Stratégies sécurité, Zero-Trust, budgets, salons." },
+
+  /* ================  CLOUD / INFRA  ================ */
+  { name: "AWS News", url: "https://aws.amazon.com/about-aws/whats-new/recent/", tags: ["cloud", "AWS"], desc: "Toutes les nouveautés services, releases, regions." },
+  { name: "Google Cloud Blog", url: "https://cloud.google.com/blog", tags: ["cloud", "GCP"], desc: "BigQuery, Vertex, GKE, TPU, reductions prix." },
+  { name: "Azure Updates", url: "https://azure.microsoft.com/updates/", tags: ["cloud", "Azure"], desc: "Release notes, roadmap, previews,退役." },
+  { name: "Cloudflare Blog", url: "https://blog.cloudflare.com", tags: ["cloud", "edge", "workers"], desc: "Workers, R2, DNS, DDoS, QUIC, privacy, WAF." },
+  { name: "HashiCorp Blog", url: "https://www.hashicorp.com/blog", tags: ["cloud", "IaC", "Terraform"], desc: "Terraform, Vault, Consul, Nomad, boundary." },
+
+  /* ================  DEV / LANG / FRAME  ================ */
+  { name: "Android Developers", url: "https://developer.android.com", tags: ["dev", "mobile", "Kotlin"], desc: "Docs, samples, Android Studio, Jetpack Compose." },
+  { name: "Apple Developer", url: "https://developer.apple.com", tags: ["dev", "mobile", "Swift"], desc: "WWDC videos, SwiftUI, ARKit, TestFlight." },
+  { name: "Mozilla Hacks", url: "https://hacks.mozilla.org", tags: ["dev", "web", "Rust"], desc: "Firefox, WASM, Rust, MDN updates, privacy." },
+  { name: "Node.js Blog", url: "https://nodejs.org/en/blog", tags: ["dev", "js", "backend"], desc: "Release LTS, security, performance, N-API." },
+  { name: "React Blog", url: "https://react.dev/blog", tags: ["dev", "frontend", "React"], desc: "React Compiler, Server Components, hooks, conferences." },
+  { name: "Rust Blog", url: "https://blog.rust-lang.org", tags: ["dev", "systems", "Rust"], desc: "Editions, RFC, crates, performance, memory safety." },
+
+  /* ================  HARDWARE / SEMI  ================ */
+  { name: "AnandTech", url: "https://www.anandtech.com", tags: ["hardware", "CPU", "GPU"], desc: "Benchmarks détaillés, architectures, reviews." },
+  { name: "Tom’s Hardware", url: "https://www.tomshardware.com", tags: ["hardware", " DIY"], desc: "Composants, overclock, guides montage, firmware." },
+  { name: "SemiWiki", url: "https://www.semiwiki.com", tags: ["hardware", "semi", "foundry"], desc: "TSMC, Samsung, ASML, EDA, nodes, GAA." },
+
+  /* ================  FRENCH  ================ */
+  { name: "Numerama", url: "https://www.numerama.com", tags: ["FR", "general"], desc: "Pop-culture tech, politique numérique, vidéos." },
+  { name: "L’Usine Digitale", url: "https://www.usine-digitale.fr", tags: ["FR", "industry", "cloud"], desc: "Transformation digitale, interviews CTO, salons." },
+  { name: "ZDNet FR", url: "https://www.zdnet.fr", tags: ["FR", "enterprise"], desc: "SaaS, cybersécurité, budgets IT, comparatifs." },
+  { name: "Le Monde Informatique", url: "https://www.lemondeinformatique.fr", tags: ["FR", "enterprise"], desc: "Dossiers, enquêtes, marché, cloud souverain." },
 ];
 
 const PEOPLE = [
@@ -342,7 +375,16 @@ function GitHubWidget() {
 /* --- People (liste scrollable enrichie) --- */
 function PeopleWidget() {
   return (
-    <Panel title="People à suivre" bodyClass="h-[24rem] overflow-y-auto pr-1">
+    <Panel title="People à suivre" 
+    right={
+        <div className="flex items-center gap-2 opacity-0">
+          <Pill>ghost</Pill>
+          <button className="px-2 py-1 text-xs border rounded-md border-white/10">
+            ghost
+          </button>
+        </div>
+      }
+      bodyClass="h-[24rem] overflow-y-auto pr-1">
       <ul className="space-y-2">
         {PEOPLE.map((p) => {
           const initials = p.name.split(" ").map(w => w[0]).slice(0,2).join("").toUpperCase();
@@ -383,18 +425,48 @@ function PeopleWidget() {
 
 /* --- Sites (liste scrollable) --- */
 function SitesWidget() {
+  const [filter, setFilter] = useState("all");
+
+  const filters = ["all", "general", "AI", "security", "cloud", "hardware", "dev", "FR"];
+
+  const filtered = filter === "all" ? TOP_SITES : TOP_SITES.filter((s) => s.tags.includes(filter));
+
   return (
-    <Panel title="Sites de référence" bodyClass="h-[24rem] overflow-y-auto pr-1">
-      <ul className="space-y-2">
-        {TOP_SITES.map((x) => (
-          <li key={x.url} className="transition border rounded-md group border-white/10 bg-slate-800/50 hover:bg-slate-800/70">
-            <a
-              href={x.url}
-              target="_blank"
-              rel="noreferrer"
-              className="block px-3 py-2 text-sm truncate text-slate-200 group-hover:underline"
+    <Panel
+      title="Sites de référence"
+      right={
+        <div className="flex items-center gap-2">
+          {filters.map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-2 py-1 text-xs border rounded-md transition ${
+                filter === f ? "bg-white/10 border-white/20" : "border-white/10 hover:bg-white/5"
+              }`}
             >
-              {x.name}
+              {f === "all" ? "Tous" : f}
+            </button>
+          ))}
+        </div>
+      }
+      bodyClass="h-[24rem] overflow-y-auto pr-1"
+    >
+      {filtered.length === 0 && (
+        <div className="text-sm text-slate-400">Aucun site pour ce filtre.</div>
+      )}
+      <ul className="space-y-2">
+        {filtered.map((x) => (
+          <li key={x.url} className="transition border rounded-md group border-white/10 bg-slate-800/50 hover:bg-slate-800/70">
+            <a href={x.url} target="_blank" rel="noreferrer" className="block px-3 py-2 text-sm text-slate-200 group-hover:underline">
+              <div className="font-semibold">{x.name}</div>
+              <div className="mt-1 text-xs text-slate-400">{x.desc}</div>
+              <div className="flex items-center gap-2 mt-1">
+                {x.tags.map((t) => (
+                  <span key={t} className="text-[0.7rem] px-2 py-0.5 rounded-full border border-white/10 text-slate-300">
+                    #{t}
+                  </span>
+                ))}
+              </div>
             </a>
           </li>
         ))}
@@ -403,94 +475,164 @@ function SitesWidget() {
   );
 }
 
-/* --- Outils IA pour Dev (liste scrollable + pricing) --- */
+/* ----------  Outils IA ultra-complets + perf  ---------- */
 const AI_TOOLS = [
-  // Code completion / pair programming
-  { name: "GitHub Copilot", price: "Payant", url: "https://github.com/features/copilot", tags: ["codegen","IDE"], desc: "Autocomplétion & chat dans l’IDE (VS Code, JetBrains)." },
-  { name: "Amazon CodeWhisperer", price: "Freemium", url: "https://aws.amazon.com/codewhisperer/", tags: ["codegen","AWS"], desc: "Autocomplétion multi-langages. Gratuit pour usage individuel." },
-  { name: "JetBrains AI Assistant", price: "Payant", url: "https://www.jetbrains.com/ai/", tags: ["IDE","codegen"], desc: "Chat contextuel + refactors dans l’écosystème JetBrains." },
-  { name: "Tabnine", price: "Freemium", url: "https://www.tabnine.com/", tags: ["codegen","IDE"], desc: "Modèles propriétaires + OSS. Contrôle de confidentialité." },
-  { name: "Codeium", price: "Gratuit", url: "https://codeium.com/", tags: ["codegen","IDE"], desc: "Autocomplétion + chat illimités pour particuliers." },
-  { name: "Cody (Sourcegraph)", price: "Freemium", url: "https://sourcegraph.com/cody", tags: ["codegen","context"], desc: "Contexte repo (embeddings), navigation monorepo." },
-  { name: "Supermaven", price: "Freemium", url: "https://supermaven.com/", tags: ["codegen"], desc: "Complétions rapides et agressives." },
-  { name: "Cursor IDE", price: "Freemium", url: "https://cursor.sh/", tags: ["IDE","codegen"], desc: "Fork VS Code orienté IA : edits structurés, chat puissant." },
-  { name: "Phind", price: "Freemium", url: "https://www.phind.com/", tags: ["search","codegen"], desc: "Recherche dev + génération de code." },
-  { name: "Aider", price: "Gratuit", url: "https://aider.chat/", tags: ["CLI","codegen"], desc: "Assistant CLI qui édite tes fichiers proprement (git-aware)." },
-  { name: "Continue.dev", price: "Gratuit", url: "https://continue.dev/", tags: ["IDE","open-source"], desc: "Copilote open-source pour VS Code/JetBrains (BYO model)." },
-  { name: "Replit Ghostwriter", price: "Payant", url: "https://replit.com/site/ghostwriter", tags: ["codegen","fullstack"], desc: "Génération de code sur Replit." },
+  /* ================  CODE GEN / PAIR PROGRAMMING  ================ */
+  { name: "GitHub Copilot", price: "Payant", url: "https://github.com/features/copilot", tags: ["codegen", "IDE", "GPT-4"], desc: "Autocomplétion contextuelle basée sur GPT-4. Supporte 30+ langages, intègre VS Code, JetBrains, Vim, Neovim. Cache local pour offline." },
+  { name: "Amazon CodeWhisperer", price: "Freemium", url: "https://aws.amazon.com/codewhisperer/", tags: ["codegen", "AWS", "security-scan"], desc: "Suggestions temps-réel + scan de vulnérabilités (OWASP). Gratuit pour individuels, intégration Cloud9, IntelliJ, VS Code." },
+  { name: "JetBrains AI Assistant", price: "Payant", url: "https://www.jetbrains.com/ai/", tags: ["IDE", "refactor", "chat"], desc: "Chat natif + refactorings intelligents (extraire classe, méthode, etc.) dans l’écosystème JetBrains. Modèle propriétaire + GPT-4." },
+  { name: "Tabnine", price: "Freemium", url: "https://www.tabnine.com/", tags: ["codegen", "on-prem", "privacy"], desc: "Modèles propriétaires et open-source (DeepMind Codey). Possibilité d’héberger sur VPC ou on-prem. Supporte 80+ langages." },
+  { name: "Codeium", price: "Gratuit", url: "https://codeium.com/", tags: ["codegen", "IDE", "ultra-fast"], desc: "Inférence < 100 ms, modèle fine-tuned 70 B. Chat + autocomplete. Extension VS Code, JetBrains, Eclipse, Jupyter." },
+  { name: "Cody (Sourcegraph)", price: "Freemium", url: "https://sourcegraph.com/cody", tags: ["context", "embeddings", "monorepo"], desc: "Contexte repo entier via embeddings. Réponses précises sur codebase multi-dépôts. Supporte GPT-4 et Claude 3." },
+  { name: "Supermaven", price: "Freemium", url: "https://supermaven.com/", tags: ["speed", "256k-ctx"], desc: "Modèle Baba-200, 256 k ctx, 70 ms latency. Autocomplétion agressive, spécialiste gros fichiers." },
+  { name: "Cursor IDE", price: "Freemium", url: "https://cursor.sh/", tags: ["IDE", "Ctrl-K", "agent"], desc: "Fork VS Code avec Ctrl-K (édit structuré), agent auto-debug, chat multimodal. Utilise GPT-4 + Claude 3.5 Sonnet." },
+  { name: "Phind", price: "Freemium", url: "https://www.phind.com/", tags: ["search", "web", "codegen"], desc: "Moteur de recherche dev + génération. Accès web temps-réel, citations sources. Modèle Phind-70B fine-tuned sur StackOverflow + docs." },
+  { name: "Aider", price: "Gratuit", url: "https://aider.chat/", tags: ["CLI", "git-aware", "refactor"], desc: "Assistant CLI qui édite directement les fichiers, git-diff propre. Supporte GPT-4, Claude 3, Llama 3." },
+  { name: "Continue.dev", price: "Gratuit", url: "https://continue.dev/", tags: ["IDE", "open-source", "BYO-model"], desc: "Copilote 100 % OSS. Connecte n’importe quel modèle local (Ollama) ou distant (OpenAI, Anthropic, Mistral)." },
+  { name: "Replit Ghostwriter", price: "Payant", url: "https://replit.com/site/ghostwriter", tags: ["fullstack", "container", "pair"], desc: "Code, debug, explique, écrit des tests dans l’IDE Replit. Déploiement one-click." },
 
-  // Génération d’applis / UI / Agents
-  { name: "v0 by Vercel", price: "Freemium", url: "https://v0.dev/", tags: ["UI","React","design"], desc: "Génère des interfaces React/Tailwind depuis prompts." },
-  { name: "bolt.new", price: "Gratuit", url: "https://bolt.new/", tags: ["fullstack","rapid"], desc: "Boot d’apps full-stack dans le navigateur." },
-  { name: "GPT Pilot", price: "Gratuit", url: "https://github.com/Pythagora-io/gpt-pilot", tags: ["agent","open-source"], desc: "Agent de dev open-source end-to-end." },
+  /* ================  AGENTS / APP GENERATORS  ================ */
+  { name: "v0 by Vercel", price: "Freemium", url: "https://v0.dev/", tags: ["UI", "React", "Tailwind"], desc: "Génération d’interfaces React + Tailwind à partir de prompts itératifs. Export clean, supporte shadcn/ui." },
+  { name: "bolt.new", price: "Gratuit", url: "https://bolt.new/", tags: ["fullstack", "vite", "container"], desc: "Boot full-stack (Node, Vite, DB) dans le navigateur. Stackblitz WebContainers, zero config." },
+  { name: "GPT Pilot", price: "Gratuit", url: "https://github.com/Pythagora-io/gpt-pilot", tags: ["agent", "scaffold", "open-source"], desc: "Agent qui crée l’arborescence complète, pose des questions, écrit les tests, rollback si erreur. Compatible VS Code extension." },
+  { name: "Devin (Cognition)", price: "Payant", url: "https://www.cognition.ai/", tags: ["agent", "SWE-Bench", "end-to-end"], desc: "Premier ingé IA full-autonome sur SWE-Bench 13 % accuracy. Planifie, code, debug, déploie. Accès waitlist." },
+  { name: "AutoGPT", price: "Gratuit", url: "https://github.com/Significant-Gravitas/AutoGPT", tags: ["agent", "autonomous", "plugin"], desc: "Agent boucle autonome : recherche web, écrit code, exécute, corrige. Plugins Docker, Git, Slack, etc." },
+  { name: "MetaGPT", price: "Gratuit", url: "https://github.com/geekan/MetaGPT", tags: ["agent", "multi-role", "SDLC"], desc: "Simule une équipe complète : PM, architecte, ingé, QA. Sort Product-Req, flowcharts, code, tests." },
 
-  // Tests, review, refactor
-  { name: "CodiumAI", price: "Freemium", url: "https://www.codium.ai/", tags: ["tests","review"], desc: "Génère tests & reviews." },
-  { name: "Sourcery", price: "Freemium", url: "https://sourcery.ai/", tags: ["refactor","python"], desc: "Refactoring automatique (surtout Python)." },
-  { name: "CodeRabbit", price: "Freemium", url: "https://coderabbit.ai/", tags: ["review","GitHub"], desc: "Commentaires automatiques de PR." },
+  /* ================  TESTS / REVIEW / QA  ================ */
+  { name: "CodiumAI", price: "Freemium", url: "https://www.codium.ai/", tags: ["tests", "TDD", "review"], desc: "Génère tests unitaires, d’intégration, edge-cases. Analyse mutation, couverture. Plug VS Code / JetBrains." },
+  { name: "Sourcery", price: "Freemium", url: "https://sourcery.ai/", tags: ["refactor", "python", "AST"], desc: "Refactorings AST-safe : extract method, inline var, replace conditional by polymorphism. Python & JS." },
+  { name: "CodeRabbit", price: "Freemium", url: "https://coderabbit.ai/", tags: ["PR", "review", "GitHub"], desc: "Reviews automatiques de PR avec suggestions de code, détection de bugs, performance, sécurité. Intègre GH / GL." },
+  { name: "Diffblue Cover", price: "Payant", url: "https://www.diffblue.com/", tags: ["java", "unit", "CI"], desc: "Écrit tests unitaires Java sans mocks 100 % automatiques via reinforcement learning. Plug Maven / Gradle." },
 
-  // Docs / knowledge / QA
-  { name: "Mintlify", price: "Freemium", url: "https://mintlify.com/", tags: ["docs","AI"], desc: "Docs élégantes + génération IA intégrée au repo." },
-  { name: "Readme.com AI", price: "Payant", url: "https://readme.com", tags: ["docs","API"], desc: "Portails API avec aide IA (search/QA)." },
-  { name: "Danswer", price: "Gratuit", url: "https://github.com/danswer-ai/danswer", tags: ["RAG","open-source"], desc: "Search/QA unifié (Slack, GDrive, GitHub) avec RAG." },
+  /* ================  DOCS / RAG / KNOWLEDGE  ================ */
+  { name: "Mintlify", price: "Freemium", url: "https://mintlify.com/", tags: ["docs", "RAG", "API"], desc: "Génération de docs élégantes à partir de commentaires. Search sémantique, analytics, changelog auto." },
+  { name: "Danswer", price: "Gratuit", url: "https://github.com/danswer-ai/danswer", tags: ["RAG", "slack", "self-host"], desc: "Chat entreprise connecté à Slack, GDrive, Confluence, GitHub. Indexation embeddings, permissions respectées." },
+  { name: "Readme.com AI", price: "Payant", url: "https://readme.com", tags: ["API", "support", "QA"], desc: "Portail API avec chatbot répondant aux devs, génère snippets, détecte breaking-changes." },
 
-  // Data / LLM tooling
-  { name: "LangChain", price: "Gratuit", url: "https://langchain.com/", tags: ["framework","LLM"], desc: "Chaînage LLM, agents, outils." },
-  { name: "LlamaIndex", price: "Freemium", url: "https://www.llamaindex.ai/", tags: ["RAG","LLM"], desc: "Pipelines RAG, ingestion multi-sources." },
-  { name: "OpenRouter", price: "Freemium", url: "https://openrouter.ai/", tags: ["gateway","multi-LLM"], desc: "Passerelle multi-modèles (pay-as-you-go)." },
-  { name: "Hugging Face Inference", price: "Freemium", url: "https://huggingface.co/inference-endpoints", tags: ["hosting","models"], desc: "Déploiement de modèles, endpoints managés." },
+  /* ================  LLM TOOLING / GATEWAYS  ================ */
+  { name: "LangChain", price: "Gratuit", url: "https://langchain.com/", tags: ["framework", "chain", "agents"], desc: "Standard de-facto pour chaîner LLM, tools, memory. 500+ intégrations (PDF, SQL, APIs)." },
+  { name: "LlamaIndex", price: "Freemium", url: "https://www.llamaindex.ai/", tags: ["RAG", "ingestion", "index"], desc: "Pipelines RAG avancés : tree, keyword, hybrid retrievers. Supporte multimodal, agents réactifs." },
+  { name: "OpenRouter", price: "Freemium", url: "https://openrouter.ai/", tags: ["gateway", "multi-LLM", "fallback"], desc: "Passerelle unique : GPT-4, Claude 3, Llama 3, Gemini. Fallback auto, unified billing, per-token." },
+  { name: "Hugging Face Inference Endpoints", price: "Payant", url: "https://huggingface.co/inference-endpoints", tags: ["hosting", "GPU", "auto-scale"], desc: "Déploie n’importe quel modèle HF en 1 clic. Autoscaling, sécurité VPC, A100 / H100 disponibles." },
+  { name: "Ollama", price: "Gratuit", url: "https://ollama.ai/", tags: ["local", "docker", "Llama"], desc: "LLM locaux en 1 commande (Llama 3, Mistral, Gemma). API OpenAI-compatible, GPU / MPS / CPU." },
+  { name: "vLLM", price: "Gratuit", url: "https://github.com/vllm-project/vllm", tags: ["serving", "paged-attn", "throughput"], desc: "Serveur haute perf (PagedAttention). 10x throughput vs HF transformers. OpenAI-compatible API." },
 
-  // Sécurité IA / gouvernance
-  { name: "Lakera Guard", price: "Freemium", url: "https://www.lakera.ai/guard", tags: ["security","prompt"], desc: "Protection contre injections de prompt et fuites." },
-  { name: "Protect AI", price: "Freemium", url: "https://protectai.com/", tags: ["security","MLOps"], desc: "Sécurité MLOps (supply chain IA)." },
+  /* ================  SECURITY / GOV / PROMPT-GUARD  ================ */
+  { name: "Lakera Guard", price: "Freemium", url: "https://www.lakera.ai/guard", tags: ["prompt-inject", "PII", "filter"], desc: "Blocage injections, PII, biais en 20 ms. Plug-and-play via API. Dataset Gandalf 1 M+ prompts." },
+  { name: "Protect AI", price: "Freemium", url: "https://protectai.com/", tags: ["MLSecOps", "SBOM", "scan"], desc: "Scan modèles et datasets : backdoors, data-poison, sécurité supply-chain. Intègre Jenkins, GitLab." },
+  { name: "Prompt Armor", price: "Payant", url: "https://promptarmor.com/", tags: ["enterprise", "policy", "audit"], desc: "Gate LLM enterprise : quarantaine prompts, audit trails, RBAC, DLP." },
 
-  // Modèles & OSS utiles
-  { name: "StarCoder2 (BigCode)", price: "Gratuit", url: "https://huggingface.co/bigcode", tags: ["model","code"], desc: "Modèle open-source orienté code." },
-  { name: "Code Llama (Meta)", price: "Gratuit", url: "https://ai.meta.com/research/publications/code-llama/", tags: ["model","code"], desc: "Famille de modèles pour code/infilling." },
-  { name: "Codestral (Mistral)", price: "Freemium", url: "https://mistral.ai/news/codestral/", tags: ["model","code"], desc: "Modèle code Mistral, bon en complétion/édition." },
+  /* ================  MODELS / OSS / SPECIALIZED  ================ */
+  { name: "StarCoder2 (BigCode)", price: "Gratuit", url: "https://huggingface.co/bigcode", tags: ["code", "open-source", "3.3 T"], desc: "Entraîné sur 3.3 T tokens (600+ langages). Contexte 16 k, infilling FIM. Licence Open-Responsible." },
+  { name: "Code Llama (Meta)", price: "Gratuit", url: "https://ai.meta.com/research/publications/code-llama/", tags: ["infilling", "python", "70 B"], desc: "Variantes 7-70 B, infilling, instruction, Python. Benchmark HumanEval 67 % (70 B)." },
+  { name: "Codestral (Mistral)", price: "Freemium", url: "https://mistral.ai/news/codestral/", tags: ["fill-in-middle", "32 k", "Mamba"], desc: "Modèle 32 k ctx, architecture Mamba + Sliding Window. SOTA sur HumanEval FIM." },
+  { name: "DeepSeek-Coder", price: "Gratuit", url: "https://github.com/deepseek-ai/DeepSeek-Coder", tags: ["16 B", "open-source", "MTLP"], desc: "16 B params, 2 T tokens, pré-entraînement multi-tâche. Surpasse CodeLlama 34 B." },
+  { name: "Kimi / Moonshot AI", price: "Freemium", url: "https://kimi.moonshot.cn/", tags: ["200 k", "chinese", "chat"], desc: "Contexte 200 k tokens, SOTA long-text QA. Supporte anglais + chinois. API dispo." },
+
+  /* ================  LOW-CODE / INTEGRATION  ================ */
+  { name: "Dify", price: "Gratuit", url: "https://dify.ai/", tags: ["low-code", "RAG", "workflow"], desc: "Studio visuel : créer apps LLM, RAG, agents sans code. Export OpenAPI, intègre 50+ APIs." },
+  { name: "FlowiseAI", price: "Gratuit", url: "https://flowiseai.com/", tags: ["drag-drop", "LangChain", "docker"], desc: "Interface no-code pour LangChain & LlamaIndex. Build agents, chatbots, flows API. 100 % OSS." },
+  { name: "Stack-AI", price: "Freemium", url: "https://www.stack-ai.com/", tags: ["embed", "Notion", "zendesk"], desc: "Connecte Notion, Zendesk, Postgres en 1 clic. Templates support, déploiement cloud ou VPC." },
+
+  /* ================  DEVOPS / MLOPS  ================ */
+  { name: "BentoML", price: "Gratuit", url: "https://www.bentoml.com/", tags: ["serving", "GPU", "canary"], desc: "Packaging + serving modèles avec canary, A/B, autoscaling. Supporte Torch, TF, ONNX, JAX." },
+  { name: "Cog", price: "Gratuit", url: "https://github.com/replicate/cog", tags: ["container", "replicate", "cog.yml"], desc: "Containerise modèles ML en 1 commande. Génère image Docker optimisée CUDA. Push vers Replicate." },
+  { name: "KServe", price: "Gratuit", url: "https://kserve.github.io/website/", tags: ["kubernetes", "serverless", "scale-to-zero"], desc: "Serverless inference sur K8s (Knative). A/B, explainability, batch. Compatible TensorRT, Triton." },
 ];
 
+/* ----------  Badge colors  ---------- */
 const PRICE_BADGE = {
-  "Gratuit":   { cls: "bg-emerald-500/15 text-emerald-300 border-emerald-400/25" },
-  "Freemium":  { cls: "bg-amber-500/15 text-amber-300 border-amber-400/25" },
-  "Payant":    { cls: "bg-rose-500/15 text-rose-300 border-rose-400/25" },
+  Gratuit:  { cls: "bg-emerald-500/15 text-emerald-300 border-emerald-400/25" },
+  Freemium: { cls: "bg-amber-500/15 text-amber-300 border-amber-400/25" },
+  Payant:   { cls: "bg-rose-500/15 text-rose-300 border-rose-400/25" },
 };
 
+/* ----------  Widget  ---------- */
 function AIToolsWidget() {
+  const [filter, setFilter] = useState("all");
+  const SECTIONS = [
+    { title: "🧑‍💻 Code Gen / Pair Programming", tools: AI_TOOLS.filter((t) => t.tags.includes("codegen")) },
+    { title: "🤖 Agents / App Generators", tools: AI_TOOLS.filter((t) => t.tags.includes("agent") || t.tags.includes("UI")) },
+    { title: "🧪 Tests / Review / QA", tools: AI_TOOLS.filter((t) => t.tags.includes("tests") || t.tags.includes("review")) },
+    { title: "📚 Docs / RAG / Knowledge", tools: AI_TOOLS.filter((t) => t.tags.includes("docs") || t.tags.includes("RAG")) },
+    { title: "🔌 LLM Tooling / Gateways", tools: AI_TOOLS.filter((t) => t.tags.includes("framework") || t.tags.includes("gateway") || t.tags.includes("serving")) },
+    { title: "🔐 Security / Gov / Prompt-Guard", tools: AI_TOOLS.filter((t) => t.tags.includes("security") || t.tags.includes("prompt-inject")) },
+    { title: "🧠 Models / OSS / Specialized", tools: AI_TOOLS.filter((t) => t.tags.includes("model") || t.tags.includes("open-source")) },
+    { title: "🧩 Low-Code / Integration", tools: AI_TOOLS.filter((t) => t.tags.includes("low-code") || t.tags.includes("drag-drop")) },
+    { title: "⚙️ DevOps / MLOps", tools: AI_TOOLS.filter((t) => t.tags.includes("serving") || t.tags.includes("kubernetes") || t.tags.includes("container")) },
+  ];
+
   return (
     <Panel
-      title="Outils IA pour les développeurs"
-      right={<Pill>curated</Pill>}
+      title="Outils IA pour développeurs"
+      right={
+        <div className="flex items-center gap-2">
+          {/* Filtres prix */}
+          {["all", "Gratuit", "Freemium", "Payant"].map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`px-2 py-1 text-xs border rounded-md transition ${
+                filter === f ? "bg-white/10 border-white/20" : "border-white/10 hover:bg-white/5"
+              }`}
+            >
+              {f === "all" ? "Tous" : f}
+            </button>
+          ))}
+        </div>
+      }
       bodyClass="h-[24rem] overflow-y-auto pr-1"
     >
-      <ul className="space-y-2">
-        {AI_TOOLS.map((t) => {
-          const badge = PRICE_BADGE[t.price] || PRICE_BADGE["Freemium"];
-          return (
-            <li key={t.name} className="p-3 transition border rounded-md border-white/10 bg-slate-800/50 hover:bg-slate-800/70">
-              <div className="flex items-center gap-2">
-                <div className="font-semibold text-slate-100">{t.name}</div>
-                <span className={`text-[0.7rem] px-2 py-0.5 rounded-full border ${badge.cls}`}>{t.price}</span>
-                <div className="flex items-center gap-2 ml-auto">
-                  {t.tags?.slice(0,3).map(tag => (
-                    <span key={tag} className="text-[0.7rem] px-2 py-0.5 rounded-full border border-white/10 text-slate-300">#{tag}</span>
-                  ))}
-                  <a
-                    href={t.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="px-2 py-1 text-xs border rounded-md border-white/10 hover:bg-white/10"
-                    title="Ouvrir"
-                  >
-                    ↗ Lien
-                  </a>
-                </div>
+      {SECTIONS.map(
+        (sec) =>
+          sec.tools.filter((t) => filter === "all" || t.price === filter).length > 0 && (
+            <div key={sec.title} className="mb-6">
+              {/* Séparation visuelle par usage */}
+              <div className="flex items-center gap-3 mb-3">
+                <div className="flex-1 h-px bg-white/10" />
+                <h4 className="text-sm font-semibold text-slate-300">{sec.title}</h4>
+                <div className="flex-1 h-px bg-white/10" />
               </div>
-              <p className="mt-1 text-xs text-slate-400">{t.desc}</p>
-            </li>
-          );
-        })}
-      </ul>
+
+              <ul className="space-y-2">
+                {sec.tools
+                  .filter((t) => filter === "all" || t.price === filter)
+                  .map((t) => {
+                    const badge = PRICE_BADGE[t.price] || PRICE_BADGE.Freemium;
+                    return (
+                      <li
+                        key={t.name}
+                        className="p-3 transition border rounded-md border-white/10 bg-slate-800/50 hover:bg-slate-800/70"
+                      >
+                        <div className="flex items-center gap-2">
+                          <div className="font-semibold text-slate-100">{t.name}</div>
+                          <span className={`text-[0.7rem] px-2 py-0.5 rounded-full border ${badge.cls}`}>{t.price}</span>
+                          <div className="flex items-center gap-2 ml-auto">
+                            {t.tags.slice(0, 3).map((tag) => (
+                              <span key={tag} className="text-[0.7rem] px-2 py-0.5 rounded-full border border-white/10 text-slate-300">
+                                #{tag}
+                              </span>
+                            ))}
+                            <a
+                              href={t.url}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="px-2 py-1 text-xs border rounded-md border-white/10 hover:bg-white/10"
+                              title="Ouvrir"
+                            >
+                              ↗ Lien
+                            </a>
+                          </div>
+                        </div>
+                        <p className="mt-1 text-xs text-slate-400">{t.desc}</p>
+                      </li>
+                    );
+                  })}
+              </ul>
+            </div>
+          )
+      )}
     </Panel>
   );
 }
@@ -665,7 +807,7 @@ export default function VeilleSection() {
         </div>
 
         <div className="mt-[1.0rem] text-center text-[0.8rem] text-slate-500">
-          Besoin d’un proxy RSS ou d’un filtre par tags (AI / Cloud / Security) ? Je peux l’ajouter sans casser la mise en page.
+          Ceci est une veille technologique personnelle, composé d'outils et de ressources pour développeurs. Les données sont récupérées en temps réel via des APIs publiques.
         </div>
       </div>
     </section>

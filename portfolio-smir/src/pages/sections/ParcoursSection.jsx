@@ -72,6 +72,15 @@ const ITEMS = [
     cta: { label: "Visiter", href: "https://alafrenchcare.com" },
   },
   {
+    year: "2025",
+    color: "#2563eb",
+    type: "pro",
+    title: "Associé & Fondateur — ALAFRENCH",
+    subtitle: "H2O (SAS) • alafrench.fr",
+    bullets: ["E-commerce Shopify, automatisations, data/catalogue, marketing, logistique, service client, SEO, partenariats, etc."],
+    cta: { label: "Visiter", href: "https://alafrench.fr" },
+  },
+  {
     year: "2019–2021",
     color: "#eab308",
     type: "pro",
@@ -111,6 +120,10 @@ const ROWS = [
     left: byTitle("Développeur Web — CPMS"),
     right: byTitle("BTS SIO (SLAM) — Institut F2I"),
     
+  },
+  { // 2
+    left: byTitle("Associé & Fondateur — ALAFRENCH"),
+    right: null,
   },
   { // 2
     left: byTitle("Fondateur — ALAFRENCH CARE"),

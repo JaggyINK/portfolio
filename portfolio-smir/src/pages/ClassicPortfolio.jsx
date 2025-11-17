@@ -11,7 +11,7 @@ import LeftDockNav from "../components/LeftDockNav";
 import SchoolsSection from "./sections/SchoolsSection"; 
 import VeilleSection from "./sections/VeilleSection";
 import UserStorySection from "./sections/UserStorySection";
-import EntrepriseSection from "./sections/EntrepriseSection";
+import VeilleAuthSection from "./sections/VeilleAuthSection";
 
 export default function ClassicPortfolio() {
   return (
@@ -32,7 +32,7 @@ export default function ClassicPortfolio() {
       {/* Section Veille  */}
       <VeilleSection />
       {/* Section Entreprise  */}
-      <EntrepriseSection />
+      <VeilleAuthSection />
       {/* Section Écoles */}
       <SchoolsSection />
       {/* Section User Story */}

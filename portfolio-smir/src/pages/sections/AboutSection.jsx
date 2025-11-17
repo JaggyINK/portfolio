@@ -83,12 +83,12 @@ export default function AboutSection() {
               </Link>
 
               <a
-                href="https://alafrenchcare.com"
+                href="https://www.linkedin.com/in/mir-sagar/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-xl px-5 py-3 bg-[#0f172a] border border-white/15 hover:bg-[#111b31] transition shadow-md"
               >
-                Aller sur alafrenchcare.com
+                Me suivre sur LINKED IN &gt;
               </a>
             </div>
           </div>

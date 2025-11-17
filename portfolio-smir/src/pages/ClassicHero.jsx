@@ -4,15 +4,15 @@ import React, { useEffect, useRef, useState } from "react";
 /* ===== Golden ratio ===== */
 const PHI = 1.618;
 
-/* ===== Avatar (dans /public) ===== */
-const AVATAR_URL = "/avatar-smir.png"; // place /public/avatar-smir.png
+/* ===== avatr===== */
+const AVATAR_URL = "/avatar-smir.png"; //public/avatar-smir.png
 
 export default function ClassicHero() {
   const canvasRef = useRef(null);
   const [showCrawl, setShowCrawl] = useState(true);
   const [playingKey, setPlayingKey] = useState(0);
 
-  /* ===== Starfield canvas ===== */
+  /* =====  canva etoiles ===== */
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;

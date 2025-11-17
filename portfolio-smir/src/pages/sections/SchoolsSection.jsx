@@ -39,7 +39,7 @@ const SCHOOLS = [
     id: "cfa-stephenson-softec",
     school: "CFA Stephenson",
     program: "Titre professionnel SOFTEC",
-    link: "https://www.cfastephenson.fr/",
+    link:  "https://stephenson-formation.fr/",
     period: "Alternance",
     rhythm: "1 semaine entreprise / 1 semaine cours",
     focus: [
@@ -54,7 +54,7 @@ const SCHOOLS = [
     id: "dsp-ief2i-sio",
     school: "Digital School of Paris – IEF2I",
     program: "BTS SIO (Services Informatiques aux Organisations)",
-    link: "https://www.ief2i.fr/",
+    link: "https://www.digitalschool.paris//",
     period: "Alternance",
     rhythm: "1 semaine entreprise / 1 semaine cours",
     focus: [

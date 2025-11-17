@@ -1,86 +1,57 @@
 import React, { useState } from "react";
 import CodeRain from "./CodeRain";
 
-const CODE_RAIN_SOURCE = `import React, { useEffect, useRef } from "react";
+const CODE_RAIN_SOURCE = `DEBUT DE LA TRANSMISSION
+================================================
+CPMS — Centre de Prévoyance Médico-Sociale
+================================================
 
-export default function CodeRain({ density = 20, speed = 1.1, charSize = 16, color = "#35ff88", glow = true }) {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(0);
-  const colsRef = useRef([]);
-  const devicePixelRatioRef = useRef(1);
+   //////\\              ||||||\\            ||\\    //||            \\//////
+  //      \\             ||     \\           || \\  // ||           //      
+ ||                     ||||||//           ||  \\//  ||           \\////\\
+ ||                     ||                 ||   \\/  ||                \\\\
+  \\      //             ||                 ||       ||                //
+   \\////                ||                 ||       ||           \\/////
+                                                                       
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d", { alpha: true });
-    let width = canvas.clientWidth || 600;
-    let height = canvas.clientHeight || 400;
+— Identité
+  • Dénomination : CPMS (SAS) – opérateur de gestion santé & prévoyance
+  • Création : 1948 (indépendant, origine familiale)
+  • Mission : Gestion déléguée des régimes santé & prévoyance pour assureurs, entreprises et particuliers
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    devicePixelRatioRef.current = dpr;
-    canvas.width = Math.floor(width * dpr);
-    canvas.height = Math.floor(height * dpr);
-    ctx.scale(dpr, dpr);
+— Gouvernance
+  • Direction : Eric Dana (Président)
+  • Valeurs : qualité de service, proximité, conformité
 
-    const cols = Math.max(10, Math.floor((width / 1000) * density));
-    const columnWidth = Math.max(10, Math.floor(width / cols));
-    const columnCount = Math.floor(width / columnWidth);
-    const drops = new Array(columnCount).fill(0).map(() => Math.floor(Math.random() * height));
-    colsRef.current = { columnWidth, columnCount, drops, width, height };
+— Effectif & Sites
+  • Effectif : ~180–200 collaborateurs
+  • Siège : 4 rue Auber, 75009 Paris
+  • Centre de gestion : Bezannes (6 rue Henri-Moissan, 51430 Bezannes)
 
-    ctx.font = \`\${charSize}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace\`;
-    ctx.textBaseline = "top";
-    ctx.shadowColor = glow ? color : "transparent";
-    ctx.shadowBlur = glow ? 8 : 0;
+— Activités (vue d’ensemble)
+  • Gestion des contrats santé/prévoyance (individuels & collectifs)
+  • Services aux assurés : remboursements, prises en charge, carte tiers payant
+  • Services aux entreprises & courtiers : pilotage et suivi des contrats
+  • Portails & application MyCPMS pour le suivi au quotidien
 
-    const glyphs = "アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+— Indicateurs clés
+  • Chiffre d’affaires (2023) : ~19 M€
+  • Capital social : ~2,7 M€
 
-    function step() {
-      rafRef.current = requestAnimationFrame(step);
-      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
-      ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = color;
+— Objectifs
+  1) Excellence opérationnelle & qualité de service
+  2) Parcours digital simple (portails & mobile)
+  3) Conformité & confiance
+  4) Partenariats multi-assureurs
 
-      for (let i = 0; i < colsRef.current.columnCount; i++) {
-        const x = i * colsRef.current.columnWidth;
-        const y = colsRef.current.drops[i] * (charSize + 2);
-        const char = glyphs.charAt(Math.floor(Math.random() * glyphs.length));
-        ctx.fillText(char, x, y);
-        colsRef.current.drops[i] += speed;
-        if (y > height && Math.random() > 0.975) colsRef.current.drops[i] = 0;
-      }
-    }
+— Contacts
+  • Adresse : 4 rue Auber, 75009 Paris
+  • Sites web : www.cpms.fr 
+  • Espace assurés : portail MyCPMS (web & app)
+  • Application mobile : MyCPMS (iOS & Android)
 
-    step();
-
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const cr = entry.contentRect;
-        width = Math.max(1, cr.width);
-        height = Math.max(1, cr.height);
-        const dpr2 = devicePixelRatioRef.current;
-        canvas.width = Math.floor(width * dpr2);
-        canvas.height = Math.floor(height * dpr2);
-        ctx.setTransform(dpr2, 0, 0, dpr2, 0, 0);
-        const newCols = Math.max(10, Math.floor((width / 1000) * density));
-        const columnWidth = Math.max(10, Math.floor(width / newCols));
-        const columnCount = Math.floor(width / columnWidth);
-        const drops = new Array(columnCount).fill(0).map(() => Math.floor(Math.random() * height));
-        colsRef.current = { columnWidth, columnCount, drops, width, height };
-        ctx.font = \`\${charSize}px ui-monospace, Menlo, Monaco, Consolas, "Courier New", monospace\`;
-      }
-    });
-    ro.observe(canvas);
-
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      ro.disconnect();
-    };
-  }, [density, speed, charSize, color, glow]);
-
-  return <canvas ref={canvasRef} className="w-full h-full rounded-2xl" aria-hidden="true" />;
-}
-`;
+================================================
+FIN DE LA TRANSMISSION_`;
 
 export default function CodeFlipCard() {
   const [flipped, setFlipped] = useState(false);
@@ -101,7 +72,7 @@ export default function CodeFlipCard() {
           onClick={() => setFlipped((v) => !v)}
           className="absolute top-3 right-3 z-20 rounded-xl px-3 py-1.5 text-[12px] font-semibold bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-sm transition"
         >
-          {flipped ? "↩︎ Retour" : "</> Code"}
+          {flipped ? "↩︎ Retour" : "<- CPMS ? "}
         </button>
 
         <div

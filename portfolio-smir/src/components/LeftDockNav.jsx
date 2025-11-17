@@ -8,8 +8,8 @@ const ITEMS = [
   { id: "parcours",       label: "Mon parcours",   icon: "road" },
   { id: "projets",        label: "Mes projets",    icon: "briefcase" },
   { id: "certifications", label: "Certifications", icon: "award" },
-  { id: "veille",         label: "Veille techno",  icon: "globe" },
-  { id: "entreprise",     label: "Entreprise",     icon: "building" },
+  { id: "veille",         label: "Veille techno globale",  icon: "globe" },
+  { id: "veille-auth",     label: "veille-auth",     icon: "building" },
   { id: "ecole",          label: "Écoles",         icon: "school" },
   { id: "user-story",        label: "Profil",        icon: "user" },
 ];
@@ -45,10 +45,14 @@ export default function LeftDockNav() {
   const [active, setActive] = useState("hero");
   const ioRef = useRef(null);
 
-  const onScrollTo = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
+   const onScrollTo = (id) => {
+   const el = document.getElementById(id);
+   if (el) {
+    
+     setActive(id);
+     el.scrollIntoView({ behavior: "smooth", block: "center" });
+   }
+ };
 
   // Observer fiable (root par défaut = viewport)
   useEffect(() => {
@@ -59,7 +63,7 @@ export default function LeftDockNav() {
           if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
-      { root: null, threshold: 0.6 }
+      { root: null, threshold: 0.4 }
     );
     sections.forEach((sec) => obs.observe(sec));
     ioRef.current = obs;
