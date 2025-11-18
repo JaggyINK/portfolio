@@ -2,11 +2,26 @@
 import React, { useMemo, useState, useCallback } from "react";
 
 /* ============================
-   Constantes “nombre d’or”
+   Constantes "nombre d'or"
    ============================ */
 const PHI = 1.618;
 const INV = 1 / PHI;
 const INV2 = INV * INV;
+
+/* ============================
+   Thème sobre & pro
+   ============================ */
+const THEME = {
+  bg: "#0b1020",
+  card: "rgba(11,16,32,0.78)",
+  border: "rgba(255,215,0,0.12)",
+  text: "#E6ECF8",
+  sub: "#9AA7BF",
+  brandFrom: "#22d3ee",
+  brandTo: "#a855f7",
+  line:
+    "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
+};
 
 /* ============================
    Données certifications (gratuites, simples)
@@ -19,13 +34,13 @@ const CERTS = [
     provider: "ANSSI",
     track: "Sensibilisation cybersécurité",
     description:
-      "Parcours officiel ANSSI : hygiène informatique, menaces, bonnes pratiques, RGPD / sécurité de l’info.",
+      "Parcours officiel ANSSI : hygiène informatique, menaces, bonnes pratiques, RGPD / sécurité de l'info.",
     detail:
       "Modules e-learning interactifs. Évaluation finale en ligne. Très reconnu en France pour un socle cyber.",
     duration: "6–10 h",
     cost: "Gratuit",
     level: "Débutant",
-    status: "En cours",                         // ← en cours
+    status: "En cours",
     color: "#0ea5e9",
     link: "https://secnumacademie.gouv.fr/",
     tags: ["socle", "général", "conformité"],
@@ -42,7 +57,7 @@ const CERTS = [
     duration: "3–5 h",
     cost: "Gratuit",
     level: "Débutant",
-    status: "En cours",                         // ← en cours
+    status: "En cours",
     color: "#ef4444",
     link: "https://training.fortinet.com/",
     tags: ["socle", "réseau"],
@@ -53,13 +68,13 @@ const CERTS = [
     provider: "Fortinet",
     track: "Network Security Associate",
     description:
-      "Approfondissement : panorama des solutions de sécurité et cas d’usage (FW, filtrage, SD-WAN…).",
+      "Approfondissement : panorama des solutions de sécurité et cas d'usage (FW, filtrage, SD-WAN…).",
     detail:
       "Toujours accessible gratuitement. Quizz par module. Badge délivré si réussite.",
     duration: "4–6 h",
     cost: "Gratuit",
     level: "Débutant+",
-    status: "À passer",                         // ← à passer
+    status: "À passer",
     color: "#f59e0b",
     link: "https://training.fortinet.com/",
     tags: ["réseau", "panorama"],
@@ -72,11 +87,11 @@ const CERTS = [
     description:
       "Vue produit orientée solutions : mail secu, endpoint, sandbox, WAF, etc. Idéal pour le vocabulaire.",
     detail:
-      "Toujours en self-paced gratuit. Permet d’avoir une vision transverse des briques de sécurité.",
+      "Toujours en self-paced gratuit. Permet d'avoir une vision transverse des briques de sécurité.",
     duration: "5–8 h",
     cost: "Gratuit",
     level: "Intermédiaire-",
-    status: "À passer",                         // ← à passer
+    status: "À passer",
     color: "#10b981",
     link: "https://training.fortinet.com/",
     tags: ["réseau", "produits"],
@@ -93,7 +108,7 @@ const CERTS = [
     duration: "6–8 h",
     cost: "Gratuit",
     level: "Débutant",
-    status: "À passer",                         // ← à passer
+    status: "À passer",
     color: "#3b82f6",
     link: "https://skillsforall.com/",
     tags: ["socle", "réseau"],
@@ -104,13 +119,13 @@ const CERTS = [
     provider: "IBM SkillsBuild",
     track: "Digital Badge",
     description:
-      "Concepts fondamentaux : CIA triad, risques, contrôle d’accès, sécurité cloud et terminologie.",
+      "Concepts fondamentaux : CIA triad, risques, contrôle d'accès, sécurité cloud et terminologie.",
     detail:
       "Parcours court avec badge numérique IBM à la clé. Idéal pour consolider le socle.",
     duration: "5–8 h",
     cost: "Gratuit",
     level: "Débutant",
-    status: "À passer",                         // ← à passer
+    status: "À passer",
     color: "#8b5cf6",
     link: "https://skillsbuild.org/",
     tags: ["socle", "cloud"],
@@ -124,7 +139,6 @@ const FILTERS = {
   all:      { label: "🌐 Tous",         color: "#64748b" },
   gratuit:  { label: "🆓 Gratuit",       color: "#0ea5e9" },
   debutant: { label: "🌱 Débutant",      color: "#10b981" },
-  // Nouveaux filtres statut :
   status_en_cours: { label: "🚧 En cours",  color: "#f59e0b" },
   status_a_passer: { label: "🎯 À passer",  color: "#6366f1" },
   status_termine:  { label: "✅ Terminé",   color: "#22c55e" },
@@ -166,7 +180,7 @@ function CertCard({ c }) {
   return (
     <div className="w-full">
       <div
-        className="relative h-[12.5rem] cursor-pointer select-none"
+        className="relative h-[17rem] cursor-pointer select-none"
         style={{ perspective: `${62 * INV}rem` }}
         onClick={toggle}
         onKeyDown={onKeyDown}
@@ -182,35 +196,37 @@ function CertCard({ c }) {
         >
           {/* Face avant */}
           <div
-            className="absolute inset-0 rounded-[1.0rem] p-[0.9rem] border shadow-lg border-white/10 bg-slate-900/90 backdrop-blur-sm"
+            className="absolute inset-0 rounded-[1.0rem] p-[1.2rem] border shadow-lg backdrop-blur-xl"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
+              borderColor: THEME.border,
+              background: THEME.card,
               boxShadow:
                 "0 0.618rem 1.618rem rgba(0,0,0,.35), inset 0 0 0 0.062rem rgba(212,175,55,.08)",
             }}
           >
             <div className="flex flex-col h-full">
               {/* Top row */}
-              <div className="flex items-center justify-between mb-[0.5rem]">
+              <div className="flex items-center justify-between mb-[0.6rem]">
                 <span
-                  className="px-[0.618rem] py-[0.382rem] text-[0.7rem] font-bold text-white rounded-full"
+                  className="px-[0.75rem] py-[0.45rem] text-[0.8rem] font-bold text-white rounded-full"
                   style={{ backgroundColor: c.color }}
                 >
                   {c.provider}
                 </span>
 
-                <span className={`px-[0.5rem] py-[0.2rem] rounded-full text-[0.7rem] border ${statusChip.cls}`}>
+                <span className={`px-[0.6rem] py-[0.3rem] rounded-full text-[0.75rem] border ${statusChip.cls}`}>
                   {statusChip.txt}
                 </span>
               </div>
 
               {/* Titre */}
               <h3
-                className="mb-[0.382rem] font-extrabold leading-tight"
+                className="mb-[0.5rem] font-extrabold leading-tight"
                 style={{
                   color: c.color,
-                  fontSize: `${1.0 * PHI}rem`,
+                  fontSize: `${1.15 * PHI}rem`,
                   lineHeight: 1.0 + INV2,
                   fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
                 }}
@@ -220,46 +236,50 @@ function CertCard({ c }) {
               </h3>
 
               {/* Description */}
-              <p className="flex-1 text-[0.925rem] leading-relaxed text-slate-300">
+              <p className="flex-1 text-[1.0rem] leading-relaxed" style={{ color: THEME.text }}>
                 {c.description}
               </p>
 
               {/* Infos rapides */}
-              <div className="pt-[0.5rem] mt-auto border-t border-white/10 text-[0.72rem] text-slate-400 flex items-center justify-between">
+              <div className="pt-[0.6rem] mt-auto border-t border-white/10 text-[0.8rem] flex items-center justify-between" style={{ color: THEME.sub }}>
                 <span>Durée : {c.duration}</span>
-                <span className="font-semibold text-cyan-300/90">{c.cost}</span>
+                <span className="font-semibold" style={{ color: THEME.brandFrom }}>
+                  {c.cost}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Face arrière */}
           <div
-            className="absolute inset-0 rounded-[1.0rem] p-[0.9rem] border shadow-lg bg-slate-800/95 backdrop-blur-sm [transform:rotateY(180deg)]"
+            className="absolute inset-0 rounded-[1.0rem] p-[1.2rem] border shadow-lg backdrop-blur-xl [transform:rotateY(180deg)]"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
               borderColor: c.color,
+              background: THEME.card,
             }}
           >
             <div className="flex flex-col h-full">
               <h4
-                className="mb-[0.4rem] font-bold"
-                style={{ color: c.color, fontSize: `${1.0}rem` }}
+                className="mb-[0.6rem] font-bold"
+                style={{ color: c.color, fontSize: `${1.15}rem` }}
               >
                 {c.track}
               </h4>
 
-              <p className="flex-1 overflow-y-auto text-[0.85rem] leading-relaxed text-slate-300">
+              <p className="flex-1 overflow-y-auto text-[0.95rem] leading-relaxed" style={{ color: THEME.text }}>
                 {c.detail}
               </p>
 
               {/* Tags + bouton */}
-              <div className="pt-[0.5rem] mt-[0.5rem] border-t border-white/10 flex items-center justify-between gap-[0.5rem]">
-                <div className="flex flex-wrap gap-[0.3rem]">
+              <div className="pt-[0.6rem] mt-[0.6rem] border-t border-white/10 flex items-center justify-between gap-[0.6rem]">
+                <div className="flex flex-wrap gap-[0.35rem]">
                   {c.tags?.map((t) => (
                     <span
                       key={t}
-                      className="px-[0.5rem] py-[0.2rem] rounded-full text-[0.7rem] border border-white/10 text-slate-300"
+                      className="px-[0.6rem] py-[0.25rem] rounded-full text-[0.75rem] border border-white/10"
+                      style={{ color: THEME.sub }}
                     >
                       #{t}
                     </span>
@@ -270,7 +290,7 @@ function CertCard({ c }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="shrink-0 px-[0.8rem] py-[0.45rem] text-[0.8rem] font-bold text-white rounded-lg transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-white/40"
+                  className="shrink-0 px-[0.9rem] py-[0.55rem] text-[0.85rem] font-bold text-white rounded-lg transition-transform hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-white/40"
                   style={{ backgroundColor: c.color }}
                 >
                   ↗ Aller au site
@@ -295,20 +315,20 @@ export default function CertificationsSection() {
   return (
     <section
       id="certifications"
-      className="flex flex-col justify-center min-h-screen px-4 py-12 snap-center text-slate-100"
+      className="flex flex-col justify-center min-h-screen snap-center text-slate-100"
       style={{
-        ["--phi"]: PHI,
         background:
-        "radial-gradient(60% 60% at 30% 20%, rgba(212,175,55,.06), transparent 62%), radial-gradient(40% 40% at 80% 70%, rgba(164,29,40,.04), transparent 62%), rgba(8,12,24,0.25)",
+          "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
+          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
         backdropFilter: "blur(2px)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
-    }}
+        padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`,
+      }}
     >
       <div
         className="w-full mx-auto"
         style={{
           maxWidth: `${56 * PHI}rem`,
-          padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`,
         }}
       >
         {/* Header */}
@@ -317,20 +337,26 @@ export default function CertificationsSection() {
             className="mb-[0.6rem] font-extrabold tracking-tight"
             style={{
               fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-              color: "#e2e8f0",
-              fontSize: `${1.618 * PHI}rem`,
+              color: THEME.text,
+              fontSize: `clamp(1.8rem, ${1.618 * PHI}rem, 3rem)`,
               lineHeight: 1.0 + INV,
             }}
           >
             Certifications
           </h2>
-          <p className="text-slate-400 text-[0.95rem]">
-            Sélection gratuites et accessibles — statues :{" "}
+          <p className="text-[0.95rem]" style={{ color: THEME.sub }}>
+            Sélection gratuites et accessibles — statuts :{" "}
             <span className="font-semibold text-amber-300/90">En cours</span>,{" "}
             <span className="font-semibold text-indigo-300/90">À passer</span>,{" "}
             <span className="font-semibold text-emerald-300/90">Terminé</span>.
           </p>
-          <div className="mx-auto w-[6.18rem] h-[0.236rem] rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-orange-400 mt-[0.6rem]" />
+          <div
+            className="mx-auto h-[0.236rem] rounded-full mt-[0.6rem]"
+            style={{
+              width: `${8 * PHI}rem`,
+              background: "linear-gradient(90deg, #22d3ee, #a855f7, #f59e0b)",
+            }}
+          />
         </div>
 
         {/* Filtres */}
@@ -353,17 +379,15 @@ export default function CertificationsSection() {
         </div>
 
         {/* Grille */}
-        <div className="grid gap-[0.9rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-[1.2rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filtered.map((c) => (
             <CertCard key={c.id} c={c} />
           ))}
         </div>
 
         {/* Footer */}
-        <br />  
-        <br />
-        <div className="mt-[1.0rem] text-center">
-          <p className="text-[0.75rem] italic text-slate-500">
+        <div className="mt-[1.5rem] text-center">
+          <p className="text-[0.8rem] italic" style={{ color: THEME.sub }}>
             {filtered.length} certification{filtered.length > 1 ? "s" : ""} • Cliquez ou pressez Entrée pour retourner la carte
           </p>
         </div>

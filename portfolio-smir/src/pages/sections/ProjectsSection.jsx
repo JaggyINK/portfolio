@@ -2,11 +2,26 @@
 import React, { useState, useMemo, useCallback } from "react";
 
 /* ============================
-   Constantes “nombre d’or”
+   Constantes "nombre d'or"
    ============================ */
 const PHI = 1.618;           // φ
 const INV = 1 / PHI;         // ≈ 0.618
 const INV2 = INV * INV;      // ≈ 0.382
+
+/* ============================
+   Thème sobre & pro
+   ============================ */
+const THEME = {
+  bg: "#0b1020",
+  card: "rgba(11,16,32,0.78)",
+  border: "rgba(255,215,0,0.12)",
+  text: "#E6ECF8",
+  sub: "#9AA7BF",
+  brandFrom: "#22d3ee",
+  brandTo: "#a855f7",
+  line:
+    "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
+};
 
 /* ============================
    Données projets (tes valeurs)
@@ -22,6 +37,17 @@ const PROJECTS = [
     category: "entreprise",
     color: "#22d3ee",
     docUrl: "/docs/cpms/index.html",
+  },
+  {
+    id: "discord-bot",
+    title: "Bot Discord — Veille Tech",
+    date: "2025",
+    description: "Bot de veille technologique automatisée (Python)",
+    detail:
+      "Bot Discord développé en Python pour automatiser la veille technologique : agrégation de flux RSS (OWASP, CERT-FR, MSRC, Krebs, Hacker News), publication automatique toutes les 24h, commandes (!veille, !ldap, !web, !news). Conçu pour le BTS SIO avec focus sécurité et développement web.",
+    category: "autodidacte",
+    color: "#5865F2",
+    docUrl: "/docs/discord-bot/README.md",
   },
   {
     id: "alafrenchcare",
@@ -166,9 +192,9 @@ function ProjectCard({ p }) {
   return (
     <div className="w-full">
       <div
-        className="relative h-[12.5rem] cursor-pointer select-none"
+        className="relative h-[17rem] cursor-pointer select-none"
         style={{
-          perspective: `${62 * INV}rem`, // ≈ 38rem
+          perspective: `${62 * INV}rem`,
         }}
         onClick={toggle}
         onKeyDown={onKeyDown}
@@ -186,32 +212,33 @@ function ProjectCard({ p }) {
         >
           {/* Face avant */}
           <div
-            className="absolute inset-0 rounded-[1.0rem] p-[0.9rem] border shadow-lg border-white/10 bg-slate-900/90 backdrop-blur-sm"
+            className="absolute inset-0 rounded-[1.0rem] p-[1.2rem] border shadow-lg backdrop-blur-xl"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
-              boxShadow:
-                "0 0.618rem 1.618rem rgba(0,0,0,.35), inset 0 0 0 0.062rem rgba(212,175,55,.08)",
+              borderColor: THEME.border,
+              background: THEME.card,
+              boxShadow: "0 0.618rem 1.618rem rgba(0,0,0,.35), inset 0 0 0 0.062rem rgba(212,175,55,.08)",
             }}
           >
             <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between mb-[0.5rem]">
+              <div className="flex items-center justify-between mb-[0.6rem]">
                 <span
-                  className="px-[0.618rem] py-[0.382rem] text-[0.7rem] font-bold text-white rounded-full"
+                  className="px-[0.75rem] py-[0.45rem] text-[0.8rem] font-bold text-white rounded-full"
                   style={{ backgroundColor: CATEGORY_META[p.category].color }}
                 >
                   {CATEGORY_META[p.category].label}
                 </span>
-                <span className="text-[0.75rem] font-medium text-slate-400">
+                <span className="text-[0.85rem] font-medium" style={{ color: THEME.sub }}>
                   {p.date}
                 </span>
               </div>
 
               <h3
-                className="mb-[0.382rem] font-extrabold leading-tight"
+                className="mb-[0.5rem] font-extrabold leading-tight"
                 style={{
                   color: p.color,
-                  fontSize: `${1.0 * PHI}rem`, // ≈ 1.618rem
+                  fontSize: `${1.15 * PHI}rem`,
                   lineHeight: 1.0 + INV2,
                   fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
                 }}
@@ -220,12 +247,12 @@ function ProjectCard({ p }) {
                 {p.title}
               </h3>
 
-              <p className="flex-1 text-[0.925rem] leading-relaxed text-slate-300">
+              <p className="flex-1 text-[1.0rem] leading-relaxed" style={{ color: THEME.text }}>
                 {p.description}
               </p>
 
-              <div className="pt-[0.618rem] mt-auto border-t border-white/10">
-                <p className="text-[0.7rem] italic text-center text-slate-500">
+              <div className="pt-[0.75rem] mt-auto border-t border-white/10">
+                <p className="text-[0.8rem] italic text-center" style={{ color: THEME.sub }}>
                   Cliquer / Entrée pour détails →
                 </p>
               </div>
@@ -234,32 +261,33 @@ function ProjectCard({ p }) {
 
           {/* Face arrière */}
           <div
-            className="absolute inset-0 rounded-[1.0rem] p-[0.9rem] border shadow-lg bg-slate-800/95 backdrop-blur-sm [transform:rotateY(180deg)]"
+            className="absolute inset-0 rounded-[1.0rem] p-[1.2rem] border shadow-lg backdrop-blur-xl [transform:rotateY(180deg)]"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
               borderColor: p.color,
+              background: THEME.card,
             }}
           >
             <div className="flex flex-col h-full">
               <h4
-                className="mb-[0.6rem] font-bold"
-                style={{ color: p.color, fontSize: `${1.0}rem` }}
+                className="mb-[0.75rem] font-bold"
+                style={{ color: p.color, fontSize: `${1.15}rem` }}
               >
                 Détails
               </h4>
 
-              <p className="flex-1 overflow-y-auto text-[0.85rem] leading-relaxed text-slate-300">
+              <p className="flex-1 overflow-y-auto text-[0.95rem] leading-relaxed" style={{ color: THEME.text }}>
                 {p.detail}
               </p>
 
-              <div className="pt-[0.618rem] mt-[0.618rem] border-t border-white/10">
+              <div className="pt-[0.75rem] mt-[0.75rem] border-t border-white/10">
                 <a
                   href={p.docUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => e.stopPropagation()}
-                  className="block w-full py-[0.6rem] text-[0.8rem] font-bold text-center text-white transition-transform rounded-lg hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-white/40"
+                  className="block w-full py-[0.75rem] text-[0.9rem] font-bold text-center text-white transition-transform rounded-lg hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-white/40"
                   style={{ backgroundColor: p.color }}
                 >
                   📄 Documentation
@@ -287,18 +315,20 @@ export default function ProjectsSection() {
   return (
     <section
       id="projets"
-      className="flex flex-col justify-center min-h-screen px-4 py-12 snap-center text-slate-100 bg-[rgba(8,12,24,0.3)] backdrop-blur-[2px] border-t border-white/5"
+      className="flex flex-col justify-center min-h-screen snap-center text-slate-100"
       style={{
-        ["--phi"]: PHI,
         background:
-        "radial-gradient(60% 60% at 30% 20%, rgba(212,175,55,.08), transparent 62%), radial-gradient(40% 40% at 80% 70%, rgba(164,29,40,.06), transparent 62%)",
+          "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
+          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
+        backdropFilter: "blur(2px)",
+        borderTop: "1px solid rgba(255,255,255,0.05)",
+        padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`,
       }}
     >
       <div
         className="w-full mx-auto"
         style={{
           maxWidth: `${56 * PHI}rem`,
-          padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`, // ≈ 1.0*φ² vertical, φ horizontal
         }}
       >
         {/* Header */}
@@ -307,14 +337,20 @@ export default function ProjectsSection() {
             className="mb-[0.6rem] font-extrabold tracking-tight"
             style={{
               fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-              color: "#e2e8f0",
-              fontSize: `${1.618 * PHI}rem`, // ≈ 2.618rem
-              lineHeight: 1.0 + INV, // ≈ 1.618
+              color: THEME.text,
+              fontSize: `clamp(1.8rem, ${1.618 * PHI}rem, 3rem)`,
+              lineHeight: 1.0 + INV,
             }}
           >
             Projets
           </h2>
-          <div className="mx-auto w-[6.18rem] h-[0.236rem] rounded-full bg-gradient-to-r from-cyan-400 via-purple-400 to-orange-400" />
+          <div
+            className="mx-auto h-[0.236rem] rounded-full"
+            style={{
+              width: `${8 * PHI}rem`,
+              background: "linear-gradient(90deg, #22d3ee, #a855f7, #f59e0b)",
+            }}
+          />
         </div>
 
         {/* Filtres */}
@@ -337,7 +373,7 @@ export default function ProjectsSection() {
         </div>
 
         {/* Grille compacte (4 → 3 → 2 → 1) */}
-        <div className="grid gap-[0.9rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-[1.2rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filtered.map((p) => (
             <ProjectCard key={p.id} p={p} />
           ))}
@@ -345,7 +381,7 @@ export default function ProjectsSection() {
 
         {/* Footer */}
         <div className="mt-[1.0rem] text-center">
-          <p className="text-[0.75rem] italic text-slate-500">
+          <p className="text-[0.75rem] italic" style={{ color: THEME.sub }}>
             {filtered.length} projet{filtered.length > 1 ? "s" : ""} • Cliquez ou pressez Entrée pour
             retourner la carte
           </p>

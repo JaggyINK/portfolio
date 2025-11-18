@@ -9,6 +9,7 @@ const AVATAR_URL = "/avatar-smir.png"; //public/avatar-smir.png
 
 export default function ClassicHero() {
   const canvasRef = useRef(null);
+  const heroRef = useRef(null);  
   const [showCrawl, setShowCrawl] = useState(true);
   const [playingKey, setPlayingKey] = useState(0);
 
@@ -34,13 +35,13 @@ export default function ClassicHero() {
     function draw(now) {
       const dt = (now - t0) / 1000;
       t0 = now;
-
+      // fond dégradé
       const g = ctx.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, "#0b1020");
       g.addColorStop(1, "#080d18");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
-
+      //lumiere radiale
       const rad = ctx.createRadialGradient(W * 0.25, H * 0.2, 0, W * 0.25, H * 0.2, W * 0.45);
       rad.addColorStop(0, "rgba(212,175,55,0.08)");
       rad.addColorStop(1, "transparent");
@@ -51,7 +52,7 @@ export default function ClassicHero() {
       rad2.addColorStop(1, "transparent");
       ctx.fillStyle = rad2;
       ctx.fillRect(0, 0, W, H);
-
+      //etoiles
       ctx.save();
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
@@ -87,8 +88,28 @@ export default function ClassicHero() {
     };
   }, []);
 
+   useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setShowCrawl(false);
+        }
+      },
+      {
+        threshold: 0.35, // ajuste si besoin
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
+    ref={heroRef}
       id="hero"
       className="relative min-h-[100svh] w-full overflow-hidden text-slate-100 snap-center"
       aria-label="Bienvenue sur mon portfolio"
@@ -304,7 +325,8 @@ function OrbitalSparksCircle({ dots = 12 }) {
 /* =================================== */
 function StarCrawl({ onEnd }) {
   useEffect(() => {
-    const t = setTimeout(() => onEnd?.(), 24000);
+    const DURATION = 40000;
+    const t = setTimeout(() => onEnd?.(), DURATION);
     return () => clearTimeout(t);
   }, [onEnd]);
 
@@ -358,7 +380,7 @@ function StarCrawl({ onEnd }) {
           letter-spacing: 0.02em;
           line-height: 1.62;
           font-weight: 600;
-          animation: crawl-move 22s linear forwards;
+          animation: crawl-move 40s linear forwards;
           text-shadow: 0 2px 2px rgba(0,0,0,.35);
         }
         .crawl .intro-quote {
