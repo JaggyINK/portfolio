@@ -9,7 +9,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  base: '/', // important pour un déploiement propre sur Vercel
   server: {
-    hmr: { overlay: false }, // ← optionnel : coupe l'overlay rouge en dev
+    hmr: { overlay: false }, // ok, Vercel s’en fout, c’est que pour le dev
   },
 })
