@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState, lazy, Suspense, useCallbac
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 
-import useInput from "@/hooks/useInput";
+import { useInput } from '@/hooks/useInput.js';
 import useInputInertia from "@/hooks/useInputInertia";
 import useJumpAndDust from "@/hooks/useJumpAndDust";
 import useStationAiming from "@/hooks/useStationAiming";
