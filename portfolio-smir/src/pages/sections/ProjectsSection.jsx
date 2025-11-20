@@ -36,7 +36,7 @@ const PROJECTS = [
       "Développement : changement de mot de passe, réactivation de compte, déverrouillage via question de sécurité, intégration d'un lecteur PDF et amélioration UX visuelle. Inclut captures d'écran et documentation technique/user.",
     category: "entreprise",
     color: "#22d3ee",
-    docUrl: "/docs/cpms/index.html",
+    docUrl: "/docs/CPMS.pdf",
   },
   {
     id: "discord-bot",
@@ -47,7 +47,7 @@ const PROJECTS = [
       "Bot Discord développé en Python pour automatiser la veille technologique : agrégation de flux RSS (OWASP, CERT-FR, MSRC, Krebs, Hacker News), publication automatique toutes les 24h, commandes (!veille, !ldap, !web, !news). Conçu pour le BTS SIO avec focus sécurité et développement web.",
     category: "autodidacte",
     color: "#5865F2",
-    docUrl: "/docs/discord-bot/README.md",
+    docUrl: "/docs/bot_discord.pdf",
   },
   {
     id: "alafrenchcare",
@@ -80,7 +80,7 @@ const PROJECTS = [
       "Expérience 3D immersive : scènes, assets, optimisation WebGL, et documentation technique + captures d'écran/vidéos du rendu.",
     category: "autodidacte",
     color: "#10b981",
-    docUrl: "/docs/portfolio/index.html",
+    docUrl: "/docs/PF_doc.pdf",
   },
   {
     id: "flipper",
