@@ -63,7 +63,7 @@ const PROJECTS = [
   {
     id: "alafrenchfr",
     title: "alafrench.fr",
-    date: "2024",
+    date: "2025",
     description: "Marque de vêtements de luxe — vitrine & boutique",
     detail:
       "Site Shopify / vitrine : identité visuelle, fiches produits, SEO et captures d'écran. Société mère : H2O (regroupe alafrench & alafrenchcare).",
@@ -74,7 +74,7 @@ const PROJECTS = [
   {
     id: "portfolio",
     title: "Portfolio 3D",
-    date: "2024",
+    date: "2025",
     description: "Portfolio personnel interactif (React + Three.js)",
     detail:
       "Expérience 3D immersive : scènes, assets, optimisation WebGL, et documentation technique + captures d'écran/vidéos du rendu.",
@@ -85,7 +85,7 @@ const PROJECTS = [
   {
     id: "flipper",
     title: "Flipper Zero",
-    date: "2023–2024",
+    date: "2025",
     description: "Développement / pentest hardware",
     detail:
       "Dossiers techniques et comptes-rendus de pentest, infos sur firmwares alternatifs, scripts et procédures (à usage pédagogique).",
@@ -96,7 +96,7 @@ const PROJECTS = [
   {
     id: "dev_annonce",
     title: "Annonz",
-    date: "2024",
+    date: "2025",
     description: "Plateforme d'annonces (développée de A à Z)",
     detail:
       "Conception et réalisation (CRUD, recherche full-text, upload, auth, modération). Documentation fonctionnelle & technique fournie.",
@@ -107,7 +107,7 @@ const PROJECTS = [
   {
     id: "tp_sql",
     title: "TP Injection SQL",
-    date: "2024",
+    date: "2025",
     description: "Exercice de sécurité — rapport & mitigations",
     detail:
       "PDF explicatif : démonstration d'exploitation SQLi, preuves de concept et correctifs (prepared statements / ORM).",
@@ -118,7 +118,7 @@ const PROJECTS = [
   {
     id: "linux_installs",
     title: "Installations Linux",
-    date: "2023–2024",
+    date: "2025",
     description: "Guides d'installation et scripts d'automatisation",
     detail:
       "Tutoriels : Kali / Ubuntu / Lubuntu, scripts d'automatisation ISO, partitionnement, configuration réseau et optimisations VM.",
@@ -129,7 +129,7 @@ const PROJECTS = [
   {
     id: "bootable_keys",
     title: "Clés bootables",
-    date: "2023",
+    date: "2025",
     description: "Outils de secours — création clés USB",
     detail:
       "Procédure pas-à-pas pour créer clés bootables (Windows/Linux) et exemples d'usage en récupération système.",
@@ -140,7 +140,7 @@ const PROJECTS = [
   {
     id: "win_server",
     title: "Windows Server 2022",
-    date: "2023",
+    date: "2025",
     description: "Gestion parc & AD",
     detail:
       "Mises en place AD, GPO, images de déploiement, monitoring et procédures d'administration.",
@@ -151,7 +151,7 @@ const PROJECTS = [
   {
     id: "virtual_vm",
     title: "VirtualBox & VMware",
-    date: "2023",
+    date: "2025",
     description: "Virtualisation multi-OS",
     detail:
       "Best practices : snapshots, réseau (bridged/NAT), optimisation disque, backup et restauration de VM.",
