@@ -3,12 +3,13 @@ import { RouterProvider, createBrowserRouter, Outlet, useNavigate, useLocation }
 import { SettingsProvider } from "./state/settings.jsx";
 
 import Landing from "./scene/Landing.jsx";
-import BTS from "./pages/BTS.jsx";
+//import BTS from "./pages/BTS.jsx";
 import Competences from "./pages/Competences.jsx";
 import Contact from "./pages/Contact.jsx";
 import Parcours from "./pages/Parcours.jsx";
 import Projets from "./pages/Projets.jsx";
 import ClassicPortfolio from "./pages/ClassicPortfolio.jsx";
+import PhpQuizStation from "./components/stations/php/PhpQuizStation.jsx";
 
 import CursorTrail from "./scenes/ui/CursorTrail.jsx";
 import TopNav from "./scenes/ui/TopNav.jsx";
@@ -141,7 +142,7 @@ const router = createBrowserRouter([
       { path: "scene", element: <></> },
 
       // Tes autres pages
-      { path: "BTS", element: <BTS /> },
+      { path: "BTS", element: <PhpQuizStation /> },
       { path: "Competences", element: <Competences /> },
       { path: "Contact", element: <Contact /> },
       { path: "Parcours", element: <Parcours /> },

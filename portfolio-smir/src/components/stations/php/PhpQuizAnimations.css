@@ -1,0 +1,477 @@
+/* 
+  ✨ ANIMATIONS OPTIONNELLES POUR LE QUIZ PHP
+  
+  Ce fichier contient des animations CSS optionnelles pour améliorer l'UX.
+  Pour l'utiliser :
+  
+  1. Crée un fichier : src/components/stations/php/PhpQuizAnimations.css
+  2. Colle ce contenu dedans
+  3. Importe-le dans PhpQuizStation.jsx :
+     import './PhpQuizAnimations.css';
+*/
+
+/* ==========================================
+   🎯 ANIMATIONS D'APPARITION
+   ========================================== */
+
+/* Fade in général */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pop in (scale) */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================
+   ✅ ANIMATIONS DE SUCCÈS
+   ========================================== */
+
+/* Pulse vert pour bonne réponse */
+@keyframes successPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+/* Shake pour mauvaise réponse */
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* ==========================================
+   ⏱️ ANIMATIONS DU TIMER
+   ========================================== */
+
+/* Pulse du timer */
+@keyframes timerPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ==========================================
+   🎨 ANIMATIONS DE PROGRESSION
+   ========================================== */
+
+/* Barre de progression qui remplit */
+@keyframes progressFill {
+  from {
+    width: 0;
+  }
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ==========================================
+   🎭 CLASSES UTILITAIRES
+   ========================================== */
+
+/* Applique fade in */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Applique slide in left */
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+/* Applique slide in right */
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease-out;
+}
+
+/* Applique pop in */
+.animate-pop-in {
+  animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Applique success pulse */
+.animate-success-pulse {
+  animation: successPulse 0.6s ease-out;
+}
+
+/* Applique error shake */
+.animate-error-shake {
+  animation: errorShake 0.4s ease-out;
+}
+
+/* Applique timer pulse */
+.animate-timer-pulse {
+  animation: timerPulse 1s ease-in-out infinite;
+}
+
+/* Applique shimmer */
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* ==========================================
+   🎯 HOVER EFFECTS
+   ========================================== */
+
+/* Lift effect on hover */
+.hover-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Glow effect on hover */
+.hover-glow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+/* Scale on hover */
+.hover-scale {
+  transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* ==========================================
+   🌟 FOCUS STATES
+   ========================================== */
+
+/* Better focus ring */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.5);
+}
+
+/* Focus with glow */
+.focus-glow:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.3), 
+              0 0 20px rgba(34, 211, 238, 0.2);
+}
+
+/* ==========================================
+   📊 LOADING STATES
+   ========================================== */
+
+/* Skeleton loading animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.1) 25%,
+    rgba(226, 232, 240, 0.2) 50%,
+    rgba(226, 232, 240, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+/* Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* ==========================================
+   🎪 TRANSITIONS SMOOTHES
+   ========================================== */
+
+/* Transition douce générale */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Transition rapide */
+.quick-transition {
+  transition: all 0.15s ease-out;
+}
+
+/* Transition lente */
+.slow-transition {
+  transition: all 0.5s ease-in-out;
+}
+
+/* ==========================================
+   💫 EFFETS SPÉCIAUX
+   ========================================== */
+
+/* Confetti effect (pour la fin du quiz) */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti {
+  animation: confetti-fall 3s ease-in-out forwards;
+}
+
+/* Bounce effect */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.bounce {
+  animation: bounce 0.6s ease-in-out;
+}
+
+/* ==========================================
+   🎨 GRADIENTS ANIMÉS
+   ========================================== */
+
+/* Gradient qui bouge */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* ==========================================
+   📱 RESPONSIVE ANIMATIONS
+   ========================================== */
+
+/* Désactive les animations sur mobile si préférence utilisateur */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Animations plus douces sur petit écran */
+@media (max-width: 640px) {
+  .animate-slide-in-left,
+  .animate-slide-in-right {
+    animation-duration: 0.2s;
+  }
+}
+
+/* ==========================================
+   🔥 COMMENT UTILISER CES ANIMATIONS
+   ========================================== */
+
+/*
+  Dans ton JSX, ajoute simplement les classes :
+
+  // Fade in au chargement
+  <div className="animate-fade-in">Contenu</div>
+
+  // Slide depuis la gauche
+  <div className="animate-slide-in-left">Contenu</div>
+
+  // Pop in avec effet bounce
+  <button className="animate-pop-in">Cliquez-moi</button>
+
+  // Success pulse sur bonne réponse
+  <div className={isCorrect ? "animate-success-pulse" : ""}>Feedback</div>
+
+  // Error shake sur mauvaise réponse
+  <div className={!isCorrect ? "animate-error-shake" : ""}>Feedback</div>
+
+  // Hover lift sur boutons
+  <button className="hover-lift">Bouton</button>
+
+  // Timer qui pulse
+  <span className="animate-timer-pulse">{time}</span>
+
+  // Gradient animé
+  <div className="animated-gradient bg-gradient-to-r from-cyan-500 to-blue-500">
+    Texte avec fond animé
+  </div>
+*/
+
+/* ==========================================
+   ✨ EXEMPLES D'INTÉGRATION
+   ========================================== */
+
+/*
+  1. Animer l'apparition des questions :
+  
+  const [show, setShow] = useState(false);
+  useEffect(() => setShow(true), [currentIndex]);
+  
+  <div className={show ? "animate-fade-in" : "opacity-0"}>
+    {currentQuestion.question}
+  </div>
+
+  ---
+
+  2. Effet sur les boutons de réponse :
+  
+  <button className="hover-lift focus-glow">
+    {choice.text}
+  </button>
+
+  ---
+
+  3. Feedback animé :
+  
+  {isAnswered && (
+    <div className={isCorrect ? "animate-success-pulse" : "animate-error-shake"}>
+      {feedback}
+    </div>
+  )}
+
+  ---
+
+  4. Stats qui apparaissent :
+  
+  {showStats && (
+    <div className="animate-slide-in-right">
+      {statsContent}
+    </div>
+  )}
+*/
+
+/* ==========================================
+   🎊 BONUS : DARK MODE SUPPORT
+   ========================================== */
+
+/* Ajuste les couleurs en dark mode si besoin */
+@media (prefers-color-scheme: dark) {
+  .hover-glow:hover {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);
+  }
+  
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(51, 65, 85, 0.3) 25%,
+      rgba(71, 85, 105, 0.5) 50%,
+      rgba(51, 65, 85, 0.3) 75%
+    );
+  }
+}
+
+/* ==========================================
+   🚀 PERFORMANCES
+   ========================================== */
+
+/* Force GPU acceleration pour animations fluides */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+/* ==========================================
+   FIN DU FICHIER
+   ========================================== */
