@@ -157,7 +157,7 @@ const PROJECTS = [
       "Best practices : snapshots, réseau (bridged/NAT), optimisation disque, backup et restauration de VM.",
     category: "scolaire",
     color: "#6366f1",
-    docUrl: "/docs/virtual_vm/guide.pdf",
+    docUrl: "/docs/VM.pdf",
   },
 ];
 
