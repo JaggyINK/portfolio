@@ -374,7 +374,7 @@ export default function AboutSection() {
             {/* CTA */}
             <div className="flex flex-wrap items-center gap-3 mt-5">
               <a
-                href="/cv_smir.pdf"
+                href="/cv.pdf"
                 className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 bg-[#233062] hover:bg-[#2a3973] transition shadow-md text-sm font-semibold"
               >
                 📄 CV
