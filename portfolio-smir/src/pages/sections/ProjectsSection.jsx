@@ -91,7 +91,7 @@ const PROJECTS = [
       "Dossiers techniques et comptes-rendus de pentest, infos sur firmwares alternatifs, scripts et procédures (à usage pédagogique).",
     category: "autodidacte",
     color: "#ef4444",
-    docUrl: "/docs/flipper/index.html",
+    docUrl: "/docs/Fl_0.pdf",
   },
   {
     id: "dev_annonce",
@@ -102,7 +102,7 @@ const PROJECTS = [
       "Conception et réalisation (CRUD, recherche full-text, upload, auth, modération). Documentation fonctionnelle & technique fournie.",
     category: "scolaire",
     color: "#3b82f6",
-    docUrl: "/docs/dev_annonce/index.html",
+    docUrl: "/docs/Annonz.pdf",
   },
   {
     id: "tp_sql",
@@ -113,7 +113,7 @@ const PROJECTS = [
       "PDF explicatif : démonstration d'exploitation SQLi, preuves de concept et correctifs (prepared statements / ORM).",
     category: "scolaire",
     color: "#8b5cf6",
-    docUrl: "/docs/tp_sql/report.pdf",
+    docUrl: "/docs/SQL.pdf",
   },
   {
     id: "linux_installs",
@@ -124,7 +124,7 @@ const PROJECTS = [
       "Tutoriels : Kali / Ubuntu / Lubuntu, scripts d'automatisation ISO, partitionnement, configuration réseau et optimisations VM.",
     category: "scolaire",
     color: "#14b8a6",
-    docUrl: "/docs/linux_installs/guide.pdf",
+    docUrl: "/docs/linux.pdf",
   },
   {
     id: "bootable_keys",
@@ -135,7 +135,7 @@ const PROJECTS = [
       "Procédure pas-à-pas pour créer clés bootables (Windows/Linux) et exemples d'usage en récupération système.",
     category: "scolaire",
     color: "#eab308",
-    docUrl: "/docs/bootable_keys/guide.pdf",
+    docUrl: "/docs/usb.pdf",
   },
   {
     id: "win_server",
@@ -146,7 +146,7 @@ const PROJECTS = [
       "Mises en place AD, GPO, images de déploiement, monitoring et procédures d'administration.",
     category: "scolaire",
     color: "#06b6d4",
-    docUrl: "/docs/win_server/guide.pdf",
+    docUrl: "/docs/win22.pdf",
   },
   {
     id: "virtual_vm",
