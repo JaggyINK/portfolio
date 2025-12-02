@@ -43,6 +43,7 @@
   --blur-light: blur(4px);
   --blur-normal: blur(6px);
   --blur-heavy: blur(8px);
+  --app-scale: 0.72;
 }
 
 /* =========================
@@ -317,14 +318,22 @@ h3,
     transition-duration: 0.01ms !important;
   }
 }
-@media (max-width: 768px) {
-  .top-nav-glass {
-    top: 8px;
-    left: 8px;
-    right: 8px;
+@media (max-width: 1024px) {
+  :root {
+    --app-scale: 1;
   }
 }
+app-scale-shell {
+  transform: scale(var(--app-scale));
+  transform-origin: top center;
 
+  /* on compense pour garder une surface équivalente */
+  width: calc(100% / var(--app-scale));
+  height: calc(100% / var(--app-scale));
+
+  /* éviter une barre horizontale */
+  overflow-x: hidden;
+}
 /* =========================
    Curseur fusée (fun)
    ========================= */

@@ -51,7 +51,7 @@ const PROJECTS = [
   },
   {
     id: "alafrenchcare",
-    title: "alafrenchcare.com",
+    title: "alafrenchcare",
     date: "2024",
     description: "E-commerce cosmétique (CBD) — projet perso/pro",
     detail:

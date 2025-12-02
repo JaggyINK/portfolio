@@ -119,7 +119,11 @@ function Root() {
       )}
 
       {/* === Layer Pages === */}
-      <div id="page-layer" data-active={!isLunarHome && !isSceneHome}>
+      <div
+        id="page-layer"
+        data-active={!isLunarHome && !isSceneHome}
+        className={!isLunarHome && !isSceneHome ? "app-scale-shell" : ""}
+      >
         <Outlet />
       </div>
     </SettingsProvider>

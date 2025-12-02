@@ -1,13 +1,55 @@
-import React, { useState } from "react";
+// src/components/EasterEggMoon.jsx
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+const LAST_SECTION_ID = "user-story"; // 👉 dernière page où afficher la lune
 
 export default function EasterEggMoon() {
   const navigate = useNavigate();
   const [hover, setHover] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // 👉 N'afficher la lune que quand la dernière section est visible
+  useEffect(() => {
+    if (typeof document === "undefined" || typeof IntersectionObserver === "undefined") {
+      // fallback : au cas où, on l'affiche
+      setIsVisible(true);
+      return;
+    }
+
+    const target = document.getElementById(LAST_SECTION_ID);
+    if (!target) {
+      // si la section n'existe pas, on l'affiche quand même
+      setIsVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // visible si la dernière section occupe une bonne partie de l'écran
+          if (entry.target.id === LAST_SECTION_ID) {
+            setIsVisible(entry.isIntersecting);
+          }
+        });
+      },
+      {
+        root: null,
+        threshold: 0.5, // au moins 50% visible
+      }
+    );
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // si pas visible → ne rien rendre
+  if (!isVisible) return null;
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-[999] cursor-pointer select-none"
+      className="fixed bottom-6 left-6 z-[999] cursor-pointer select-none"
       onClick={() => navigate("/lunar")}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
@@ -31,16 +73,15 @@ export default function EasterEggMoon() {
           hover ? "rotate-12 scale-110" : "rotate-0 scale-100"
         }`}
         style={{
-          boxShadow:
-            hover
-              ? "0 0 25px 8px rgba(212,175,55,0.35)"
-              : "0 0 12px 4px rgba(96,165,250,0.25)",
+          boxShadow: hover
+            ? "0 0 25px 8px rgba(212,175,55,0.35)"
+            : "0 0 12px 4px rgba(96,165,250,0.25)",
         }}
       >
         {/* cratères */}
-        <div className="absolute top-[30%] left-[35%] w-2 h-2 bg-[#9ca3af] rounded-full opacity-60"></div>
-        <div className="absolute top-[60%] left-[50%] w-1.5 h-1.5 bg-[#94a3b8] rounded-full opacity-40"></div>
-        <div className="absolute top-[40%] left-[20%] w-1 h-1 bg-[#94a3b8] rounded-full opacity-50"></div>
+        <div className="absolute top-[30%] left-[35%] w-2 h-2 bg-[#9ca3af] rounded-full opacity-60" />
+        <div className="absolute top-[60%] left-[50%] w-1.5 h-1.5 bg-[#94a3b8] rounded-full opacity-40" />
+        <div className="absolute top-[40%] left-[20%] w-1 h-1 bg-[#94a3b8] rounded-full opacity-50" />
       </div>
 
       {/* mini légende visible au hover */}

@@ -30,7 +30,7 @@ const THEME = {
 const CERTS = [
   {
     id: "secnum",
-    title: "SecNumAcadémie",
+    title: "SecNum Académie",
     provider: "ANSSI",
     track: "Sensibilisation cybersécurité",
     description:
