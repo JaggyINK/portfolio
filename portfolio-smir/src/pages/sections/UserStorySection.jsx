@@ -227,15 +227,15 @@ export default function UserStorySection() {
 
               <div className="grid gap-[0.8rem] sm:grid-cols-2 lg:grid-cols-3">
                 <ContactCard
-                  icon="📧"
-                  title="Email Pro"
-                  value="H2O.ALAFRENCH@gmail.com"
-                  href="mailto:H2O.ALAFRENCH@gmail.com"
+                  icon=""
+                  title="*prochainement "
+                  value=""
+                  href=""
                   color={THEME.brandFrom}
                 />
                 <ContactCard
-                  icon="✉️"
-                  title="Email Perso"
+                  icon="📧"
+                  title="Email Pro"
                   value="jaggyinkgraph@gmail.com"
                   href="mailto:jaggyinkgraph@gmail.com"
                   color={THEME.brandTo}
