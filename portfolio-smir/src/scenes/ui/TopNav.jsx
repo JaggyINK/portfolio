@@ -7,29 +7,25 @@ import { dbg } from "@/utils/debug";
 export default function TopNav({ stations = [], onNavTarget }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // determine current active station id from pathname
+  // Determine current active station id
   const activeId = useMemo(() => {
     const parts = pathname.split("/").filter(Boolean);
-    if (parts.length > 0) {
-      const slug = parts[0].toLowerCase();
-      const routeToId = {
-        "quiz-php": "quiz-php",
-        "quiz-python": "quiz-python",
-        "quiz-javascript": "quiz-javascript",
-        "quiz-sql": "quiz-sql",
-        "quiz-docker": "quiz-docker",
-        "": "classic", // root = classic portfolio
-      };
-      if (routeToId[slug] !== undefined) return routeToId[slug];
-    }
-    return null;
+    const slug = parts[0]?.toLowerCase() || "";
+    const routeToId = {
+      "quiz-php": "quiz-php",
+      "quiz-python": "quiz-python",
+      "quiz-javascript": "quiz-javascript",
+      "quiz-sql": "quiz-sql",
+      "quiz-docker": "quiz-docker",
+      "": "classic", // root = Classic Portfolio
+    };
+    return routeToId[slug] ?? null;
   }, [pathname]);
 
   useEffect(() => {
-    setMobileOpen(false);
+    setMobileOpen(false); // close mobile menu on route change
   }, [pathname]);
 
   const openQueued = useCallback(
@@ -37,7 +33,6 @@ export default function TopNav({ stations = [], onNavTarget }) {
       dbg && dbg("TopNav click", { id, from: pathname });
 
       const isOnLunar = pathname.startsWith("/lunar") || pathname.startsWith("/scene");
-
       try {
         window.dispatchEvent(new CustomEvent("saga-focus-station", { detail: { id: null } }));
       } catch {}
@@ -72,8 +67,12 @@ export default function TopNav({ stations = [], onNavTarget }) {
         console.warn("[TopNav] onNavTarget threw:", e);
       }
     }
+
+    // Ferme le menu mobile dès que l’utilisateur choisit une option
+    setMobileOpen(false);
+
     if (id === "classic") {
-      navigate("/"); // naviguer vers ClassicPortfolio
+      navigate("/"); // Classic Portfolio
     } else {
       openQueued(id);
     }
@@ -86,13 +85,16 @@ export default function TopNav({ stations = [], onNavTarget }) {
     }
   };
 
-  // add the "Classic Portfolio" pseudo-station
-  const navItems = useMemo(() => [...stations, { id: "classic", short: "Portfolio", label: "Classic Portfolio" }], [stations]);
+  // Add the "Classic Portfolio" pseudo-station
+  const navItems = useMemo(
+    () => [...stations, { id: "classic", short: "Portfolio", label: "Classic Portfolio" }],
+    [stations]
+  );
 
   return (
-    <header className="w-full">
+    <header className="z-50 w-full">
       <div className="max-w-6xl px-4 py-3 mx-auto">
-        <div className="relative border shadow-sm rounded-2xl border-slate-700/60 bg-slate-900/20 backdrop-blur-md top-nav-glass" data-ui-block-enter>
+        <div className="relative border shadow-sm rounded-2xl border-slate-700/60 bg-slate-900/20 backdrop-blur-md top-nav-glass">
           <div className="flex items-center justify-between px-4 py-2">
             {/* Brand */}
             <div className="flex items-center gap-3 select-none">
@@ -100,7 +102,9 @@ export default function TopNav({ stations = [], onNavTarget }) {
                 <span className="text-sm font-bold text-slate-900">SM</span>
               </div>
               <div className="flex flex-col leading-tight">
-                <span className="text-sm font-semibold font-orbitron text-sky-200">S.MIR — Portfolio</span>
+                <span className="text-sm font-semibold font-orbitron text-sky-200">
+                  S.MIR — Portfolio
+                </span>
                 <span className="text-xs text-slate-400">Sagario</span>
               </div>
             </div>
@@ -108,7 +112,7 @@ export default function TopNav({ stations = [], onNavTarget }) {
             {/* Desktop nav */}
             <nav className="items-center hidden gap-2 sm:flex" aria-label="Stations navigation">
               {navItems.map((s) => {
-                const isActive = activeId && s.id === activeId;
+                const isActive = activeId === s.id;
                 return (
                   <button
                     key={s.id}
@@ -117,14 +121,21 @@ export default function TopNav({ stations = [], onNavTarget }) {
                     onClick={() => handleStationClick(s.id)}
                     onKeyDown={(e) => handleKey(e, () => handleStationClick(s.id))}
                     aria-current={isActive ? "page" : undefined}
-                    className={`group relative inline-flex items-center gap-2 px-3 py-2 rounded-lg transition-all font-medium text-sm focus:outline-none focus:ring-2 focus:ring-sky-400/60
-                      ${isActive ? "bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-lg" : "bg-slate-900/60 text-slate-200 hover:bg-slate-800/70"}`}
+                    className={`group relative inline-flex items-center gap-2 px-3 py-2 rounded-lg transition-all font-medium text-sm focus:outline-none focus:ring-2 focus:ring-sky-400/60 ${
+                      isActive
+                        ? "bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-lg"
+                        : "bg-slate-900/60 text-slate-200 hover:bg-slate-800/70"
+                    }`}
                   >
                     <span className="w-2 h-2 rounded-full shadow-sm bg-sky-300/80" aria-hidden />
                     <span className="font-orbitron">{s.short}</span>
                     <span
                       aria-hidden
-                      className={`absolute left-1 right-1 bottom-0 h-[2px] rounded-md transform transition-all duration-300 ${isActive ? "bg-white/90 scale-x-100" : "bg-transparent scale-x-0 group-hover:bg-sky-400/70 group-hover:scale-x-100"}`}
+                      className={`absolute left-1 right-1 bottom-0 h-[2px] rounded-md transform transition-all duration-300 ${
+                        isActive
+                          ? "bg-white/90 scale-x-100"
+                          : "bg-transparent scale-x-0 group-hover:bg-sky-400/70 group-hover:scale-x-100"
+                      }`}
                     />
                   </button>
                 );
@@ -146,10 +157,14 @@ export default function TopNav({ stations = [], onNavTarget }) {
           </div>
 
           {/* Mobile nav panel */}
-          <div className={`sm:hidden px-3 pb-3 transition-maxh duration-300 overflow-hidden ${mobileOpen ? "max-h-72" : "max-h-0"}`}>
+          <div
+            className={`sm:hidden px-3 pb-3 transition-maxh duration-300 overflow-y-auto ${
+              mobileOpen ? "max-h-[80vh]" : "max-h-0"
+            }`}
+          >
             <div className="flex flex-col gap-2 mt-1">
               {navItems.map((s) => {
-                const isActive = activeId && s.id === activeId;
+                const isActive = activeId === s.id;
                 return (
                   <button
                     key={s.id}
@@ -157,7 +172,11 @@ export default function TopNav({ stations = [], onNavTarget }) {
                     onClick={() => handleStationClick(s.id)}
                     onKeyDown={(e) => handleKey(e, () => handleStationClick(s.id))}
                     aria-current={isActive ? "page" : undefined}
-                    className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-sky-400/60 ${isActive ? "bg-gradient-to-r from-sky-500 to-cyan-400 text-white" : "bg-slate-900/60 text-slate-200 hover:bg-slate-800/70"}`}
+                    className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-sky-400/60 ${
+                      isActive
+                        ? "bg-gradient-to-r from-sky-500 to-cyan-400 text-white"
+                        : "bg-slate-900/60 text-slate-200 hover:bg-slate-800/70"
+                    }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="w-2 h-2 rounded-full bg-sky-300/80" aria-hidden />
