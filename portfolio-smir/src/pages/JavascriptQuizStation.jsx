@@ -1,21 +1,16 @@
-// src/components/stations/php/PhpQuizStation.jsx
+// src/components/stations/javascript/JavascriptQuizStation.jsx
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { 
-  Zap, Brain, Code2, Trophy, Clock, BarChart3 
+  Zap, Brain, Code2, Trophy, Clock 
 } from "lucide-react";
-import { PHP_QUESTIONS, DIFFICULTY_META } from "./phpQuestions";
-import QuickSummary from "./QuickSummary";
-import AdvancedSummary from "./AdvancedSummary";
-import {
-  addQuizResult,
-  getGlobalStats,
-  exportStats
-} from "./quizHistory";
+import { JAVASCRIPT_QUESTIONS, DIFFICULTY_META } from "../components/stations/javascript/javascriptQuestions";
+import QuickSummary from "../components/stations/shared/QuickSummary";
+import AdvancedSummary from "../components/stations/shared/AdvancedSummary";
+import { javascriptQuizHistory } from "../components/stations/shared/quizHistory";
 
 // === UTILS ===
 
-// Shuffle sécurisé avec Fisher-Yates
 const shuffleArray = (arr) => {
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -25,12 +20,10 @@ const shuffleArray = (arr) => {
   return copy;
 };
 
-// Obscurcit l'index correct pour éviter la triche simple
 const obfuscateCorrectIndex = (index, salt) => {
   return btoa(`${index}_${salt}_${Date.now()}`);
 };
 
-// Désobscurcit l'index
 const deobfuscateCorrectIndex = (obfuscated) => {
   try {
     const decoded = atob(obfuscated);
@@ -40,9 +33,8 @@ const deobfuscateCorrectIndex = (obfuscated) => {
   }
 };
 
-// Construit un set de questions avec protection
 const buildShuffledSet = (level) => {
-  const base = PHP_QUESTIONS[level] || [];
+  const base = JAVASCRIPT_QUESTIONS[level] || [];
   const questionsRandomOrder = shuffleArray(base);
   const salt = Math.random().toString(36).substring(7);
 
@@ -63,7 +55,6 @@ const buildShuffledSet = (level) => {
   });
 };
 
-// Rend du texte avec code inline
 const renderWithCode = (text) => {
   if (text == null) return null;
   const parts = String(text).split("`");
@@ -71,7 +62,7 @@ const renderWithCode = (text) => {
     idx % 2 === 1 ? (
       <code
         key={idx}
-        className="px-1 py-0.5 rounded border border-slate-700/80 bg-slate-900/90 font-mono text-[0.85em] text-cyan-200"
+        className="px-1 py-0.5 rounded border border-slate-700/80 bg-slate-900/90 font-mono text-[0.85em] text-yellow-200"
       >
         {part}
       </code>
@@ -83,9 +74,9 @@ const renderWithCode = (text) => {
 
 // === UI COMPONENTS ===
 
-const GradientBorder = ({ children, color = "from-cyan-500" }) => (
+const GradientBorder = ({ children, color = "from-yellow-500" }) => (
   <div
-    className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${color} to-blue-500 p-0.5`}
+    className={`relative rounded-2xl overflow-hidden bg-gradient-to-br ${color} to-orange-500 p-0.5`}
   >
     <div className="relative p-4 sm:p-6 bg-slate-950/90 backdrop-blur-md rounded-2xl">
       {children}
@@ -100,7 +91,7 @@ const ModuleHeader = ({ icon: Icon, title, subtitle, color }) => (
         <Icon className="w-5 h-5 text-white" />
       </div>
       <div>
-        <h2 className="text-2xl font-bold text-transparent bg-gradient-to-r from-cyan-300 via-blue-300 to-purple-300 bg-clip-text">
+        <h2 className="text-2xl font-bold text-transparent bg-gradient-to-r from-yellow-300 via-orange-300 to-red-300 bg-clip-text">
           {title}
         </h2>
         {subtitle && (
@@ -117,11 +108,11 @@ const Gauge = ({ value = 0, label = "Progression" }) => {
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
         <span className="text-slate-400">{label}</span>
-        <span className="font-bold text-cyan-300">{pct}%</span>
+        <span className="font-bold text-yellow-300">{pct}%</span>
       </div>
       <div className="w-full h-3 overflow-hidden border rounded-full bg-slate-900 border-slate-800">
         <div
-          className="h-full transition-all duration-500 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400"
+          className="h-full transition-all duration-500 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -131,10 +122,9 @@ const Gauge = ({ value = 0, label = "Progression" }) => {
 
 // === MAIN COMPONENT ===
 
-export default function PhpQuizStation() {
+export default function JavascriptQuizStation() {
   const navigate = useNavigate();
 
-  // État du quiz
   const [difficulty, setDifficulty] = useState("easy");
   const [questions, setQuestions] = useState(() => buildShuffledSet("easy"));
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -146,32 +136,26 @@ export default function PhpQuizStation() {
   const [answers, setAnswers] = useState([]);
   const [showFullStats, setShowFullStats] = useState(false);
 
-  // Timer
   const [timeSpent, setTimeSpent] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [timerStarted, setTimerStarted] = useState(false);
   const timerRef = useRef(null);
 
-  // Stats globales (pour affichage après quiz)
   const [globalStats, setGlobalStats] = useState(null);
 
-  // Timer management
   useEffect(() => {
     if (isRunning && !finished) {
       timerRef.current = setInterval(() => {
         setTimeSpent((t) => t + 1);
       }, 1000);
     } else {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
+      if (timerRef.current) clearInterval(timerRef.current);
     }
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
   }, [isRunning, finished]);
 
-  // Démarre le timer au premier clic (une seule fois)
   useEffect(() => {
     if (isAnswered && !timerStarted && !finished) {
       setIsRunning(true);
@@ -179,9 +163,8 @@ export default function PhpQuizStation() {
     }
   }, [isAnswered, timerStarted, finished]);
 
-  // Load stats uniquement après le quiz
   const loadStats = useCallback(() => {
-    setGlobalStats(getGlobalStats());
+    setGlobalStats(javascriptQuizHistory.getGlobalStats());
   }, []);
 
   const total = questions.length;
@@ -239,7 +222,6 @@ export default function PhpQuizStation() {
     const nextIndex = currentIndex + 1;
 
     if (nextIndex >= total) {
-      // Fin du quiz
       setFinished(true);
       setIsRunning(false);
 
@@ -252,10 +234,9 @@ export default function PhpQuizStation() {
         timeSpent,
         answers
       };
-      addQuizResult(result);
+      javascriptQuizHistory.addResult(result);
       loadStats();
     } else {
-      // Prochaine question
       setCurrentIndex(nextIndex);
       setSelectedIndex(null);
       setIsAnswered(false);
@@ -284,7 +265,7 @@ export default function PhpQuizStation() {
   };
 
   const handleBackToPlanet = () => {
-    navigate("/lunar");
+    navigate("/scene");
   };
 
   const formatTime = (seconds) => {
@@ -293,14 +274,12 @@ export default function PhpQuizStation() {
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // score utilisé pour les récap (on reste simple : score actuel)
   const finalScore = score;
 
   return (
     <div className="relative min-h-[100vh] w-full px-4 py-6 sm:px-6 sm:py-8">
-      {/* Fond hub spatial léger */}
       <div className="absolute inset-0 pointer-events-none opacity-60">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#22d3ee22_0,#02061700_55%,#020617_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#f59e0b22_0,#02061700_55%,#020617_100%)]" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto space-y-4">
@@ -308,15 +287,15 @@ export default function PhpQuizStation() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <ModuleHeader
             icon={Code2}
-            title="Station PHP – Quiz Galactique"
-            subtitle="Teste tes connaissances et progresse niveau par niveau."
-            color="bg-gradient-to-br from-cyan-500 to-blue-500"
+            title="Station JavaScript – Quiz Galactique"
+            subtitle="Teste tes connaissances JS et progresse niveau par niveau."
+            color="bg-gradient-to-br from-yellow-500 to-orange-500"
           />
           <div className="flex gap-2">
             <button
               type="button"
               onClick={handleBackToPlanet}
-              className="inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold border shadow-sm rounded-xl border-cyan-500/40 bg-slate-950/70 text-cyan-100 shadow-cyan-500/20 backdrop-blur-md hover:border-cyan-300 sm:text-sm"
+              className="inline-flex items-center gap-2 px-3 py-2 text-xs font-semibold text-yellow-100 border shadow-sm rounded-xl border-yellow-500/40 bg-slate-950/70 shadow-yellow-500/20 backdrop-blur-md hover:border-yellow-300 sm:text-sm"
             >
               <span className="text-lg leading-none">⭠</span>
               <span>Planète</span>
@@ -326,10 +305,10 @@ export default function PhpQuizStation() {
 
         {/* Sélecteur de difficulté */}
         {!finished && (
-          <GradientBorder color="from-cyan-500">
+          <GradientBorder color="from-yellow-500">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="space-y-1">
-                <p className="text-xs font-semibold tracking-[0.18em] text-cyan-300 uppercase">
+                <p className="text-xs font-semibold tracking-[0.18em] text-yellow-300 uppercase">
                   NIVEAU
                 </p>
                 <p className="text-sm text-slate-300">
@@ -349,8 +328,8 @@ export default function PhpQuizStation() {
                       onClick={() => resetForDifficulty(k)}
                       className={`inline-flex flex-1 items-center justify-center gap-1 rounded-lg px-3 py-2 text-xs font-semibold transition-all sm:text-sm ${
                         active
-                          ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/30"
-                          : "border border-slate-700/80 bg-slate-900/70 text-slate-300 hover:border-cyan-500/40"
+                          ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-lg shadow-yellow-500/30"
+                          : "border border-slate-700/80 bg-slate-900/70 text-slate-300 hover:border-yellow-500/40"
                       }`}
                     >
                       <Icon className="w-4 h-4" />
@@ -365,27 +344,25 @@ export default function PhpQuizStation() {
 
         {/* Quiz OU Résumé */}
         {!finished ? (
-          // === ZONE QUIZ ===
           <div className="space-y-4">
-            <GradientBorder color="from-blue-500">
+            <GradientBorder color="from-orange-500">
               {currentQuestion ? (
                 <div className="space-y-4">
-                  {/* Progress & Timer */}
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex-1">
                       <Gauge value={progress} label="Progression" />
                     </div>
                     <div className="flex items-center gap-4 text-xs sm:text-sm">
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-cyan-400" />
-                        <span className="font-mono font-bold text-cyan-300">
+                        <Clock className="w-4 h-4 text-yellow-400" />
+                        <span className="font-mono font-bold text-yellow-300">
                           {formatTime(timeSpent)}
                         </span>
                       </div>
                       <div className="text-right text-slate-300">
                         <p>
                           Question{" "}
-                          <span className="font-semibold text-cyan-300">
+                          <span className="font-semibold text-yellow-300">
                             {currentIndex + 1}
                           </span>{" "}
                           / {total}
@@ -401,7 +378,6 @@ export default function PhpQuizStation() {
                     </div>
                   </div>
 
-                  {/* Question */}
                   <div className="space-y-2">
                     <p className="text-xs font-semibold tracking-[0.24em] text-slate-400 uppercase">
                       QUESTION
@@ -411,19 +387,15 @@ export default function PhpQuizStation() {
                     </h3>
                   </div>
 
-                  {/* Choix */}
                   <div className="grid gap-2">
                     {currentQuestion.choices.map((choice, idx) => {
                       const isSelected = selectedIndex === idx;
                       const correctIdx = deobfuscateCorrectIndex(
                         currentQuestion._protected
                       );
-                      const isCorrectChoice =
-                        isAnswered && idx === correctIdx;
+                      const isCorrectChoice = isAnswered && idx === correctIdx;
                       const isWrongSelected =
-                        isAnswered &&
-                        isSelected &&
-                        idx !== correctIdx;
+                        isAnswered && isSelected && idx !== correctIdx;
 
                       let baseClasses =
                         "w-full text-left rounded-xl border px-3 py-2 text-sm sm:text-base transition-all focus:outline-none";
@@ -438,7 +410,7 @@ export default function PhpQuizStation() {
                           "border-rose-500/70 bg-rose-500/20 text-rose-100 ring-1 ring-rose-400/70";
                       } else if (isSelected && !isAnswered) {
                         stateClasses =
-                          "border-cyan-500/80 bg-cyan-500/20 text-cyan-100 ring-1 ring-cyan-400/60";
+                          "border-yellow-500/80 bg-yellow-500/20 text-yellow-100 ring-1 ring-yellow-400/60";
                       }
 
                       return (
@@ -459,7 +431,6 @@ export default function PhpQuizStation() {
                     })}
                   </div>
 
-                  {/* Feedback */}
                   {isAnswered && (
                     <div className="p-3 space-y-2 text-sm border rounded-xl bg-slate-900/90 border-slate-700/80">
                       <p
@@ -479,7 +450,6 @@ export default function PhpQuizStation() {
                     </div>
                   )}
 
-                  {/* Actions */}
                   <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:justify-between">
                     <button
                       type="button"
@@ -495,7 +465,7 @@ export default function PhpQuizStation() {
                       disabled={!isAnswered}
                       className={`rounded-lg px-4 py-2 text-xs font-semibold sm:text-sm ${
                         isAnswered
-                          ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-md shadow-cyan-500/30 hover:brightness-110"
+                          ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-md shadow-yellow-500/30 hover:brightness-110"
                           : "cursor-not-allowed bg-slate-800 text-slate-500"
                       }`}
                     >
@@ -507,17 +477,12 @@ export default function PhpQuizStation() {
                 </div>
               ) : (
                 <p className="text-sm text-slate-200">
-                  Aucune question disponible. Ajoute des questions dans{" "}
-                  <code className="font-mono text-cyan-200">
-                    phpQuestions.js
-                  </code>
-                  .
+                  Aucune question disponible.
                 </p>
               )}
             </GradientBorder>
           </div>
         ) : (
-          // === ZONE RÉSUMÉ (SCROLLABLE) ===
           <div className="mt-2 max-h-[calc(100vh-9rem)] overflow-y-auto pr-1 pb-4 space-y-4">
             {difficulty === "hard" ? (
               <AdvancedSummary
@@ -529,7 +494,6 @@ export default function PhpQuizStation() {
                 onBackToPlanet={handleBackToPlanet}
               />
             ) : showFullStats && globalStats ? (
-              // Stats complètes Easy/Medium
               <div className="space-y-4">
                 <GradientBorder color="from-purple-500">
                   <div className="space-y-4">
@@ -547,24 +511,20 @@ export default function PhpQuizStation() {
 
                     <div className="grid gap-3 sm:grid-cols-3">
                       <div className="p-3 border rounded-lg bg-slate-900/50 border-slate-700">
-                        <p className="text-xs text-slate-400">
-                          Quiz complétés
-                        </p>
-                        <p className="text-2xl font-bold text-cyan-300">
+                        <p className="text-xs text-slate-400">Quiz complétés</p>
+                        <p className="text-2xl font-bold text-yellow-300">
                           {globalStats.totalQuizzes}
                         </p>
                       </div>
                       <div className="p-3 border rounded-lg bg-slate-900/50 border-slate-700">
                         <p className="text-xs text-slate-400">Score moyen</p>
-                        <p className="text-2xl font-bold text-blue-300">
+                        <p className="text-2xl font-bold text-orange-300">
                           {globalStats.averageScore}%
                         </p>
                       </div>
                       <div className="p-3 border rounded-lg bg-slate-900/50 border-slate-700">
-                        <p className="text-xs text-slate-400">
-                          Meilleur score
-                        </p>
-                        <p className="text-2xl font-bold text-emerald-300">
+                        <p className="text-xs text-slate-400">Meilleur score</p>
+                        <p className="text-2xl font-bold text-cyan-300">
                           {globalStats.bestScore}%
                         </p>
                       </div>

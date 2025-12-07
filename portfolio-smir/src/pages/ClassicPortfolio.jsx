@@ -13,6 +13,7 @@ import VeilleSection from "./sections/VeilleSection";
 import UserStorySection from "./sections/UserStorySection";
 import VeilleAuthSection from "./sections/VeilleAuthSection";
 
+
 export default function ClassicPortfolio() {
   return (
     <main className="h-screen overflow-y-scroll snap-y snap-mandatory">

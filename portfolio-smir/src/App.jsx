@@ -3,28 +3,26 @@ import { RouterProvider, createBrowserRouter, Outlet, useNavigate, useLocation }
 import { SettingsProvider } from "./state/settings.jsx";
 
 import Landing from "./scene/Landing.jsx";
-//import BTS from "./pages/BTS.jsx";
-import Competences from "./pages/Competences.jsx";
-import Contact from "./pages/Contact.jsx";
-import Parcours from "./pages/Parcours.jsx";
-import Projets from "./pages/Projets.jsx";
+import JavascriptQuizStation from "./pages/JavascriptQuizStation.jsx";  
 import ClassicPortfolio from "./pages/ClassicPortfolio.jsx";
-import PhpQuizStation from "./components/stations/php/PhpQuizStation.jsx";
+import PhpQuizStation from "./pages/PhpQuizStation.jsx";
+import PythonQuizStation from "./pages/PythonQuizStation.jsx";
+import SqlQuizStation from "./pages/SqlQuizStation.jsx";
+import DockerQuizStation from "./pages/DockerQuizStation.jsx"; 
 
 import CursorTrail from "./scenes/ui/CursorTrail.jsx";
 import TopNav from "./scenes/ui/TopNav.jsx";
 import StarfieldBackdrop from "./components/StarfieldBackdrop.jsx";
 
-// Scène 3D (lazy)
 const MoonScene = lazy(() => import("./scene/MoonScene.jsx"));
 
 /** Mini liste pour TopNav */
 const NAV_STATIONS = [
-  { id: "projets", short: "Projets", label: "Dôme Projets" },
-  { id: "competences", short: "Skills", label: "Tour Compétences" },
-  { id: "parcours", short: "Parcours", label: "Anneau Parcours" },
-  { id: "contact", short: "Contact", label: "Hub Contact" },
-  { id: "bts", short: "BTS", label: "BTS / Référentiel" },
+  { id: "quiz-javascript", short: "Quiz JS", label: "Station JavaScript Quiz" },
+  { id: "quiz-python", short: "Quiz Python", label: "Station Python Quiz" },
+  { id: "quiz-sql", short: "Quiz SQL", label: "Station SQL Quiz" },
+  { id: "quiz-docker", short: "Quiz Docker", label: "Station Docker Quiz" },
+  { id: "quiz-php", short: "Quiz PHP", label: "Station PHP Quiz" }
 ];
 
 function Root() {
@@ -37,13 +35,9 @@ function Root() {
   const isLunarHome = pathname === "/lunar";
   const isSceneHome = pathname === "/scene";
 
-  // Afficher Landing seulement sur /lunar
   const showLanding = !entered && isLunarHome;
-
-  // Afficher MoonScene sur /lunar (après entered) ET sur /scene
   const showMoonScene = (entered && isLunarHome) || isSceneHome;
 
-  // Prefetch MoonScene
   useEffect(() => {
     if (isLunarHome || isSceneHome) {
       import("./scene/MoonScene.jsx").catch(() => {});
@@ -55,11 +49,13 @@ function Root() {
     (id) => {
       const key = String(id || "").toLowerCase();
       const route = {
-        bts: "/BTS",
-        competences: "/Competences",
+        "quiz-php": "/quiz-php",
+        "quiz-python": "/quiz-python",
+        "quiz-javascript": "/quiz-javascript",
+        "quiz-sql": "/quiz-sql",
+        "quiz-docker": "/quiz-docker",
         contact: "/Contact",
         parcours: "/Parcours",
-        projets: "/Projets",
       }[key];
       if (route) navigate(route);
       else console.warn("[App] Unknown station id:", id);
@@ -67,25 +63,20 @@ function Root() {
     [navigate]
   );
 
-  // Callback quand un clic TopNav demande une rotation vers une station
   const handleNavTarget = useCallback((id) => {
     setNavTarget(id);
   }, []);
 
-  // Une fois la cible consommée (rotation terminée)
   const handleNavConsumed = useCallback(() => {
     setNavTarget(null);
   }, []);
 
   return (
     <SettingsProvider>
-      {/* 🌌 Starfield global — désactivé sur /lunar et /scene */}
       {!isLunarHome && !isSceneHome && <StarfieldBackdrop density={8000} />}
 
-      {/* === Landing === */}
       {showLanding && <Landing onEnter={() => setEntered(true)} />}
 
-      {/* === Scène 3D === */}
       {showMoonScene && (
         <div
           id="scene-layer"
@@ -110,7 +101,6 @@ function Root() {
         </div>
       )}
 
-      {/* === TopNav visible sur /lunar et /scene === */}
       {(isLunarHome || isSceneHome) && (
         <>
           <TopNav stations={NAV_STATIONS} onNavTarget={handleNavTarget} />
@@ -118,7 +108,6 @@ function Root() {
         </>
       )}
 
-      {/* === Layer Pages === */}
       <div
         id="page-layer"
         data-active={!isLunarHome && !isSceneHome}
@@ -136,21 +125,17 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     children: [
-      // Par défaut "/" rend ton portfolio classique
       { index: true, element: <ClassicPortfolio /> },
-
-      // La "home 3D" est sur /lunar (Landing + MoonScene)
       { path: "lunar", element: <></> },
-
-      // /scene affiche directement MoonScene (sans Landing)
       { path: "scene", element: <></> },
 
-      // Tes autres pages
-      { path: "BTS", element: <PhpQuizStation /> },
-      { path: "Competences", element: <Competences /> },
-      { path: "Contact", element: <Contact /> },
-      { path: "Parcours", element: <Parcours /> },
-      { path: "Projets", element: <Projets /> },
+      // Quiz
+      { path: "quiz-php", element: <PhpQuizStation /> },
+      { path: "quiz-python", element: <PythonQuizStation /> },  
+      { path: "quiz-javascript", element: <JavascriptQuizStation /> },
+      { path: "quiz-sql", element: <SqlQuizStation /> },
+      { path: "quiz-docker", element: <DockerQuizStation /> },
+      
     ],
   },
 ]);

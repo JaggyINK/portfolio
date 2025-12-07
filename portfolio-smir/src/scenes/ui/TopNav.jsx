@@ -1,95 +1,178 @@
 // src/scenes/ui/TopNav.jsx
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { dbg } from "@/utils/debug";
 
-export default function TopNav({ stations = [] }) {
+export default function TopNav({ stations = [], onNavTarget }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // determine current active station id from pathname
+  const activeId = useMemo(() => {
+    const parts = pathname.split("/").filter(Boolean);
+    if (parts.length > 0) {
+      const slug = parts[0].toLowerCase();
+      const routeToId = {
+        "quiz-php": "quiz-php",
+        "quiz-python": "quiz-python",
+        "quiz-javascript": "quiz-javascript",
+        "quiz-sql": "quiz-sql",
+        "quiz-docker": "quiz-docker",
+        "": "classic", // root = classic portfolio
+      };
+      if (routeToId[slug] !== undefined) return routeToId[slug];
+    }
+    return null;
+  }, [pathname]);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
+
   const openQueued = useCallback(
     (id) => {
-      dbg("TopNav click", { id, from: pathname });
+      dbg && dbg("TopNav click", { id, from: pathname });
 
-      const isOnLunar = pathname.startsWith("/lunar");
-      if (!isOnLunar || pathname !== "/lunar") {
-        // Optionnel: stop/clear focus en cours (propre)
-        try {
-          window.dispatchEvent(new CustomEvent("saga-focus-station", { detail: { id: null } }));
-        } catch {}
+      const isOnLunar = pathname.startsWith("/lunar") || pathname.startsWith("/scene");
 
+      try {
+        window.dispatchEvent(new CustomEvent("saga-focus-station", { detail: { id: null } }));
+      } catch {}
 
+      if (!isOnLunar) {
         navigate("/lunar");
-
-        // 2) Puis on queue l'ouverture à la frame suivante
-        //    (la scène est visible, l'alignement démarre)
         requestAnimationFrame(() => {
-          dbg("TopNav → saga-open-station (queued after goto /lunar)", { id });
-          window.dispatchEvent(
-            new CustomEvent("saga-open-station", {
-              detail: { id, timeout: 8000 },
-            })
-          );
+          dbg && dbg("TopNav → saga-open-station (queued after goto /lunar)", { id });
+          try {
+            window.dispatchEvent(
+              new CustomEvent("saga-open-station", { detail: { id, timeout: 8000 } })
+            );
+          } catch {}
         });
       } else {
-        // Déjà sur la Home → pas besoin de fermer, on queue direct
-        dbg("TopNav → saga-open-station (direct on /lunar)", { id });
-        window.dispatchEvent(
-          new CustomEvent("saga-open-station", { detail: { id, timeout: 8000 } })
-        );
+        dbg && dbg("TopNav → saga-open-station (direct on /lunar or /scene)", { id });
+        try {
+          window.dispatchEvent(
+            new CustomEvent("saga-open-station", { detail: { id, timeout: 8000 } })
+          );
+        } catch {}
       }
     },
     [pathname, navigate]
   );
 
-  return (
-    <div className="max-w-5xl px-3 py-2 mx-auto top-nav-glass" data-ui-block-enter>
-      <div className="flex items-center justify-between px-3 py-2 border shadow-lg rounded-2xl border-slate-700/60 bg-slate-900/20 backdrop-blur-md">
-        {/* Brand */}
-        <div className="brand-chip no-select">
-          <span className="brand-dot" />
-          <span className="brand-text font-orbitron">S.MIR — Portfolio</span>
-          <span className="brand-sub">orbit-ui</span>
-        </div>
+  const handleStationClick = (id) => {
+    if (typeof onNavTarget === "function") {
+      try {
+        onNavTarget(id);
+      } catch (e) {
+        console.warn("[TopNav] onNavTarget threw:", e);
+      }
+    }
+    if (id === "classic") {
+      navigate("/"); // naviguer vers ClassicPortfolio
+    } else {
+      openQueued(id);
+    }
+  };
 
-        {/* Nav */}
-        <nav className="nav-rail">
-          {stations.map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              title={`Aller à ${s.label}`}
-              className="topnav-item"
-              data-active={
-                (pathname === "/Projets"     && s.id === "projets")     ||
-                (pathname === "/Competences" && s.id === "competences") ||
-                (pathname === "/Parcours"    && s.id === "parcours")    ||
-                (pathname === "/Contact"     && s.id === "contact")     ||
-                (pathname === "/BTS"         && s.id === "bts")
-                  ? "true"
-                  : "false"
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                openQueued(s.id);
-              }}
-              onKeyDown={(e) => {
-                // on évite Enter/Espace qui peuvent déclencher un "click" navigateur
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
-              }}
-            >
-              <span className="topnav-pill">
-                <span className="topnav-dot" aria-hidden />
-                <span className="topnav-text font-orbitron">{s.short}</span>
-              </span>
-              <span className="topnav-underline" aria-hidden />
-            </button>
-          ))}
-        </nav>
+  const handleKey = (e, fn) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      fn();
+    }
+  };
+
+  // add the "Classic Portfolio" pseudo-station
+  const navItems = useMemo(() => [...stations, { id: "classic", short: "Portfolio", label: "Classic Portfolio" }], [stations]);
+
+  return (
+    <header className="w-full">
+      <div className="max-w-6xl px-4 py-3 mx-auto">
+        <div className="relative border shadow-sm rounded-2xl border-slate-700/60 bg-slate-900/20 backdrop-blur-md top-nav-glass" data-ui-block-enter>
+          <div className="flex items-center justify-between px-4 py-2">
+            {/* Brand */}
+            <div className="flex items-center gap-3 select-none">
+              <div className="flex items-center justify-center rounded-full shadow-md w-9 h-9 bg-gradient-to-br from-sky-400 to-cyan-400">
+                <span className="text-sm font-bold text-slate-900">SM</span>
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-sm font-semibold font-orbitron text-sky-200">S.MIR — Portfolio</span>
+                <span className="text-xs text-slate-400">orbit-ui</span>
+              </div>
+            </div>
+
+            {/* Desktop nav */}
+            <nav className="items-center hidden gap-2 sm:flex" aria-label="Stations navigation">
+              {navItems.map((s) => {
+                const isActive = activeId && s.id === activeId;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    title={`Aller à ${s.label}`}
+                    onClick={() => handleStationClick(s.id)}
+                    onKeyDown={(e) => handleKey(e, () => handleStationClick(s.id))}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`group relative inline-flex items-center gap-2 px-3 py-2 rounded-lg transition-all font-medium text-sm focus:outline-none focus:ring-2 focus:ring-sky-400/60
+                      ${isActive ? "bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-lg" : "bg-slate-900/60 text-slate-200 hover:bg-slate-800/70"}`}
+                  >
+                    <span className="w-2 h-2 rounded-full shadow-sm bg-sky-300/80" aria-hidden />
+                    <span className="font-orbitron">{s.short}</span>
+                    <span
+                      aria-hidden
+                      className={`absolute left-1 right-1 bottom-0 h-[2px] rounded-md transform transition-all duration-300 ${isActive ? "bg-white/90 scale-x-100" : "bg-transparent scale-x-0 group-hover:bg-sky-400/70 group-hover:scale-x-100"}`}
+                    />
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Mobile menu toggle */}
+            <div className="flex items-center sm:hidden">
+              <button
+                type="button"
+                aria-expanded={mobileOpen}
+                aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                onClick={() => setMobileOpen((v) => !v)}
+                className="p-2 rounded-lg hover:bg-slate-800/60 focus:outline-none focus:ring-2 focus:ring-sky-400/60"
+              >
+                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile nav panel */}
+          <div className={`sm:hidden px-3 pb-3 transition-maxh duration-300 overflow-hidden ${mobileOpen ? "max-h-72" : "max-h-0"}`}>
+            <div className="flex flex-col gap-2 mt-1">
+              {navItems.map((s) => {
+                const isActive = activeId && s.id === activeId;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => handleStationClick(s.id)}
+                    onKeyDown={(e) => handleKey(e, () => handleStationClick(s.id))}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all focus:outline-none focus:ring-2 focus:ring-sky-400/60 ${isActive ? "bg-gradient-to-r from-sky-500 to-cyan-400 text-white" : "bg-slate-900/60 text-slate-200 hover:bg-slate-800/70"}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-sky-300/80" aria-hidden />
+                      <div className="flex flex-col">
+                        <span className="font-orbitron">{s.short}</span>
+                        {s.label && <span className="text-xs text-slate-400">{s.label}</span>}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }
