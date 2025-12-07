@@ -1,3 +1,4 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
@@ -5,12 +6,18 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
+    alias: { '@': path.resolve(__dirname, 'src') },
   },
-  base: '/', // important pour un déploiement propre sur Vercel
-  server: {
-    hmr: { overlay: false }, // ok, Vercel s’en fout, c’est que pour le dev
-  },
+  base: '/',
+  server: { hmr: { overlay: false } },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // empêche MoonScene d’être mis dans un chunk séparé
+          "MoonScene": ["./src/scene/MoonScene.jsx"]
+        }
+      }
+    }
+  }
 })
