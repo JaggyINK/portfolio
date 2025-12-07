@@ -19,7 +19,6 @@ import StarfieldBackdrop from "./components/StarfieldBackdrop.jsx";
 
 /** Mini liste pour TopNav */
 const NAV_STATIONS = [
-  { id: "classic-portfolio", short: "Portfolio", label: "Voir le Portfolio Classique" },
   { id: "quiz-javascript", short: "Quiz JS", label: "Station JavaScript Quiz" },
   { id: "quiz-python", short: "Quiz Python", label: "Station Python Quiz" },
   { id: "quiz-sql", short: "Quiz SQL", label: "Station SQL Quiz" },

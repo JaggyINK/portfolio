@@ -101,7 +101,7 @@ export default function TopNav({ stations = [], onNavTarget }) {
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="text-sm font-semibold font-orbitron text-sky-200">S.MIR — Portfolio</span>
-                <span className="text-xs text-slate-400">orbit-ui</span>
+                <span className="text-xs text-slate-400">Sagario</span>
               </div>
             </div>
 
