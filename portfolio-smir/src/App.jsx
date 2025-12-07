@@ -1,10 +1,13 @@
-import React, { useEffect, useState, Suspense, lazy, useCallback } from "react";
+// src/App.jsx
+import React, { useEffect, useState, useCallback } from "react";
 import { RouterProvider, createBrowserRouter, Outlet, useNavigate, useLocation } from "react-router-dom";
 import { SettingsProvider } from "./state/settings.jsx";
 
 import Landing from "./scene/Landing.jsx";
-import JavascriptQuizStation from "./pages/JavascriptQuizStation.jsx";  
+import MoonScene from "./scene/MoonScene.jsx"; // import direct, pas lazy
 import ClassicPortfolio from "./pages/ClassicPortfolio.jsx";
+
+import JavascriptQuizStation from "./pages/JavascriptQuizStation.jsx";  
 import PhpQuizStation from "./pages/PhpQuizStation.jsx";
 import PythonQuizStation from "./pages/PythonQuizStation.jsx";
 import SqlQuizStation from "./pages/SqlQuizStation.jsx";
@@ -14,10 +17,9 @@ import CursorTrail from "./scenes/ui/CursorTrail.jsx";
 import TopNav from "./scenes/ui/TopNav.jsx";
 import StarfieldBackdrop from "./components/StarfieldBackdrop.jsx";
 
-const MoonScene = lazy(() => import("./scene/MoonScene.jsx"));
-
 /** Mini liste pour TopNav */
 const NAV_STATIONS = [
+  { id: "classic-portfolio", short: "Portfolio", label: "Voir le Portfolio Classique" },
   { id: "quiz-javascript", short: "Quiz JS", label: "Station JavaScript Quiz" },
   { id: "quiz-python", short: "Quiz Python", label: "Station Python Quiz" },
   { id: "quiz-sql", short: "Quiz SQL", label: "Station SQL Quiz" },
@@ -44,32 +46,37 @@ function Root() {
     }
   }, [isLunarHome, isSceneHome]);
 
-  // Callback quand une station s'ouvre (depuis MoonScene)
+  // Callback quand une station s'ouvre (depuis TopNav ou MoonScene)
   const handleOpenStation = useCallback(
     (id) => {
-      const key = String(id || "").toLowerCase();
-      const route = {
-        "quiz-php": "/quiz-php",
-        "quiz-python": "/quiz-python",
-        "quiz-javascript": "/quiz-javascript",
-        "quiz-sql": "/quiz-sql",
-        "quiz-docker": "/quiz-docker",
-        contact: "/Contact",
-        parcours: "/Parcours",
-      }[key];
-      if (route) navigate(route);
-      else console.warn("[App] Unknown station id:", id);
+      switch (id) {
+        case "classic-portfolio":
+          navigate("/");
+          break;
+        case "quiz-php":
+          navigate("/quiz-php");
+          break;
+        case "quiz-python":
+          navigate("/quiz-python");
+          break;
+        case "quiz-javascript":
+          navigate("/quiz-javascript");
+          break;
+        case "quiz-sql":
+          navigate("/quiz-sql");
+          break;
+        case "quiz-docker":
+          navigate("/quiz-docker");
+          break;
+        default:
+          console.warn("[App] Unknown station id:", id);
+      }
     },
     [navigate]
   );
 
-  const handleNavTarget = useCallback((id) => {
-    setNavTarget(id);
-  }, []);
-
-  const handleNavConsumed = useCallback(() => {
-    setNavTarget(null);
-  }, []);
+  const handleNavTarget = useCallback((id) => setNavTarget(id), []);
+  const handleNavConsumed = useCallback(() => setNavTarget(null), []);
 
   return (
     <SettingsProvider>
@@ -88,22 +95,20 @@ function Root() {
             pointerEvents: isLunarHome || isSceneHome ? "auto" : "none",
           }}
         >
-          <Suspense fallback={null}>
-            <MoonScene
-              navTarget={navTarget}
-              onNavConsumed={handleNavConsumed}
-              onOpenStation={handleOpenStation}
-              reduceMotion={!(isLunarHome || isSceneHome)}
-              quality={isLunarHome || isSceneHome ? "high" : "low"}
-              uiBlocked={!(isLunarHome || isSceneHome)}
-            />
-          </Suspense>
+          <MoonScene
+            navTarget={navTarget}
+            onNavConsumed={handleNavConsumed}
+            onOpenStation={handleOpenStation}
+            reduceMotion={!(isLunarHome || isSceneHome)}
+            quality={isLunarHome || isSceneHome ? "high" : "low"}
+            uiBlocked={!(isLunarHome || isSceneHome)}
+          />
         </div>
       )}
 
       {(isLunarHome || isSceneHome) && (
         <>
-          <TopNav stations={NAV_STATIONS} onNavTarget={handleNavTarget} />
+          <TopNav stations={NAV_STATIONS} onNavTarget={handleNavTarget} onOpenStation={handleOpenStation} />
           {(entered || isSceneHome) && <CursorTrail enabled onlyOnSelector=".top-nav-glass" />}
         </>
       )}
@@ -135,16 +140,10 @@ const router = createBrowserRouter([
       { path: "quiz-javascript", element: <JavascriptQuizStation /> },
       { path: "quiz-sql", element: <SqlQuizStation /> },
       { path: "quiz-docker", element: <DockerQuizStation /> },
-      
     ],
   },
 ]);
 
 export default function App() {
-  return (
-    <RouterProvider
-      router={router}
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-    />
-  );
+  return <RouterProvider router={router} future={{ v7_startTransition: true, v7_relativeSplatPath: true }} />;
 }
