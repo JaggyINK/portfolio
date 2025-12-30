@@ -32,7 +32,6 @@ function Root() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const isClassicHome = pathname === "/";
   const isLunarHome = pathname === "/lunar";
   const isSceneHome = pathname === "/scene";
 

@@ -94,7 +94,7 @@ export default function Scene({
   });
 
   // 🔹 Gestion des événements (HUD + TopNav)
-  const { focusStation, armOpen } = useStationEvents({
+  const { focusStation } = useStationEvents({
     STATIONS,
     qWorldRef,
     stationDirWorld,

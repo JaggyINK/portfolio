@@ -31,7 +31,7 @@ function Pill({ children }) {
 }
 
 /* ============ Collapsible Module ============ */
-function CollapsibleModule({ question, category, pill, children, moduleId, isOpen, onToggle }) {
+function CollapsibleModule({ question, category, pill, children, isOpen, onToggle }) {
   return (
     <div
       className="relative rounded-[1.0rem] overflow-hidden border shadow-xl backdrop-blur-xl transition-all duration-500"

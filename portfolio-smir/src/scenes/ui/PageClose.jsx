@@ -12,7 +12,7 @@ export default function PageClose({
     // Stopper tout focus/auto-aim en cours
     try {
       window.dispatchEvent(new CustomEvent("saga-focus-station", { detail: { id: null } }));
-    } catch {}
+    } catch { /* Event dispatch may fail in some contexts */ }
     // Revenir à la Home (planète), PAS la landing (car entered=true reste mémorisé)
     navigate("/");
   };

@@ -58,7 +58,7 @@ export default function PointerOrbit({
       s.lastT = performance.now();
       s.vyaw = 0;
       s.vpitch = 0;
-      try { el.setPointerCapture?.(e.pointerId); } catch {}
+      try { el.setPointerCapture?.(e.pointerId); } catch { /* Pointer capture not supported */ }
       e.preventDefault?.();
     };
 
@@ -102,7 +102,7 @@ export default function PointerOrbit({
 
     const onUp = (e) => {
       s.dragging = false;
-      try { el.releasePointerCapture?.(e.pointerId); } catch {}
+      try { el.releasePointerCapture?.(e.pointerId); } catch { /* Pointer capture not supported */ }
     };
 
     const onLeave = () => { s.dragging = false; };

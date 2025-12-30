@@ -40,7 +40,6 @@ function CollapsibleModule({
   category,
   pill,
   children,
-  moduleId,
   isOpen,
   onToggle,
 }) {

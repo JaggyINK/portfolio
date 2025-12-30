@@ -52,7 +52,7 @@ export default function MoonScene({
       setTimeout(() => setCanvasKey((k) => k + 1), 0);
     };
     const onRestored = () => {
-      try { gl.resetState(); } catch {}
+      try { gl.resetState(); } catch (err) { console.error('[MoonScene] Error resetting WebGL state:', err); }
     };
 
     canvas.addEventListener("webglcontextlost", onLostCapture, { capture: true, passive: false });

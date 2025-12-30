@@ -5,10 +5,9 @@ import { orientQuatFromUp } from "@/utils/math3d";
 import useFacingIntensity from "@/scenes/ui/useFacingIntensity";
 import HUDPanel from "@/scenes/ui/HUDPanel";
 
-export default function StationDome({ s, qWorldRef, spinYRef, onFocus, highContrast }) {
+export default function StationDome({ s, qWorldRef, onFocus, highContrast }) {
   const q = orientQuatFromUp(s.pos);
   const kRef = useFacingIntensity(s.pos, qWorldRef);
-  const handleFocus = () => onFocus?.(s.id);
 
   return (
     <group position={s.pos} quaternion={q}>

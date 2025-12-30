@@ -38,7 +38,8 @@ export default function Settlements({ RADIUS, count = 5, onAnchors, highContrast
       });
     }
     return arr;
-  }, [RADIUS, count]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [RADIUS, count]); // colors is stable
 
   // Expose anchors (directions locales unitaires) pour les Walkers/aliens
   useEffect(() => {

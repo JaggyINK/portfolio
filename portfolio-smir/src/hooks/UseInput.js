@@ -95,7 +95,7 @@ export default function useInput() {
     // sécurité : quand l’onglet perd le focus, on relâche tout
     const onVisibility = () => {
       if (document.visibilityState === "hidden") {
-        setState((s) => ({
+        setState((_s) => ({
           up: false, down: false, left: false, right: false, jump: false, running: false,
         }));
       }

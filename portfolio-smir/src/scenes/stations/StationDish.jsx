@@ -6,7 +6,7 @@ import { orientQuatFromUp } from "@/utils/math3d";
 import useFacingIntensity from "@/scenes/ui/useFacingIntensity";
 import HUDPanel from "@/scenes/ui/HUDPanel";
 
-export default function StationDish({ s, qWorldRef, spinYRef, onFocus, highContrast }) {
+export default function StationDish({ s, qWorldRef, onFocus, highContrast }) {
   const q = orientQuatFromUp(s.pos);
   const kRef = useFacingIntensity(s.pos, qWorldRef);
 

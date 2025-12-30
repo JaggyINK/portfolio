@@ -26,7 +26,7 @@ function GLContextGuards() {
     const onRestored = () => {
       try {
         gl.resetState();
-      } catch {}
+      } catch (err) { console.error('[Landing] Error resetting WebGL state:', err); }
     };
 
     canvas.addEventListener("webglcontextlost", onLostCapture, { capture: true, passive: false });
@@ -401,7 +401,7 @@ function RocketHUD({ launch, zDist = 3.0, bottomPx = 88, scale = 1.0, onExitTop 
 /* ============================================
    DynamicSky - Transition jour → nuit
    ============================================ */
-function DynamicSky({ launch, progress }) {
+function DynamicSky({ progress }) {
   const { scene } = useThree();
 
   useFrame(() => {

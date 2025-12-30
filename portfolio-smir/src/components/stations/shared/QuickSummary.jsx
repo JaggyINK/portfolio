@@ -22,7 +22,6 @@ function QuickSummary({
 
   const message = getMessage();
   const canLevelUp = difficulty !== "hard";
-  const nextLevel = difficulty === "easy" ? "medium" : "hard";
   const nextLevelLabel = difficulty === "easy" ? "Intermédiaire" : "Difficile";
 
   return (

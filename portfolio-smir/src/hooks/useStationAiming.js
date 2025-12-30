@@ -71,7 +71,8 @@ export default function useStationAiming({
     const dot = THREE.MathUtils.clamp(forwardW.dot(dirSpin), -1, 1);
     const angDeg = THREE.MathUtils.radToDeg(Math.acos(dot)).toFixed(1);
     console.log(`[AIMING] Start → ${id} (angle=${angDeg}°)`);
-  }, [STATIONS, qWorldRef, spinYRef]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [STATIONS, qWorldRef, spinYRef]); // TMP and computeFrozenTarget are stable
 
   // API: stopper l'alignement
   const stopAiming = useCallback(() => {

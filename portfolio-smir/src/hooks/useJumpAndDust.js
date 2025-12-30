@@ -2,7 +2,6 @@
 import { useRef, useState, useMemo } from "react";
 import * as THREE from "three";
 import { JUMP_V, GRAV, ALT_DAMP } from "@/constants/space";
-import { clamp } from "@/utils/math3d";
 
 /**
  * Gère l'altitude (saut) et les bursts de poussière au contact du sol.

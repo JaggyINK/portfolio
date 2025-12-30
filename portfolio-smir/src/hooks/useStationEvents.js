@@ -8,7 +8,6 @@ const OPEN_TIMEOUT_MS = 5000;
 
 export default function useStationEvents({
   STATIONS,
-  qWorldRef,
   stationDirWorld,   // ⚠️ doit être en repère MONDE (SPIN puis qWorld)
   aimToStation,
   stopAiming,
@@ -16,8 +15,6 @@ export default function useStationEvents({
   openThresholdRad = 0.08, // ~4.6°, très précis
   focusedIdRef,
 }) {
-  // Valeur par défaut (utilisée si pas de st.openRadius)
-  const defaultCosOpen = Math.cos(openThresholdRad);
 
   const localFocusedRef = useRef(null);
   const focusRef        = focusedIdRef ?? localFocusedRef;
@@ -35,7 +32,7 @@ export default function useStationEvents({
 
   const setNavigating = useCallback((v) => {
     navigatingRef.current = !!v;
-    try { window.__saga_navigating = !!v; } catch {}
+    try { window.__saga_navigating = !!v; } catch { /* Global variable may not be writable */ }
     dbg("setNavigating", { navigating: !!v });
   }, []);
 

@@ -1,0 +1,364 @@
+/* src/pages/sections/AboutSection.css */
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== SECTION (sans overlay qui cache le fond) ===== */
+.about-section {
+  min-height: 100svh;
+  scroll-snap-align: center;
+  color: #e6ecf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  position: relative;
+  /* Pas de ::before pour laisser voir les étoiles filantes */
+}
+
+.about-container {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* ===== CONTENU PRINCIPAL (même largeur que la FlipCard) ===== */
+.about-content {
+  width: 100%;
+  max-width: 900px; /* Même largeur que la FlipCard */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background: rgba(11, 16, 32, 0.85); /* Plus opaque pour lisibilité */
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+  border-radius: 1rem;
+  padding: 2.5rem 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 768px) {
+  .about-content {
+    padding: 3rem 2.5rem;
+  }
+}
+
+.about-title {
+  font-family: "OrbitronLocal", "Orbitron", system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: #e6ecf8;
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+@media (min-width: 768px) {
+  .about-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .about-title {
+    font-size: 3rem;
+  }
+}
+
+.about-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 768px) {
+  .about-subtitle {
+    font-size: 1.125rem;
+  }
+}
+
+.about-description {
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: rgba(230, 236, 248, 0.95);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .about-description {
+    font-size: 1rem;
+  }
+}
+
+/* ===== EXPERTISE ===== */
+.about-expertise {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.about-expertise-title {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .about-expertise-title {
+    font-size: 1.125rem;
+  }
+}
+
+.about-expertise-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: #e6ecf8;
+}
+
+@media (min-width: 768px) {
+  .about-expertise-list {
+    font-size: 0.875rem;
+  }
+}
+
+.about-expertise-list span {
+  color: rgba(154, 167, 191, 1);
+}
+
+.about-school {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: rgba(154, 167, 191, 0.9);
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .about-school {
+    font-size: 0.8125rem;
+  }
+}
+
+/* ===== TECH BADGES ===== */
+.about-tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+  padding: 1.5rem 1rem;
+  background: rgba(11, 16, 32, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 215, 0, 0.08);
+  border-radius: 0.75rem;
+  max-width: 900px; /* Même largeur */
+  width: 100%;
+}
+
+/* ===== TECH BADGE ===== */
+.tech-badge-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.8125rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .tech-badge {
+    font-size: 0.875rem;
+  }
+}
+
+.tech-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ===== TOOLTIP ===== */
+.tech-tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.75rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: 18rem;
+  max-width: 90vw;
+  padding: 1rem;
+  background: rgba(11, 16, 32, 0.98);
+  backdrop-filter: blur(16px);
+  border: 1px solid;
+  border-radius: 0.625rem;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tech-badge-wrapper:hover .tech-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.tech-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(11, 16, 32, 0.98);
+}
+
+.tech-tooltip-title {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-bottom: 0.625rem;
+}
+
+.tech-tooltip-description {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: rgba(230, 236, 248, 0.95);
+  margin-bottom: 0.875rem;
+}
+
+.tech-tooltip-projects {
+  margin-top: 0.875rem;
+}
+
+.tech-tooltip-projects-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.tech-tooltip-projects-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.tech-tooltip-project-tag {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+}
+
+/* ===== CTA ===== */
+.about-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.about-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+}
+
+@media (min-width: 768px) {
+  .about-cta-btn {
+    font-size: 0.9375rem;
+  }
+}
+
+.about-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.about-cta-btn-primary {
+  background: #233062;
+  color: #e6ecf8;
+}
+
+.about-cta-btn-primary:hover {
+  background: #2a3973;
+}
+
+.about-cta-btn-secondary {
+  background: rgba(255, 255, 255, 0.95);
+  color: #0b1020;
+}
+
+.about-cta-btn-secondary:hover {
+  background: white;
+}
+
+.about-cta-btn-tertiary {
+  background: #0f172a;
+  color: #e6ecf8;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.about-cta-btn-tertiary:hover {
+  background: #111b31;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.about-cta-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* ===== FLIPCARD EN BAS ===== */
+.about-flipcard {
+  width: 100%;
+  max-width: 900px; /* Même largeur que le contenu */
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 2rem; /* Espace avant la section suivante */
+}

@@ -52,7 +52,8 @@ export default function Walkers({
       };
     };
     return Array.from({ length: count }, mkAlien);
-  }, [RADIUS, count, size, speed, reduceMotion]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [RADIUS, count, size, speed, reduceMotion]); // makeLCG is stable
 
   const groupRef = useRef();
 

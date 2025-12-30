@@ -1,5 +1,5 @@
 // src/pages/sections/VeilleSection.jsx
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 /* ============================
    Golden Ratio + Thème

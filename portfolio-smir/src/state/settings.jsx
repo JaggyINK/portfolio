@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const SettingsContext = createContext(null);
@@ -14,7 +15,7 @@ export function SettingsProvider({ children }) {
   useEffect(() => {
     const saved = localStorage.getItem("sagario_settings");
     if (saved) {
-      try { setSettings(JSON.parse(saved)); } catch {}
+      try { setSettings(JSON.parse(saved)); } catch (err) { console.error('[Settings] Error parsing saved settings:', err); }
     }
   }, []);
   useEffect(() => {

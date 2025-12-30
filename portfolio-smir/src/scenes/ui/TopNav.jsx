@@ -35,7 +35,7 @@ export default function TopNav({ stations = [], onNavTarget }) {
       const isOnLunar = pathname.startsWith("/lunar") || pathname.startsWith("/scene");
       try {
         window.dispatchEvent(new CustomEvent("saga-focus-station", { detail: { id: null } }));
-      } catch {}
+      } catch { /* Event dispatch may fail in some contexts */ }
 
       if (!isOnLunar) {
         navigate("/lunar");
@@ -45,7 +45,7 @@ export default function TopNav({ stations = [], onNavTarget }) {
             window.dispatchEvent(
               new CustomEvent("saga-open-station", { detail: { id, timeout: 8000 } })
             );
-          } catch {}
+          } catch { /* Event dispatch may fail in some contexts */ }
         });
       } else {
         dbg && dbg("TopNav → saga-open-station (direct on /lunar or /scene)", { id });
@@ -53,7 +53,7 @@ export default function TopNav({ stations = [], onNavTarget }) {
           window.dispatchEvent(
             new CustomEvent("saga-open-station", { detail: { id, timeout: 8000 } })
           );
-        } catch {}
+        } catch { /* Event dispatch may fail in some contexts */ }
       }
     },
     [pathname, navigate]

@@ -66,7 +66,7 @@ export default function CodeFlipCard() {
         />
       )}
 
-      <div className="relative z-10 w-full max-w-md mx-auto">
+      <div className="relative z-10 w-full max-w-[900px] mx-auto">
         <button
           type="button"
           onClick={() => setFlipped((v) => !v)}
