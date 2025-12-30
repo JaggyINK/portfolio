@@ -370,7 +370,7 @@ function OrbitalSparksCircle({ dots = 12 }) {
 /* =================================== */
 function StarCrawl({ onEnd }) {
   useEffect(() => {
-    const DURATION = 26000; // ~26s
+    const DURATION = 18000; // ~18s - auto-close après l'animation
     const t = setTimeout(() => onEnd?.(), DURATION);
     return () => clearTimeout(t);
   }, [onEnd]);
@@ -446,7 +446,7 @@ function StarCrawl({ onEnd }) {
           letter-spacing: 0.05em;
           line-height: 1.7;
           font-weight: 500;
-          animation: crawl-move 26s linear forwards;
+          animation: crawl-move 18s linear forwards;
           text-shadow: 0 2px 3px rgba(0,0,0,0.65);
         }
 

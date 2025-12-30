@@ -1,5 +1,6 @@
 // src/pages/ClassicPortfolio.jsx
 import React from "react";
+import "./classic-portfolio.css";
 import ClassicHero from "./ClassicHero";
 import AboutSection from "./sections/AboutSection";
 import BTSSection from "./sections/BTSSection";
@@ -8,7 +9,7 @@ import ProjectsSection from "./sections/ProjectsSection";
 import CertificationsSection from "./sections/CertificationsSection";
 import EasterEggMoon from "../components/EasterEggMoon";
 import LeftDockNav from "../components/LeftDockNav";
-import SchoolsSection from "./sections/SchoolsSection"; 
+import SchoolsSection from "./sections/SchoolsSection";
 import VeilleSection from "./sections/VeilleSection";
 import UserStorySection from "./sections/UserStorySection";
 import VeilleAuthSection from "./sections/VeilleAuthSection";

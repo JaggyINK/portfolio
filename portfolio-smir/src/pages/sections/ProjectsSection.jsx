@@ -1,40 +1,32 @@
 // src/pages/sections/ProjectsSection.jsx
 import React, { useState, useMemo, useCallback } from "react";
 
-/* ============================
-   Constantes "nombre d'or"
-   ============================ */
-const PHI = 1.618;           // φ
-const INV = 1 / PHI;         // ≈ 0.618
-const INV2 = INV * INV;      // ≈ 0.382
+/* ============================ */
+const PHI = 1.618;
+const INV = 1 / PHI;
 
-/* ============================
-   Thème sobre & pro
-   ============================ */
+/* ============================ */
 const THEME = {
   bg: "#0b1020",
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.90)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#9AA7BF",
   brandFrom: "#22d3ee",
   brandTo: "#a855f7",
-  line:
-    "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
 };
 
-/* ============================
-   Données projets (tes valeurs)
-   ============================ */
+/* ============================ */
 const PROJECTS = [
   {
     id: "cpms",
     title: "Intranet CPMS",
     date: "2025",
-    description: "Features d'administration et self-care pour les collaborateurs",
+    description: "Administration & self-care pour 180+ collaborateurs",
     detail:
-      "Développement : changement de mot de passe, réactivation de compte, déverrouillage via question de sécurité, intégration d'un lecteur PDF et amélioration UX visuelle. Inclut captures d'écran et documentation technique/user.",
-    category: "entreprise",
+      "Développement fullstack de fonctionnalités critiques : réinitialisation de mot de passe sécurisée, réactivation de compte, déverrouillage via questions de sécurité. Intégration d'un lecteur PDF natif, refonte UX/UI complète. Documentation technique et user, captures d'écran de production.",
+    tags: ["React", "PHP", "MySQL", "API REST"],
+    category: "projets",
     color: "#22d3ee",
     docUrl: "/docs/CPMS.pdf",
   },
@@ -42,43 +34,48 @@ const PROJECTS = [
     id: "discord-bot",
     title: "Bot Discord — Veille Tech",
     date: "2025",
-    description: "Bot de veille technologique automatisée (Python)",
+    description: "Automatisation de veille technologique et sécurité",
     detail:
-      "Bot Discord développé en Python pour automatiser la veille technologique : agrégation de flux RSS (OWASP, CERT-FR, MSRC, Krebs, Hacker News), publication automatique toutes les 24h, commandes (!veille, !ldap, !web, !news). Conçu pour le BTS SIO avec focus sécurité et développement web.",
-    category: "autodidacte",
+      "Bot Discord développé en Python pour automatiser la veille technologique : agrégation multi-sources (OWASP, CERT-FR, MSRC, Krebs, Hacker News), publication automatique 24h/24, commandes interactives (!veille, !ldap, !web, !news). Focus sécurité applicative et développement web pour le BTS SIO.",
+    tags: ["Python", "Discord API", "RSS", "Automation"],
+    category: "projets",
     color: "#5865F2",
     docUrl: "/docs/bot_discord.pdf",
   },
   {
     id: "alafrenchcare",
-    title: "alafrenchcare",
+    title: "ALAFRENCH CARE",
     date: "2024",
-    description: "E-commerce cosmétique (CBD) — projet perso/pro",
+    description: "E-commerce cosmétique CBD — projet entrepreneurial",
     detail:
-      "Site Shopify : cahier des charges, workflows commande, automatisations (webhooks), packaging et captures d'écran du site.",
-    category: "autodidacte",
+      "Site e-commerce Shopify complet : développement et modification intégrale du thème en Liquid, cahier des charges détaillé, workflows de commande optimisés, automatisations via webhooks, intégrations paiement. Gestion du packaging, identité visuelle et documentation complète.",
+    tags: ["Shopify", "Liquid", "E-commerce", "Webhooks", "SEO"],
+    category: "projets",
     color: "#f59e0b",
     docUrl: "https://alafrenchcare.com",
   },
   {
     id: "alafrenchfr",
-    title: "alafrench.fr",
+    title: "ALAFRENCH",
     date: "2025",
-    description: "Marque de vêtements de luxe — vitrine & boutique",
+    description: "Marque de vêtements de luxe — vitrine & e-commerce",
     detail:
-      "Site Shopify / vitrine : identité visuelle, fiches produits, SEO et captures d'écran. Société mère : H2O (regroupe alafrench & alafrenchcare).",
-    category: "autodidacte",
+      "Site vitrine et boutique Shopify : développement et modification intégrale du thème en Liquid, architecture personnalisée, identité visuelle haut de gamme, fiches produits optimisées, SEO avancé. Société mère : H2O (SAS) regroupant ALAFRENCH et ALAFRENCH CARE. Documentation complète avec captures d'écran.",
+    tags: ["Shopify", "Liquid", "E-commerce", "Branding", "SEO"],
+    category: "projets",
     color: "#a855f7",
     docUrl: "https://alafrench.fr",
+    highlight: "💎 Thème Liquid développé de A à Z",
   },
   {
     id: "portfolio",
     title: "Portfolio 3D",
     date: "2025",
-    description: "Portfolio personnel interactif (React + Three.js)",
+    description: "Expérience immersive React + Three.js",
     detail:
-      "Expérience 3D immersive : scènes, assets, optimisation WebGL, et documentation technique + captures d'écran/vidéos du rendu.",
-    category: "autodidacte",
+      "Portfolio personnel en 3D temps réel : scènes interactives Three.js, optimisation WebGL avancée, architecture React modulaire, animations fluides, responsive design. Documentation technique complète avec captures d'écran et vidéos du rendu final.",
+    tags: ["React", "Three.js", "WebGL", "3D"],
+    category: "projets",
     color: "#10b981",
     docUrl: "/docs/PF_doc.pdf",
   },
@@ -86,21 +83,24 @@ const PROJECTS = [
     id: "flipper",
     title: "Flipper Zero",
     date: "2025",
-    description: "Développement / pentest hardware",
+    description: "Pentest hardware & développement firmware",
     detail:
-      "Dossiers techniques et comptes-rendus de pentest, infos sur firmwares alternatifs, scripts et procédures (à usage pédagogique).",
-    category: "autodidacte",
+      "Dossiers techniques et comptes-rendus de pentest matériel, documentation sur firmwares alternatifs, développement de scripts personnalisés et procédures de test. Approche pédagogique pour la sécurité matérielle.",
+    tags: ["Hardware", "Pentest", "Firmware", "Security"],
+    category: "projets",
     color: "#ef4444",
     docUrl: "/docs/Fl_0.pdf",
+    highlight: "🔒 Pentest interne",
   },
   {
     id: "dev_annonce",
     title: "Annonz",
     date: "2025",
-    description: "Plateforme d'annonces (développée de A à Z)",
+    description: "Plateforme d'annonces full-stack",
     detail:
-      "Conception et réalisation (CRUD, recherche full-text, upload, auth, modération). Documentation fonctionnelle & technique fournie.",
-    category: "scolaire",
+      "Conception et développement complet : architecture CRUD robuste, recherche full-text optimisée, système d'upload sécurisé, authentification avancée, modération. Documentation fonctionnelle et technique fournie.",
+    tags: ["PHP", "MySQL", "Full-text", "Auth"],
+    category: "projets",
     color: "#3b82f6",
     docUrl: "/docs/Annonz.pdf",
   },
@@ -108,10 +108,11 @@ const PROJECTS = [
     id: "tp_sql",
     title: "TP Injection SQL",
     date: "2025",
-    description: "Exercice de sécurité — rapport & mitigations",
+    description: "Sécurité applicative — exploitation & mitigations",
     detail:
-      "PDF explicatif : démonstration d'exploitation SQLi, preuves de concept et correctifs (prepared statements / ORM).",
-    category: "scolaire",
+      "Rapport complet d'exploitation SQLi : démonstration des vulnérabilités, preuves de concept détaillées, correctifs (prepared statements, ORM), bonnes pratiques de sécurisation. Approche pédagogique OWASP Top 10.",
+    tags: ["Security", "SQL Injection", "OWASP", "Mitigation"],
+    category: "guides",
     color: "#8b5cf6",
     docUrl: "/docs/SQL.pdf",
   },
@@ -119,10 +120,11 @@ const PROJECTS = [
     id: "linux_installs",
     title: "Installations Linux",
     date: "2025",
-    description: "Guides d'installation et scripts d'automatisation",
+    description: "Guides d'installation & automatisation",
     detail:
-      "Tutoriels : Kali / Ubuntu / Lubuntu, scripts d'automatisation ISO, partitionnement, configuration réseau et optimisations VM.",
-    category: "scolaire",
+      "Tutoriels détaillés : installation Kali/Ubuntu/Lubuntu, scripts d'automatisation ISO, partitionnement optimal, configuration réseau avancée, optimisations VM. Documentation complète pour déploiements rapides.",
+    tags: ["Linux", "Automation", "Bash", "VM"],
+    category: "guides",
     color: "#14b8a6",
     docUrl: "/docs/linux.pdf",
   },
@@ -130,10 +132,11 @@ const PROJECTS = [
     id: "bootable_keys",
     title: "Clés bootables",
     date: "2025",
-    description: "Outils de secours — création clés USB",
+    description: "Outils de récupération système",
     detail:
-      "Procédure pas-à-pas pour créer clés bootables (Windows/Linux) et exemples d'usage en récupération système.",
-    category: "scolaire",
+      "Procédures détaillées pour créer des clés bootables (Windows/Linux), exemples d'usage en récupération système, troubleshooting avancé. Documentation pratique pour techniciens.",
+    tags: ["Bootable USB", "Recovery", "Windows", "Linux"],
+    category: "guides",
     color: "#eab308",
     docUrl: "/docs/usb.pdf",
   },
@@ -141,10 +144,11 @@ const PROJECTS = [
     id: "win_server",
     title: "Windows Server 2022",
     date: "2025",
-    description: "Gestion parc & AD",
+    description: "Administration Active Directory",
     detail:
-      "Mises en place AD, GPO, images de déploiement, monitoring et procédures d'administration.",
-    category: "scolaire",
+      "Configuration complète AD : GPO avancées, images de déploiement, monitoring système, procédures d'administration. Documentation des best practices pour infrastructure Windows.",
+    tags: ["Windows Server", "Active Directory", "GPO", "Admin"],
+    category: "guides",
     color: "#06b6d4",
     docUrl: "/docs/win22.pdf",
   },
@@ -152,29 +156,24 @@ const PROJECTS = [
     id: "virtual_vm",
     title: "VirtualBox & VMware",
     date: "2025",
-    description: "Virtualisation multi-OS",
+    description: "Virtualisation multi-OS professionnelle",
     detail:
-      "Best practices : snapshots, réseau (bridged/NAT), optimisation disque, backup et restauration de VM.",
-    category: "scolaire",
+      "Best practices virtualisation : gestion snapshots, configuration réseau (bridged/NAT/host-only), optimisation disque, stratégies de backup et restauration. Guide complet pour environnements de test.",
+    tags: ["VirtualBox", "VMware", "Virtualization", "Networking"],
+    category: "guides",
     color: "#6366f1",
     docUrl: "/docs/VM.pdf",
   },
 ];
 
-
-/* ============================
-   Badges catégories
-   ============================ */
+/* ============================ */
 const CATEGORY_META = {
-  all: { label: "Tous", color: "#64748b" },
-  scolaire: { label: "Scolaire", color: "#3b82f6" },
-  entreprise: { label: "Entreprise", color: "#10b981" },
-  autodidacte: { label: "Autodidacte", color: "#f59e0b" },
+  all: { label: "Tous", color: "#64748b", icon: "🌟" },
+  projets: { label: "Projets", color: "#10b981", icon: "🚀" },
+  guides: { label: "Guides & Installations", color: "#3b82f6", icon: "📚" },
 };
 
-/* ============================
-   Carte projet (flip + a11y)
-   ============================ */
+/* ============================ */
 function ProjectCard({ p }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -190,12 +189,10 @@ function ProjectCard({ p }) {
   );
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <div
-        className="relative h-[17rem] cursor-pointer select-none"
-        style={{
-          perspective: `${62 * INV}rem`,
-        }}
+        className="relative h-[21rem] cursor-pointer select-none group"
+        style={{ perspective: "1000px" }}
         onClick={toggle}
         onKeyDown={onKeyDown}
         role="button"
@@ -204,95 +201,153 @@ function ProjectCard({ p }) {
         aria-label={`${p.title} — ${isFlipped ? "détails" : "aperçu"}`}
       >
         <div
-          className={`relative w-full h-full transition-transform duration-[${Math.round(
-            380 * PHI
-          )}ms] [transform-style:preserve-3d] ${
+          className={`relative w-full h-full transition-all duration-500 [transform-style:preserve-3d] ${
             isFlipped ? "[transform:rotateY(180deg)]" : ""
           }`}
         >
-          {/* Face avant */}
+          {/* ===== RECTO ===== */}
           <div
-            className="absolute inset-0 rounded-[1.0rem] p-[1.2rem] border shadow-lg backdrop-blur-xl"
+            className="absolute inset-0 p-5 overflow-hidden border-2 rounded-2xl backdrop-blur-xl"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
-              borderColor: THEME.border,
+              borderColor: `${p.color}40`,
               background: THEME.card,
-              boxShadow: "0 0.618rem 1.618rem rgba(0,0,0,.35), inset 0 0 0 0.062rem rgba(212,175,55,.08)",
+              boxShadow: `0 4px 20px ${p.color}20`,
             }}
           >
             <div className="flex flex-col h-full">
-              <div className="flex items-center justify-between mb-[0.6rem]">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-4">
                 <span
-                  className="px-[0.75rem] py-[0.45rem] text-[0.8rem] font-bold text-white rounded-full"
-                  style={{ backgroundColor: CATEGORY_META[p.category].color }}
+                  className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white rounded-full shadow-lg"
+                  style={{ backgroundColor: p.color }}
                 >
-                  {CATEGORY_META[p.category].label}
+                  {CATEGORY_META[p.category].icon} {CATEGORY_META[p.category].label}
                 </span>
-                <span className="text-[0.85rem] font-medium" style={{ color: THEME.sub }}>
+                <span className="text-xs font-semibold" style={{ color: THEME.sub }}>
                   {p.date}
                 </span>
               </div>
 
+              {/* Highlight badge (si existe) */}
+              {p.highlight && (
+                <div
+                  className="px-3 py-1.5 mb-3 text-xs font-bold text-center rounded-lg"
+                  style={{
+                    background: `linear-gradient(135deg, ${p.color}30, ${p.color}10)`,
+                    border: `1px solid ${p.color}60`,
+                    color: p.color,
+                  }}
+                >
+                  {p.highlight}
+                </div>
+              )}
+
+              {/* Titre */}
               <h3
-                className="mb-[0.5rem] font-extrabold leading-tight"
+                className="mb-2 text-xl font-extrabold leading-tight"
                 style={{
                   color: p.color,
-                  fontSize: `${1.15 * PHI}rem`,
-                  lineHeight: 1.0 + INV2,
                   fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
                 }}
-                title={p.title}
               >
                 {p.title}
               </h3>
 
-              <p className="flex-1 text-[1.0rem] leading-relaxed" style={{ color: THEME.text }}>
+              {/* Description */}
+              <p className="flex-1 mb-3 text-sm leading-relaxed" style={{ color: THEME.text }}>
                 {p.description}
               </p>
 
-              <div className="pt-[0.75rem] mt-auto border-t border-white/10">
-                <p className="text-[0.8rem] italic text-center" style={{ color: THEME.sub }}>
-                  Cliquer / Entrée pour détails →
+              {/* Tags */}
+              {p.tags && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {p.tags.slice(0, 4).map((tag, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-1 text-[10px] font-semibold rounded"
+                      style={{
+                        background: `${p.color}20`,
+                        color: p.color,
+                        border: `1px solid ${p.color}30`,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Footer */}
+              <div className="pt-3 mt-auto border-t" style={{ borderColor: `${p.color}30` }}>
+                <p className="text-xs italic text-center transition-all group-hover:scale-105" style={{ color: THEME.sub }}>
+                  Cliquer pour voir les détails →
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Face arrière */}
+          {/* ===== VERSO ===== */}
           <div
-            className="absolute inset-0 rounded-[1.0rem] p-[1.2rem] border shadow-lg backdrop-blur-xl [transform:rotateY(180deg)]"
+            className="absolute inset-0 p-5 overflow-hidden border-2 rounded-2xl backdrop-blur-xl [transform:rotateY(180deg)]"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
               borderColor: p.color,
               background: THEME.card,
+              boxShadow: `0 8px 32px ${p.color}30`,
             }}
           >
             <div className="flex flex-col h-full">
-              <h4
-                className="mb-[0.75rem] font-bold"
-                style={{ color: p.color, fontSize: `${1.15}rem` }}
-              >
-                Détails
-              </h4>
-
-              <p className="flex-1 overflow-y-auto text-[0.95rem] leading-relaxed" style={{ color: THEME.text }}>
-                {p.detail}
-              </p>
-
-              <div className="pt-[0.75rem] mt-[0.75rem] border-t border-white/10">
-                <a
-                  href={p.docUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="block w-full py-[0.75rem] text-[0.9rem] font-bold text-center text-white transition-transform rounded-lg hover:scale-[1.03] focus:outline-none focus:ring-2 focus:ring-white/40"
-                  style={{ backgroundColor: p.color }}
-                >
-                  📄 Documentation
-                </a>
+              {/* Header verso */}
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-base font-bold" style={{ color: p.color }}>
+                  📋 Détails
+                </h4>
+                <span className="text-xs" style={{ color: THEME.sub }}>
+                  {p.date}
+                </span>
               </div>
+
+              {/* Détails scrollable */}
+              <div className="flex-1 mb-3 overflow-y-auto text-sm leading-relaxed custom-scrollbar" style={{ color: THEME.text }}>
+                {p.detail}
+              </div>
+
+              {/* Tags complets */}
+              {p.tags && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {p.tags.map((tag, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-1 text-[10px] font-semibold rounded"
+                      style={{
+                        background: `${p.color}25`,
+                        color: p.color,
+                        border: `1px solid ${p.color}40`,
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* CTA */}
+              <a
+                href={p.docUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="block w-full py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                style={{
+                  background: `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
+                  boxShadow: `0 4px 16px ${p.color}40`
+                }}
+              >
+                📄 Voir la documentation
+              </a>
             </div>
           </div>
         </div>
@@ -301,9 +356,7 @@ function ProjectCard({ p }) {
   );
 }
 
-/* ============================
-   Section
-   ============================ */
+/* ============================ */
 export default function ProjectsSection() {
   const [filter, setFilter] = useState("all");
 
@@ -315,75 +368,94 @@ export default function ProjectsSection() {
   return (
     <section
       id="projets"
-      className="flex flex-col justify-center min-h-screen snap-center text-slate-100"
+      className="relative min-h-screen py-20 snap-center text-slate-100 px-4"
       style={{
         background:
-          "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
-          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
+          "radial-gradient(60% 60% at 50% 20%, rgba(212,175,55,.04), transparent 70%)," +
+          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.03), transparent 70%), rgba(8,12,24,0.3)",
         backdropFilter: "blur(2px)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
-        padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`,
       }}
     >
-      <div
-        className="w-full mx-auto"
-        style={{
-          maxWidth: `${56 * PHI}rem`,
-        }}
-      >
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255,255,255,0.05);
+          border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.2);
+          border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255,255,255,0.3);
+        }
+      `}</style>
+
+      <div className="w-full mx-auto" style={{ maxWidth: "1400px" }}>
         {/* Header */}
-        <div className="mb-[1.0rem] text-center">
+        <header className="mb-16 text-center">
           <h2
-            className="mb-[0.6rem] font-extrabold tracking-tight"
+            className="font-extrabold tracking-tight"
             style={{
               fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
               color: THEME.text,
-              fontSize: `clamp(1.8rem, ${1.618 * PHI}rem, 3rem)`,
-              lineHeight: 1.0 + INV,
+              fontSize: "clamp(2rem, 4vw, 3.5rem)",
+              lineHeight: 1.2,
             }}
           >
-            Projets
+            Mes Projets
           </h2>
           <div
-            className="mx-auto h-[0.236rem] rounded-full"
+            className="h-1 mx-auto mt-4 rounded-full"
             style={{
-              width: `${8 * PHI}rem`,
-              background: "linear-gradient(90deg, #22d3ee, #a855f7, #f59e0b)",
+              width: "clamp(8rem, 20vw, 16rem)",
+              background: "linear-gradient(90deg, #22d3ee, #f59e0b, #a855f7)",
             }}
           />
-        </div>
+          <p className="max-w-3xl mx-auto mt-6 text-base leading-relaxed" style={{ color: THEME.sub }}>
+            Une sélection de projets professionnels, scolaires et personnels démontrant mes compétences en développement fullstack, sécurité et infrastructure.
+          </p>
+        </header>
 
         {/* Filtres */}
-        <div className="flex flex-wrap items-center justify-center gap-[0.5rem] mb-[1.0rem]">
+        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {Object.entries(CATEGORY_META).map(([k, meta]) => (
             <button
               key={k}
               onClick={() => setFilter(k)}
-              className={`px-[1.0rem] py-[0.6rem] rounded-full font-bold text-white text-[0.8rem] transition-all focus:outline-none ${
+              className={`px-5 py-2.5 rounded-xl font-bold text-white text-sm transition-all focus:outline-none focus:ring-2 focus:ring-white/30 ${
                 filter === k
-                  ? "scale-105 ring-2 ring-white/30 shadow-lg"
-                  : "opacity-80 hover:opacity-100"
+                  ? "scale-105 shadow-xl"
+                  : "opacity-80 hover:opacity-100 hover:scale-105"
               }`}
-              style={{ backgroundColor: meta.color }}
+              style={{
+                backgroundColor: meta.color,
+                boxShadow: filter === k ? `0 8px 24px ${meta.color}40` : "none"
+              }}
               aria-pressed={filter === k}
             >
-              {meta.label}
+              {meta.icon} {meta.label}
             </button>
           ))}
         </div>
 
-        {/* Grille compacte (4 → 3 → 2 → 1) */}
-        <div className="grid gap-[1.2rem] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {/* Grille responsive */}
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((p) => (
             <ProjectCard key={p.id} p={p} />
           ))}
         </div>
 
         {/* Footer */}
-        <div className="mt-[1.0rem] text-center">
-          <p className="text-[0.75rem] italic" style={{ color: THEME.sub }}>
-            {filtered.length} projet{filtered.length > 1 ? "s" : ""} • Cliquez ou pressez Entrée pour
-            retourner la carte
+        <div className="mt-12 text-center">
+          <p className="text-sm" style={{ color: THEME.sub }}>
+            <span className="font-semibold" style={{ color: THEME.text }}>
+              {filtered.length}
+            </span>{" "}
+            projet{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""} • Cliquez sur une carte pour voir les détails
           </p>
         </div>
       </div>
