@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation FamiliDocs - Coffre Administratif Numerique Familial</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #8b5cf6; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(139,92,246,0.15); color: var(--accent); border: 1px solid rgba(139,92,246,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(139,92,246,0.1); color: var(--accent); font-weight: 600; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), #7c3aed); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(139,92,246,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  pre { background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+  pre code { background: none; padding: 0; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>FamiliDocs</h1>
+<p style="font-size: 1.1rem; color: var(--sub); margin-bottom: 0.5rem;">Coffre Administratif Numerique Familial</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025 - 2026</div>
+  <div class="meta-item"><strong>Type :</strong> Projet BTS SIO SLAM - Epreuve E5</div>
+  <div class="meta-item"><strong>Statut :</strong> Production</div>
+</div>
+
+<div>
+  <span class="badge">Python 3</span>
+  <span class="badge">Flask 3.0</span>
+  <span class="badge">SQLAlchemy 2.0</span>
+  <span class="badge">SQLite</span>
+  <span class="badge">bcrypt</span>
+  <span class="badge">AES</span>
+  <span class="badge">Bootstrap 5</span>
+  <span class="badge">pytest</span>
+</div>
+
+<!-- ================================================================ -->
+<!-- 1. CONTEXTE ET OBJECTIFS                                         -->
+<!-- ================================================================ -->
+
+<h2>1. Contexte et objectifs</h2>
+
+<p>FamiliDocs est un <strong>coffre-fort numerique familial</strong> concu pour centraliser, organiser et securiser l'ensemble des documents administratifs d'un foyer. L'application repond a un besoin concret et universel : offrir un espace unique, protege et accessible ou chaque membre de la famille peut stocker, retrouver et partager ses documents importants.</p>
+
+<p>Le projet s'inscrit dans le cadre du <strong>BTS SIO option SLAM</strong>, epreuve E5 (Conception et maintenance de solutions informatiques). Il constitue le projet principal du candidat et illustre la maitrise complete du cycle de developpement d'une application web, de la conception a la mise en production.</p>
+
+<div class="card">
+<h3>Objectifs fonctionnels</h3>
+<ul>
+  <li><strong>Centralisation :</strong> regrouper tous les documents administratifs (impots, sante, banque, logement, identite) dans un espace unique et structure</li>
+  <li><strong>Organisation :</strong> classer par categories, sous-dossiers, tags et niveaux de confidentialite pour retrouver instantanement n'importe quel document</li>
+  <li><strong>Securisation :</strong> proteger les donnees sensibles par chiffrement AES, hachage bcrypt, gestion stricte des sessions et controle d'acces granulaire</li>
+  <li><strong>Partage controle :</strong> permettre le partage de documents entre membres de confiance (conjoint, enfants, aidants) avec des permissions fines et temporaires</li>
+  <li><strong>Suivi des echeances :</strong> alerter les utilisateurs sur les documents expirants, les taches en cours et les deadlines administratives</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Public cible</h3>
+<ul>
+  <li><strong>Parents ages :</strong> personnes peu a l'aise avec le numerique, necessitant une interface simple et intuitive</li>
+  <li><strong>Familles :</strong> foyers souhaitant centraliser les documents de tous les membres</li>
+  <li><strong>Aidants familiaux :</strong> personnes accompagnant un proche dans ses demarches administratives</li>
+  <li><strong>Particuliers :</strong> toute personne souhaitant securiser et organiser ses papiers importants</li>
+</ul>
+<p>L'interface a ete pensee pour etre accessible, claire et non intimidante, avec une navigation intuitive et des libelles explicites.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 2. ARCHITECTURE TECHNIQUE                                        -->
+<!-- ================================================================ -->
+
+<h2>2. Architecture technique</h2>
+
+<div class="card">
+<h3>Pattern MVC adapte a Flask</h3>
+<p>L'application suit le pattern <strong>Model-View-Controller</strong> adapte aux conventions Flask :</p>
+<ul>
+  <li><strong>Models :</strong> classes SQLAlchemy declaratives representant les 9 tables de la base de donnees, avec relations, validations et methodes metier</li>
+  <li><strong>Views :</strong> templates Jinja2 organises par module fonctionnel, heritant d'un layout de base avec navigation dynamique</li>
+  <li><strong>Controllers :</strong> Blueprints Flask regroupant les routes par domaine (auth, documents, admin, tasks, tags, notifications)</li>
+  <li><strong>Services :</strong> couche metier separee pour le chiffrement, la gestion des fichiers et les notifications</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Stack technique</h3>
+<table>
+  <tr><th>Couche</th><th>Technologie</th><th>Version</th></tr>
+  <tr><td>Langage</td><td>Python</td><td>3.8+</td></tr>
+  <tr><td>Framework web</td><td>Flask</td><td>3.0</td></tr>
+  <tr><td>ORM</td><td>SQLAlchemy</td><td>2.0</td></tr>
+  <tr><td>Base de donnees</td><td>SQLite</td><td>3</td></tr>
+  <tr><td>Authentification</td><td>Flask-Login</td><td>0.6</td></tr>
+  <tr><td>Hachage mots de passe</td><td>bcrypt</td><td>4.1</td></tr>
+  <tr><td>Chiffrement fichiers</td><td>cryptography (Fernet/AES)</td><td>41.0</td></tr>
+  <tr><td>Interface</td><td>Bootstrap</td><td>5.3</td></tr>
+  <tr><td>Tests</td><td>pytest</td><td>7.4</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Structure du projet</h3>
+<pre><code>familidocs/
+├── app/
+│   ├── __init__.py          # Factory pattern, init extensions
+│   ├── config.py            # Configuration (dev, prod, test)
+│   ├── models/
+│   │   ├── user.py          # Modele utilisateur + roles
+│   │   ├── document.py      # Documents + versions
+│   │   ├── folder.py        # Dossiers hierarchiques
+│   │   ├── permission.py    # Permissions granulaires
+│   │   ├── task.py          # Taches et echeances
+│   │   ├── tag.py           # Tags avec couleurs
+│   │   ├── log.py           # Journalisation actions
+│   │   └── notification.py  # Notifications temps reel
+│   ├── routes/
+│   │   ├── auth.py          # Authentification, inscription
+│   │   ├── documents.py     # CRUD documents, upload, download
+│   │   ├── admin.py         # Administration systeme
+│   │   ├── tasks.py         # Gestion des taches
+│   │   ├── tags.py          # Gestion des tags
+│   │   └── notifications.py # API notifications
+│   ├── services/
+│   │   ├── encryption.py    # Chiffrement AES Fernet
+│   │   ├── file_manager.py  # Stockage UUID, validation
+│   │   └── notification.py  # Creation/envoi notifications
+│   ├── templates/           # Templates Jinja2 par module
+│   ├── static/              # CSS, JS, images
+│   └── database/            # Fichiers SQLite
+├── tests/
+│   ├── test_documents.py    # 16 tests documents
+│   ├── test_versions.py     # 4 tests versioning
+│   ├── test_tags.py         # 7 tests tags
+│   └── test_security.py     # 14 tests securite
+├── docs/                    # Documentation technique
+└── backups/                 # Sauvegardes base + fichiers</code></pre>
+</div>
+
+<!-- ================================================================ -->
+<!-- 3. BASE DE DONNEES                                               -->
+<!-- ================================================================ -->
+
+<h2>3. Base de donnees</h2>
+
+<p>Le schema relationnel comporte <strong>9 tables</strong> interconnectees, concues pour garantir l'integrite referentielle, la tracabilite des actions et la flexibilite des permissions. Toutes les tables incluent les champs <code>created_at</code> et <code>updated_at</code> avec horodatage automatique.</p>
+
+<div class="card">
+<h3>Table <code>users</code></h3>
+<p>Gestion des comptes utilisateurs avec systeme de roles.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique auto-incremente</td></tr>
+  <tr><td>email</td><td>VARCHAR(120) UNIQUE</td><td>Adresse email (login principal)</td></tr>
+  <tr><td>username</td><td>VARCHAR(80) UNIQUE</td><td>Nom d'utilisateur affiche</td></tr>
+  <tr><td>password_hash</td><td>VARCHAR(255)</td><td>Hash bcrypt avec salt aleatoire</td></tr>
+  <tr><td>first_name</td><td>VARCHAR(50)</td><td>Prenom</td></tr>
+  <tr><td>last_name</td><td>VARCHAR(50)</td><td>Nom de famille</td></tr>
+  <tr><td>role</td><td>ENUM</td><td><code>admin</code> | <code>user</code> | <code>trusted</code></td></tr>
+  <tr><td>is_active</td><td>BOOLEAN</td><td>Compte actif/desactive</td></tr>
+  <tr><td>last_login</td><td>DATETIME</td><td>Derniere connexion reussie</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Table <code>documents</code></h3>
+<p>Stockage des metadonnees de chaque document uploade.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>name</td><td>VARCHAR(200)</td><td>Nom affiche du document</td></tr>
+  <tr><td>original_filename</td><td>VARCHAR(255)</td><td>Nom original du fichier uploade</td></tr>
+  <tr><td>stored_filename</td><td>VARCHAR(255)</td><td>Nom UUID sur le serveur (securite)</td></tr>
+  <tr><td>file_type</td><td>VARCHAR(20)</td><td>Extension du fichier (pdf, jpg, docx...)</td></tr>
+  <tr><td>file_size</td><td>INTEGER</td><td>Taille en octets</td></tr>
+  <tr><td>confidentiality</td><td>ENUM</td><td><code>public</code> | <code>private</code> | <code>restricted</code></td></tr>
+  <tr><td>is_encrypted</td><td>BOOLEAN</td><td>Chiffrement AES actif ou non</td></tr>
+  <tr><td>expiry_date</td><td>DATE</td><td>Date d'expiration du document (nullable)</td></tr>
+  <tr><td>owner_id</td><td>FK &rarr; users</td><td>Proprietaire du document</td></tr>
+  <tr><td>folder_id</td><td>FK &rarr; folders</td><td>Dossier de classement (nullable)</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Table <code>document_versions</code></h3>
+<p>Historique complet des versions pour chaque document.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>document_id</td><td>FK &rarr; documents</td><td>Document parent</td></tr>
+  <tr><td>version_number</td><td>INTEGER</td><td>Numero de version incremental</td></tr>
+  <tr><td>stored_filename</td><td>VARCHAR(255)</td><td>Fichier UUID de cette version</td></tr>
+  <tr><td>comment</td><td>TEXT</td><td>Commentaire de version</td></tr>
+  <tr><td>uploaded_by</td><td>FK &rarr; users</td><td>Utilisateur ayant uploade la version</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Table <code>folders</code></h3>
+<p>Arborescence hierarchique avec auto-reference parent/enfant.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>name</td><td>VARCHAR(100)</td><td>Nom du dossier</td></tr>
+  <tr><td>description</td><td>TEXT</td><td>Description optionnelle</td></tr>
+  <tr><td>parent_id</td><td>FK &rarr; folders</td><td>Dossier parent (NULL = racine)</td></tr>
+  <tr><td>owner_id</td><td>FK &rarr; users</td><td>Proprietaire du dossier</td></tr>
+</table>
+<p>Categories predefinies a la creation du compte : <code>Administratif</code>, <code>Sante</code>, <code>Banque</code>, <code>Logement</code>, <code>Autres</code>.</p>
+</div>
+
+<div class="card">
+<h3>Table <code>permissions</code></h3>
+<p>Permissions granulaires de partage entre utilisateurs.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>document_id</td><td>FK &rarr; documents</td><td>Document concerne</td></tr>
+  <tr><td>user_id</td><td>FK &rarr; users</td><td>Utilisateur beneficiaire</td></tr>
+  <tr><td>granted_by</td><td>FK &rarr; users</td><td>Utilisateur ayant accorde la permission</td></tr>
+  <tr><td>can_view</td><td>BOOLEAN</td><td>Droit de consultation</td></tr>
+  <tr><td>can_edit</td><td>BOOLEAN</td><td>Droit de modification</td></tr>
+  <tr><td>can_download</td><td>BOOLEAN</td><td>Droit de telechargement</td></tr>
+  <tr><td>can_share</td><td>BOOLEAN</td><td>Droit de re-partage</td></tr>
+  <tr><td>end_date</td><td>DATE</td><td>Expiration automatique (acces temporaire)</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Table <code>tasks</code></h3>
+<p>Gestion des taches et echeances liees aux documents.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>title</td><td>VARCHAR(200)</td><td>Intitule de la tache</td></tr>
+  <tr><td>description</td><td>TEXT</td><td>Description detaillee</td></tr>
+  <tr><td>priority</td><td>ENUM</td><td><code>low</code> | <code>medium</code> | <code>high</code> | <code>urgent</code></td></tr>
+  <tr><td>status</td><td>ENUM</td><td><code>pending</code> | <code>in_progress</code> | <code>completed</code> | <code>cancelled</code></td></tr>
+  <tr><td>due_date</td><td>DATE</td><td>Date d'echeance</td></tr>
+  <tr><td>reminder_date</td><td>DATE</td><td>Date de rappel configurable</td></tr>
+  <tr><td>document_id</td><td>FK &rarr; documents</td><td>Document lie (nullable)</td></tr>
+  <tr><td>user_id</td><td>FK &rarr; users</td><td>Utilisateur responsable</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Table <code>logs</code></h3>
+<p>Journal d'audit complet de toutes les actions utilisateur.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>user_id</td><td>FK &rarr; users</td><td>Utilisateur auteur de l'action</td></tr>
+  <tr><td>action</td><td>VARCHAR(50)</td><td>Type d'action (21 types possibles)</td></tr>
+  <tr><td>details</td><td>TEXT</td><td>Details complementaires en JSON</td></tr>
+  <tr><td>ip_address</td><td>VARCHAR(45)</td><td>Adresse IP du client</td></tr>
+  <tr><td>user_agent</td><td>VARCHAR(500)</td><td>User-Agent du navigateur</td></tr>
+  <tr><td>created_at</td><td>DATETIME</td><td>Horodatage de l'action</td></tr>
+</table>
+<p><strong>21 types d'actions tracees :</strong> <code>login</code>, <code>logout</code>, <code>login_failed</code>, <code>register</code>, <code>upload</code>, <code>download</code>, <code>view</code>, <code>edit</code>, <code>delete</code>, <code>share</code>, <code>revoke</code>, <code>encrypt</code>, <code>decrypt</code>, <code>version_upload</code>, <code>version_restore</code>, <code>folder_create</code>, <code>folder_delete</code>, <code>tag_create</code>, <code>tag_delete</code>, <code>backup_create</code>, <code>backup_restore</code>.</p>
+</div>
+
+<div class="card">
+<h3>Table <code>notifications</code></h3>
+<p>Systeme de notifications en temps reel avec badge dans la barre de navigation.</p>
+<table>
+  <tr><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>user_id</td><td>FK &rarr; users</td><td>Destinataire de la notification</td></tr>
+  <tr><td>type</td><td>VARCHAR(50)</td><td>Type de notification (11 types)</td></tr>
+  <tr><td>title</td><td>VARCHAR(200)</td><td>Titre court de la notification</td></tr>
+  <tr><td>message</td><td>TEXT</td><td>Message detaille</td></tr>
+  <tr><td>priority</td><td>ENUM</td><td><code>low</code> | <code>normal</code> | <code>high</code> | <code>urgent</code></td></tr>
+  <tr><td>is_read</td><td>BOOLEAN</td><td>Statut lecture</td></tr>
+  <tr><td>expires_at</td><td>DATETIME</td><td>Expiration automatique</td></tr>
+  <tr><td>link</td><td>VARCHAR(500)</td><td>Lien vers la ressource concernee</td></tr>
+</table>
+<p><strong>11 types de notifications :</strong> <code>document_shared</code>, <code>permission_granted</code>, <code>permission_revoked</code>, <code>document_expiring</code>, <code>document_expired</code>, <code>task_due</code>, <code>task_overdue</code>, <code>new_version</code>, <code>comment_added</code>, <code>system_alert</code>, <code>welcome</code>.</p>
+</div>
+
+<div class="card">
+<h3>Tables <code>tags</code> et <code>document_tags</code></h3>
+<p>Systeme de tags avec association N:N (many-to-many) aux documents.</p>
+<table>
+  <tr><th>Table</th><th>Colonne</th><th>Type</th><th>Description</th></tr>
+  <tr><td>tags</td><td>id</td><td>INTEGER PK</td><td>Identifiant unique</td></tr>
+  <tr><td>tags</td><td>name</td><td>VARCHAR(50) UNIQUE</td><td>Libelle du tag</td></tr>
+  <tr><td>tags</td><td>color</td><td>VARCHAR(7)</td><td>Couleur hexadecimale personnalisee</td></tr>
+  <tr><td>tags</td><td>user_id</td><td>FK &rarr; users</td><td>Createur du tag</td></tr>
+  <tr><td>document_tags</td><td>document_id</td><td>FK &rarr; documents</td><td>Document associe</td></tr>
+  <tr><td>document_tags</td><td>tag_id</td><td>FK &rarr; tags</td><td>Tag associe</td></tr>
+</table>
+<p>La table d'association <code>document_tags</code> assure la relation many-to-many. Chaque tag possede une couleur personnalisable pour une identification visuelle rapide.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 4. FONCTIONNALITES DETAILLEES                                    -->
+<!-- ================================================================ -->
+
+<h2>4. Fonctionnalites detaillees</h2>
+
+<!-- 4a. Gestion utilisateurs -->
+<div class="card">
+<h3>4.a Gestion des utilisateurs</h3>
+<p>Le systeme gere trois niveaux de roles avec des permissions hierarchiques :</p>
+<table>
+  <tr><th>Role</th><th>Droits</th><th>Usage type</th></tr>
+  <tr><td><code>admin</code></td><td>Acces total : gestion des utilisateurs, logs systeme, sauvegardes, configuration globale</td><td>Administrateur du foyer</td></tr>
+  <tr><td><code>user</code></td><td>CRUD sur ses propres documents, dossiers et taches. Partage vers d'autres utilisateurs</td><td>Membre standard de la famille</td></tr>
+  <tr><td><code>trusted</code></td><td>Droits identiques a <code>user</code> + acces aux documents partages avec permissions etendues</td><td>Personne de confiance, aidant</td></tr>
+</table>
+<p><strong>Securite de connexion :</strong></p>
+<ul>
+  <li>Rate limiting : maximum <strong>5 tentatives echouees</strong> par adresse IP</li>
+  <li>Blocage automatique pendant <strong>15 minutes</strong> apres depassement</li>
+  <li>Journalisation de chaque tentative (reussie ou echouee) avec IP et User-Agent</li>
+  <li>Politique de mot de passe stricte : 8 caracteres minimum, au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractere special</li>
+</ul>
+</div>
+
+<!-- 4b. Gestion documentaire -->
+<div class="card">
+<h3>4.b Gestion documentaire</h3>
+<p>Coeur fonctionnel de l'application, la gestion des documents couvre l'ensemble du cycle de vie des fichiers administratifs.</p>
+<p><strong>Formats supportes :</strong></p>
+<ul>
+  <li><strong>Documents :</strong> PDF, DOC, DOCX (Word), XLS, XLSX (Excel), TXT</li>
+  <li><strong>Images :</strong> JPG, JPEG, PNG, GIF, BMP, WEBP</li>
+  <li><strong>Limite de taille :</strong> 16 Mo par fichier</li>
+</ul>
+<p><strong>Dossiers hierarchiques :</strong> classement par categories predefinies a la creation du compte :</p>
+<ul>
+  <li><strong>Administratif :</strong> pieces d'identite, impots, actes officiels</li>
+  <li><strong>Sante :</strong> ordonnances, resultats d'analyses, carnet de sante</li>
+  <li><strong>Banque :</strong> releves, contrats, justificatifs</li>
+  <li><strong>Logement :</strong> bail, quittances, diagnostics, assurances</li>
+  <li><strong>Autres :</strong> tous les documents ne relevant pas des categories precedentes</li>
+</ul>
+<p>L'utilisateur peut creer des sous-dossiers a l'interieur de chaque categorie pour affiner son classement.</p>
+<p><strong>Niveaux de confidentialite :</strong></p>
+<ul>
+  <li><code>public</code> : visible par tous les membres du foyer</li>
+  <li><code>private</code> : visible uniquement par le proprietaire</li>
+  <li><code>restricted</code> : visible uniquement par les utilisateurs ayant recu une permission explicite</li>
+</ul>
+</div>
+
+<!-- 4c. Versioning -->
+<div class="card">
+<h3>4.c Versioning des documents</h3>
+<p>Chaque document dispose d'un historique complet de ses versions, permettant la tracabilite et la recuperation de versions anterieures.</p>
+<ul>
+  <li><strong>Upload de nouvelle version :</strong> ajout d'un fichier actualise avec commentaire obligatoire decrivant les modifications</li>
+  <li><strong>Historique chronologique :</strong> consultation de toutes les versions avec date, auteur et commentaire</li>
+  <li><strong>Restauration :</strong> possibilite de restaurer n'importe quelle version anterieure comme version courante</li>
+  <li><strong>Telechargement individuel :</strong> chaque version peut etre telechargee independamment</li>
+  <li><strong>Numerotation automatique :</strong> numero de version incremental gere par le systeme</li>
+</ul>
+<p>Ce mecanisme est particulierement utile pour les documents administratifs mis a jour periodiquement (avis d'imposition annuel, attestation d'assurance, etc.).</p>
+</div>
+
+<!-- 4d. Tags et recherche -->
+<div class="card">
+<h3>4.d Tags et recherche avancee</h3>
+<p><strong>Systeme de tags :</strong></p>
+<ul>
+  <li>Creation de tags personnalises avec couleur hexadecimale au choix</li>
+  <li>Association multiple : un document peut porter plusieurs tags, un tag peut etre applique a plusieurs documents</li>
+  <li>Filtrage rapide par tag depuis l'interface de listing</li>
+  <li>Gestion complete (creation, modification, suppression) avec verification d'integrite</li>
+</ul>
+<p><strong>Recherche multi-criteres :</strong></p>
+<ul>
+  <li><strong>Texte libre :</strong> recherche dans le nom du document et le nom original du fichier</li>
+  <li><strong>Type de fichier :</strong> filtrage par extension (PDF, images, Word, Excel...)</li>
+  <li><strong>Dossier :</strong> filtrage par categorie ou sous-dossier</li>
+  <li><strong>Tags :</strong> filtrage par un ou plusieurs tags</li>
+  <li><strong>Dates :</strong> plage de dates de creation ou de modification</li>
+  <li><strong>Confidentialite :</strong> filtrage par niveau (public, prive, restreint)</li>
+  <li><strong>Tri configurable :</strong> par nom, date, taille, type (ascendant ou descendant)</li>
+</ul>
+<p><strong>Recherche globale AJAX :</strong> barre de recherche dans la navbar avec suggestions en temps reel, sans rechargement de page.</p>
+</div>
+
+<!-- 4e. Partage et permissions -->
+<div class="card">
+<h3>4.e Partage et permissions</h3>
+<p>Le systeme de partage permet un controle fin des droits accordes a chaque utilisateur sur chaque document.</p>
+<p><strong>Permissions granulaires :</strong></p>
+<table>
+  <tr><th>Permission</th><th>Description</th></tr>
+  <tr><td><code>can_view</code></td><td>Consultation du document et de ses metadonnees</td></tr>
+  <tr><td><code>can_edit</code></td><td>Modification des metadonnees (nom, tags, dossier)</td></tr>
+  <tr><td><code>can_download</code></td><td>Telechargement du fichier sur le poste local</td></tr>
+  <tr><td><code>can_share</code></td><td>Re-partage du document vers d'autres utilisateurs</td></tr>
+</table>
+<ul>
+  <li><strong>Acces temporaire :</strong> chaque permission peut etre assortie d'une date de fin (<code>end_date</code>) apres laquelle l'acces est automatiquement revoque</li>
+  <li><strong>Revocation immediate :</strong> le proprietaire peut supprimer instantanement toute permission accordee</li>
+  <li><strong>Notifications automatiques :</strong> le beneficiaire recoit une notification lors de l'attribution, la modification ou la revocation d'une permission</li>
+  <li><strong>Tracabilite :</strong> chaque operation de partage est journalisee dans les logs avec l'identite de l'emetteur et du destinataire</li>
+</ul>
+</div>
+
+<!-- 4f. Taches et echeances -->
+<div class="card">
+<h3>4.f Taches et echeances</h3>
+<p>Module de gestion des taches administratives, liees ou non a un document specifique.</p>
+<p><strong>Creation de taches :</strong></p>
+<ul>
+  <li><strong>Manuelle :</strong> l'utilisateur cree une tache libre avec titre, description, priorite et echeance</li>
+  <li><strong>Automatique :</strong> tache generee automatiquement lors de la detection d'un document expirant</li>
+  <li><strong>Liee a un document :</strong> association optionnelle a un document pour un acces direct depuis la tache</li>
+</ul>
+<p><strong>4 niveaux de priorite :</strong></p>
+<table>
+  <tr><th>Priorite</th><th>Couleur</th><th>Usage</th></tr>
+  <tr><td><code>low</code></td><td>Gris</td><td>Tache sans urgence</td></tr>
+  <tr><td><code>medium</code></td><td>Bleu</td><td>Tache standard</td></tr>
+  <tr><td><code>high</code></td><td>Orange</td><td>Tache importante</td></tr>
+  <tr><td><code>urgent</code></td><td>Rouge</td><td>Action requise immediatement</td></tr>
+</table>
+<p><strong>4 statuts de progression :</strong></p>
+<table>
+  <tr><th>Statut</th><th>Description</th></tr>
+  <tr><td><code>pending</code></td><td>Tache creee, non commencee</td></tr>
+  <tr><td><code>in_progress</code></td><td>Tache en cours de traitement</td></tr>
+  <tr><td><code>completed</code></td><td>Tache terminee</td></tr>
+  <tr><td><code>cancelled</code></td><td>Tache annulee</td></tr>
+</table>
+<ul>
+  <li><strong>Rappels configurables :</strong> date de rappel independante de la date d'echeance</li>
+  <li><strong>Vue calendrier :</strong> visualisation des taches sur un calendrier mensuel</li>
+  <li><strong>Alertes visuelles :</strong> rouge pour les taches en retard, jaune pour celles proches de l'echeance</li>
+</ul>
+</div>
+
+<!-- 4g. Notifications -->
+<div class="card">
+<h3>4.g Notifications</h3>
+<p>Systeme de notifications complet assurant la communication en temps reel entre l'application et ses utilisateurs.</p>
+<p><strong>11 types de notifications :</strong></p>
+<ul>
+  <li><code>document_shared</code> : un document a ete partage avec vous</li>
+  <li><code>permission_granted</code> : une nouvelle permission vous a ete accordee</li>
+  <li><code>permission_revoked</code> : un acces vous a ete retire</li>
+  <li><code>document_expiring</code> : un document arrive bientot a expiration</li>
+  <li><code>document_expired</code> : un document a expire</li>
+  <li><code>task_due</code> : une tache approche de son echeance</li>
+  <li><code>task_overdue</code> : une tache a depasse son echeance</li>
+  <li><code>new_version</code> : une nouvelle version d'un document partage est disponible</li>
+  <li><code>comment_added</code> : un commentaire a ete ajoute a un document</li>
+  <li><code>system_alert</code> : notification systeme (maintenance, mise a jour)</li>
+  <li><code>welcome</code> : message de bienvenue a l'inscription</li>
+</ul>
+<p><strong>Comportement :</strong></p>
+<ul>
+  <li>Badge temps reel dans la barre de navigation avec compteur de notifications non lues</li>
+  <li>Rafraichissement automatique toutes les <strong>60 secondes</strong> via requete AJAX</li>
+  <li>Marquage lu/non lu individuel</li>
+  <li>Suppression en masse des notifications lues</li>
+  <li>Expiration automatique configurable (<code>expires_at</code>)</li>
+  <li>Niveaux de priorite : <code>low</code>, <code>normal</code>, <code>high</code>, <code>urgent</code></li>
+</ul>
+</div>
+
+<!-- 4h. Dashboard -->
+<div class="card">
+<h3>4.h Tableau de bord</h3>
+<p>Page d'accueil personnalisee offrant une vue synthetique de l'activite de l'utilisateur.</p>
+<p><strong>4 compteurs principaux :</strong></p>
+<ul>
+  <li>Nombre total de documents</li>
+  <li>Nombre de dossiers</li>
+  <li>Nombre de taches en cours</li>
+  <li>Nombre de documents partages</li>
+</ul>
+<p><strong>Indicateurs visuels :</strong></p>
+<ul>
+  <li><strong>Repartition par type de fichier :</strong> graphique en barres ou camembert (PDF, images, Word, Excel, autres)</li>
+  <li><strong>Repartition des taches par statut :</strong> diagramme montrant la proportion pending / in_progress / completed / cancelled</li>
+  <li><strong>Graphe d'activite 6 mois :</strong> courbe d'evolution de l'activite (uploads, modifications, connexions) sur les 6 derniers mois</li>
+  <li><strong>Alertes visuelles :</strong></li>
+  <ul>
+    <li style="color: #ef4444;"><strong>Rouge :</strong> documents expires ou taches en retard</li>
+    <li style="color: #eab308;"><strong>Jaune :</strong> documents ou taches expirant dans les 7 prochains jours</li>
+  </ul>
+  <li><strong>Indicateurs cles :</strong> espace de stockage utilise, dernier document uploade, derniere connexion</li>
+</ul>
+</div>
+
+<!-- 4i. Administration -->
+<div class="card">
+<h3>4.i Administration systeme</h3>
+<p>Interface reservee aux utilisateurs avec le role <code>admin</code>, fournissant un controle total sur l'application.</p>
+<p><strong>Statistiques systeme :</strong></p>
+<ul>
+  <li>Nombre total d'utilisateurs (actifs et inactifs)</li>
+  <li>Nombre total de documents et espace disque utilise</li>
+  <li>Nombre de connexions sur les 30 derniers jours</li>
+  <li>Repartition des utilisateurs par role</li>
+</ul>
+<p><strong>Gestion des utilisateurs :</strong></p>
+<ul>
+  <li>CRUD complet : creation, consultation, modification, suppression de comptes</li>
+  <li>Activation / desactivation de comptes</li>
+  <li>Reinitialisation de mot de passe par l'administrateur</li>
+  <li>Modification du role (admin, user, trusted)</li>
+</ul>
+<p><strong>Journaux systeme :</strong></p>
+<ul>
+  <li>Consultation des 21 types d'actions avec filtrage par utilisateur, par type d'action et par plage de dates</li>
+  <li>Details complets : adresse IP, User-Agent, horodatage, details JSON</li>
+  <li>Export possible des logs pour audit externe</li>
+</ul>
+<p><strong>Sauvegardes :</strong></p>
+<ul>
+  <li><strong>Creation :</strong> sauvegarde complete de la base de donnees SQLite et des fichiers uploades</li>
+  <li><strong>Restauration :</strong> retour a un etat anterieur a partir d'une sauvegarde</li>
+  <li><strong>Suppression :</strong> nettoyage des anciennes sauvegardes pour liberer de l'espace</li>
+  <li>Sauvegardes stockees dans le repertoire <code>backups/</code> avec horodatage</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 5. SECURITE                                                      -->
+<!-- ================================================================ -->
+
+<h2>5. Securite</h2>
+
+<p>La securite constitue un pilier central de FamiliDocs, l'application gerant des documents administratifs sensibles. Chaque couche de l'architecture integre des mecanismes de protection specifiques.</p>
+
+<div class="card">
+<h3>Authentification et mots de passe</h3>
+<ul>
+  <li><strong>Hachage bcrypt :</strong> chaque mot de passe est hache avec un salt aleatoire unique et un cout de <strong>12 rounds</strong>, rendant les attaques par force brute et par tables arc-en-ciel impraticables</li>
+  <li><strong>Politique de mot de passe :</strong> minimum 8 caracteres, au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractere special</li>
+  <li><strong>Rate limiting :</strong> maximum 5 tentatives de connexion echouees par adresse IP, suivi d'un blocage automatique de 15 minutes</li>
+  <li><strong>Sessions securisees :</strong> duree de vie de 2 heures, cookie <code>HttpOnly</code> (inaccessible au JavaScript cote client)</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Controle d'acces</h3>
+<ul>
+  <li><strong>RBAC (Role-Based Access Control) :</strong> trois roles hierarchiques (<code>admin</code>, <code>user</code>, <code>trusted</code>) avec decorateurs Python verifiant les permissions a chaque requete</li>
+  <li><strong>Protection CSRF :</strong> jeton anti-falsification inclus dans chaque formulaire POST, verifie cote serveur par Flask-WTF</li>
+  <li><strong>Verification de propriete :</strong> chaque acces a une ressource verifie que l'utilisateur en est le proprietaire ou dispose d'une permission valide et non expiree</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Chiffrement des documents</h3>
+<ul>
+  <li><strong>AES via Fernet (cryptography) :</strong> chiffrement optionnel des documents sensibles avec l'algorithme AES en mode CBC, encapsule par le schema Fernet qui garantit confidentialite et integrite</li>
+  <li><strong>Activation par document :</strong> le proprietaire choisit individuellement quels documents chiffrer</li>
+  <li><strong>Cle de chiffrement :</strong> geree par la configuration serveur, isolee du code applicatif</li>
+  <li><strong>Dechiffrement transparent :</strong> le fichier est dechiffre a la volee lors du telechargement par un utilisateur autorise</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Securite des fichiers</h3>
+<ul>
+  <li><strong>Stockage UUID :</strong> chaque fichier uploade est renomme avec un UUID v4 aleatoire, le nom original n'apparait jamais sur le serveur de fichiers</li>
+  <li><strong>Validation d'extension :</strong> seules les extensions autorisees sont acceptees (PDF, images, documents Office, texte)</li>
+  <li><strong>Limite de taille :</strong> 16 Mo maximum par fichier, rejetee cote serveur avant ecriture sur disque</li>
+  <li><strong>Repertoire non navigable :</strong> le dossier de stockage est configure pour interdire le listing et l'acces direct</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>En-tetes HTTP de securite</h3>
+<table>
+  <tr><th>En-tete</th><th>Valeur</th><th>Protection</th></tr>
+  <tr><td><code>X-Content-Type-Options</code></td><td><code>nosniff</code></td><td>Empeche le navigateur de deviner le type MIME</td></tr>
+  <tr><td><code>X-Frame-Options</code></td><td><code>SAMEORIGIN</code></td><td>Bloque l'inclusion dans une iframe externe (clickjacking)</td></tr>
+  <tr><td><code>X-XSS-Protection</code></td><td><code>1; mode=block</code></td><td>Active le filtre XSS du navigateur</td></tr>
+  <tr><td><code>Referrer-Policy</code></td><td><code>strict-origin-when-cross-origin</code></td><td>Limite la fuite d'information via le Referer</td></tr>
+  <tr><td><code>Cache-Control</code></td><td><code>no-store, no-cache</code></td><td>Empeche la mise en cache des pages sensibles</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Tracabilite et audit</h3>
+<ul>
+  <li><strong>21 types d'actions journalisees :</strong> chaque interaction significative est enregistree dans la table <code>logs</code></li>
+  <li><strong>Informations capturees :</strong> identifiant utilisateur, type d'action, details JSON, adresse IP, User-Agent, horodatage</li>
+  <li><strong>Consultation par l'administrateur :</strong> interface de filtrage et de recherche dans les journaux</li>
+  <li><strong>Non repudiation :</strong> les logs ne peuvent pas etre modifies ou supprimes par un utilisateur standard</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 6. API ET ROUTES                                                 -->
+<!-- ================================================================ -->
+
+<h2>6. API et routes</h2>
+
+<p>L'application expose environ <strong>25 routes</strong> organisees en Blueprints Flask. Chaque route est protegee par un decorateur d'authentification (<code>@login_required</code>) et, le cas echeant, par un decorateur de role (<code>@admin_required</code>).</p>
+
+<div class="card">
+<h3>Authentification (<code>auth</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET/POST</td><td><code>/login</code></td><td>Formulaire de connexion + traitement</td></tr>
+  <tr><td>GET</td><td><code>/logout</code></td><td>Deconnexion et invalidation de session</td></tr>
+  <tr><td>GET/POST</td><td><code>/register</code></td><td>Inscription d'un nouvel utilisateur</td></tr>
+  <tr><td>GET/POST</td><td><code>/profile</code></td><td>Consultation et modification du profil</td></tr>
+  <tr><td>GET/POST</td><td><code>/change-password</code></td><td>Changement de mot de passe</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Documents (<code>documents</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET</td><td><code>/documents</code></td><td>Liste des documents avec filtres et recherche</td></tr>
+  <tr><td>GET/POST</td><td><code>/documents/upload</code></td><td>Upload d'un nouveau document</td></tr>
+  <tr><td>GET</td><td><code>/documents/&lt;id&gt;</code></td><td>Detail d'un document (metadonnees, versions, tags)</td></tr>
+  <tr><td>GET/POST</td><td><code>/documents/&lt;id&gt;/edit</code></td><td>Modification des metadonnees</td></tr>
+  <tr><td>POST</td><td><code>/documents/&lt;id&gt;/delete</code></td><td>Suppression d'un document et de ses versions</td></tr>
+  <tr><td>GET</td><td><code>/documents/&lt;id&gt;/download</code></td><td>Telechargement (avec dechiffrement si necessaire)</td></tr>
+  <tr><td>GET/POST</td><td><code>/documents/&lt;id&gt;/share</code></td><td>Interface de partage et attribution de permissions</td></tr>
+  <tr><td>POST</td><td><code>/documents/&lt;id&gt;/revoke/&lt;uid&gt;</code></td><td>Revocation d'une permission</td></tr>
+  <tr><td>POST</td><td><code>/documents/&lt;id&gt;/encrypt</code></td><td>Activation/desactivation du chiffrement AES</td></tr>
+  <tr><td>GET/POST</td><td><code>/documents/&lt;id&gt;/version</code></td><td>Upload d'une nouvelle version avec commentaire</td></tr>
+  <tr><td>POST</td><td><code>/documents/&lt;id&gt;/restore/&lt;vid&gt;</code></td><td>Restauration d'une version anterieure</td></tr>
+  <tr><td>GET</td><td><code>/search</code></td><td>Recherche globale AJAX (JSON response)</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Taches (<code>tasks</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET</td><td><code>/tasks</code></td><td>Liste des taches avec filtres par statut et priorite</td></tr>
+  <tr><td>GET/POST</td><td><code>/tasks/create</code></td><td>Creation d'une nouvelle tache</td></tr>
+  <tr><td>GET/POST</td><td><code>/tasks/&lt;id&gt;/edit</code></td><td>Modification d'une tache</td></tr>
+  <tr><td>POST</td><td><code>/tasks/&lt;id&gt;/delete</code></td><td>Suppression d'une tache</td></tr>
+  <tr><td>POST</td><td><code>/tasks/&lt;id&gt;/status</code></td><td>Changement rapide de statut</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Tags (<code>tags</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET/POST</td><td><code>/tags</code></td><td>Liste et creation de tags</td></tr>
+  <tr><td>POST</td><td><code>/tags/&lt;id&gt;/delete</code></td><td>Suppression d'un tag</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Notifications (<code>notifications</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET</td><td><code>/notifications</code></td><td>Liste des notifications avec pagination</td></tr>
+  <tr><td>POST</td><td><code>/notifications/&lt;id&gt;/read</code></td><td>Marquer une notification comme lue</td></tr>
+  <tr><td>GET</td><td><code>/notifications/count</code></td><td>Compteur JSON pour le badge navbar (AJAX)</td></tr>
+  <tr><td>POST</td><td><code>/notifications/delete-read</code></td><td>Suppression en masse des notifications lues</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Administration (<code>admin</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET</td><td><code>/admin</code></td><td>Dashboard administrateur avec statistiques systeme</td></tr>
+  <tr><td>GET</td><td><code>/admin/users</code></td><td>Liste des utilisateurs avec gestion</td></tr>
+  <tr><td>GET/POST</td><td><code>/admin/users/&lt;id&gt;/edit</code></td><td>Modification d'un compte utilisateur</td></tr>
+  <tr><td>POST</td><td><code>/admin/users/&lt;id&gt;/toggle</code></td><td>Activation/desactivation d'un compte</td></tr>
+  <tr><td>POST</td><td><code>/admin/users/&lt;id&gt;/reset-password</code></td><td>Reinitialisation du mot de passe</td></tr>
+  <tr><td>GET</td><td><code>/admin/logs</code></td><td>Consultation des journaux systeme</td></tr>
+  <tr><td>POST</td><td><code>/admin/backup/create</code></td><td>Creation d'une sauvegarde</td></tr>
+  <tr><td>POST</td><td><code>/admin/backup/&lt;name&gt;/restore</code></td><td>Restauration depuis une sauvegarde</td></tr>
+  <tr><td>POST</td><td><code>/admin/backup/&lt;name&gt;/delete</code></td><td>Suppression d'une sauvegarde</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 7. TESTS                                                         -->
+<!-- ================================================================ -->
+
+<h2>7. Tests</h2>
+
+<p>La suite de tests couvre <strong>41 tests</strong> repartis en 4 fichiers, executables via <code>pytest</code>. Les tests utilisent un client Flask de test avec une base SQLite en memoire pour garantir l'isolation et la reproductibilite.</p>
+
+<div class="card">
+<h3><code>test_documents.py</code> - 16 tests</h3>
+<p>Tests du cycle de vie complet des documents.</p>
+<ul>
+  <li>Upload de document valide (PDF, image, docx)</li>
+  <li>Rejet d'un fichier avec extension interdite</li>
+  <li>Rejet d'un fichier depassant la limite de 16 Mo</li>
+  <li>Affichage de la liste des documents avec filtres</li>
+  <li>Consultation du detail d'un document</li>
+  <li>Modification des metadonnees (nom, confidentialite, dossier)</li>
+  <li>Suppression d'un document et verification de la suppression en cascade</li>
+  <li>Telechargement d'un document par le proprietaire</li>
+  <li>Interdiction de telechargement sans permission</li>
+  <li>Partage d'un document avec permissions specifiques</li>
+  <li>Verification de l'acces apres partage</li>
+  <li>Revocation de permissions et verification de l'interdiction d'acces</li>
+  <li>Chiffrement et dechiffrement d'un document</li>
+  <li>Telechargement d'un document chiffre (dechiffrement a la volee)</li>
+  <li>Creation de dossier et deplacement de documents</li>
+  <li>Verification de la hierarchie parent/enfant des dossiers</li>
+</ul>
+</div>
+
+<div class="card">
+<h3><code>test_versions.py</code> - 4 tests</h3>
+<p>Tests du systeme de versioning.</p>
+<ul>
+  <li>Upload d'une nouvelle version avec commentaire</li>
+  <li>Verification de l'incrementation automatique du numero de version</li>
+  <li>Restauration d'une version anterieure comme version courante</li>
+  <li>Telechargement d'une version specifique</li>
+</ul>
+</div>
+
+<div class="card">
+<h3><code>test_tags.py</code> - 7 tests</h3>
+<p>Tests du systeme de tags.</p>
+<ul>
+  <li>Creation d'un tag avec nom et couleur</li>
+  <li>Association d'un tag a un document</li>
+  <li>Dissociation d'un tag d'un document</li>
+  <li>Filtrage des documents par tag</li>
+  <li>Interdiction de creer un tag avec un nom duplique</li>
+  <li>Suppression d'un tag et verification du nettoyage des associations</li>
+  <li>Modification de la couleur d'un tag existant</li>
+</ul>
+</div>
+
+<div class="card">
+<h3><code>test_security.py</code> - 14 tests</h3>
+<p>Tests des mecanismes de securite.</p>
+<ul>
+  <li>Inscription avec mot de passe respectant la politique</li>
+  <li>Rejet d'un mot de passe trop court (moins de 8 caracteres)</li>
+  <li>Rejet d'un mot de passe sans majuscule</li>
+  <li>Rejet d'un mot de passe sans chiffre</li>
+  <li>Rejet d'un mot de passe sans caractere special</li>
+  <li>Connexion reussie avec identifiants valides</li>
+  <li>Rejet de connexion avec mot de passe incorrect</li>
+  <li>Blocage apres 5 tentatives echouees (rate limiting)</li>
+  <li>Deblocage automatique apres 15 minutes</li>
+  <li>Acces refuse aux routes admin pour un utilisateur standard</li>
+  <li>Acces refuse aux documents d'autrui sans permission</li>
+  <li>Presence du jeton CSRF dans les formulaires</li>
+  <li>Rejet d'une soumission POST sans jeton CSRF valide</li>
+  <li>Verification des en-tetes de securite HTTP dans les reponses</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Execution des tests</h3>
+<pre><code># Lancer tous les tests
+pytest tests/ -v
+
+# Lancer un fichier specifique
+pytest tests/test_security.py -v
+
+# Lancer avec rapport de couverture
+pytest tests/ --cov=app --cov-report=html
+
+# Resultats attendus : 41 passed, 0 failed</code></pre>
+</div>
+
+<!-- ================================================================ -->
+<!-- 8. COMPETENCES BTS SIO                                           -->
+<!-- ================================================================ -->
+
+<h2>8. Competences BTS SIO SLAM</h2>
+
+<p>Le projet FamiliDocs mobilise l'ensemble des competences du referentiel BTS SIO option SLAM, epreuve E5. Le tableau ci-dessous etablit la correspondance entre les fonctionnalites implementees et les blocs de competences du referentiel.</p>
+
+<div class="card">
+<table>
+  <tr><th>Bloc</th><th>Competence</th><th>Mise en oeuvre dans FamiliDocs</th></tr>
+  <tr>
+    <td rowspan="4"><strong>B1 - Gerer le patrimoine informatique</strong></td>
+    <td>Recenser et identifier les ressources numeriques</td>
+    <td>Inventaire de la stack technique, choix des frameworks et bibliotheques, documentation des dependances</td>
+  </tr>
+  <tr>
+    <td>Exploiter des referentiels, normes et standards</td>
+    <td>Respect du pattern MVC, conventions REST pour les routes, nommage PEP 8 pour Python, normes RGPD pour les donnees personnelles</td>
+  </tr>
+  <tr>
+    <td>Mettre en place et verifier les niveaux d'habilitation</td>
+    <td>Systeme RBAC a 3 roles, permissions granulaires par document, decorateurs de verification sur chaque route</td>
+  </tr>
+  <tr>
+    <td>Verifier les conditions de la continuite d'un service informatique</td>
+    <td>Systeme de sauvegardes automatiques (creation, restauration, suppression), journalisation des 21 types d'actions</td>
+  </tr>
+  <tr>
+    <td rowspan="3"><strong>B2 - Repondre aux incidents et aux demandes</strong></td>
+    <td>Collecter, suivre et orienter des demandes</td>
+    <td>Systeme de notifications a 11 types, module de taches avec 4 statuts de progression, alertes automatiques pour documents expirants</td>
+  </tr>
+  <tr>
+    <td>Traiter des demandes concernant les services reseau et systeme</td>
+    <td>Interface d'administration : gestion des comptes (activation/desactivation), reinitialisation de mots de passe, consultation des logs systeme</td>
+  </tr>
+  <tr>
+    <td>Traiter des demandes concernant les applications</td>
+    <td>Rate limiting (5 tentatives, 15min blocage), gestion des erreurs HTTP (403, 404, 500), messages flash utilisateur</td>
+  </tr>
+  <tr>
+    <td rowspan="4"><strong>B3 - Developper la presence en ligne</strong></td>
+    <td>Participer a la valorisation de l'image de l'organisation</td>
+    <td>Interface Bootstrap 5 responsive, design accessible et intuitif adapte au public cible (personnes agees, familles)</td>
+  </tr>
+  <tr>
+    <td>Referencement et visibilite</td>
+    <td>Balises meta, structure HTML semantique, URLs lisibles et descriptives</td>
+  </tr>
+  <tr>
+    <td>Participer a l'evolution d'un site web</td>
+    <td>Architecture modulaire (Blueprints Flask) facilitant l'ajout de fonctionnalites, versioning du code source</td>
+  </tr>
+  <tr>
+    <td>Gestion de contenu numerique</td>
+    <td>Upload multi-format, organisation hierarchique, tags personnalises, recherche multi-criteres AJAX</td>
+  </tr>
+  <tr>
+    <td rowspan="4"><strong>B4 - Travailler en mode projet</strong></td>
+    <td>Analyser les objectifs et les modalites d'organisation</td>
+    <td>Analyse des besoins du public cible, definition des 9 tables du schema relationnel, specification des 25+ routes</td>
+  </tr>
+  <tr>
+    <td>Planifier les activites</td>
+    <td>Developpement iteratif par modules (auth &rarr; documents &rarr; permissions &rarr; tasks &rarr; admin), integration continue des tests</td>
+  </tr>
+  <tr>
+    <td>Evaluer les indicateurs de suivi et d'impact</td>
+    <td>Dashboard avec 4 KPI, graphe d'activite sur 6 mois, metriques systeme dans l'interface admin</td>
+  </tr>
+  <tr>
+    <td>Documenter les projets</td>
+    <td>Documentation technique complete (architecture, BDD, API, securite), commentaires de code, README, guide d'installation</td>
+  </tr>
+  <tr>
+    <td rowspan="5"><strong>B5 - Mettre a disposition des utilisateurs un service informatique (SLAM)</strong></td>
+    <td>Realiser des composants logiciels</td>
+    <td>9 modeles SQLAlchemy, 6 Blueprints de routes, 3 services metier, templates Jinja2, 41 tests pytest</td>
+  </tr>
+  <tr>
+    <td>Concevoir une base de donnees</td>
+    <td>Schema relationnel a 9 tables avec relations (FK, N:N via table d'association), auto-reference hierarchique (folders), contraintes d'integrite</td>
+  </tr>
+  <tr>
+    <td>Developper des composants d'acces aux donnees</td>
+    <td>ORM SQLAlchemy 2.0 avec requetes complexes (jointures, filtres dynamiques, tri, pagination), recherche multi-criteres</td>
+  </tr>
+  <tr>
+    <td>Securiser une solution applicative</td>
+    <td>bcrypt (cost 12), AES Fernet, CSRF, rate limiting, RBAC, en-tetes HTTP securite, UUID stockage, validation fichiers, sessions HttpOnly</td>
+  </tr>
+  <tr>
+    <td>Tester et valider une solution applicative</td>
+    <td>41 tests unitaires et d'integration (pytest), 4 fichiers couvrant documents, versions, tags et securite, base en memoire pour isolation</td>
+  </tr>
+  <tr>
+    <td rowspan="3"><strong>B6 - Organiser son developpement professionnel</strong></td>
+    <td>Mettre en place son environnement d'apprentissage</td>
+    <td>Veille technologique sur Flask 3.0, SQLAlchemy 2.0, bonnes pratiques OWASP, patterns de securite web</td>
+  </tr>
+  <tr>
+    <td>Mettre en oeuvre des outils et strategies de veille</td>
+    <td>Consultation de la documentation officielle Flask/SQLAlchemy, suivi des CVE pour les dependances, adoption des versions stables recentes</td>
+  </tr>
+  <tr>
+    <td>Developper son projet professionnel</td>
+    <td>Projet complet demonstrant la maitrise du cycle de developpement full-stack : conception, implementation, tests, securite, deploiement</td>
+  </tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- FOOTER                                                           -->
+<!-- ================================================================ -->
+
+<div class="footer">
+  FamiliDocs &mdash; Coffre Administratif Numerique Familial &mdash; Sagar MIR &mdash; BTS SIO SLAM 2025-2026
+</div>
+
+</div>
+</body>
+</html>

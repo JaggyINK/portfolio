@@ -1,5 +1,5 @@
 // src/components/LeftDockNav.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useIsMobile } from "../hooks/useMediaQuery";
 
 const ITEMS = [
@@ -216,6 +216,31 @@ export default function LeftDockNav() {
     return () => obs.disconnect();
   }, []);
 
+  /* Focus trap for mobile menu */
+  const menuRef = useRef(null);
+  const onKeyDownTrap = useCallback((e) => {
+    if (e.key === "Escape") { setIsMobileMenuOpen(false); return; }
+    if (e.key !== "Tab") return;
+    const container = menuRef.current;
+    if (!container) return;
+    const focusable = container.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }, []);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const container = menuRef.current;
+    if (!container) return;
+    const first = container.querySelector("button, a");
+    first?.focus();
+    document.addEventListener("keydown", onKeyDownTrap);
+    return () => document.removeEventListener("keydown", onKeyDownTrap);
+  }, [isMobileMenuOpen, onKeyDownTrap]);
+
   /* =========================
      VERSION MOBILE
      ========================= */
@@ -239,7 +264,7 @@ export default function LeftDockNav() {
 
         {/* Overlay plein écran */}
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm">
+          <div ref={menuRef} className="fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Menu de navigation">
             <div className="absolute flex flex-col border shadow-2xl inset-x-3 top-7 bottom-5 rounded-2xl bg-slate-950/95 border-white/12 shadow-black/70">
               {/* Header menu */}
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">

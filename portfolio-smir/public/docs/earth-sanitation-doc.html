@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Technique — Earth Sanitation</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #10b981; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent); border: 1px solid rgba(16,185,129,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .badge.orange { background: rgba(251,146,60,0.15); color: #fb923c; border-color: rgba(251,146,60,0.3); }
+  .badge.blue { background: rgba(96,165,250,0.15); color: #60a5fa; border-color: rgba(96,165,250,0.3); }
+  .badge.purple { background: rgba(168,85,247,0.15); color: #a855f7; border-color: rgba(168,85,247,0.3); }
+  .badge.red { background: rgba(248,113,113,0.15); color: #f87171; border-color: rgba(248,113,113,0.3); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .card-sm { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; }
+  .card-sm h4 { margin-top: 0; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { padding: 0.55rem 0.8rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(16,185,129,0.1); color: var(--accent); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), #059669); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(16,185,129,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+  .highlight-box { background: rgba(16,185,129,0.06); border-left: 3px solid var(--accent); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .highlight-box p { margin-bottom: 0; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin: 1rem 0; }
+  .stat-card { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 0.5rem; }
+  .stat-card .num { font-size: 1.6rem; font-weight: 800; color: var(--accent); display: block; }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent); }
+  .price-tag { display: inline-block; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3); border-radius: 0.5rem; padding: 0.4rem 1rem; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+  .price-compare { font-size: 0.82rem; color: var(--sub); margin-top: 0.3rem; }
+  .section-count { font-size: 0.75rem; color: var(--sub); font-weight: 400; margin-left: 0.5rem; }
+  @media (max-width: 700px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .meta { gap: 1rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== HEADER ========== -->
+<h1>Earth Sanitation</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">Documentation technique compl&egrave;te &mdash; Projet freelance</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Client :</strong> Earth Sanitation BTP</div>
+  <div class="meta-item"><strong>URL :</strong> <a href="https://earth-sanitation.fr">earth-sanitation.fr</a></div>
+  <div class="meta-item"><strong>Date :</strong> F&eacute;vrier 2026</div>
+  <div class="meta-item"><strong>Type :</strong> Projet freelance</div>
+  <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+</div>
+
+<div style="margin-bottom:0.8rem;">
+  <span class="badge">Next.js 14</span>
+  <span class="badge">TypeScript</span>
+  <span class="badge">Tailwind CSS v4</span>
+  <span class="badge">Prisma ORM</span>
+  <span class="badge">MySQL</span>
+  <span class="badge">PostgreSQL</span>
+  <span class="badge blue">NextAuth.js</span>
+  <span class="badge blue">bcrypt</span>
+  <span class="badge orange">Framer Motion</span>
+  <span class="badge orange">SEO Local</span>
+  <span class="badge purple">Schema.org (7 types)</span>
+  <span class="badge purple">59 pages locales</span>
+  <span class="badge red">Dashboard Admin</span>
+</div>
+
+<div style="margin-bottom:0.5rem;">
+  <span class="price-tag">3 500 &euro; tout inclus</span>
+</div>
+<p class="price-compare">Valeur march&eacute; estim&eacute;e : 11 400 &ndash; 22 600 &euro;</p>
+
+<!-- ========== STATS OVERVIEW ========== -->
+<div class="stat-grid">
+  <div class="stat-card"><span class="num">70+</span><span class="lbl">Pages</span></div>
+  <div class="stat-card"><span class="num">14</span><span class="lbl">API Routes</span></div>
+  <div class="stat-card"><span class="num">7</span><span class="lbl">Sch&eacute;mas SEO</span></div>
+  <div class="stat-card"><span class="num">59</span><span class="lbl">Villes</span></div>
+</div>
+
+<!-- ========== TABLE OF CONTENTS ========== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#contexte">Contexte et objectifs</a></li>
+    <li><a href="#archi">Architecture technique</a></li>
+    <li><a href="#pages">Pages publiques</a></li>
+    <li><a href="#admin">Dashboard Admin</a></li>
+    <li><a href="#backend">Base de donn&eacute;es et Backend (API)</a></li>
+    <li><a href="#seo">SEO et indexation</a></li>
+    <li><a href="#securite">S&eacute;curit&eacute;</a></li>
+    <li><a href="#perf">Performance et assets</a></li>
+    <li><a href="#zones">Zones d'intervention</a></li>
+    <li><a href="#mapping">Mapping complet Feature / API / BDD / Front / Admin</a></li>
+    <li><a href="#competences">Comp&eacute;tences mobilis&eacute;es</a></li>
+  </ol>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  1. CONTEXTE & OBJECTIFS                                               -->
+<!-- ====================================================================== -->
+<h2 id="contexte">1. Contexte et objectifs</h2>
+
+<p><strong>Earth Sanitation</strong> est une entreprise sp&eacute;cialis&eacute;e dans les services de plomberie d'urgence, de d&eacute;bouchage et d'assainissement. Elle intervient <strong>24 heures sur 24, 7 jours sur 7</strong>, y compris les jours f&eacute;ri&eacute;s, sur un rayon de <strong>100 km</strong> autour de Montpellier et N&icirc;mes, couvrant 3 d&eacute;partements (H&eacute;rault 34, Gard 30, Aude 11) et 59 villes.</p>
+
+<div class="card">
+<h3>Objectifs du projet</h3>
+<ul>
+  <li><strong>Vitrine professionnelle :</strong> cr&eacute;er un site de pr&eacute;sentation moderne et rassurant pour les particuliers et les professionnels recherchant des interventions d'urgence en assainissement.</li>
+  <li><strong>G&eacute;n&eacute;ration de leads :</strong> mettre en place un formulaire de contact et devis avec upload de photos, connecte a une base de donn&eacute;es, permettant le suivi des demandes depuis un back-office admin.</li>
+  <li><strong>SEO local agressif :</strong> dominer les r&eacute;sultats de recherche locaux gr&acirc;ce &agrave; 59 pages g&eacute;olocalis&eacute;es dynamiques (<code>/zone/[ville]</code>), 7 pages de services d&eacute;di&eacute;es, des donn&eacute;es structur&eacute;es Schema.org (7 types), et un sitemap dynamique g&eacute;n&eacute;r&eacute; depuis Prisma.</li>
+  <li><strong>Dashboard d'administration :</strong> permettre au client de g&eacute;rer ses leads, avis clients, articles de blog, FAQ, et de suivre ses statistiques de visites et d'appels depuis une interface prot&eacute;g&eacute;e.</li>
+  <li><strong>Suivi de pr&eacute;sence en ligne :</strong> outil int&eacute;gr&eacute; de v&eacute;rification de pr&eacute;sence sur 24 plateformes (Google Business, Pages Jaunes, etc.).</li>
+  <li><strong>Conversion maximale :</strong> CTA omnipresents (t&eacute;l&eacute;phone, formulaire, devis), boutons d'appel direct, signaux de confiance (avis, certifications, exp&eacute;rience).</li>
+</ul>
+</div>
+
+<div class="highlight-box">
+  <p><strong>Cadre BTS SIO :</strong> Ce projet freelance mobilise les comp&eacute;tences des blocs SLAM (d&eacute;veloppement fullstack, conception BDD, API REST, authentification, d&eacute;ploiement) et SISR (s&eacute;curit&eacute; des acc&egrave;s, headers HTTP, h&eacute;bergement). Il illustre la capacit&eacute; &agrave; livrer un produit complet &agrave; un client r&eacute;el dans un contexte professionnel.</p>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  2. ARCHITECTURE TECHNIQUE                                             -->
+<!-- ====================================================================== -->
+<h2 id="archi">2. Architecture technique</h2>
+
+<div class="card">
+<h3>Stack technologique</h3>
+<table>
+  <thead>
+    <tr><th>Couche</th><th>Technologie</th><th>R&ocirc;le</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Framework</td><td><code>Next.js 14</code> (App Router)</td><td>SSR / SSG, routing, API Routes, middleware</td></tr>
+    <tr><td>Langage</td><td><code>TypeScript</code></td><td>Typage statique, s&eacute;curit&eacute; du code, autocompl&eacute;tion</td></tr>
+    <tr><td>Styling</td><td><code>Tailwind CSS v4</code></td><td>Utility-first, responsive mobile-first, design system</td></tr>
+    <tr><td>Animations</td><td><code>Framer Motion</code></td><td>FadeIn, FadeInUp, SlideIn, ScaleIn, StaggerContainer</td></tr>
+    <tr><td>ORM</td><td><code>Prisma</code></td><td>Mod&egrave;les typ&eacute;s, migrations, relations, requ&ecirc;tes optimis&eacute;es</td></tr>
+    <tr><td>BDD Production</td><td><code>MySQL</code> (Hostinger)</td><td>Donn&eacute;es de production (leads, avis, blog, FAQ, stats)</td></tr>
+    <tr><td>BDD Locale</td><td><code>PostgreSQL</code></td><td>D&eacute;veloppement local et tests</td></tr>
+    <tr><td>Auth</td><td><code>NextAuth.js</code></td><td>Session JWT, login s&eacute;curis&eacute;, middleware prot&eacute;geant <code>/admin</code></td></tr>
+    <tr><td>Hachage</td><td><code>bcrypt</code></td><td>Hachage des mots de passe admin</td></tr>
+    <tr><td>H&eacute;bergement</td><td><code>Hostinger Business</code></td><td>Serveur mutualis&eacute; avec MySQL, SSL, domaine <code>earth-sanitation.fr</code></td></tr>
+    <tr><td>SEO</td><td><code>Schema.org / JSON-LD</code></td><td>7 types de donn&eacute;es structur&eacute;es, sitemap dynamique, robots.txt</td></tr>
+    <tr><td>PWA</td><td><code>Web App Manifest</code></td><td>Installable, ic&ocirc;nes, splash screen (PWA-ready)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Architecture applicative</h3>
+<pre style="background:#0d1117; padding:1rem; border-radius:0.5rem; overflow-x:auto; font-size:0.78rem; color:var(--sub); line-height:1.6;">
+earth-sanitation/
+├── app/
+│   ├── layout.tsx              # Layout principal + metadata globales
+│   ├── page.tsx                # Homepage
+│   ├── urgence/page.tsx        # Page Urgence 24/7
+│   ├── services/
+│   │   ├── debouchage/         # 7 pages services
+│   │   ├── curage/
+│   │   ├── inspection-camera/
+│   │   ├── assainissement/
+│   │   ├── vidange/
+│   │   ├── vrd/
+│   │   └── sans-tranchee/
+│   ├── zone/[ville]/page.tsx   # 59 pages locales dynamiques
+│   ├── blog/                   # Blog connect&eacute; BDD
+│   ├── faq/page.tsx            # FAQ connect&eacute;e BDD
+│   ├── contact/page.tsx        # Formulaire contact + devis
+│   ├── mentions-legales/
+│   ├── politique-confidentialite/
+│   ├── admin/                  # Dashboard prot&eacute;g&eacute; (middleware withAuth)
+│   │   ├── page.tsx            # Stats + graphiques
+│   │   ├── leads/              # Gestion des leads
+│   │   ├── reviews/            # Avis clients CRUD
+│   │   ├── blog/               # Blog admin CRUD
+│   │   ├── faq/                # FAQ admin CRUD
+│   │   ├── platforms/          # V&eacute;rificateur pr&eacute;sence
+│   │   └── settings/           # Param&egrave;tres
+│   └── api/                    # 14+ API Routes
+│       ├── contact/
+│       ├── track/visit/
+│       ├── track/phone-click/
+│       ├── blog/ + [id]/
+│       ├── reviews/ + [id]/
+│       ├── leads/ + [id]/
+│       ├── stats/
+│       ├── faq/ + [id]/
+│       ├── upload/lead/
+│       ├── cleanup/
+│       ├── admin/change-password/
+│       └── auth/[...nextauth]/
+├── prisma/
+│   └── schema.prisma           # Mod&egrave;les BDD
+├── components/                 # Composants r&eacute;utilisables
+├── lib/                        # Utilitaires (auth, prisma client, helpers)
+└── public/                     # Assets statiques
+</pre>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  3. PAGES PUBLIQUES                                                    -->
+<!-- ====================================================================== -->
+<h2 id="pages">3. Pages publiques<span class="section-count">(70+ pages)</span></h2>
+
+<h3>3.1 Homepage</h3>
+<div class="card">
+<p>Page d'accueil structur&eacute;e en sections avec animations Framer Motion :</p>
+<table>
+  <thead><tr><th>Section</th><th>Contenu</th></tr></thead>
+  <tbody>
+    <tr><td>Hero anim&eacute;</td><td>Titre accrocheur, sous-titre, CTA principal (appel + devis gratuit), animation d'entr&eacute;e</td></tr>
+    <tr><td>Trust Signals</td><td>Compteurs anim&eacute;s (ann&eacute;es d'exp&eacute;rience, interventions, clients satisfaits), badges certifications</td></tr>
+    <tr><td>Services</td><td>Grille des 7 services avec ic&ocirc;nes, descriptions courtes, liens vers pages d&eacute;di&eacute;es</td></tr>
+    <tr><td>Comment &ccedil;a marche</td><td>Processus en 3-4 &eacute;tapes visuelles (appel &rarr; diagnostic &rarr; intervention &rarr; nettoyage)</td></tr>
+    <tr><td>Urgence</td><td>Bandeau d'urgence 24/7 avec bouton d'appel direct</td></tr>
+    <tr><td>Zones d'intervention</td><td>Carte ou liste des 59 villes couvertes avec liens vers pages <code>/zone/[ville]</code></td></tr>
+    <tr><td>Avis clients</td><td>Carousel d'avis connect&eacute; &agrave; la BDD, notes &eacute;toiles, sources multiples</td></tr>
+    <tr><td>CTA final</td><td>Bloc de conversion (t&eacute;l&eacute;phone, formulaire, devis gratuit)</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>3.2 Page Urgence 24/7</h3>
+<div class="card">
+<p>Page d&eacute;di&eacute;e aux interventions d'urgence avec bouton d'appel direct grand format, temps de r&eacute;ponse garanti (&lt;1 heure), liste des situations d'urgence trait&eacute;es, et signaux de r&eacute;assurance.</p>
+</div>
+
+<h3>3.3 Pages services<span class="section-count">(7 pages)</span></h3>
+<div class="card">
+<p>Chaque page de service est optimis&eacute;e individuellement pour le SEO avec des mots-cl&eacute;s sp&eacute;cifiques, des donn&eacute;es structur&eacute;es <code>ServiceSchema</code>, une FAQ connect&eacute;e &agrave; la BDD et filtr&eacute;e par service, et des animations Framer Motion.</p>
+<table>
+  <thead><tr><th>Service</th><th>Route</th><th>Contenu cl&eacute;</th></tr></thead>
+  <tbody>
+    <tr><td>D&eacute;bouchage</td><td><code>/services/debouchage</code></td><td>Canalisations, WC, &eacute;vier, douche &mdash; m&eacute;thodes m&eacute;caniques et hydro</td></tr>
+    <tr><td>Curage</td><td><code>/services/curage</code></td><td>Nettoyage haute pression, maintenance pr&eacute;ventive, m&eacute;thodes &eacute;cologiques</td></tr>
+    <tr><td>Inspection cam&eacute;ra</td><td><code>/services/inspection-camera</code></td><td>Diagnostic endoscopique, d&eacute;tection fissures, racines, obstructions</td></tr>
+    <tr><td>Assainissement</td><td><code>/services/assainissement</code></td><td>Fosses septiques, microstations, raccordements collectifs</td></tr>
+    <tr><td>Vidange</td><td><code>/services/vidange</code></td><td>Pompage fosses septiques, bacs &agrave; graisse, stations de pompage, cuves</td></tr>
+    <tr><td>Travaux VRD</td><td><code>/services/vrd</code></td><td>Voirie et r&eacute;seaux divers &mdash; eau, &eacute;lectricit&eacute;, gaz, t&eacute;l&eacute;com</td></tr>
+    <tr><td>Sans tranch&eacute;e</td><td><code>/services/sans-tranchee</code></td><td>R&eacute;habilitation sans excavation : chemisage, &eacute;clatement, injection r&eacute;sine</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:0.8rem;"><strong>Chaque page inclut :</strong></p>
+<ul>
+  <li>Animations Framer Motion (FadeIn, FadeInUp, SlideIn, ScaleIn, StaggerContainer)</li>
+  <li>FAQ dynamique connect&eacute;e &agrave; la BDD, filtr&eacute;e par service, g&eacute;rable depuis l'admin</li>
+  <li>Donn&eacute;es structur&eacute;es <code>ServiceSchema</code> + <code>FAQSchema</code></li>
+  <li>Open Graph + Twitter Cards</li>
+  <li>CTA de conversion (appel, devis)</li>
+</ul>
+</div>
+
+<h3>3.4 Pages locales dynamiques<span class="section-count">(59 pages)</span></h3>
+<div class="card">
+<p>G&eacute;n&eacute;r&eacute;es dynamiquement via <code>/zone/[ville]</code> pour chacune des 59 villes d'intervention. Chaque page est unique et optimis&eacute;e pour le SEO local de cette ville sp&eacute;cifique.</p>
+<ul>
+  <li><strong>Route :</strong> <code>/zone/montpellier</code>, <code>/zone/nimes</code>, <code>/zone/beziers</code>, etc.</li>
+  <li><strong>Contenu :</strong> pr&eacute;sentation localis&eacute;e du service, mention de la ville et du d&eacute;partement, services propos&eacute;s</li>
+  <li><strong>SEO :</strong> <code>BreadcrumbSchema</code> + <code>LocalBusinessSchema</code> + <code>OpenGraph</code> sp&eacute;cifiques &agrave; chaque ville</li>
+  <li><strong>M&eacute;ta :</strong> titre et description uniques par ville, URL canonique</li>
+  <li><strong>Sitemap :</strong> toutes les pages locales sont incluses dans le sitemap dynamique</li>
+</ul>
+</div>
+
+<h3>3.5 Blog</h3>
+<div class="card">
+<ul>
+  <li>Articles connect&eacute;s &agrave; la base de donn&eacute;es via Prisma (mod&egrave;le <code>BlogPost</code>)</li>
+  <li>CRUD complet depuis le dashboard admin (cr&eacute;ation, &eacute;dition, activation/d&eacute;sactivation, suppression)</li>
+  <li>Donn&eacute;es structur&eacute;es <code>ArticleSchema</code> + <code>ArticleListSchema</code> sur la page de listing</li>
+  <li>Open Graph + Twitter Cards par article</li>
+  <li>Pages incluses dans le sitemap dynamique (g&eacute;n&eacute;r&eacute; depuis Prisma)</li>
+</ul>
+</div>
+
+<h3>3.6 FAQ</h3>
+<div class="card">
+<ul>
+  <li>Questions/r&eacute;ponses connect&eacute;es &agrave; la BDD, g&eacute;r&eacute;es depuis l'admin</li>
+  <li>Organisation par service (chaque page service affiche ses propres FAQ)</li>
+  <li>R&eacute;ordonnancement possible depuis l'admin (drag-and-drop ou boutons haut/bas)</li>
+  <li>Donn&eacute;es structur&eacute;es <code>FAQSchema</code></li>
+</ul>
+</div>
+
+<h3>3.7 Contact et Devis</h3>
+<div class="card">
+<ul>
+  <li>Formulaire complet : nom, t&eacute;l&eacute;phone, email, type (particulier / professionnel), service concern&eacute;, message, urgence</li>
+  <li><strong>Upload de photos :</strong> jusqu'&agrave; 5 photos (max 5 Mo chacune) via <code>/api/upload/lead</code></li>
+  <li>Validation c&ocirc;t&eacute; client et serveur</li>
+  <li>Enregistrement en BDD comme Lead avec statut <code>nouveau</code></li>
+  <li>Suivi depuis le dashboard admin</li>
+</ul>
+</div>
+
+<h3>3.8 Pages l&eacute;gales</h3>
+<div class="card">
+<ul>
+  <li><strong>Mentions l&eacute;gales :</strong> informations obligatoires (SIRET, adresse, h&eacute;bergeur, directeur publication)</li>
+  <li><strong>Politique de confidentialit&eacute; :</strong> RGPD, donn&eacute;es collect&eacute;es, dur&eacute;e de conservation, droits des utilisateurs</li>
+</ul>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  4. DASHBOARD ADMIN                                                    -->
+<!-- ====================================================================== -->
+<h2 id="admin">4. Dashboard Admin</h2>
+
+<p>Interface d'administration compl&egrave;te, prot&eacute;g&eacute;e par authentification JWT (NextAuth) avec middleware <code>withAuth</code> sur toutes les routes <code>/admin/*</code>.</p>
+
+<h3>4.1 Dashboard principal &mdash; Statistiques</h3>
+<div class="card">
+<p>Page d'accueil de l'admin avec vue d'ensemble de l'activit&eacute; du site :</p>
+<ul>
+  <li><strong>4 StatCards :</strong> visites totales, appels t&eacute;l&eacute;phoniques, leads re&ccedil;us, taux de conversion</li>
+  <li><strong>Tendances hebdomadaires :</strong> pourcentage d'&eacute;volution par rapport &agrave; la semaine pr&eacute;c&eacute;dente (fl&egrave;che verte/rouge)</li>
+  <li><strong>Graphiques :</strong> courbes de visites et de leads sur les 30 derniers jours</li>
+  <li><strong>API :</strong> <code>GET /api/stats</code> &mdash; agr&egrave;ge les donn&eacute;es depuis les tables <code>PageVisit</code>, <code>PhoneClick</code>, <code>Lead</code></li>
+</ul>
+</div>
+
+<h3>4.2 Gestion des Leads</h3>
+<div class="card">
+<ul>
+  <li><strong>Liste structur&eacute;e :</strong> cartes avec informations compl&egrave;tes (nom, t&eacute;l&eacute;phone, email, service, message, type, date)</li>
+  <li><strong>Changement de statut :</strong> nouveau &rarr; en cours &rarr; trait&eacute; &rarr; archiv&eacute;</li>
+  <li><strong>Lightbox photos :</strong> visualisation grand format des photos upload&eacute;es par le client</li>
+  <li><strong>Export CSV :</strong> t&eacute;l&eacute;chargement de tous les leads au format CSV</li>
+  <li><strong>Suppression :</strong> suppression individuelle avec confirmation</li>
+  <li><strong>API :</strong> <code>GET/PUT/DELETE /api/leads</code> + <code>/api/leads/[id]</code></li>
+</ul>
+</div>
+
+<h3>4.3 V&eacute;rificateur de pr&eacute;sence en ligne</h3>
+<div class="card">
+<ul>
+  <li><strong>24 plateformes v&eacute;rifi&eacute;es :</strong> Google Business Profile, Pages Jaunes, Yelp, TripAdvisor, Facebook, etc.</li>
+  <li>V&eacute;rification automatique ou manuelle de la pr&eacute;sence de l'entreprise sur chaque plateforme</li>
+  <li>Indicateurs visuels (pr&eacute;sent / absent / &agrave; v&eacute;rifier)</li>
+  <li>Liens directs vers les pages de cr&eacute;ation de profil</li>
+</ul>
+</div>
+
+<h3>4.4 Avis clients (CRUD)</h3>
+<div class="card">
+<ul>
+  <li><strong>Cr&eacute;ation :</strong> ajout d'avis avec nom, note, commentaire, source (Google, Pages Jaunes, site, etc.)</li>
+  <li><strong>&Eacute;dition :</strong> modification de tous les champs</li>
+  <li><strong>Visibilit&eacute; :</strong> toggle visible/masqu&eacute; (les avis masqu&eacute;s n'apparaissent pas sur le site public)</li>
+  <li><strong>R&eacute;ordonnancement :</strong> choix de l'ordre d'affichage des avis sur le site</li>
+  <li><strong>Sources multiples :</strong> indication de la provenance de l'avis</li>
+  <li><strong>Suppression :</strong> avec confirmation</li>
+  <li><strong>API :</strong> <code>GET/POST /api/reviews</code> + <code>GET/PUT/DELETE /api/reviews/[id]</code></li>
+</ul>
+</div>
+
+<h3>4.5 Blog admin (CRUD)</h3>
+<div class="card">
+<ul>
+  <li><strong>Cr&eacute;ation d'article :</strong> titre, contenu (rich text), slug, m&eacute;ta description, image</li>
+  <li><strong>&Eacute;dition :</strong> modification compl&egrave;te de l'article</li>
+  <li><strong>Activation / D&eacute;sactivation :</strong> toggle pour publier ou d&eacute;publier un article sans le supprimer</li>
+  <li><strong>Suppression :</strong> avec confirmation</li>
+  <li><strong>API :</strong> <code>GET/POST /api/blog</code> + <code>GET/PUT/DELETE /api/blog/[id]</code></li>
+</ul>
+</div>
+
+<h3>4.6 FAQ admin (CRUD)</h3>
+<div class="card">
+<ul>
+  <li><strong>Cr&eacute;ation :</strong> question, r&eacute;ponse, service associ&eacute; (ou g&eacute;n&eacute;ral)</li>
+  <li><strong>Organisation par service :</strong> chaque FAQ est li&eacute;e &agrave; un service sp&eacute;cifique ou &agrave; la page FAQ g&eacute;n&eacute;rale</li>
+  <li><strong>R&eacute;ordonnancement :</strong> modification de l'ordre d'affichage</li>
+  <li><strong>Suppression :</strong> avec confirmation</li>
+  <li><strong>API :</strong> <code>GET/POST /api/faq</code> + <code>GET/PUT/DELETE /api/faq/[id]</code></li>
+</ul>
+</div>
+
+<h3>4.7 Param&egrave;tres</h3>
+<div class="card">
+<ul>
+  <li><strong>Changement de mot de passe :</strong> ancien mot de passe + nouveau mot de passe + confirmation</li>
+  <li>Validation c&ocirc;t&eacute; serveur, hachage bcrypt</li>
+  <li><strong>API :</strong> <code>POST /api/admin/change-password</code></li>
+</ul>
+</div>
+
+<h3>4.8 S&eacute;curit&eacute; du dashboard</h3>
+<div class="card">
+<ul>
+  <li><strong>Middleware <code>withAuth</code> :</strong> v&eacute;rifie la session JWT sur toutes les routes <code>/admin/*</code></li>
+  <li><strong>JWT (NextAuth) :</strong> tokens sign&eacute;s, expiration configurable</li>
+  <li><strong>CSRF :</strong> protection int&eacute;gr&eacute;e via NextAuth</li>
+  <li><strong>Rate limiting login :</strong> 5 tentatives max par 15 minutes</li>
+  <li><strong>Mots de passe :</strong> hach&eacute;s avec bcrypt (co&ucirc;t 10+)</li>
+</ul>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  5. BASE DE DONNEES & BACKEND                                          -->
+<!-- ====================================================================== -->
+<h2 id="backend">5. Base de donn&eacute;es et Backend</h2>
+
+<h3>5.1 Mod&egrave;les Prisma</h3>
+<div class="card">
+<table>
+  <thead><tr><th>Mod&egrave;le</th><th>Description</th><th>Champs cl&eacute;s</th></tr></thead>
+  <tbody>
+    <tr><td><code>Lead</code></td><td>Demande de contact / devis</td><td>nom, t&eacute;l, email, type, service, message, photos, statut, date</td></tr>
+    <tr><td><code>PageVisit</code></td><td>Visite de page</td><td>path, IP (unique/jour), userAgent, date &mdash; exclut <code>/admin</code></td></tr>
+    <tr><td><code>PhoneClick</code></td><td>Clic sur num&eacute;ro de t&eacute;l</td><td>page, date, IP</td></tr>
+    <tr><td><code>BlogPost</code></td><td>Article de blog</td><td>titre, slug, contenu, metaDescription, image, actif, date</td></tr>
+    <tr><td><code>Review</code></td><td>Avis client</td><td>nom, note, commentaire, source, visible, ordre, date</td></tr>
+    <tr><td><code>FAQ</code></td><td>Question/r&eacute;ponse</td><td>question, r&eacute;ponse, service, ordre, date</td></tr>
+    <tr><td><code>User</code></td><td>Compte administrateur</td><td>email, password (bcrypt), r&ocirc;le</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h3>5.2 API Routes compl&egrave;tes</h3>
+<div class="card">
+<table>
+  <thead><tr><th>Route</th><th>M&eacute;thode(s)</th><th>Description</th><th>Auth</th></tr></thead>
+  <tbody>
+    <tr><td><code>/api/contact</code></td><td>POST</td><td>Cr&eacute;e un Lead en BDD (formulaire contact/devis)</td><td>Non</td></tr>
+    <tr><td><code>/api/track/visit</code></td><td>POST</td><td>Enregistre une PageVisit (unique par IP/jour, exclut <code>/admin</code>)</td><td>Non</td></tr>
+    <tr><td><code>/api/track/phone-click</code></td><td>POST</td><td>Enregistre un PhoneClick</td><td>Non</td></tr>
+    <tr><td><code>/api/blog</code></td><td>GET / POST</td><td>Liste les articles (GET public : actifs uniquement) / Cr&eacute;e un article (POST)</td><td>POST : Oui</td></tr>
+    <tr><td><code>/api/blog/[id]</code></td><td>GET / PUT / DELETE</td><td>D&eacute;tail, mise &agrave; jour, suppression d'un article</td><td>PUT/DELETE : Oui</td></tr>
+    <tr><td><code>/api/reviews</code></td><td>GET / POST</td><td>Liste les avis (GET public : visibles uniquement) / Cr&eacute;e un avis</td><td>POST : Oui</td></tr>
+    <tr><td><code>/api/reviews/[id]</code></td><td>GET / PUT / DELETE</td><td>D&eacute;tail, mise &agrave; jour, suppression d'un avis</td><td>PUT/DELETE : Oui</td></tr>
+    <tr><td><code>/api/leads</code></td><td>GET</td><td>Liste tous les leads (admin)</td><td>Oui</td></tr>
+    <tr><td><code>/api/leads/[id]</code></td><td>GET / PUT / DELETE</td><td>D&eacute;tail, changement statut, suppression d'un lead</td><td>Oui</td></tr>
+    <tr><td><code>/api/stats</code></td><td>GET</td><td>Statistiques dashboard (visites, appels, leads, tendances hebdomadaires)</td><td>Oui</td></tr>
+    <tr><td><code>/api/faq</code></td><td>GET / POST</td><td>Liste FAQ (GET public : filtre par service possible) / Cr&eacute;e une FAQ</td><td>POST : Oui</td></tr>
+    <tr><td><code>/api/faq/[id]</code></td><td>GET / PUT / DELETE</td><td>D&eacute;tail, mise &agrave; jour, suppression d'une FAQ</td><td>PUT/DELETE : Oui</td></tr>
+    <tr><td><code>/api/upload/lead</code></td><td>POST</td><td>Upload de photos pour devis (max 5 fichiers, 5 Mo chacun)</td><td>Non</td></tr>
+    <tr><td><code>/api/cleanup</code></td><td>POST</td><td>Suppression automatique des donn&eacute;es de plus de 60 jours (RGPD)</td><td>Oui</td></tr>
+    <tr><td><code>/api/admin/change-password</code></td><td>POST</td><td>Changement du mot de passe admin (ancien + nouveau, bcrypt)</td><td>Oui</td></tr>
+    <tr><td><code>/api/auth/[...nextauth]</code></td><td>GET / POST</td><td>Authentification NextAuth (login, logout, session, JWT)</td><td>&mdash;</td></tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  6. SEO & INDEXATION                                                   -->
+<!-- ====================================================================== -->
+<h2 id="seo">6. SEO et indexation</h2>
+
+<div class="card">
+<h3>Strat&eacute;gie SEO mise en place</h3>
+
+<h4>Sitemap dynamique</h4>
+<ul>
+  <li>G&eacute;n&eacute;r&eacute; automatiquement depuis Prisma (pages statiques + services + 59 zones + articles blog)</li>
+  <li>Mis &agrave; jour &agrave; chaque build avec les derni&egrave;res donn&eacute;es BDD</li>
+  <li>Priorit&eacute;s diff&eacute;renci&eacute;es (homepage: 1.0, services: 0.9, zones: 0.8, blog: 0.7)</li>
+</ul>
+
+<h4>robots.txt</h4>
+<ul>
+  <li>Autorise tous les crawlers sur les pages publiques</li>
+  <li>Bloque l'acc&egrave;s &agrave; <code>/admin</code>, <code>/api</code></li>
+  <li>R&eacute;f&eacute;rence le sitemap</li>
+</ul>
+
+<h4>Web App Manifest (PWA-ready)</h4>
+<ul>
+  <li>Nom, description, ic&ocirc;nes, couleur de th&egrave;me</li>
+  <li>Permet l'installation sur mobile comme une application native</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Donn&eacute;es structur&eacute;es Schema.org<span class="section-count">(7 types)</span></h3>
+<table>
+  <thead><tr><th>Type de sch&eacute;ma</th><th>Utilis&eacute; sur</th><th>Donn&eacute;es cl&eacute;s</th></tr></thead>
+  <tbody>
+    <tr><td><code>LocalBusiness</code></td><td>Toutes les pages</td><td>Nom, adresse, t&eacute;l, horaires 24/7, zone de service, coordonn&eacute;es GPS</td></tr>
+    <tr><td><code>WebSite</code></td><td>Layout principal</td><td>Nom du site, URL, SearchAction potentiel</td></tr>
+    <tr><td><code>ServiceSchema</code></td><td>7 pages services</td><td>Nom du service, description, zone de service, fournisseur</td></tr>
+    <tr><td><code>FAQSchema</code></td><td>Pages services + page FAQ</td><td>Questions/r&eacute;ponses (depuis la BDD)</td></tr>
+    <tr><td><code>BreadcrumbSchema</code></td><td>59 pages zones + services</td><td>Fil d'Ariane structur&eacute; (Accueil &rarr; Zone &rarr; Ville)</td></tr>
+    <tr><td><code>ArticleSchema</code></td><td>Pages blog individuelles</td><td>Titre, auteur, date, image, description</td></tr>
+    <tr><td><code>ArticleListSchema</code></td><td>Page listing blog</td><td>Liste des articles avec m&eacute;tadonn&eacute;es</td></tr>
+    <tr><td><code>AggregateRating</code></td><td>Inclus dans LocalBusiness</td><td>Note moyenne, nombre d'avis</td></tr>
+    <tr><td><code>OfferCatalog</code></td><td>Inclus dans LocalBusiness</td><td>Catalogue des services propos&eacute;s</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Balises m&eacute;ta et Open Graph</h3>
+<ul>
+  <li><strong>Titre unique</strong> par page (optimis&eacute; avec mots-cl&eacute;s locaux)</li>
+  <li><strong>Meta description</strong> unique par page</li>
+  <li><strong>Canonical URL</strong> sur chaque page pour &eacute;viter le contenu dupliqu&eacute;</li>
+  <li><strong>Open Graph :</strong> og:title, og:description, og:image, og:url, og:type sur toutes les pages</li>
+  <li><strong>Twitter Cards :</strong> twitter:card, twitter:title, twitter:description, twitter:image</li>
+  <li><strong>Keywords :</strong> mots-cl&eacute;s cibl&eacute;s par page (service + ville + d&eacute;partement)</li>
+</ul>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  7. SECURITE                                                           -->
+<!-- ====================================================================== -->
+<h2 id="securite">7. S&eacute;curit&eacute;</h2>
+
+<div class="card">
+<table>
+  <thead><tr><th>Mesure</th><th>Impl&eacute;mentation</th><th>D&eacute;tail</th></tr></thead>
+  <tbody>
+    <tr><td>Authentification</td><td>NextAuth.js + JWT</td><td>Session sign&eacute;e, expiration configurable, refresh automatique</td></tr>
+    <tr><td>Middleware auth</td><td><code>withAuth</code></td><td>V&eacute;rifie la session JWT sur toutes les routes <code>/admin/*</code> et les API prot&eacute;g&eacute;es</td></tr>
+    <tr><td>Rate limiting</td><td>Compteur par IP</td><td>5 tentatives de connexion max par 15 minutes, puis blocage temporaire</td></tr>
+    <tr><td>Hachage mots de passe</td><td>bcrypt</td><td>Co&ucirc;t de hachage configurable (10+), jamais de mot de passe en clair</td></tr>
+    <tr><td>CSRF</td><td>NextAuth int&eacute;gr&eacute;</td><td>Token CSRF sur les formulaires d'authentification</td></tr>
+    <tr><td><code>X-Content-Type-Options</code></td><td>Header HTTP</td><td><code>nosniff</code> &mdash; emp&ecirc;che le MIME sniffing</td></tr>
+    <tr><td><code>X-Frame-Options</code></td><td>Header HTTP</td><td><code>DENY</code> &mdash; emp&ecirc;che l'int&eacute;gration dans des iframes (clickjacking)</td></tr>
+    <tr><td><code>X-XSS-Protection</code></td><td>Header HTTP</td><td><code>1; mode=block</code> &mdash; protection XSS navigateur</td></tr>
+    <tr><td><code>Referrer-Policy</code></td><td>Header HTTP</td><td><code>strict-origin-when-cross-origin</code></td></tr>
+    <tr><td><code>Permissions-Policy</code></td><td>Header HTTP</td><td>Restriction des API navigateur (camera, microphone, geolocation)</td></tr>
+    <tr><td>Cache headers</td><td>Headers HTTP</td><td>Optimis&eacute;s par type de ressource (assets statiques, pages dynamiques, API)</td></tr>
+    <tr><td>Nettoyage RGPD</td><td><code>/api/cleanup</code></td><td>Suppression automatique des donn&eacute;es de tracking de plus de 60 jours</td></tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  8. PERFORMANCE & ASSETS                                               -->
+<!-- ====================================================================== -->
+<h2 id="perf">8. Performance et assets</h2>
+
+<div class="card-grid">
+  <div class="card-sm">
+    <h4>Optimisation du logo</h4>
+    <p>Logo SVG original : <strong>3.5 Mo</strong><br/>
+    Export PNG optimis&eacute; : <strong>55 Ko</strong> (-98%)<br/>
+    Export WebP : <strong>36 Ko</strong> (-99%)</p>
+  </div>
+  <div class="card-sm">
+    <h4>Formats d'image</h4>
+    <p><strong>AVIF / WebP</strong> en priorit&eacute; avec fallback PNG/JPG.<br/>
+    <strong>Lazy loading</strong> natif sur toutes les images sous le fold.<br/>
+    <strong>Favicons</strong> g&eacute;n&eacute;r&eacute;s (16x16, 32x32, 180x180, 192x192, 512x512).</p>
+  </div>
+</div>
+
+<div class="card">
+<h3>Animations Framer Motion</h3>
+<table>
+  <thead><tr><th>Composant</th><th>Effet</th><th>Utilisation</th></tr></thead>
+  <tbody>
+    <tr><td><code>FadeIn</code></td><td>Apparition progressive (opacit&eacute; 0 &rarr; 1)</td><td>Sections g&eacute;n&eacute;rales, textes</td></tr>
+    <tr><td><code>FadeInUp</code></td><td>Apparition + translation vers le haut</td><td>Cartes de services, t&eacute;moignages</td></tr>
+    <tr><td><code>SlideIn</code></td><td>Glissement depuis la gauche ou la droite</td><td>Images, blocs lat&eacute;raux</td></tr>
+    <tr><td><code>ScaleIn</code></td><td>Mise &agrave; l'&eacute;chelle (petit &rarr; taille normale)</td><td>Ic&ocirc;nes, badges, CTA</td></tr>
+    <tr><td><code>StaggerContainer</code></td><td>Apparition s&eacute;quentielle des enfants</td><td>Grilles de services, listes d'&eacute;tapes</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+<h3>Optimisations de performance</h3>
+<ul>
+  <li><strong>Next.js Image :</strong> optimisation automatique, redimensionnement, formats modernes</li>
+  <li><strong>SSR / SSG :</strong> pages pr&eacute;-rendues pour un First Contentful Paint rapide</li>
+  <li><strong>Code splitting :</strong> chargement &agrave; la demande des composants lourds</li>
+  <li><strong>Cache headers :</strong> strat&eacute;gie de cache diff&eacute;renci&eacute;e (assets immutables vs pages dynamiques)</li>
+  <li><strong>Fonts :</strong> chargement optimis&eacute; via <code>next/font</code></li>
+  <li><strong>CSS :</strong> Tailwind CSS v4 avec purge automatique des classes inutilis&eacute;es</li>
+</ul>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  9. ZONES D'INTERVENTION                                               -->
+<!-- ====================================================================== -->
+<h2 id="zones">9. Zones d'intervention<span class="section-count">(3 d&eacute;partements, 59 villes)</span></h2>
+
+<div class="card">
+<table>
+  <thead><tr><th>D&eacute;partement</th><th>Villes couvertes</th><th>Nb</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>H&eacute;rault (34)</strong></td>
+      <td>Montpellier, B&eacute;ziers, S&egrave;te, Agde, Lunel, Lattes, P&eacute;rols, Castelnau-le-Lez, Mauguio, Frontignan, Palavas-les-Flots, La Grande-Motte, Villeneuve-l&egrave;s-Maguelone, Baillargues, Saint-Jean-de-V&eacute;das, Jacou, Clapiers, Le Cr&egrave;s, Grabels, Juvignac, Saint-Gely-du-Fesc, Castries, Lansargues, Marsillargues, Poussan, Gigean, Fabrègues, Pignan, Cournonterral, Clermont-l'H&eacute;rault, Pézenas, Lodève, Sérignan, Valras-Plage, Vias, Portiragnes, Cap d'Agde</td>
+      <td style="text-align:center; white-space:nowrap;">~37</td>
+    </tr>
+    <tr>
+      <td><strong>Gard (30)</strong></td>
+      <td>N&icirc;mes, Al&egrave;s, Bagnols-sur-C&egrave;ze, Beaucaire, Vauvert, Aigues-Mortes, Saint-Gilles, Marguerittes, Manduel, Milhaud, Vergèze, Calvisson, Sommières, Aimargues, Le Grau-du-Roi, Villeneuve-lès-Avignon</td>
+      <td style="text-align:center; white-space:nowrap;">~16</td>
+    </tr>
+    <tr>
+      <td><strong>Aude (11)</strong></td>
+      <td>Narbonne, Carcassonne, L&eacute;zignan-Corbi&egrave;res, Coursan, Sigean, Gruissan</td>
+      <td style="text-align:center; white-space:nowrap;">~6</td>
+    </tr>
+  </tbody>
+</table>
+<p style="margin-top:0.8rem; font-size:0.85rem;">Chaque ville dispose de sa propre page <code>/zone/[ville]</code> avec contenu unique, m&eacute;ta SEO sp&eacute;cifiques, <code>BreadcrumbSchema</code>, <code>LocalBusinessSchema</code> et <code>OpenGraph</code>.</p>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  10. MAPPING COMPLET                                                   -->
+<!-- ====================================================================== -->
+<h2 id="mapping">10. Mapping Feature / API / BDD / Front / Admin</h2>
+
+<div class="card">
+<table>
+  <thead>
+    <tr><th>Fonctionnalit&eacute;</th><th>API</th><th>Table BDD</th><th>Front (public)</th><th>Admin</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Demande de contact/devis</td>
+      <td><code>/api/contact</code><br/><code>/api/upload/lead</code></td>
+      <td><code>Lead</code></td>
+      <td>Page Contact + Devis</td>
+      <td>Gestion Leads</td>
+    </tr>
+    <tr>
+      <td>Tracking visites</td>
+      <td><code>/api/track/visit</code></td>
+      <td><code>PageVisit</code></td>
+      <td>Auto (toutes pages sauf /admin)</td>
+      <td>Dashboard Stats</td>
+    </tr>
+    <tr>
+      <td>Tracking appels</td>
+      <td><code>/api/track/phone-click</code></td>
+      <td><code>PhoneClick</code></td>
+      <td>Auto (clic sur num&eacute;ro)</td>
+      <td>Dashboard Stats</td>
+    </tr>
+    <tr>
+      <td>Articles de blog</td>
+      <td><code>/api/blog</code><br/><code>/api/blog/[id]</code></td>
+      <td><code>BlogPost</code></td>
+      <td>Page Blog + articles</td>
+      <td>Blog CRUD</td>
+    </tr>
+    <tr>
+      <td>Avis clients</td>
+      <td><code>/api/reviews</code><br/><code>/api/reviews/[id]</code></td>
+      <td><code>Review</code></td>
+      <td>Carousel Homepage + pages</td>
+      <td>Avis CRUD</td>
+    </tr>
+    <tr>
+      <td>FAQ</td>
+      <td><code>/api/faq</code><br/><code>/api/faq/[id]</code></td>
+      <td><code>FAQ</code></td>
+      <td>Page FAQ + pages services</td>
+      <td>FAQ CRUD</td>
+    </tr>
+    <tr>
+      <td>Statistiques</td>
+      <td><code>/api/stats</code></td>
+      <td>PageVisit + PhoneClick + Lead</td>
+      <td>&mdash;</td>
+      <td>Dashboard principal</td>
+    </tr>
+    <tr>
+      <td>Nettoyage RGPD</td>
+      <td><code>/api/cleanup</code></td>
+      <td>PageVisit + PhoneClick</td>
+      <td>&mdash;</td>
+      <td>Automatique / cron</td>
+    </tr>
+    <tr>
+      <td>Authentification</td>
+      <td><code>/api/auth/[...]</code><br/><code>/api/admin/change-password</code></td>
+      <td><code>User</code></td>
+      <td>&mdash;</td>
+      <td>Login + Param&egrave;tres</td>
+    </tr>
+    <tr>
+      <td>Pr&eacute;sence en ligne</td>
+      <td>&mdash; (client-side)</td>
+      <td>&mdash;</td>
+      <td>&mdash;</td>
+      <td>V&eacute;rificateur 24 plateformes</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+<!-- ====================================================================== -->
+<!--  11. COMPETENCES MOBILISEES                                            -->
+<!-- ====================================================================== -->
+<h2 id="competences">11. Comp&eacute;tences mobilis&eacute;es</h2>
+
+<div class="card-grid">
+  <div class="card-sm">
+    <h4>D&eacute;veloppement Frontend</h4>
+    <ul>
+      <li>Next.js 14 (App Router, SSR/SSG)</li>
+      <li>TypeScript (typage strict)</li>
+      <li>Tailwind CSS v4 (responsive mobile-first)</li>
+      <li>Framer Motion (5 types d'animations)</li>
+      <li>React (composants, hooks, context)</li>
+    </ul>
+  </div>
+  <div class="card-sm">
+    <h4>D&eacute;veloppement Backend</h4>
+    <ul>
+      <li>API Routes Next.js (REST, 14 endpoints)</li>
+      <li>Prisma ORM (sch&eacute;ma, migrations, requ&ecirc;tes)</li>
+      <li>MySQL (production) / PostgreSQL (dev)</li>
+      <li>NextAuth.js (JWT, sessions)</li>
+      <li>bcrypt (hachage mots de passe)</li>
+    </ul>
+  </div>
+  <div class="card-sm">
+    <h4>SEO et R&eacute;f&eacute;rencement</h4>
+    <ul>
+      <li>7 types de donn&eacute;es structur&eacute;es Schema.org</li>
+      <li>Sitemap dynamique depuis Prisma</li>
+      <li>59 pages locales g&eacute;olocalis&eacute;es</li>
+      <li>Open Graph + Twitter Cards</li>
+      <li>Canonical URLs + robots.txt</li>
+    </ul>
+  </div>
+  <div class="card-sm">
+    <h4>S&eacute;curit&eacute; et D&eacute;ploiement</h4>
+    <ul>
+      <li>Rate limiting, CSRF, auth middleware</li>
+      <li>Headers de s&eacute;curit&eacute; HTTP (5 types)</li>
+      <li>Nettoyage automatique RGPD (60 jours)</li>
+      <li>Hostinger Business (MySQL, SSL)</li>
+      <li>Gestion de domaine (<code>earth-sanitation.fr</code>)</li>
+    </ul>
+  </div>
+  <div class="card-sm">
+    <h4>Gestion de Projet</h4>
+    <ul>
+      <li>Relation client freelance</li>
+      <li>Cahier des charges et sp&eacute;cifications</li>
+      <li>Livraison et formation client</li>
+      <li>Documentation technique</li>
+    </ul>
+  </div>
+  <div class="card-sm">
+    <h4>Design et UX</h4>
+    <ul>
+      <li>Design responsive (mobile, tablette, desktop)</li>
+      <li>Palette professionnelle (vert, or, cr&egrave;me, rouge urgence)</li>
+      <li>Optimisation des conversions (CTA)</li>
+      <li>Accessibilit&eacute; (contrastes, navigation clavier)</li>
+    </ul>
+  </div>
+</div>
+
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  <p>Documentation technique Earth Sanitation &mdash; Con&ccedil;u et d&eacute;velopp&eacute; par <strong>S. MIR</strong> &mdash; F&eacute;vrier 2026</p>
+  <p style="margin-top:0.4rem;">Projet freelance &mdash; <a href="https://earth-sanitation.fr">earth-sanitation.fr</a> &mdash; 3 500 &euro; tout inclus</p>
+</div>
+
+</div>
+</body>
+</html>

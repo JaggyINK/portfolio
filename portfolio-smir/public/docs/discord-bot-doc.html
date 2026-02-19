@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot Discord — Veille Tech</title>
+    <style>
+        :root { --bg: #0b1020; --card: #111827; --accent: #5865F2; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+        h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+        p, li { color: var(--sub); font-size: 0.95rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
+        .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(88,101,242,0.15); color: var(--accent); border: 1px solid rgba(88,101,242,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .meta-item { font-size: 0.85rem; color: var(--sub); }
+        .meta-item strong { color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+        th { background: rgba(88,101,242,0.1); color: var(--accent); font-weight: 600; }
+        td { color: var(--sub); }
+        .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), #3a42a0); border-radius: 2px; margin-bottom: 2rem; }
+        code { background: rgba(88,101,242,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+        .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Bot Discord — Veille Tech</h1>
+        <div class="header-line"></div>
+
+        <div class="meta">
+            <div class="meta-item"><strong>Date :</strong> 2025</div>
+            <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+            <div class="meta-item"><strong>Type :</strong> Projet BTS SIO</div>
+            <div class="meta-item"><strong>Contexte :</strong> Veille technologique</div>
+        </div>
+
+        <div>
+            <span class="badge">Python</span>
+            <span class="badge">Discord API</span>
+            <span class="badge">RSS</span>
+            <span class="badge">Automation</span>
+            <span class="badge">asyncio</span>
+            <span class="badge">OWASP</span>
+        </div>
+
+        <!-- ─── 1. Contexte et objectifs ─── -->
+        <h2>1. Contexte et objectifs</h2>
+        <div class="card">
+            <p>
+                Bot Discord concu pour automatiser la veille technologique dans le cadre du BTS SIO.
+                Il assure la publication automatique, 24 h/24, d'articles issus de sources reconnues
+                en securite informatique et developpement web.
+            </p>
+            <p>
+                L'objectif est de centraliser la collecte d'informations techniques dans un serveur
+                Discord dedie, permettant aux etudiants et professionnels de rester informes en
+                temps reel sans effort manuel.
+            </p>
+        </div>
+
+        <!-- ─── 2. Architecture technique ─── -->
+        <h2>2. Architecture technique</h2>
+        <div class="card">
+            <h3>Stack technique</h3>
+            <ul>
+                <li><code>Python 3</code> — Langage principal</li>
+                <li><code>discord.py</code> — Bibliotheque d'interaction avec l'API Discord</li>
+                <li><code>asyncio</code> — Programmation asynchrone pour les taches concurrentes</li>
+                <li><code>feedparser</code> — Parsing des flux RSS/Atom</li>
+                <li><code>aiohttp</code> — Requetes HTTP asynchrones</li>
+            </ul>
+
+            <h3>Paradigme</h3>
+            <p>
+                Architecture <strong>event-driven</strong> reposant sur des commandes slash et des
+                listeners d'evenements Discord. Les taches de collecte RSS s'executent en arriere-plan
+                via des boucles asynchrones, garantissant une reactivite constante du bot.
+            </p>
+        </div>
+
+        <!-- ─── 3. Sources de veille ─── -->
+        <h2>3. Sources de veille</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Domaine</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>OWASP</td>
+                        <td>Securite applicative</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>CERT-FR</td>
+                        <td>Alertes securite nationales</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>MSRC (Microsoft Security Response Center)</td>
+                        <td>Vulnerabilites Microsoft</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>Krebs on Security</td>
+                        <td>Enquetes cybersecurite</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>Hacker News</td>
+                        <td>Actualites tech generales</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>The Register</td>
+                        <td>Actualites IT / securite</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>BleepingComputer</td>
+                        <td>Malwares et vulnerabilites</td>
+                        <td>RSS</td>
+                    </tr>
+                    <tr>
+                        <td>Dark Reading</td>
+                        <td>Cybersecurite entreprise</td>
+                        <td>RSS</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ─── 4. Commandes interactives ─── -->
+        <h2>4. Commandes interactives</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Commande</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>!veille</code></td>
+                        <td>Affiche la derniere veille publiee</td>
+                    </tr>
+                    <tr>
+                        <td><code>!ldap</code></td>
+                        <td>Articles lies a LDAP / Active Directory</td>
+                    </tr>
+                    <tr>
+                        <td><code>!web</code></td>
+                        <td>Articles sur la securite web</td>
+                    </tr>
+                    <tr>
+                        <td><code>!news</code></td>
+                        <td>Actualites technologiques recentes</td>
+                    </tr>
+                    <tr>
+                        <td><code>!help</code></td>
+                        <td>Affiche l'aide et la liste des commandes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ─── 5. Fonctionnalites ─── -->
+        <h2>5. Fonctionnalites</h2>
+        <div class="card">
+            <ul>
+                <li><strong>Agregation multi-sources RSS</strong> — Collecte unifiee depuis l'ensemble des flux configures</li>
+                <li><strong>Filtrage par mots-cles</strong> — Tri intelligent des articles selon les thematiques pertinentes</li>
+                <li><strong>Publication automatique</strong> — Envoi dans les channels dedies sans intervention humaine</li>
+                <li><strong>Formatage rich embed Discord</strong> — Mise en forme avancee avec titres, descriptions, miniatures et liens</li>
+                <li><strong>Gestion des erreurs et retry</strong> — Mecanismes de reprise automatique en cas d'echec de requete</li>
+                <li><strong>Logs d'activite</strong> — Journalisation complete des actions du bot pour le suivi et le debug</li>
+            </ul>
+        </div>
+
+        <!-- ─── 6. Securite ─── -->
+        <h2>6. Securite</h2>
+        <div class="card">
+            <ul>
+                <li><strong>Token bot securise</strong> — Stockage du token via variables d'environnement (<code>.env</code>), jamais en dur dans le code</li>
+                <li><strong>Rate limiting Discord API</strong> — Respect des limites imposees par l'API Discord pour eviter les bans</li>
+                <li><strong>Validation des sources RSS</strong> — Verification de l'integrite et de la disponibilite des flux avant traitement</li>
+                <li><strong>Sanitization des contenus</strong> — Nettoyage des donnees recues pour prevenir les injections dans les messages</li>
+            </ul>
+        </div>
+
+        <!-- ─── 7. Competences BTS SIO ─── -->
+        <h2>7. Competences BTS SIO</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Competence</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Gerer le patrimoine informatique</strong></td>
+                        <td>Mise en place et maintenance d'un outil de veille automatise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Repondre aux incidents</strong></td>
+                        <td>Gestion des erreurs, retry et logging pour assurer la disponibilite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Developper la presence en ligne</strong></td>
+                        <td>Automatisation de la diffusion de contenu via Discord</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Travailler en mode projet</strong></td>
+                        <td>Conception, developpement et deploiement d'un bot complet</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mettre a disposition un service</strong></td>
+                        <td>Bot accessible 24 h/24 pour l'ensemble des utilisateurs du serveur</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Organiser sa veille</strong></td>
+                        <td>Structuration et automatisation de la collecte d'informations techniques</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            S. MIR — Bot Discord Veille Tech — BTS SIO 2025
+        </div>
+
+    </div>
+</body>
+</html>

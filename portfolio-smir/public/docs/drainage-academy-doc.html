@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Drainage Academy</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --gold: #d4af37; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--gold); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--gold); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(212,175,55,0.15); color: var(--gold); border: 1px solid rgba(212,175,55,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(212,175,55,0.1); color: var(--gold); font-weight: 600; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--gold), #b8860b); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(212,175,55,0.1); color: var(--gold); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>Drainage Academy</h1>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Client :</strong> Dan Samama - Drainage Academy</div>
+  <div class="meta-item"><strong>URL :</strong> <a href="https://drainage-academy.fr" style="color: var(--gold);">drainage-academy.fr</a></div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+  <div class="meta-item"><strong>Type :</strong> Projet freelance</div>
+  <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+</div>
+
+<div>
+  <span class="badge">React</span>
+  <span class="badge">Node.js</span>
+  <span class="badge">Auth</span>
+  <span class="badge">Admin Panel</span>
+  <span class="badge">API REST</span>
+  <span class="badge">Base de donnees</span>
+</div>
+
+<h2>1. Contexte et objectifs</h2>
+<p>Drainage Academy est une ecole professionnelle de drainage lymphatique fondee par Dan Samama. La plateforme complete comprend un site vitrine public, un espace praticien securise et un back-office d'administration complet.</p>
+<p>L'objectif etait de developper une solution fullstack (front + back + middleware) permettant au fondateur de gerer de maniere autonome l'integralite du contenu du site depuis une interface d'administration intuitive.</p>
+
+<h2>2. Architecture technique</h2>
+
+<div class="card">
+<h3>Frontend (Site public)</h3>
+<ul>
+  <li><strong>React</strong> : Interface utilisateur moderne et reactive</li>
+  <li>Design responsive mobile-first</li>
+  <li>Palette professionnelle beige/neutre</li>
+  <li>Carrousel de temoignages video avec auto-defilement</li>
+  <li>Integration WhatsApp pour les consultations</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Middleware (Authentification)</h3>
+<ul>
+  <li>Systeme d'authentification securise pour les praticiens</li>
+  <li>Gestion des sessions avec tokens JWT</li>
+  <li>Roles et permissions (admin, praticien, visiteur)</li>
+  <li>Protection des routes sensibles</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Backend (Administration)</h3>
+<ul>
+  <li><strong>Node.js</strong> : API REST pour la gestion de contenu</li>
+  <li><strong>Base de donnees</strong> : Stockage des praticiens, articles, avis, medias</li>
+  <li>Interface d'administration complete pour Dan (le fondateur)</li>
+  <li>Upload et gestion de fichiers (photos, videos)</li>
+</ul>
+</div>
+
+<h2>3. Pages publiques</h2>
+
+<table>
+  <thead>
+    <tr><th>Page</th><th>Description</th><th>Fonctionnalites</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Accueil</td>
+      <td>Landing page presentant la methode en 3 piliers</td>
+      <td>Geste, Apprentissage, Pratique + temoignages video</td>
+    </tr>
+    <tr>
+      <td>Formation</td>
+      <td>Description detaillee du programme de formation</td>
+      <td>Groupes de 4 max, videos illimitees, 2 jours presentiel</td>
+    </tr>
+    <tr>
+      <td>Agenda</td>
+      <td>Dates et planning des sessions de formation</td>
+      <td>Calendrier dynamique, inscription en ligne</td>
+    </tr>
+    <tr>
+      <td>A propos</td>
+      <td>Philosophie de l'ecole et parcours du fondateur</td>
+      <td>Approche physiologique unique</td>
+    </tr>
+    <tr>
+      <td>Annuaire</td>
+      <td>Repertoire des praticiens certifies</td>
+      <td>Recherche par localisation, profils detailles</td>
+    </tr>
+    <tr>
+      <td>Contact</td>
+      <td>Formulaire de contact et reservation</td>
+      <td>WhatsApp, email, consultation gratuite</td>
+    </tr>
+    <tr>
+      <td>Espace Praticien</td>
+      <td>Portail d'authentification securise</td>
+      <td>Login, acces aux ressources exclusives</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>4. Espace Administration (Back-office)</h2>
+<p>Le back-office est le coeur du projet : il permet a Dan de gerer l'integralite du contenu visible sur le site public, sans aucune competence technique requise.</p>
+
+<div class="card">
+<h3>Fonctionnalites admin</h3>
+<table>
+  <thead>
+    <tr><th>Module</th><th>Description</th><th>Actions disponibles</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Blog</td>
+      <td>Gestion des articles et contenus editoriaux</td>
+      <td>Creer, modifier, supprimer, publier/depublier</td>
+    </tr>
+    <tr>
+      <td>Avis / Temoignages</td>
+      <td>Gestion des temoignages praticiens et videos</td>
+      <td>Ajouter, moderer, ordonner, activer/desactiver</td>
+    </tr>
+    <tr>
+      <td>Photos / Medias</td>
+      <td>Galerie de medias du site</td>
+      <td>Upload, suppression, reorganisation</td>
+    </tr>
+    <tr>
+      <td>Pages</td>
+      <td>Activation/desactivation de pages entieres</td>
+      <td>Toggle on/off par page, modification du contenu</td>
+    </tr>
+    <tr>
+      <td>Praticiens</td>
+      <td>Gestion des comptes praticiens et de l'annuaire</td>
+      <td>Creer, modifier profil, activer/desactiver</td>
+    </tr>
+    <tr>
+      <td>Agenda</td>
+      <td>Gestion des sessions de formation</td>
+      <td>Ajouter, modifier dates, gerer les inscriptions</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>5. Espace Praticien</h2>
+<ul>
+  <li><strong>Authentification securisee</strong> : Login par email/mot de passe avec tokens JWT</li>
+  <li><strong>Profil personnel</strong> : Modification des informations, photo, specialites</li>
+  <li><strong>Ressources exclusives</strong> : Acces aux videos de formation, supports pedagogiques</li>
+  <li><strong>Annuaire</strong> : Apparition automatique dans le repertoire public apres validation admin</li>
+</ul>
+
+<h2>6. Securite</h2>
+<ul>
+  <li>Authentification JWT avec expiration et refresh tokens</li>
+  <li>Hashage des mots de passe (bcrypt)</li>
+  <li>Validation de toutes les entrees utilisateur (cote serveur)</li>
+  <li>Protection CORS et rate limiting sur l'API</li>
+  <li>Upload de fichiers securise (type MIME, taille max)</li>
+  <li>Roles et permissions granulaires (admin / praticien / public)</li>
+</ul>
+
+<h2>7. Formation proposee par Drainage Academy</h2>
+
+<div class="card">
+<h3>Programme en 3 piliers</h3>
+<ol>
+  <li><strong>Le Geste</strong> : Technique precise de drainage lymphatique, correction individualisee en presentiel</li>
+  <li><strong>L'Apprentissage</strong> : Formation theorique en video, accessible a vie, revisable a volonte</li>
+  <li><strong>La Pratique</strong> : 2 jours intensifs en petit groupe (4 personnes max)</li>
+</ol>
+</div>
+
+<div class="card">
+<h3>Accompagnement business inclus</h3>
+<ul>
+  <li>Visibilite locale : optimisation de la presence en ligne</li>
+  <li>Fidelisation client : strategies de retention</li>
+  <li>Structure d'activite : aide a la creation d'entreprise</li>
+</ul>
+</div>
+
+<h2>8. Competences mobilisees</h2>
+<ul>
+  <li>Developpement fullstack (React + Node.js)</li>
+  <li>Conception et implementation d'un systeme d'authentification</li>
+  <li>Developpement d'un CMS sur mesure (back-office admin)</li>
+  <li>API REST avec gestion de fichiers et medias</li>
+  <li>Gestion de base de donnees relationnelle</li>
+  <li>Design responsive et UX professionnelle</li>
+  <li>Gestion de projet client (cahier des charges, livraisons iteratives)</li>
+  <li>Deploiement et mise en production</li>
+</ul>
+
+<div class="footer">
+  <p>Documentation Drainage Academy &mdash; Concu par S. MIR &mdash; 2025</p>
+</div>
+
+</div>
+</body>
+</html>

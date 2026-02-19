@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Technique — Intranet CPMS v2.1.0</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #22d3ee; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(34,211,238,0.15); color: var(--accent); border: 1px solid rgba(34,211,238,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(34,211,238,0.1); color: var(--accent); font-weight: 600; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), #0891b2); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(34,211,238,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  pre { background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+  pre code { background: none; padding: 0; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+
+  /* Extras */
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+  .toc a:hover { text-decoration: underline; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.2rem; text-align: center; }
+  .stat-card .value { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+  .stat-card .label { font-size: 0.8rem; color: var(--sub); margin-top: 0.3rem; }
+  .flow-box { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.2rem; margin: 1rem 0; font-family: 'Courier New', monospace; font-size: 0.8rem; line-height: 1.5; white-space: pre; overflow-x: auto; color: var(--sub); }
+  .highlight { color: var(--accent); font-weight: 600; }
+  .tag-group { margin: 0.5rem 0 1rem; }
+  .card h3:first-child { margin-top: 0; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ============================================================ -->
+<!--  HEADER                                                       -->
+<!-- ============================================================ -->
+
+<h1>Intranet CPMS</h1>
+<p style="font-size:1rem; color:var(--sub); margin-bottom:0.3rem;">
+  Plateforme intranet de self-service et gestion des identites multi-systemes
+</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Client :</strong> CPMS (Caisse de Prevoyance Mutuelle Sante)</div>
+  <div class="meta-item"><strong>URL :</strong> <a href="https://intranet.cpms.services" style="color:var(--accent);">intranet.cpms.services</a></div>
+  <div class="meta-item"><strong>Version :</strong> 2.1.0</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Type :</strong> Stage BTS SIO / Projet professionnel</div>
+  <div class="meta-item"><strong>Statut :</strong> <span style="color:#4ade80; font-weight:600;">Production</span></div>
+</div>
+
+<div class="tag-group">
+  <span class="badge">Laravel 12</span>
+  <span class="badge">Vue.js 3</span>
+  <span class="badge">PHP 8.2+</span>
+  <span class="badge">Python 3</span>
+  <span class="badge">MySQL</span>
+  <span class="badge">LDAP</span>
+  <span class="badge">Active Directory</span>
+  <span class="badge">AS400</span>
+</div>
+
+<!-- ============================================================ -->
+<!--  TABLE DES MATIERES                                           -->
+<!-- ============================================================ -->
+
+<h2>Sommaire</h2>
+<ol class="toc">
+  <li><a href="#contexte">1. Contexte et problematique</a></li>
+  <li><a href="#architecture">2. Architecture technique</a></li>
+  <li><a href="#fonctionnalites">3. Fonctionnalites detaillees</a></li>
+  <li><a href="#stack">4. Stack technologique</a></li>
+  <li><a href="#flux">5. Flux de donnees</a></li>
+  <li><a href="#securite">6. Securite</a></li>
+  <li><a href="#api">7. API REST &mdash; Endpoints</a></li>
+  <li><a href="#base">8. Schema de base de donnees</a></li>
+  <li><a href="#resultats">9. Resultats et metriques</a></li>
+  <li><a href="#bts">10. Competences BTS SIO (SLAM)</a></li>
+</ol>
+
+<!-- ============================================================ -->
+<!--  1. CONTEXTE                                                  -->
+<!-- ============================================================ -->
+
+<h2 id="contexte">1. Contexte et problematique</h2>
+
+<p>
+  La <strong>CPMS</strong> (Caisse de Prevoyance Mutuelle Sante) gere plusieurs systemes d'information heterogenes pour l'administration de ses 180+ collaborateurs :
+</p>
+
+<ul>
+  <li><strong>Active Directory (WAD)</strong> &mdash; Authentification Windows, messagerie, acces reseau</li>
+  <li><strong>AS400 (IBM i)</strong> &mdash; Systeme historique de gestion RH, paie et metier</li>
+  <li><strong>Applications ODBC</strong> &mdash; Outils metier connectes en ODBC au AS400</li>
+</ul>
+
+<h3>Avant le projet</h3>
+<div class="card">
+  <ul>
+    <li>Changement de mot de passe : procedure manuelle necessitant l'intervention du service IT</li>
+    <li>Delai moyen de traitement : <strong>24 a 48 heures</strong></li>
+    <li><strong>3 systemes distincts</strong> a mettre a jour separement (AD, AS400, applications ODBC)</li>
+    <li>Surcharge du helpdesk : les demandes de reinitialisation representaient une part majeure des tickets</li>
+    <li>Aucune autonomie utilisateur en dehors des heures de bureau</li>
+  </ul>
+</div>
+
+<h3>Apres le projet</h3>
+<div class="card">
+  <ul>
+    <li>Self-service complet : changement de mot de passe et deverrouillage de compte <strong>sans intervention IT</strong></li>
+    <li>Synchronisation temps reel sur tous les systemes : <strong>&lt; 30 secondes</strong></li>
+    <li>Disponibilite <strong>24h/24, 7j/7</strong></li>
+    <li>Interface unifiee : un seul point d'entree pour toutes les operations</li>
+  </ul>
+</div>
+
+<h3>ROI mesure</h3>
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="value">-80%</div>
+    <div class="label">Tickets helpdesk</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">~15h</div>
+    <div class="label">Economisees / semaine</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">~12 000 &euro;</div>
+    <div class="label">Economies / an</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">+45 pts</div>
+    <div class="label">NPS (satisfaction)</div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  2. ARCHITECTURE                                              -->
+<!-- ============================================================ -->
+
+<h2 id="architecture">2. Architecture technique</h2>
+
+<p>L'application suit une architecture <strong>SPA + API RESTful</strong> avec un middleware Python pour la communication avec le systeme AS400 via ODBC.</p>
+
+<div class="flow-box">
++-----------------------------------------------------------------------+
+|                        NAVIGATEUR (Client)                            |
+|  Vue 3 + Vite 7 + Tailwind CSS + Vue Router 4 + pdfjs-dist           |
+|  SPA servie depuis /var/www/intranet/dist/                            |
++-----------------------------------+-----------------------------------+
+                                    |
+                              HTTPS | (API calls)
+                                    |
++-----------------------------------v-----------------------------------+
+|                     REVERSE PROXY (Nginx / Apache)                    |
++-----------------------------------+-----------------------------------+
+                                    |
+                                    v
++-----------------------------------------------------------------------+
+|                      BACKEND — Laravel 12 + PHP 8.2                   |
+|              Sanctum (auth) + LdapRecord (AD integration)             |
+|              /var/www/api-intranet/                                    |
++---------+-----------------------+-----------------------+-------------+
+          |                       |                       |
+          v                       v                       v
++---------+---------+  +----------+----------+  +---------+---------+
+| Active Directory  |  |    MySQL / MariaDB   |  |  Python ODBC      |
+| LDAPS (port 636)  |  |    7 tables metier   |  |  Bridge            |
+| WAD auth + unlock |  |    audit, tokens,    |  |  change_password.py |
+|                   |  |    security_questions |  |  pyodbc + IBM i    |
++-------------------+  +----------------------+  |  Access Driver     |
+                                                  +---------+---------+
+                                                            |
+                                                            v
+                                                  +---------+---------+
+                                                  |     AS400 (IBM i) |
+                                                  |   RH / Paie ODBC  |
+                                                  +-------------------+
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Frontend</h3>
+    <ul>
+      <li><strong>Vue.js 3.3.11</strong> &mdash; Framework reactif (Composition API)</li>
+      <li><strong>Vite 7.1.11</strong> &mdash; Build tool avec HMR</li>
+      <li><strong>Tailwind CSS 3.4.1</strong> &mdash; Utilitaires CSS</li>
+      <li><strong>Vue Router 4.5.1</strong> &mdash; Routage SPA</li>
+      <li><strong>pdfjs-dist 5.4.296</strong> &mdash; Lecteur PDF integre</li>
+      <li>Deploye sous <code>/var/www/intranet/dist/</code></li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Backend</h3>
+    <ul>
+      <li><strong>Laravel 12.0</strong> &mdash; Framework PHP (API RESTful)</li>
+      <li><strong>PHP 8.2+</strong> &mdash; Runtime serveur</li>
+      <li><strong>Sanctum 4.1</strong> &mdash; Authentification par tokens</li>
+      <li><strong>LdapRecord 3.4</strong> &mdash; Integration Active Directory</li>
+      <li><strong>Composer 2.x</strong> &mdash; Gestion des dependances</li>
+      <li>Deploye sous <code>/var/www/api-intranet/</code></li>
+    </ul>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Middleware Python</h3>
+    <ul>
+      <li><strong>Python 3</strong> &mdash; Script <code>change_password.py</code></li>
+      <li><strong>pyodbc</strong> &mdash; Connexion ODBC vers AS400</li>
+      <li><strong>IBM i Access ODBC Driver</strong></li>
+      <li>Execute par Laravel via <code>Process::run()</code></li>
+      <li>Retour JSON avec code de statut</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Infrastructure</h3>
+    <ul>
+      <li><strong>Nginx / Apache</strong> &mdash; Reverse proxy + SSL</li>
+      <li><strong>Active Directory</strong> &mdash; LDAPS port 636</li>
+      <li><strong>AS400 (IBM i)</strong> &mdash; ODBC driver natif</li>
+      <li><strong>MySQL / MariaDB</strong> &mdash; Base de donnees relationnelle</li>
+      <li>Certificat SSL en production</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  3. FONCTIONNALITES                                           -->
+<!-- ============================================================ -->
+
+<h2 id="fonctionnalites">3. Fonctionnalites detaillees</h2>
+
+<!-- 3.a Password Change -->
+<h3>3.1 Changement de mot de passe multi-systemes</h3>
+
+<div class="card">
+  <p>
+    Fonctionnalite centrale du projet : un <strong>changement de mot de passe unifie</strong> qui synchronise simultanement
+    l'Active Directory (WAD) et le systeme AS400, le tout en une seule action utilisateur.
+  </p>
+
+  <h3>Identification de l'utilisateur</h3>
+  <ul>
+    <li>Accepte trois formats d'identifiant : <strong>SAMAccountName</strong>, <strong>adresse email</strong> et <strong>UPN</strong> (User Principal Name)</li>
+    <li>Recherche automatique dans l'annuaire Active Directory via LdapRecord</li>
+    <li>Verification de l'existence et de l'etat du compte avant traitement</li>
+  </ul>
+
+  <h3>Politique de mot de passe</h3>
+  <table>
+    <thead>
+      <tr><th>Critere</th><th>Exigence</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Longueur minimale</td><td><strong>15 caracteres</strong></td></tr>
+      <tr><td>Majuscule</td><td>Au moins 1 lettre majuscule</td></tr>
+      <tr><td>Minuscule</td><td>Au moins 1 lettre minuscule</td></tr>
+      <tr><td>Chiffre</td><td>Au moins 1 chiffre</td></tr>
+      <tr><td>Caractere special</td><td>Au moins 1 caractere special (!@#$%...)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Execution technique</h3>
+  <ul>
+    <li><strong>Etape 1 :</strong> Validation du formulaire cote client (Vue.js) + cote serveur (Laravel)</li>
+    <li><strong>Etape 2 :</strong> Changement du mot de passe Active Directory via LDAPS (port 636)</li>
+    <li><strong>Etape 3 :</strong> Appel du script Python <code>change_password.py</code> via <code>Process::run()</code> pour le changement AS400</li>
+    <li><strong>Etape 4 :</strong> Enregistrement en base de donnees (audit log)</li>
+    <li>Temps d'execution total : <strong>5 a 15 secondes</strong></li>
+  </ul>
+</div>
+
+<!-- 3.b Account Reactivation -->
+<h3>3.2 Reactivation de compte par questions de securite</h3>
+
+<div class="card">
+  <p>
+    Permet a un utilisateur dont le compte est verrouille de le deverrouiller <strong>sans contacter le helpdesk</strong>,
+    via un systeme de challenge par questions de securite.
+  </p>
+
+  <h3>Enregistrement de la question de securite</h3>
+  <ul>
+    <li>L'utilisateur definit sa propre question et sa reponse personnalisee</li>
+    <li>La reponse est hashee en <strong>bcrypt avec sel individuel</strong> avant stockage</li>
+    <li>Possibilite de modifier la question a tout moment depuis le profil</li>
+  </ul>
+
+  <h3>Processus de challenge</h3>
+  <ul>
+    <li>Presentation de <strong>10 questions</strong> : 1 question reelle + 9 questions leurres generees aleatoirement</li>
+    <li>L'utilisateur doit identifier sa question parmi les leurres, puis fournir la bonne reponse</li>
+    <li>Double verification : selection de la bonne question ET reponse correcte</li>
+    <li>Ce mecanisme empeche les tentatives de brute force (1 chance sur 10 de deviner la bonne question)</li>
+  </ul>
+
+  <h3>Limites et securite</h3>
+  <table>
+    <thead>
+      <tr><th>Parametre</th><th>Valeur</th><th>Objectif</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Tentatives reussies / jour</td><td><strong>3 max</strong></td><td>Limiter l'abus du self-service</td></tr>
+      <tr><td>Tentatives echouees / jour</td><td><strong>3 max</strong></td><td>Protection anti brute force</td></tr>
+      <tr><td>Tracking IP</td><td>Oui, sur chaque tentative</td><td>Audit et detection d'anomalies</td></tr>
+      <tr><td>Journalisation</td><td>Audit complet</td><td>Tracabilite de chaque action</td></tr>
+    </tbody>
+  </table>
+
+  <ul>
+    <li>Temps de deverrouillage : <strong>environ 30 secondes</strong></li>
+    <li>En cas de depassement des limites, l'utilisateur est redirige vers le helpdesk</li>
+  </ul>
+</div>
+
+<!-- 3.c Admin Dashboard -->
+<h3>3.3 Tableau de bord administrateur</h3>
+
+<div class="card">
+  <p>
+    Interface dediee aux administrateurs IT pour le monitoring temps reel et la gestion des comptes utilisateurs.
+  </p>
+
+  <h3>Statistiques en temps reel</h3>
+  <ul>
+    <li>Nombre de <strong>comptes verrouilles</strong> actuellement dans l'Active Directory</li>
+    <li>Nombre de <strong>deverrouillages</strong> effectues dans les dernieres 24h</li>
+    <li>Nombre de <strong>tentatives echouees</strong> (avec details)</li>
+    <li><strong>Graphique 7 jours</strong> : evolution des verrouillages et deverrouillages</li>
+  </ul>
+
+  <h3>Gestion des comptes</h3>
+  <ul>
+    <li>Recherche avancee avec filtres : comptes verrouilles, comptes desactives, par OU (Unite Organisationnelle), par departement</li>
+    <li><strong>Deverrouillage manuel</strong> d'un compte depuis l'interface</li>
+    <li>Historique complet de chaque compte : tentatives, verrouillages, deverrouillages</li>
+    <li>Top des echecs par utilisateur et par adresse IP</li>
+  </ul>
+
+  <h3>Audit et journalisation</h3>
+  <ul>
+    <li>Logs d'audit complets avec pagination</li>
+    <li>Filtrage par date, type d'action, utilisateur, adresse IP</li>
+    <li>Export des donnees pour analyse</li>
+  </ul>
+
+  <h3>Authentification admin</h3>
+  <ul>
+    <li>Authentification par <strong>Bearer token</strong> (genere via endpoint dedie)</li>
+    <li>Duree de vie du token : <strong>8 heures</strong></li>
+    <li>Rotation automatique a l'expiration</li>
+    <li>Permissions basees sur l'appartenance au groupe AD administrateurs</li>
+  </ul>
+</div>
+
+<!-- 3.d Intranet Portal -->
+<h3>3.4 Portail intranet</h3>
+
+<div class="card">
+  <p>
+    Au-dela du self-service, l'application sert de <strong>portail intranet complet</strong> pour les collaborateurs CPMS,
+    centralisant l'acces aux ressources et outils internes.
+  </p>
+
+  <h3>Sections du portail</h3>
+  <table>
+    <thead>
+      <tr><th>Section</th><th>Contenu</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Mon Identite</strong></td><td>Gestion du compte, mot de passe, question de securite</td></tr>
+      <tr><td><strong>Mon Accompagnement</strong></td><td>Ressources RH, procedures internes, contacts</td></tr>
+      <tr><td><strong>Ma Remuneration</strong></td><td>Fiches de paie (lecteur PDF integre), informations salariales</td></tr>
+      <tr><td><strong>Mes Outils</strong></td><td>Liens vers les applications metier, raccourcis personnalises</td></tr>
+      <tr><td><strong>Mes Ressources</strong></td><td>Documents internes, procedures, FAQ</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Fonctionnalites UX</h3>
+  <ul>
+    <li><strong>Recherche en temps reel</strong> : filtrage instantane des ressources et documents</li>
+    <li><strong>Favoris avec drag &amp; drop</strong> : personnalisation de l'espace utilisateur, reorganisation par glisser-deposer</li>
+    <li><strong>Theme clair / sombre</strong> : bascule manuelle avec persistance en localStorage</li>
+    <li><strong>Chatbot FAQ</strong> : assistant qui repond aux questions frequentes des collaborateurs</li>
+    <li><strong>Widget meteo</strong> : affichage de la meteo locale sur le tableau de bord</li>
+    <li><strong>Design responsive</strong> : adapte aux ecrans de bureau, tablettes et mobiles</li>
+  </ul>
+</div>
+
+<!-- ============================================================ -->
+<!--  4. STACK TECHNOLOGIQUE                                       -->
+<!-- ============================================================ -->
+
+<h2 id="stack">4. Stack technologique</h2>
+
+<h3>Frontend</h3>
+<table>
+  <thead>
+    <tr><th>Technologie</th><th>Version</th><th>Role</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Vue.js</td><td>3.3.11</td><td>Framework SPA (Composition API, reactivite)</td></tr>
+    <tr><td>Vite</td><td>7.1.11</td><td>Build tool, dev server avec HMR</td></tr>
+    <tr><td>Vue Router</td><td>4.5.1</td><td>Routage SPA cote client</td></tr>
+    <tr><td>Tailwind CSS</td><td>3.4.1</td><td>Framework CSS utilitaire</td></tr>
+    <tr><td>pdfjs-dist</td><td>5.4.296</td><td>Rendu de documents PDF dans le navigateur</td></tr>
+  </tbody>
+</table>
+
+<h3>Backend</h3>
+<table>
+  <thead>
+    <tr><th>Technologie</th><th>Version</th><th>Role</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Laravel</td><td>12.0</td><td>Framework PHP (API RESTful, ORM Eloquent)</td></tr>
+    <tr><td>PHP</td><td>8.2+</td><td>Runtime serveur</td></tr>
+    <tr><td>Sanctum</td><td>4.1</td><td>Authentification par tokens (SPA + API)</td></tr>
+    <tr><td>LdapRecord</td><td>3.4</td><td>Integration Active Directory (recherche, auth, modification)</td></tr>
+    <tr><td>Composer</td><td>2.x</td><td>Gestionnaire de dependances PHP</td></tr>
+  </tbody>
+</table>
+
+<h3>Base de donnees</h3>
+<table>
+  <thead>
+    <tr><th>Element</th><th>Details</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>SGBD</td><td>MySQL / MariaDB</td></tr>
+    <tr><td>Nombre de tables</td><td><strong>7 tables</strong></td></tr>
+    <tr><td><code>security_questions</code></td><td>Questions et reponses de securite (bcrypt)</td></tr>
+    <tr><td><code>bank</code></td><td>Banque de questions leurres</td></tr>
+    <tr><td><code>attempts</code></td><td>Tentatives de deverrouillage (successes + echecs)</td></tr>
+    <tr><td><code>unlock_logs</code></td><td>Historique des deverrouillages effectues</td></tr>
+    <tr><td><code>audit</code></td><td>Journal d'audit general (toutes actions)</td></tr>
+    <tr><td><code>admin_tokens</code></td><td>Tokens d'authentification administrateur</td></tr>
+    <tr><td><code>intra_access</code></td><td>Acces et favoris du portail intranet</td></tr>
+  </tbody>
+</table>
+
+<h3>Infrastructure et middleware</h3>
+<table>
+  <thead>
+    <tr><th>Composant</th><th>Details</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Active Directory</td><td>LDAPS sur port 636 (connexion chiffree TLS)</td></tr>
+    <tr><td>AS400 (IBM i)</td><td>Connexion ODBC via driver IBM i Access</td></tr>
+    <tr><td>Python 3</td><td>Middleware ODBC Bridge (<code>change_password.py</code>)</td></tr>
+    <tr><td>pyodbc</td><td>Librairie Python pour connexion ODBC</td></tr>
+    <tr><td>Reverse Proxy</td><td>Nginx / Apache avec terminaison SSL</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<!--  5. FLUX DE DONNEES                                           -->
+<!-- ============================================================ -->
+
+<h2 id="flux">5. Flux de donnees</h2>
+
+<h3>5.1 Flux de changement de mot de passe</h3>
+
+<div class="flow-box">
+  Utilisateur                  Vue.js SPA                   Laravel API                 Systemes
+  -----------                  ----------                   -----------                 --------
+      |                            |                            |                          |
+      |  1. Saisie identifiant     |                            |                          |
+      |    + ancien MDP            |                            |                          |
+      |    + nouveau MDP           |                            |                          |
+      |--------------------------->|                            |                          |
+      |                            |  2. Validation locale      |                          |
+      |                            |    (15 chars, complexite)  |                          |
+      |                            |--------------------------->|                          |
+      |                            |                            |  3. Validation serveur   |
+      |                            |                            |     (regles metier)      |
+      |                            |                            |                          |
+      |                            |                            |  4. Auth LDAP ancien MDP |
+      |                            |                            |------------------------->|
+      |                            |                            |     <-- OK / Echec       | AD (LDAPS)
+      |                            |                            |                          |
+      |                            |                            |  5. Changement MDP AD    |
+      |                            |                            |------------------------->|
+      |                            |                            |     <-- Succes           | AD (LDAPS)
+      |                            |                            |                          |
+      |                            |                            |  6. Process::run()       |
+      |                            |                            |    change_password.py    |
+      |                            |                            |------------------------->|
+      |                            |                            |     <-- JSON result      | AS400 (ODBC)
+      |                            |                            |                          |
+      |                            |                            |  7. INSERT audit log     |
+      |                            |                            |------------------------->|
+      |                            |                            |                          | MySQL
+      |                            |  8. Reponse JSON           |                          |
+      |                            |<---------------------------|                          |
+      |  9. Notification succes    |                            |                          |
+      |<---------------------------|                            |                          |
+</div>
+
+<h3>5.2 Flux de reactivation de compte</h3>
+
+<div class="flow-box">
+  Utilisateur                  Vue.js SPA                   Laravel API                 Systemes
+  -----------                  ----------                   -----------                 --------
+      |                            |                            |                          |
+      |  1. Saisie identifiant     |                            |                          |
+      |--------------------------->|                            |                          |
+      |                            |--------------------------->|                          |
+      |                            |                            |  2. Verif compte         |
+      |                            |                            |     verrouille dans AD   |
+      |                            |                            |------------------------->| AD
+      |                            |                            |                          |
+      |                            |                            |  3. Verif limites        |
+      |                            |                            |     (3 succes + 3 echecs |
+      |                            |                            |      par jour par IP)    |
+      |                            |                            |------------------------->| MySQL
+      |                            |                            |                          |
+      |                            |  4. Affichage 10 questions |                          |
+      |                            |     (1 reelle + 9 leurres) |                          |
+      |  5. Selection + reponse    |<---------------------------|                          |
+      |--------------------------->|                            |                          |
+      |                            |--------------------------->|                          |
+      |                            |                            |  6. Verif bcrypt         |
+      |                            |                            |     de la reponse        |
+      |                            |                            |                          |
+      |                            |                            |  7. Si OK : unlock AD    |
+      |                            |                            |------------------------->| AD
+      |                            |                            |                          |
+      |                            |                            |  8. INSERT unlock_log    |
+      |                            |                            |     + audit              |
+      |                            |                            |------------------------->| MySQL
+      |                            |                            |                          |
+      |  9. Compte deverrouille    |                            |                          |
+      |<---------------------------|<---------------------------|                          |
+      |     (~30 secondes)         |                            |                          |
+</div>
+
+<!-- ============================================================ -->
+<!--  6. SECURITE                                                  -->
+<!-- ============================================================ -->
+
+<h2 id="securite">6. Securite</h2>
+
+<div class="card">
+  <h3>Chiffrement des communications</h3>
+  <ul>
+    <li>Connexion Active Directory exclusivement en <strong>LDAPS</strong> (port 636, TLS)</li>
+    <li>API servie en <strong>HTTPS</strong> avec certificat SSL</li>
+    <li>Aucune donnee sensible transmise en clair</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Protection des donnees</h3>
+  <ul>
+    <li>Reponses aux questions de securite hashees en <strong>bcrypt avec sel individuel</strong></li>
+    <li>Aucun mot de passe stocke en base de donnees</li>
+    <li>Tokens admin avec duree de vie limitee (<strong>8 heures</strong>)</li>
+    <li>Sanitisation de toutes les entrees utilisateur (XSS, injection SQL)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Protection anti brute force</h3>
+  <ul>
+    <li><strong>Rate limiting</strong> : maximum 3 tentatives reussies + 3 tentatives echouees par jour et par utilisateur</li>
+    <li><strong>Tracking IP</strong> : adresse IP enregistree sur chaque tentative</li>
+    <li><strong>Questions leurres</strong> : 9 fausses questions melangees avec la vraie pour empecher la deduction</li>
+    <li>Blocage automatique au-dela des limites quotidiennes</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Audit et tracabilite</h3>
+  <ul>
+    <li><strong>Journal d'audit complet</strong> : chaque action est tracee (qui, quoi, quand, depuis quelle IP)</li>
+    <li>Logs horodates et immuables</li>
+    <li>Consultation par les administrateurs via le tableau de bord</li>
+    <li>Possibilite d'export pour analyse forensique</li>
+  </ul>
+</div>
+
+<table>
+  <thead>
+    <tr><th>Mesure de securite</th><th>Implementation</th><th>Objectif</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>LDAPS</td><td>Port 636, certificat TLS</td><td>Chiffrement des echanges AD</td></tr>
+    <tr><td>bcrypt + sel</td><td>Hash individuel par reponse</td><td>Protection des reponses de securite</td></tr>
+    <tr><td>Rate limiting</td><td>3 succes + 3 echecs / jour</td><td>Anti brute force</td></tr>
+    <tr><td>Questions leurres</td><td>1 vraie + 9 fausses</td><td>Empecher la deduction</td></tr>
+    <tr><td>Bearer token</td><td>8h de validite</td><td>Securite de la session admin</td></tr>
+    <tr><td>IP tracking</td><td>Enregistrement systematique</td><td>Detection d'anomalies</td></tr>
+    <tr><td>Audit trail</td><td>Table audit MySQL</td><td>Tracabilite complete</td></tr>
+    <tr><td>Sanctum</td><td>Tokens SPA + CSRF</td><td>Securite de l'authentification API</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<!--  7. API REST                                                  -->
+<!-- ============================================================ -->
+
+<h2 id="api">7. API REST &mdash; Endpoints</h2>
+
+<h3>Authentification et self-service</h3>
+<table>
+  <thead>
+    <tr><th>Endpoint</th><th>Methode</th><th>Description</th><th>Auth</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/api/auth/login</code></td><td>POST</td><td>Authentification LDAP, retourne un token Sanctum</td><td>Non</td></tr>
+    <tr><td><code>/api/auth/logout</code></td><td>POST</td><td>Revocation du token courant</td><td>Sanctum</td></tr>
+    <tr><td><code>/api/password/change</code></td><td>POST</td><td>Changement de mot de passe multi-systemes (AD + AS400)</td><td>Non *</td></tr>
+    <tr><td><code>/api/account/check</code></td><td>POST</td><td>Verification de l'etat du compte (verrouille / actif / desactive)</td><td>Non</td></tr>
+    <tr><td><code>/api/account/challenge</code></td><td>POST</td><td>Obtenir les 10 questions de challenge (1 reelle + 9 leurres)</td><td>Non</td></tr>
+    <tr><td><code>/api/account/unlock</code></td><td>POST</td><td>Deverrouillage de compte apres validation du challenge</td><td>Non *</td></tr>
+    <tr><td><code>/api/security-question</code></td><td>GET</td><td>Recuperer la question de securite de l'utilisateur</td><td>Sanctum</td></tr>
+    <tr><td><code>/api/security-question</code></td><td>POST</td><td>Definir ou modifier la question de securite</td><td>Sanctum</td></tr>
+  </tbody>
+</table>
+<p><em>* L'ancien mot de passe ou la reponse a la question de securite servent d'authentification implicite.</em></p>
+
+<h3>Administration</h3>
+<table>
+  <thead>
+    <tr><th>Endpoint</th><th>Methode</th><th>Description</th><th>Auth</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/api/admin/auth</code></td><td>POST</td><td>Authentification admin, retourne un Bearer token (8h)</td><td>Non</td></tr>
+    <tr><td><code>/api/admin/stats</code></td><td>GET</td><td>Statistiques temps reel (comptes verrouilles, unlocks 24h)</td><td>Bearer</td></tr>
+    <tr><td><code>/api/admin/stats/week</code></td><td>GET</td><td>Donnees graphiques sur 7 jours</td><td>Bearer</td></tr>
+    <tr><td><code>/api/admin/locked</code></td><td>GET</td><td>Liste des comptes actuellement verrouilles</td><td>Bearer</td></tr>
+    <tr><td><code>/api/admin/users</code></td><td>GET</td><td>Recherche et filtrage des comptes AD</td><td>Bearer</td></tr>
+    <tr><td><code>/api/admin/unlock/{sam}</code></td><td>POST</td><td>Deverrouillage manuel d'un compte</td><td>Bearer</td></tr>
+    <tr><td><code>/api/admin/logs</code></td><td>GET</td><td>Consultation des logs d'audit (pagine, filtrable)</td><td>Bearer</td></tr>
+    <tr><td><code>/api/admin/top-failures</code></td><td>GET</td><td>Top des echecs par utilisateur et par IP</td><td>Bearer</td></tr>
+  </tbody>
+</table>
+
+<h3>Portail intranet</h3>
+<table>
+  <thead>
+    <tr><th>Endpoint</th><th>Methode</th><th>Description</th><th>Auth</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>/api/intranet/sections</code></td><td>GET</td><td>Liste des sections du portail</td><td>Sanctum</td></tr>
+    <tr><td><code>/api/intranet/favorites</code></td><td>GET</td><td>Favoris de l'utilisateur</td><td>Sanctum</td></tr>
+    <tr><td><code>/api/intranet/favorites</code></td><td>PUT</td><td>Mise a jour des favoris (ordre drag &amp; drop)</td><td>Sanctum</td></tr>
+    <tr><td><code>/api/docs</code></td><td>GET</td><td>Liste des documents PDF disponibles</td><td>Sanctum</td></tr>
+    <tr><td><code>/api/docs/{id}</code></td><td>GET</td><td>Telechargement / consultation d'un document</td><td>Sanctum</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<!--  8. SCHEMA DE BASE DE DONNEES                                 -->
+<!-- ============================================================ -->
+
+<h2 id="base">8. Schema de base de donnees</h2>
+
+<div class="flow-box">
+  +------------------------+     +------------------------+     +------------------------+
+  | security_questions     |     | bank                   |     | attempts               |
+  |------------------------|     |------------------------|     |------------------------|
+  | id (PK)                |     | id (PK)                |     | id (PK)                |
+  | sam_account_name       |     | question (TEXT)         |     | sam_account_name       |
+  | question (TEXT)        |     | category (VARCHAR)     |     | ip_address             |
+  | answer_hash (VARCHAR)  |     | created_at             |     | type (success/fail)    |
+  | created_at             |     +------------------------+     | created_at             |
+  | updated_at             |                                    +------------------------+
+  +------------------------+
+
+  +------------------------+     +------------------------+     +------------------------+
+  | unlock_logs            |     | audit                  |     | admin_tokens           |
+  |------------------------|     |------------------------|     |------------------------|
+  | id (PK)                |     | id (PK)                |     | id (PK)                |
+  | sam_account_name       |     | action (VARCHAR)       |     | token_hash (VARCHAR)   |
+  | unlocked_by (self/admin)     | actor (VARCHAR)        |     | admin_sam              |
+  | ip_address             |     | target (VARCHAR)       |     | expires_at (DATETIME)  |
+  | method (question/manual)     | ip_address             |     | created_at             |
+  | created_at             |     | details (JSON)         |     +------------------------+
+  +------------------------+     | created_at             |
+                                 +------------------------+     +------------------------+
+                                                                | intra_access           |
+                                                                |------------------------|
+                                                                | id (PK)                |
+                                                                | sam_account_name       |
+                                                                | favorites (JSON)       |
+                                                                | theme (VARCHAR)        |
+                                                                | last_access (DATETIME) |
+                                                                +------------------------+
+</div>
+
+<!-- ============================================================ -->
+<!--  9. RESULTATS                                                 -->
+<!-- ============================================================ -->
+
+<h2 id="resultats">9. Resultats et metriques</h2>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="value">180+</div>
+    <div class="label">Collaborateurs actifs</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">-80%</div>
+    <div class="label">Tickets helpdesk</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">24/7</div>
+    <div class="label">Disponibilite</div>
+  </div>
+  <div class="stat-card">
+    <div class="value">&lt; 30s</div>
+    <div class="label">Temps de deverrouillage</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Impact operationnel</h3>
+  <table>
+    <thead>
+      <tr><th>Indicateur</th><th>Avant</th><th>Apres</th><th>Amelioration</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Delai changement MDP</td><td>24 - 48h</td><td>5 - 15 secondes</td><td>Quasi instantane</td></tr>
+      <tr><td>Delai deverrouillage</td><td>1 - 4h (heures bureau)</td><td>~30 secondes</td><td>24/7, sans IT</td></tr>
+      <tr><td>Tickets helpdesk / mois</td><td>~120</td><td>~24</td><td>-80%</td></tr>
+      <tr><td>Temps IT consacre</td><td>~18h / semaine</td><td>~3h / semaine</td><td>~15h economisees</td></tr>
+      <tr><td>Cout annuel estime</td><td>~15 000 EUR</td><td>~3 000 EUR</td><td>~12 000 EUR / an</td></tr>
+      <tr><td>Satisfaction utilisateurs (NPS)</td><td>+12</td><td>+57</td><td>+45 points</td></tr>
+      <tr><td>Incidents de securite</td><td>&mdash;</td><td>0</td><td>Aucun depuis le deploiement</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!--  10. COMPETENCES BTS SIO                                      -->
+<!-- ============================================================ -->
+
+<h2 id="bts">10. Competences BTS SIO (SLAM)</h2>
+
+<p>
+  Ce projet mobilise l'ensemble des blocs de competences du referentiel BTS SIO option SLAM (Solutions Logicielles et Applications Metiers).
+</p>
+
+<table>
+  <thead>
+    <tr><th>Bloc</th><th>Competence</th><th>Mise en oeuvre dans le projet</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>B1</strong> &mdash; Gerer le patrimoine informatique</td>
+      <td>Recenser et identifier les ressources numeriques</td>
+      <td>Inventaire des systemes (AD, AS400, ODBC), documentation technique de l'architecture</td>
+    </tr>
+    <tr>
+      <td><strong>B1</strong></td>
+      <td>Exploiter des referentiels, normes et standards</td>
+      <td>Normes ANSSI (politique de mot de passe), protocole LDAPS, standard REST</td>
+    </tr>
+    <tr>
+      <td><strong>B1</strong></td>
+      <td>Mettre en place et verifier les niveaux d'habilitation</td>
+      <td>Gestion des roles (utilisateur / admin), tokens Bearer, groupes AD</td>
+    </tr>
+    <tr>
+      <td><strong>B2</strong> &mdash; Repondre aux incidents et aux demandes</td>
+      <td>Traiter des demandes concernant les services reseau et systeme</td>
+      <td>Self-service de changement MDP et deverrouillage de compte (AD + AS400)</td>
+    </tr>
+    <tr>
+      <td><strong>B2</strong></td>
+      <td>Traiter des demandes concernant les applications</td>
+      <td>Portail intranet (favoris, documents, FAQ chatbot)</td>
+    </tr>
+    <tr>
+      <td><strong>B3</strong> &mdash; Developper la presence en ligne</td>
+      <td>Participer a la valorisation de l'image de l'organisation sur les medias numeriques</td>
+      <td>Interface web Vue.js moderne, UX responsive, theme clair/sombre</td>
+    </tr>
+    <tr>
+      <td><strong>B3</strong></td>
+      <td>Programmer des pages Web</td>
+      <td>SPA Vue.js 3, Tailwind CSS, composants reactifs, routage client</td>
+    </tr>
+    <tr>
+      <td><strong>B4</strong> &mdash; Travailler en mode projet</td>
+      <td>Analyser les objectifs et les modalites d'organisation d'un projet</td>
+      <td>Cahier des charges, sprint planning, livrables, recette fonctionnelle</td>
+    </tr>
+    <tr>
+      <td><strong>B4</strong></td>
+      <td>Planifier les activites</td>
+      <td>Decoupage en sprints, suivi Kanban, revues de code</td>
+    </tr>
+    <tr>
+      <td><strong>B5 (SLAM)</strong> &mdash; Concevoir et developper une solution applicative</td>
+      <td>Concevoir une solution applicative</td>
+      <td>Architecture SPA + API REST + middleware Python, schema BDD, diagrammes de flux</td>
+    </tr>
+    <tr>
+      <td><strong>B5 (SLAM)</strong></td>
+      <td>Developper des composants d'acces aux donnees</td>
+      <td>API Laravel (Eloquent ORM), requetes LDAP (LdapRecord), bridge ODBC (Python pyodbc)</td>
+    </tr>
+    <tr>
+      <td><strong>B5 (SLAM)</strong></td>
+      <td>Developper la partie Front-end</td>
+      <td>Interface Vue.js 3, composants reactifs, formulaires dynamiques, lecteur PDF</td>
+    </tr>
+    <tr>
+      <td><strong>B5 (SLAM)</strong></td>
+      <td>Developper la partie Back-end</td>
+      <td>API Laravel 12, controllers RESTful, middleware auth, services metier</td>
+    </tr>
+    <tr>
+      <td><strong>B6</strong> &mdash; Cybersecurite</td>
+      <td>Proteger les donnees a caractere personnel</td>
+      <td>Hashage bcrypt, LDAPS, aucun MDP stocke, sanitisation des entrees</td>
+    </tr>
+    <tr>
+      <td><strong>B6</strong></td>
+      <td>Securiser les equipements et les usages des utilisateurs</td>
+      <td>Rate limiting, IP tracking, questions leurres, tokens a duree limitee</td>
+    </tr>
+    <tr>
+      <td><strong>B6</strong></td>
+      <td>Garantir la disponibilite, l'integrite et la confidentialite des donnees</td>
+      <td>Audit trail complet, journalisation, disponibilite 24/7, zero incident</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<!--  FOOTER                                                       -->
+<!-- ============================================================ -->
+
+<div class="footer">
+  <p>
+    Documentation technique &mdash; <strong>Intranet CPMS v2.1.0</strong> &mdash; Sagar MIR &mdash; 2025
+  </p>
+  <p style="margin-top:0.5rem;">
+    Stage BTS SIO option SLAM &mdash; CPMS (Caisse de Prevoyance Mutuelle Sante)
+  </p>
+</div>
+
+</div>
+</body>
+</html>

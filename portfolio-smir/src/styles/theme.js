@@ -19,7 +19,7 @@ export const COLORS = {
   // Textes
   text: {
     primary: "#E6ECF8",
-    secondary: "#9AA7BF",
+    secondary: "#C5D3E8",
     muted: "#64748b",
   },
 

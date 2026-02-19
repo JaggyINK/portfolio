@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipper Zero — Pentest Hardware</title>
+    <style>
+        :root { --bg: #0b1020; --card: #111827; --accent: #ef4444; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+        h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+        p, li { color: var(--sub); font-size: 0.95rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
+        .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(239,68,68,0.15); color: var(--accent); border: 1px solid rgba(239,68,68,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .meta-item { font-size: 0.85rem; color: var(--sub); }
+        .meta-item strong { color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+        th { background: rgba(239,68,68,0.1); color: var(--accent); font-weight: 600; }
+        td { color: var(--sub); }
+        .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), #dc2626); border-radius: 2px; margin-bottom: 2rem; }
+        code { background: rgba(239,68,68,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+        .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Flipper Zero — Pentest Hardware</h1>
+        <div class="header-line"></div>
+
+        <div class="meta">
+            <div class="meta-item"><strong>Date :</strong> 2025</div>
+            <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+            <div class="meta-item"><strong>Type :</strong> Projet personnel / securite</div>
+        </div>
+
+        <div>
+            <span class="badge">Hardware</span>
+            <span class="badge">Pentest</span>
+            <span class="badge">Firmware</span>
+            <span class="badge">Security</span>
+            <span class="badge">Sub-GHz</span>
+            <span class="badge">RFID</span>
+            <span class="badge">NFC</span>
+            <span class="badge">IR</span>
+            <span class="badge">GPIO</span>
+        </div>
+
+        <!-- 1. Contexte -->
+        <h2>1. Contexte</h2>
+        <div class="card">
+            <p>Le Flipper Zero est un outil de pentest hardware multi-protocole concu pour l'analyse et le test de securite des systemes physiques et sans fil. Ce projet s'inscrit dans une approche pedagogique de la securite materielle, mene dans le cadre du BTS SIO et de la veille technologique en cybersecurite.</p>
+            <p>L'objectif est d'explorer les vulnerabilites des protocoles de communication couramment utilises (RFID, NFC, Sub-GHz, IR) afin de mieux comprendre les risques et de proposer des mesures de remediation adaptees.</p>
+        </div>
+
+        <!-- 2. Presentation du Flipper Zero -->
+        <h2>2. Presentation du Flipper Zero</h2>
+        <div class="card">
+            <p>Le Flipper Zero est un appareil portable de pentest multi-protocole, compact et autonome, concu pour les professionnels et passionnes de securite informatique.</p>
+
+            <h3>Caracteristiques materielles</h3>
+            <ul>
+                <li>Ecran LCD 1.4" monochrome (128x64 pixels) avec retro-eclairage</li>
+                <li>Batterie rechargeable Li-Po 2000 mAh (autonomie ~30 jours en veille)</li>
+                <li>Port USB-C pour charge, communication et mode BadUSB</li>
+                <li>Slot microSD pour stockage etendu (firmwares, captures, bases de donnees)</li>
+                <li>Interface de navigation a 5 boutons + bouton retour</li>
+            </ul>
+
+            <h3>Protocoles supportes</h3>
+            <ul>
+                <li><strong>Sub-GHz</strong> (433/868 MHz) — Capture et replay de signaux radio</li>
+                <li><strong>RFID 125 kHz</strong> — Lecture et emulation de badges d'acces</li>
+                <li><strong>NFC 13.56 MHz</strong> — Lecture de cartes, emulation UID</li>
+                <li><strong>Infrarouge</strong> — Telecommandes universelles, capture/replay</li>
+                <li><strong>GPIO</strong> — Interface hardware (UART, SPI, I2C)</li>
+                <li><strong>Bluetooth</strong> — Scan BLE, analyse de peripheriques</li>
+                <li><strong>USB (BadUSB)</strong> — Injection de frappes clavier via scripts</li>
+            </ul>
+        </div>
+
+        <!-- 3. Protocoles et capacites -->
+        <h2>3. Protocoles et capacites</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Protocole</th>
+                        <th>Frequence / Interface</th>
+                        <th>Capacites</th>
+                        <th>Exemples d'usage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sub-GHz</strong></td>
+                        <td>433 / 868 MHz</td>
+                        <td>Capture, analyse et replay de signaux radio</td>
+                        <td>Telecommandes, portails, capteurs meteo, alarmes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RFID 125 kHz</strong></td>
+                        <td>125 kHz</td>
+                        <td>Lecture, ecriture et emulation de badges</td>
+                        <td>Badges EM4100, HID Prox, Indala</td>
+                    </tr>
+                    <tr>
+                        <td><strong>NFC 13.56 MHz</strong></td>
+                        <td>13.56 MHz</td>
+                        <td>Lecture de cartes, emulation UID, analyse de donnees</td>
+                        <td>Mifare Classic/Ultralight, NTAG, EMV (sans contact)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Infrarouge</strong></td>
+                        <td>IR</td>
+                        <td>Base de donnees de telecommandes universelle, capture et replay de signaux</td>
+                        <td>TV, climatisation, projecteurs, systemes domotiques</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GPIO</strong></td>
+                        <td>UART, SPI, I2C</td>
+                        <td>Interface directe avec composants hardware</td>
+                        <td>Debug de cartes electroniques, lecture de memoires, sniffing de bus</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BadUSB</strong></td>
+                        <td>USB HID</td>
+                        <td>Injection de frappes clavier via scripts Rubber Ducky</td>
+                        <td>Demonstrations d'attaques HID, automatisation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bluetooth</strong></td>
+                        <td>BLE 5.0</td>
+                        <td>Scan, enumeration et analyse de peripheriques BLE</td>
+                        <td>Detection de peripheriques, spam BLE, analyse de services</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. Firmwares alternatifs -->
+        <h2>4. Firmwares alternatifs</h2>
+        <div class="card">
+            <h3>Firmware officiel vs alternatives</h3>
+            <p>Le firmware officiel du Flipper Zero offre une base stable et regulierement mise a jour. Cependant, la communaute a developpe plusieurs firmwares alternatifs qui etendent considerablement les fonctionnalites de l'appareil.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Firmware</th>
+                        <th>Specificites</th>
+                        <th>Avantages</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Officiel</strong></td>
+                        <td>Stable, support garanti, mises a jour regulieres</td>
+                        <td>Fiabilite, documentation officielle</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unleashed</strong></td>
+                        <td>Suppression des restrictions regionales Sub-GHz</td>
+                        <td>Acces a toutes les frequences, applications supplementaires</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Xtreme</strong></td>
+                        <td>Interface personnalisee, animations, packs d'applications</td>
+                        <td>Experience utilisateur enrichie, nombreuses apps pre-installees</td>
+                    </tr>
+                    <tr>
+                        <td><strong>RogueMaster</strong></td>
+                        <td>Fusion de multiples sources, protocoles etendus</td>
+                        <td>Maximum de fonctionnalites, communaute active</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Fonctionnalites etendues</h3>
+            <ul>
+                <li>Protocoles supplementaires et frequences deverrouillees</li>
+                <li>Applications custom developpees par la communaute</li>
+                <li>Animations et themes personnalises</li>
+                <li>Outils de debug et d'analyse avances</li>
+            </ul>
+
+            <h3>Processus de flash et mise a jour</h3>
+            <ul>
+                <li>Flash via l'application desktop <code>qFlipper</code> ou via le navigateur web</li>
+                <li>Sauvegarde prealable des donnees sur microSD</li>
+                <li>Possibilite de revenir au firmware officiel a tout moment</li>
+                <li>Mise a jour OTA (Over-The-Air) via Bluetooth pour le firmware officiel</li>
+            </ul>
+        </div>
+
+        <!-- 5. Cas d'usage pentest -->
+        <h2>5. Cas d'usage pentest interne</h2>
+        <div class="card">
+            <h3>Test de badges d'acces RFID/NFC</h3>
+            <ul>
+                <li>Lecture et identification du type de badge (EM4100, Mifare Classic, HID)</li>
+                <li>Clonage de badges RFID 125 kHz sur des cartes vierges</li>
+                <li>Emulation de l'UID NFC pour tester les controles d'acces</li>
+                <li>Analyse des donnees stockees sur les cartes NFC (secteurs Mifare)</li>
+                <li>Identification des systemes vulnerables au clonage</li>
+            </ul>
+
+            <h3>Analyse de signaux radio</h3>
+            <ul>
+                <li>Capture de signaux Sub-GHz de portails et telecommandes</li>
+                <li>Analyse de la modulation et du protocole utilise (AM/FM, OOK, FSK)</li>
+                <li>Test de replay sur systemes sans rolling code</li>
+                <li>Detection d'alarmes et capteurs IoT sur les bandes 433/868 MHz</li>
+                <li>Cartographie des equipements radio dans un perimetre donne</li>
+            </ul>
+
+            <h3>Test de telecommandes IR</h3>
+            <ul>
+                <li>Capture des signaux infrarouges de telecommandes existantes</li>
+                <li>Utilisation de la base de donnees universelle pour tester des appareils</li>
+                <li>Verification de la securite des systemes domotiques controles par IR</li>
+            </ul>
+
+            <h3>Demonstrations BadUSB</h3>
+            <ul>
+                <li>Ecriture de scripts d'injection HID en syntaxe Rubber Ducky</li>
+                <li>Demonstration de l'ouverture d'un reverse shell en quelques secondes</li>
+                <li>Sensibilisation aux risques des peripheriques USB non verifies</li>
+                <li>Test des politiques de securite USB des postes de travail</li>
+            </ul>
+
+            <h3>Documentation des vulnerabilites</h3>
+            <ul>
+                <li>Rapport detaille de chaque vulnerabilite identifiee</li>
+                <li>Classification par severite (critique, haute, moyenne, basse)</li>
+                <li>Recommandations de remediation pour chaque point</li>
+                <li>Preuve de concept (PoC) documentee avec captures et logs</li>
+            </ul>
+        </div>
+
+        <!-- 6. Scripts et developpement -->
+        <h2>6. Scripts et developpement</h2>
+        <div class="card">
+            <h3>Scripts personnalises en FlipperScript</h3>
+            <ul>
+                <li>Developpement d'applications custom au format <code>.fap</code> (Flipper Application Package)</li>
+                <li>Langage C avec le SDK Flipper pour les applications natives</li>
+                <li>Scripts JavaScript pour le moteur d'automatisation integre</li>
+                <li>Acces aux APIs hardware (GPIO, radio, NFC, IR) via le SDK</li>
+            </ul>
+
+            <h3>Automatisation de tests</h3>
+            <ul>
+                <li>Scripts de scan automatique multi-protocole</li>
+                <li>Sequences de tests pre-configurees pour les audits</li>
+                <li>Export automatique des resultats sur microSD</li>
+                <li>Chaines de tests reproductibles pour les rapports</li>
+            </ul>
+
+            <h3>Integration avec d'autres outils</h3>
+            <ul>
+                <li><code>Wireshark</code> — Analyse des captures radio et NFC exportees</li>
+                <li><code>SDR++</code> — Analyse spectrale complementaire des signaux Sub-GHz</li>
+                <li><code>Proxmark3</code> — Analyse RFID/NFC avancee en complement</li>
+                <li><code>GNU Radio</code> — Traitement de signal avance</li>
+                <li>Scripts Python pour le post-traitement des donnees capturees</li>
+            </ul>
+        </div>
+
+        <!-- 7. Ethique et cadre legal -->
+        <h2>7. Ethique et cadre legal</h2>
+        <div class="card">
+            <h3>Tests uniquement autorises</h3>
+            <p>Tous les tests sont realises exclusivement sur du materiel personnel ou avec une autorisation ecrite explicite du proprietaire. Les tests sont menes dans un environnement controle (lab, equipements dedies) afin d'eviter toute interference avec des systemes tiers.</p>
+
+            <h3>Cadre pedagogique BTS SIO</h3>
+            <p>Ce projet s'inscrit dans le programme du BTS SIO option SLAM/SISR, notamment dans les competences liees a la cybersecurite et a la veille technologique. L'objectif est de comprendre les vulnerabilites pour mieux s'en proteger.</p>
+
+            <h3>Documentation pour remediation</h3>
+            <ul>
+                <li>Chaque vulnerabilite identifiee est documentee avec une recommandation de correction</li>
+                <li>Les rapports suivent un format standardise (description, impact, remediation)</li>
+                <li>L'objectif n'est pas l'exploitation mais la sensibilisation et l'amelioration de la securite</li>
+            </ul>
+
+            <h3>Respect du cadre legal francais</h3>
+            <ul>
+                <li><strong>Art. 323-1 Code penal</strong> — Acces frauduleux a un systeme (interdit sans autorisation)</li>
+                <li><strong>Art. 323-2 Code penal</strong> — Entrave au fonctionnement d'un systeme</li>
+                <li><strong>Art. 323-3 Code penal</strong> — Introduction, modification ou suppression de donnees</li>
+                <li><strong>Art. 323-3-1 Code penal</strong> — Detention d'outils de piratage (usage legitime requis)</li>
+                <li><strong>Art. 323-7 Code penal</strong> — Tentative des delits prevus</li>
+                <li>Le Flipper Zero est un outil legal ; son utilisation malveillante ne l'est pas</li>
+                <li>Tous les tests sont documentes et realises dans un cadre pedagogique ou professionnel autorise</li>
+            </ul>
+        </div>
+
+        <!-- 8. Competences mobilisees -->
+        <h2>8. Competences mobilisees</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Competence</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Analyse de protocoles</strong></td>
+                        <td>Comprehension des protocoles radio, RFID, NFC, IR et de leurs vulnerabilites</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pentest hardware</strong></td>
+                        <td>Methodologie de test d'intrusion sur des systemes physiques et sans fil</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scripting et automatisation</strong></td>
+                        <td>Developpement de scripts pour l'automatisation des tests de securite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Veille technologique</strong></td>
+                        <td>Suivi des evolutions en cybersecurite materielle et des nouvelles vulnerabilites</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Documentation technique</strong></td>
+                        <td>Redaction de rapports de vulnerabilites et de recommandations de securite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ethique et droit</strong></td>
+                        <td>Application du cadre legal et deontologique en cybersecurite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integration d'outils</strong></td>
+                        <td>Utilisation combinee de differents outils de securite (Flipper, Wireshark, SDR++)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            S. MIR — BTS SIO 2025 | Flipper Zero — Pentest Hardware
+        </div>
+
+    </div>
+</body>
+</html>

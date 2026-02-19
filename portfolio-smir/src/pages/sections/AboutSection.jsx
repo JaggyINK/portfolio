@@ -3,18 +3,105 @@ import React from "react";
 import { Link } from "react-router-dom";
 import CodeFlipCard from "../../components/CodeFlipCard";
 import { TECH_DATA } from "../../components/TechData";
+import useReveal from "../../hooks/useReveal";
 import "./AboutSection.css";
 
+/* ===== Golden ratio ===== */
+const PHI = 1.618;
+const INV = 1 / PHI;
+
 const THEME = {
+  card: "rgba(11,16,32,0.78)",
+  border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
-  sub: "#9AA7BF",
+  sub: "#C5D3E8",
   brandFrom: "#22d3ee",
   brandTo: "#a855f7",
+  gold: "#d4af37",
+  green: "#22c55e",
+  line:
+    "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
 };
 
-function TechBadge({ name, color }) {
-  const data = TECH_DATA[name];
+/* ===== KPI Data ===== */
+const KPIS = [
+  { value: "180+", label: "Utilisateurs quotidiens", color: THEME.brandFrom },
+  { value: "-60%", label: "Tickets IT r\u00e9solus", color: THEME.green },
+  { value: "7+", label: "Ans d\u2019exp\u00e9rience pro", color: THEME.brandTo },
+  { value: "6+", label: "Applications livr\u00e9es", color: THEME.gold },
+];
 
+/* ===== What I bring ===== */
+const STRENGTHS = [
+  {
+    title: "Fullstack op\u00e9rationnel",
+    desc: "Python 40%, Vue.js, Laravel 12, LDAP/AD",
+    color: THEME.brandFrom,
+  },
+  {
+    title: "Impact mesurable",
+    desc: "\u221280% tickets \u00b7 4 sites live \u00b7 self-service 24/7",
+    color: THEME.green,
+  },
+  {
+    title: "S\u00e9curit\u00e9 by design",
+    desc: "OWASP, bcrypt, AES, LDAP, SecNum 100%",
+    color: THEME.brandTo,
+  },
+  {
+    title: "Livraison document\u00e9e",
+    desc: "41 tests pytest, guides techniques, APIs REST",
+    color: THEME.gold,
+  },
+];
+
+/* ===== Domain chips ===== */
+const DOMAINS = [
+  { label: "Frontend", chips: ["React", "Vue.js", "Tailwind CSS", "Three.js"] },
+  { label: "Backend", chips: ["Python", "PHP", "Laravel", "Node.js"] },
+  { label: "Data & SI", chips: ["MySQL", "SQLite", "APIs REST", "LDAP"] },
+  { label: "DevOps", chips: ["Docker", "Git", "Vite", "CI/CD"] },
+  { label: "E-commerce", chips: ["Shopify", "Liquid", "Custom apps"] },
+  { label: "S\u00e9curit\u00e9", chips: ["OWASP", "Active Directory", "SSO"] },
+];
+
+/* ===== Grouped tech badges ===== */
+const TECH_GROUPS = [
+  { label: "Frontend", techs: [
+    { name: "React", color: "#61DAFB" },
+    { name: "Vue.js", color: "#42B883" },
+    { name: "Three.js", color: "#049EF4" },
+    { name: "Tailwind CSS", color: "#06B6D4" },
+    { name: "Next.js", color: "#E6ECF8" },
+  ]},
+  { label: "Backend", techs: [
+    { name: "Python", color: "#3776AB" },
+    { name: "PHP", color: "#777BB4" },
+    { name: "Laravel", color: "#FF2D20" },
+    { name: "Node.js", color: "#339933" },
+  ]},
+  { label: "Data & SI", techs: [
+    { name: "MySQL", color: "#4479A1" },
+    { name: "SQLite", color: "#003B57" },
+    { name: "APIs REST", color: "#E10098" },
+  ]},
+  { label: "DevOps", techs: [
+    { name: "Docker", color: "#2496ED" },
+    { name: "Git", color: "#F05032" },
+    { name: "Vite", color: "#646CFF" },
+  ]},
+  { label: "E-commerce", techs: [
+    { name: "Shopify", color: "#95BF46" },
+  ]},
+  { label: "S\u00e9curit\u00e9", techs: [
+    { name: "OWASP", color: "#E34F26" },
+    { name: "Active Directory", color: "#0078D4" },
+  ]},
+];
+
+/* ===== TechBadge component ===== */
+const TechBadge = React.memo(function TechBadge({ name, color }) {
+  const data = TECH_DATA[name];
   return (
     <div className="tech-badge-wrapper">
       <span
@@ -27,7 +114,6 @@ function TechBadge({ name, color }) {
       >
         {name}
       </span>
-
       {data && (
         <div className="tech-tooltip" style={{ borderColor: `${color}60` }}>
           <h4 className="tech-tooltip-title" style={{ color }}>
@@ -37,7 +123,7 @@ function TechBadge({ name, color }) {
           {data.projects && data.projects.length > 0 && (
             <div className="tech-tooltip-projects">
               <p className="tech-tooltip-projects-title" style={{ color: THEME.brandTo }}>
-                🚀 Projets :
+                Projets :
               </p>
               <div className="tech-tooltip-projects-list">
                 {data.projects.map((project, i) => (
@@ -56,122 +142,156 @@ function TechBadge({ name, color }) {
       )}
     </div>
   );
-}
+});
 
+/* ===== Main Section ===== */
 export default function AboutSection() {
+  const { ref, revealed } = useReveal();
+
   return (
-    <section id="about" className="about-section">
+    <section
+      ref={ref}
+      id="about"
+      className={`about-section section-reveal${revealed ? " revealed" : ""}`}
+      style={{
+        background:
+          "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
+          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
+        backdropFilter: "blur(2px)",
+        borderTop: "1px solid rgba(255,255,255,0.05)",
+        padding: `${INV * PHI * PHI}rem ${1.0 * PHI}rem`,
+      }}
+    >
       <div className="about-container">
-        
-        {/* CONTENU PRINCIPAL EN HAUT */}
-        <div className="about-content">
-          <h2 className="about-title">
-            Développeur Fullstack
-          </h2>
 
-          <p className="about-subtitle" style={{ color: THEME.brandFrom }}>
-            Python • JavaScript • React | Alternance CPMS
-          </p>
+        {/* ========== BLOC A — HEADER + SITUATION ========== */}
+        <header className="about-header-card">
+          <h2 className="about-name">Sagar Mir</h2>
+          <p className="about-role">Développeur Fullstack</p>
+          <div className="mx-auto mt-2 mb-3 h-[2px] w-32" style={{ background: THEME.line }} />
 
-          <div className="about-description">
-            <p>
-              Développeur fullstack en alternance chez CPMS, je conçois et maintiens 
-              un <strong style={{color: THEME.brandFrom}}>intranet d&apos;entreprise utilisé quotidiennement par 180+ collaborateurs</strong>. 
-              Expérience concrète en automatisation, intégrations d&apos;APIs tierces (Jira, SSO, géolocalisation), 
-              chatbots intelligents et e-commerce sur mesure.
-            </p>
+          {/* En poste pill */}
+          <div className="about-status-pill">
+            <span className="about-status-dot" />
+            <span>En poste</span>
+            <span className="about-status-sep">|</span>
+            <span>Alternance CPMS &middot; depuis avril 2025</span>
           </div>
 
-          {/* DOMAINES D'EXPERTISE */}
-          <div className="about-expertise">
-            <h3 className="about-expertise-title" style={{ color: THEME.brandTo }}>
-              Domaines d&apos;expertise
+          {/* Stack actuel */}
+          <p className="about-stack-line">
+            Python &middot; Vue.js &middot; Laravel &middot; LDAP &middot; MySQL
+            <span className="about-stack-dash">&mdash;</span>
+            Intranet 180+ collaborateurs
+          </p>
+
+          {/* Formation */}
+          <p className="about-edu-line">
+            BTS SIO SLAM &middot; Digital School of Paris &middot; Dipl\u00f4me juin 2026
+            <span className="about-stack-dash">&mdash;</span>
+            <span style={{ color: THEME.brandFrom }}>Objectif : M2 Big Data &amp; IA</span>
+          </p>
+        </header>
+
+        {/* ========== BLOC B — KPI STRIP ========== */}
+        <div className="about-kpi-grid">
+          {KPIS.map((k) => (
+            <div key={k.label} className="about-kpi-card" style={{ borderColor: `${k.color}25` }}>
+              <span className="about-kpi-value" style={{ color: k.color }}>{k.value}</span>
+              <span className="about-kpi-label">{k.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* ========== BLOC C — TWO COLUMNS ========== */}
+        <div className="about-columns">
+          {/* Left — Ce que j'apporte */}
+          <div className="about-col-left">
+            <h3 className="about-col-title" style={{ color: THEME.brandFrom }}>
+              Ce que j&apos;apporte
             </h3>
-            <ul className="about-expertise-list">
-              <li>
-                <strong style={{ color: THEME.brandFrom }}>• Développement fullstack d&apos;applications web</strong>
-                <br />
-                <span>
-                  Conception d&apos;interfaces modernes (React, Vue.js), développement backend (Python, PHP), logique métier, APIs REST, authentification
-                </span>
-              </li>
-              <li>
-                <strong style={{ color: THEME.brandFrom }}>• Applications orientées usage réel</strong>
-                <br />
-                <span>
-                  Intranet d&apos;entreprise (180+ users), plateformes fonctionnelles, e-commerce custom, outils internes documentés
-                </span>
-              </li>
-              <li>
-                <strong style={{ color: THEME.brandFrom }}>• Sécurité & bonnes pratiques</strong>
-                <br />
-                <span>
-                  Mise en œuvre OWASP (authentification, contrôle d&apos;accès, prévention injection), audits, documentation
-                </span>
-              </li>
-              <li>
-                <strong style={{ color: THEME.brandFrom }}>• Automatisation & veille</strong>
-                <br />
-                <span>
-                  Scripts Python, bots Discord, collecte automatisée (OWASP, CERT-FR, MSRC), diffusion d&apos;informations
-                </span>
-              </li>
-            </ul>
+            <div className="about-strengths">
+              {STRENGTHS.map((s) => (
+                <div key={s.title} className="about-strength-item" style={{ borderLeftColor: s.color }}>
+                  <p className="about-strength-title" style={{ color: s.color }}>{s.title}</p>
+                  <p className="about-strength-desc">{s.desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <p className="about-school">
-            BTS SIO SLAM • Digital School of Paris • Diplôme juin 2026
-          </p>
+          {/* Right — Domaines clés */}
+          <div className="about-col-right">
+            <h3 className="about-col-title" style={{ color: THEME.brandTo }}>
+              Domaines cl\u00e9s
+            </h3>
+            <div className="about-domains">
+              {DOMAINS.map((d) => (
+                <div key={d.label} className="about-domain-row">
+                  <span className="about-domain-label">{d.label}</span>
+                  <div className="about-domain-chips">
+                    {d.chips.map((c) => (
+                      <span key={c} className="about-domain-chip">{c}</span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* TECH BADGES */}
-        <div className="about-tech-badges">
-          <TechBadge name="Python" color="#3776AB" />
-          <TechBadge name="React" color="#61DAFB" />
-          <TechBadge name="Vue.js" color="#42B883" />
-          <TechBadge name="PHP" color="#777BB4" />
-          <TechBadge name="Laravel" color="#FF2D20" />
-          <TechBadge name="Shopify" color="#95BF46" />
-          <TechBadge name="APIs REST" color="#E10098" />
-          <TechBadge name="MySQL" color="#4479A1" />
-          <TechBadge name="Docker" color="#2496ED" />
-          <TechBadge name="OWASP" color="#E34F26" />
+        {/* ========== BLOC D — TECH BADGES GROUPED ========== */}
+        <div className="about-tech-grouped">
+          {TECH_GROUPS.map((g) => (
+            <div key={g.label} className="about-tech-group-row">
+              <span className="about-tech-group-label">{g.label}</span>
+              <div className="about-tech-group-badges">
+                {g.techs.map((t) => (
+                  <TechBadge key={t.name} name={t.name} color={t.color} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* BOUTONS CTA */}
+        {/* ========== BLOC E — CTAs ========== */}
         <div className="about-cta">
           <a href="/cv.pdf" className="about-cta-btn about-cta-btn-primary">
-            📄 CV
+            T\u00e9l\u00e9charger mon CV
           </a>
           <Link to="/Contact" className="about-cta-btn about-cta-btn-secondary">
-            ✉️ Contact
+            Me contacter
           </Link>
-          
-          <a href="https://www.linkedin.com/in/mir-sagar/"
+          <a
+            href="https://www.linkedin.com/in/mir-sagar/"
             target="_blank"
             rel="noopener noreferrer"
             className="about-cta-btn about-cta-btn-tertiary"
           >
-            💼 LinkedIn
+            LinkedIn
           </a>
-          
-          <a href="https://github.com/smir75"
+          <a
+            href="https://github.com/JaggyINK"
             target="_blank"
             rel="noopener noreferrer"
             className="about-cta-btn about-cta-btn-tertiary"
           >
-            <svg className="about-cta-icon" fill="currentColor" viewBox="0 0 24 24">
-              <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-            </svg>
             GitHub
+          </a>
+          <a
+            href="https://discord.gg/GZ59cJg5vR"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-cta-btn about-cta-btn-tertiary"
+          >
+            Discord
           </a>
         </div>
 
-        {/* FLIPCARD EN BAS (avant la section suivante) */}
+        {/* FlipCard */}
         <div className="about-flipcard">
           <CodeFlipCard />
         </div>
-
       </div>
     </section>
   );

@@ -19,6 +19,11 @@ export const TECH_DATA = {
     projects: ["Portfolio 3D immersif"]
   },
 
+  "Next.js": {
+    description: "Framework React avec SSR et routing intégré. Utilisé pour des projets fullstack performants avec rendu hybride.",
+    projects: ["Projets personnels"]
+  },
+
   // ===== BACKEND =====
   Python: {
     description: "Langage principal de l'intranet CPMS (40% du codebase). Développement d'APIs, chatbot FAQ, intégrations Jira/SSO et automatisations.",
@@ -31,6 +36,10 @@ export const TECH_DATA = {
   Laravel: {
     description: "Framework PHP avec architecture MVC. Utilisé pour la plateforme Annonz (CRUD, recherche full-text, uploads, modération).",
     projects: ["Plateforme Annonz", "Projets académiques BTS"]
+  },
+  "Node.js": {
+    description: "Runtime JavaScript côté serveur. Utilisé pour des outils de build, scripts serveur et environnements de développement.",
+    projects: ["Portfolio 3D (tooling)", "Scripts automatisation"]
   },
   Shopify: {
     description: "Plateforme e-commerce custom. Développement de code source modifié, applications custom (convertisseur devises géolocalisé) et flows automatisés.",
@@ -46,12 +55,24 @@ export const TECH_DATA = {
     description: "Intégration SSO et gestion des permissions utilisateurs dans l'intranet CPMS. Synchronisation des comptes et gestion des rôles.",
     projects: ["Intranet CPMS (SSO/AD)"]
   },
+  SQLite: {
+    description: "Base de données embarquée légère. Utilisée pour le stockage local dans les applications desktop et les prototypes.",
+    projects: ["Projets prototyping", "Applications locales"]
+  },
   MySQL: {
     description: "Base de données relationnelle utilisée sur la majorité des projets. Conception de schémas, optimisation de requêtes et gestion des relations.",
     projects: ["CPMS", "Annonz", "Projets Laravel"]
   },
 
   // ===== AUTOMATISATION & DEVOPS =====
+  Git: {
+    description: "Système de versioning distribué. Utilisé quotidiennement pour le suivi de code, branches feature et collaboration.",
+    projects: ["Tous les projets", "GitHub @JaggyINK"]
+  },
+  Vite: {
+    description: "Build tool ultra-rapide avec HMR instantané. Utilisé pour le portfolio 3D avec chunking optimisé.",
+    projects: ["Portfolio 3D", "Projets React/Vue"]
+  },
   Docker: {
     description: "Conteneurisation d'applications pour déploiements reproductibles. Utilisé pour environnements de développement et déploiements potentiels.",
     projects: ["Bot Discord (déploiement potentiel)", "Environnements dev"]

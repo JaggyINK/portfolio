@@ -17,8 +17,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          // empêche MoonScene d’être mis dans un chunk séparé
-          "MoonScene": ["./src/scene/MoonScene.jsx"]
+          "three-core": ["three"],
+          "three-fiber": ["@react-three/fiber", "@react-three/drei"],
+          "vendor": ["react", "react-dom", "react-router-dom"],
+          "MoonScene": ["./src/scene/MoonScene.jsx"],
         }
       }
     }

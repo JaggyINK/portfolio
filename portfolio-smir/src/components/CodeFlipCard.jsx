@@ -78,7 +78,7 @@ export default function CodeFlipCard() {
         {/* ✅ MODIFIÉ : Hauteur réduite de 15% */}
         {/* Avant : 460px / 560px → Après : 390px / 475px */}
         <div
-          className="relative w-full h-[400px] md:h-[300px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.45)]"
+          className="relative w-full h-[280px] sm:h-[320px] md:h-[300px] rounded-3xl overflow-hidden border border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.45)]"
           style={{ perspective: "1200px" }}
         >
           <div

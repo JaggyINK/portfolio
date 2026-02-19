@@ -1,17 +1,18 @@
 // src/pages/ClassicHero.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
+import { useSettings } from "../state/settings.jsx";
 
 /* ===== Golden ratio ===== */
 const PHI = 1.618;
 
 /* ===== avatar ===== */
-const AVATAR_URL = "/avatar-smir.png"; // public/avatar-smir.png
+const AVATAR_URL = "/avatar-smir.webp"; // public/avatar-smir.webp (318KB vs 2.6MB PNG)
 
 export default function ClassicHero() {
   const canvasRef = useRef(null);
   const heroRef = useRef(null);
-  const [showCrawl, setShowCrawl] = useState(true);
-  const [playingKey, setPlayingKey] = useState(0);
+  const { settings } = useSettings();
+  const reduceMotion = settings.reduceMotion;
 
   /* ===== canvas étoiles ===== */
   useEffect(() => {
@@ -32,41 +33,14 @@ export default function ClassicHero() {
       r: Math.random() * 1.5 + 0.3,
     }));
 
-    function draw(now) {
-      const dt = (now - t0) / 1000;
-      t0 = now;
-
+    function drawFrame(g, rad, rad2) {
       // fond dégradé
-      const g = ctx.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, "#0b1020");
-      g.addColorStop(1, "#080d18");
       ctx.fillStyle = g;
       ctx.fillRect(0, 0, W, H);
 
       // lumière radiale
-      const rad = ctx.createRadialGradient(
-        W * 0.25,
-        H * 0.2,
-        0,
-        W * 0.25,
-        H * 0.2,
-        W * 0.45
-      );
-      rad.addColorStop(0, "rgba(212,175,55,0.08)");
-      rad.addColorStop(1, "transparent");
       ctx.fillStyle = rad;
       ctx.fillRect(0, 0, W, H);
-
-      const rad2 = ctx.createRadialGradient(
-        W * 0.85,
-        H * 0.8,
-        0,
-        W * 0.85,
-        H * 0.8,
-        W * 0.35
-      );
-      rad2.addColorStop(0, "rgba(147,51,234,0.07)");
-      rad2.addColorStop(1, "transparent");
       ctx.fillStyle = rad2;
       ctx.fillRect(0, 0, W, H);
 
@@ -74,11 +48,6 @@ export default function ClassicHero() {
       ctx.save();
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
-        s.y += (25 + 55 * s.z) * dt;
-        if (s.y > H) {
-          s.y = -10;
-          s.x = Math.random() * W;
-        }
         ctx.globalAlpha = 0.5 + 0.5 * s.z;
         ctx.fillStyle = "#e5ecff";
         ctx.beginPath();
@@ -89,14 +58,56 @@ export default function ClassicHero() {
         ctx.fillRect(s.x - 0.3, s.y - s.r * 6, 0.6, s.r * 12);
       }
       ctx.restore();
+    }
 
+    function buildGradients() {
+      const g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, "#0b1020");
+      g.addColorStop(1, "#080d18");
+
+      const rad = ctx.createRadialGradient(W * 0.25, H * 0.2, 0, W * 0.25, H * 0.2, W * 0.45);
+      rad.addColorStop(0, "rgba(212,175,55,0.08)");
+      rad.addColorStop(1, "transparent");
+
+      const rad2 = ctx.createRadialGradient(W * 0.85, H * 0.8, 0, W * 0.85, H * 0.8, W * 0.35);
+      rad2.addColorStop(0, "rgba(147,51,234,0.07)");
+      rad2.addColorStop(1, "transparent");
+
+      return { g, rad, rad2 };
+    }
+
+    let grads = buildGradients();
+
+    /* reduceMotion → draw once, static */
+    if (reduceMotion) {
+      drawFrame(grads.g, grads.rad, grads.rad2);
+    } else {
+      function draw(now) {
+        const dt = (now - t0) / 1000;
+        t0 = now;
+
+        drawFrame(grads.g, grads.rad, grads.rad2);
+
+        // animate star positions
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          s.y += (25 + 55 * s.z) * dt;
+          if (s.y > H) {
+            s.y = -10;
+            s.x = Math.random() * W;
+          }
+        }
+
+        raf = requestAnimationFrame(draw);
+      }
       raf = requestAnimationFrame(draw);
     }
-    raf = requestAnimationFrame(draw);
 
     function onResize() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
+      grads = buildGradients();
+      if (reduceMotion) drawFrame(grads.g, grads.rad, grads.rad2);
     }
     window.addEventListener("resize", onResize);
 
@@ -104,27 +115,7 @@ export default function ClassicHero() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
     };
-  }, []);
-
-  // cacher l'intro si on sort du hero (scroll)
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          setShowCrawl(false);
-        }
-      },
-      {
-        threshold: 0.35,
-      }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  }, [reduceMotion]);
 
   return (
     <section
@@ -163,7 +154,7 @@ export default function ClassicHero() {
 
             {/* S.MIR - Nom principal */}
             <h2
-              className="mt-4 font-extrabold text-[clamp(1.8rem,4.4vw,2.6rem)] text-[#60a5fa] fade-in"
+              className="mt-4 font-extrabold text-[clamp(1.8rem,4.4vw,2.6rem)] text-[#60a5fa] fade-in stagger-1"
               style={{
                 fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
               }}
@@ -172,46 +163,20 @@ export default function ClassicHero() {
             </h2>
 
             {/* Punchline */}
-            <p className="text-sm italic md:text-base text-slate-300/95 fade-in">
+            <p className="text-sm italic md:text-base text-slate-300/95 fade-in stagger-2">
               Là où la logique rencontre l&apos;imaginaire.
             </p>
 
-            <p className="mt-3 text-xs tracking-wide text-slate-400/90 fade-in">
+            <p className="mt-3 text-xs tracking-wide text-slate-400/90 fade-in stagger-3">
               Dev · Ops · Builder
             </p>
           </div>
         </div>
       </div>
 
-      {/* INTRO STAR WARS (avec fond noir léger) */}
-      {showCrawl && (
-        <StarCrawl key={playingKey} onEnd={() => setShowCrawl(false)} />
-      )}
-
       {/* FOOTER INFO (en bas du hero) */}
       <footer className="absolute left-0 right-0 z-30 px-6 bottom-10">
         <div className="max-w-3xl mx-auto space-y-2 text-center">
-          <div className="pt-2">
-            {showCrawl ? (
-              <button
-                onClick={() => setShowCrawl(false)}
-                className="px-3 py-1.5 rounded-xl border border-white/20 hover:bg-white/10 transition text-sm"
-              >
-                ⏭ Passer l&apos;intro
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  setPlayingKey((k) => k + 1);
-                  setShowCrawl(true);
-                }}
-                className="px-3 py-1.5 rounded-xl border border-cyan-400/40 bg-cyan-400/10 hover:bg-cyan-400/20 transition text-sm"
-              >
-                ▶ Rejouer l&apos;intro
-              </button>
-            )}
-          </div>
-
           {/* hint scroll */}
           <div className="flex flex-col items-center pt-3">
             <span className="text-xs font-light tracking-wide text-slate-300/80">
@@ -250,7 +215,10 @@ export default function ClassicHero() {
           from { opacity: 0; transform: translateY(8px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        .fade-in { animation: fade-in 1.8s ease-out forwards; }
+        .fade-in { opacity: 0; animation: fade-in 1.8s ease-out forwards; }
+        .stagger-1 { animation-delay: 0.3s; }
+        .stagger-2 { animation-delay: 0.6s; }
+        .stagger-3 { animation-delay: 0.9s; }
       `}</style>
     </section>
   );
@@ -365,143 +333,3 @@ function OrbitalSparksCircle({ dots = 12 }) {
   );
 }
 
-/* =================================== */
-/* Star Wars style opening crawl block */
-/* =================================== */
-function StarCrawl({ onEnd }) {
-  useEffect(() => {
-    const DURATION = 18000; // ~18s - auto-close après l'animation
-    const t = setTimeout(() => onEnd?.(), DURATION);
-    return () => clearTimeout(t);
-  }, [onEnd]);
-
-  return (
-    <div className="fixed inset-0 z-40 pointer-events-none">
-      {/* Fond noir léger : on voit encore le décor */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/55 to-black/40" />
-
-      {/* Zone de texte Star Wars, alignée en bas */}
-      <div className="absolute inset-x-0 bottom-0">
-        <div className="mx-auto max-w-4xl h-[75vh] perspective">
-          <div className="crawl-wrapper">
-            <div className="crawl">
-              <p className="intro-quote">
-                « Les bons systèmes ne se voient pas. Ils fonctionnent. »
-              </p>
-
-              <p className="ep">Chapitre ZÉRO</p>
-              <h2 className="title">Intention &amp; Exécution</h2>
-
-              <p>
-                Tu n&apos;es pas là pour regarder des animations.<br />
-                Tu es là pour trouver quelqu&apos;un qui prend tes problèmes au sérieux.
-              </p>
-
-              <p>
-                J&apos;aime les systèmes qui encaissent les pics, les pannes, les imprévus.<br />
-                Moins de friction, plus de fiabilité. Moins de promesses, plus de livrables.
-              </p>
-
-              <p>
-                Derrière chaque écran, il y a des humains, des risques et des coûts.<br />
-                Mon travail : clarifier, prioriser, simplifier ce qui semble complexe.
-              </p>
-
-              <p className="strong">
-                Le vrai savoir n&apos;est pas ce que tu possèdes déjà,<br />
-                c&apos;est ta capacité à continuer d&apos;apprendre sans jamais t&apos;arrêter.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <style>{`
-        .perspective {
-          perspective: 520px;
-        }
-
-        .crawl-wrapper {
-          position: relative;
-          height: 100%;
-          overflow: hidden;
-          mask-image: linear-gradient(
-            0deg,
-            transparent 0%,
-            black 18%,
-            black 85%,
-            transparent 100%
-          );
-        }
-
-        .crawl {
-          position: absolute;
-          bottom: -15%;               /* démarre bien en bas */
-          width: 100%;
-          transform-origin: 50% 100%;
-          transform: rotateX(24deg);
-          color: #feda4a;
-          text-align: justify;
-          font-size: clamp(11px, 1.5vw, 15px);
-          letter-spacing: 0.05em;
-          line-height: 1.7;
-          font-weight: 500;
-          animation: crawl-move 18s linear forwards;
-          text-shadow: 0 2px 3px rgba(0,0,0,0.65);
-        }
-
-        .crawl .intro-quote {
-          text-align: center;
-          font-size: clamp(13px, 1.8vw, 18px);
-          font-style: italic;
-          margin-bottom: 1.4rem;
-          font-weight: 700;
-          opacity: 0.98;
-        }
-
-        .crawl .ep {
-          text-align: center;
-          margin-bottom: 0.2rem;
-          opacity: 0.9;
-          font-size: 0.82em;
-          letter-spacing: 0.22em;
-          text-transform: uppercase;
-        }
-
-        .crawl .title {
-          text-align: center;
-          font-size: clamp(16px, 2vw, 22px);
-          margin-bottom: 0.9rem;
-          font-weight: 800;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-        }
-
-        .crawl p {
-          margin: 0 0 0.9rem 0;
-        }
-
-        .crawl p.strong {
-          text-align: center;
-          font-weight: 800;
-          margin-top: 1.3rem;
-          font-size: 0.95em;
-        }
-
-        @keyframes crawl-move {
-          0% {
-            bottom: -15%;
-            opacity: 0;
-          }
-          4% {
-            opacity: 1;
-          }
-          100% {
-            bottom: 200%;  /* sort largement par le haut */
-            opacity: 1;
-          }
-        }
-      `}</style>
-    </div>
-  );
-}

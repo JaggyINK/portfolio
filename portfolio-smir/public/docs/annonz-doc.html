@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annonz — Plateforme d'annonces</title>
+    <style>
+        :root { --bg: #0b1020; --card: #111827; --accent: #3b82f6; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+        .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+        h1 { font-size: 2.2rem; color: var(--accent); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        h2 { font-size: 1.4rem; color: var(--accent); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+        h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+        p, li { color: var(--sub); font-size: 0.95rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+        li { margin-bottom: 0.4rem; }
+        .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(59,130,246,0.15); color: var(--accent); border: 1px solid rgba(59,130,246,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+        .meta-item { font-size: 0.85rem; color: var(--sub); }
+        .meta-item strong { color: var(--text); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+        th { background: rgba(59,130,246,0.1); color: var(--accent); font-weight: 600; }
+        td { color: var(--sub); }
+        .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), #2563eb); border-radius: 2px; margin-bottom: 2rem; }
+        code { background: rgba(59,130,246,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+        .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h1>Annonz — Plateforme d'annonces</h1>
+        <div class="header-line"></div>
+
+        <div class="meta">
+            <div class="meta-item"><strong>Date :</strong> 2025</div>
+            <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+            <div class="meta-item"><strong>Type :</strong> Projet scolaire BTS SIO</div>
+        </div>
+
+        <div>
+            <span class="badge">PHP</span>
+            <span class="badge">MySQL</span>
+            <span class="badge">Full-text Search</span>
+            <span class="badge">Auth</span>
+            <span class="badge">CRUD</span>
+            <span class="badge">MVC</span>
+        </div>
+
+        <!-- 1. Contexte -->
+        <h2>1. Contexte</h2>
+        <div class="card">
+            <p>Annonz est une plateforme d'annonces full-stack developpee dans le cadre du BTS SIO. Il s'agit d'une application web complete permettant aux utilisateurs de publier, rechercher et gerer des annonces en ligne.</p>
+            <p>Le projet met en oeuvre une architecture MVC manuelle en PHP natif, sans framework, afin de maitriser les fondamentaux du developpement web backend et de comprendre les mecanismes sous-jacents habituellement abstraits par les frameworks.</p>
+        </div>
+
+        <!-- 2. Architecture technique -->
+        <h2>2. Architecture technique</h2>
+        <div class="card">
+            <h3>Backend</h3>
+            <ul>
+                <li><code>PHP 8.x</code> natif (sans framework) pour une maitrise complete du code</li>
+                <li>Architecture MVC manuelle avec separation stricte des responsabilites</li>
+                <li>Routing personnalise via <code>.htaccess</code> et un front controller</li>
+                <li>PDO pour l'acces aux donnees avec prepared statements</li>
+            </ul>
+
+            <h3>Base de donnees</h3>
+            <ul>
+                <li><code>MySQL</code> avec moteur InnoDB pour les transactions et l'integrite referentielle</li>
+                <li>Index <code>FULLTEXT</code> pour la recherche avancee par mots-cles</li>
+                <li>Relations et contraintes de cles etrangeres</li>
+            </ul>
+
+            <h3>Frontend</h3>
+            <ul>
+                <li><code>HTML5</code> semantique pour la structure des pages</li>
+                <li><code>CSS3</code> avec design responsive (media queries, flexbox, grid)</li>
+                <li><code>JavaScript</code> vanilla pour les interactions dynamiques (validation, AJAX)</li>
+            </ul>
+
+            <h3>Serveur</h3>
+            <ul>
+                <li>Compatible <code>Apache</code> (avec mod_rewrite) et <code>Nginx</code></li>
+                <li>Configuration de reecriture d'URL pour des routes propres</li>
+            </ul>
+        </div>
+
+        <!-- 3. Fonctionnalites -->
+        <h2>3. Fonctionnalites</h2>
+
+        <div class="card">
+            <h3>a. Gestion des annonces</h3>
+            <ul>
+                <li><strong>CRUD complet</strong> — Creation, lecture, modification et suppression d'annonces</li>
+                <li>Attribution de categories pour organiser les annonces</li>
+                <li>Upload d'images pour illustrer chaque annonce</li>
+                <li>Statut de l'annonce (active, en attente, archivee)</li>
+                <li>Pagination des resultats pour une navigation fluide</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>b. Recherche full-text</h3>
+            <ul>
+                <li>Index MySQL <code>FULLTEXT</code> sur les colonnes titre et description</li>
+                <li>Recherche par mots-cles avec classement par pertinence (<code>MATCH ... AGAINST</code>)</li>
+                <li>Filtrage par categorie, fourchette de prix et localisation</li>
+                <li>Tri des resultats par pertinence, date de publication ou prix</li>
+                <li>Suggestions de recherche basees sur les termes populaires</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>c. Authentification</h3>
+            <ul>
+                <li>Inscription avec validation des champs (email, mot de passe fort)</li>
+                <li>Connexion securisee avec gestion de sessions PHP</li>
+                <li>Hashage des mots de passe avec <code>bcrypt</code> via <code>password_hash()</code></li>
+                <li>Validation de l'adresse email lors de l'inscription</li>
+                <li>Gestion des roles (utilisateur, administrateur)</li>
+                <li>Deconnexion avec destruction complete de la session</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>d. Upload securise</h3>
+            <ul>
+                <li>Validation du type MIME reel du fichier (pas seulement l'extension)</li>
+                <li>Limite de taille configurable (ex. 2 Mo maximum par image)</li>
+                <li>Renommage securise avec <code>uniqid()</code> pour eviter les collisions et injections</li>
+                <li>Stockage organise dans des repertoires structures par date</li>
+                <li>Whitelist d'extensions autorisees (jpg, jpeg, png, webp)</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>e. Moderation</h3>
+            <ul>
+                <li>Systeme de signalement d'annonces par les utilisateurs</li>
+                <li>Interface d'administration pour la validation des annonces signalees</li>
+                <li>Gestion des utilisateurs (suspension, suppression de compte)</li>
+                <li>Tableau de bord administrateur avec statistiques</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3>f. Messagerie</h3>
+            <ul>
+                <li>Systeme de contact entre utilisateurs via l'annonce</li>
+                <li>Formulaire de contact lie a chaque annonce</li>
+                <li>Boite de reception pour consulter les messages recus</li>
+                <li>Notification de nouveaux messages</li>
+            </ul>
+        </div>
+
+        <!-- 4. Base de donnees -->
+        <h2>4. Base de donnees</h2>
+        <div class="card">
+            <p>Le schema de la base de donnees est concu pour supporter toutes les fonctionnalites de la plateforme avec des relations claires et des contraintes d'integrite.</p>
+
+            <h3>Table <code>users</code></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id</td><td>INT AUTO_INCREMENT PK</td><td>Identifiant unique</td></tr>
+                    <tr><td>email</td><td>VARCHAR(255) UNIQUE</td><td>Adresse email de l'utilisateur</td></tr>
+                    <tr><td>username</td><td>VARCHAR(100) UNIQUE</td><td>Nom d'affichage</td></tr>
+                    <tr><td>password_hash</td><td>VARCHAR(255)</td><td>Mot de passe hashe (bcrypt)</td></tr>
+                    <tr><td>role</td><td>ENUM('user','admin')</td><td>Role de l'utilisateur</td></tr>
+                    <tr><td>created_at</td><td>DATETIME</td><td>Date d'inscription</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Table <code>annonces</code></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id</td><td>INT AUTO_INCREMENT PK</td><td>Identifiant unique</td></tr>
+                    <tr><td>title</td><td>VARCHAR(255)</td><td>Titre de l'annonce</td></tr>
+                    <tr><td>description</td><td>TEXT</td><td>Description detaillee (index FULLTEXT)</td></tr>
+                    <tr><td>price</td><td>DECIMAL(10,2)</td><td>Prix en euros</td></tr>
+                    <tr><td>category</td><td>INT FK</td><td>Reference vers la table categories</td></tr>
+                    <tr><td>location</td><td>VARCHAR(255)</td><td>Localisation de l'annonce</td></tr>
+                    <tr><td>user_id</td><td>INT FK</td><td>Auteur de l'annonce</td></tr>
+                    <tr><td>status</td><td>ENUM('active','pending','archived')</td><td>Statut de l'annonce</td></tr>
+                    <tr><td>images</td><td>JSON</td><td>Chemins des images associees</td></tr>
+                    <tr><td>created_at</td><td>DATETIME</td><td>Date de publication</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Table <code>categories</code></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id</td><td>INT AUTO_INCREMENT PK</td><td>Identifiant unique</td></tr>
+                    <tr><td>name</td><td>VARCHAR(100) UNIQUE</td><td>Nom de la categorie</td></tr>
+                    <tr><td>slug</td><td>VARCHAR(100) UNIQUE</td><td>Slug URL-friendly</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Table <code>messages</code></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id</td><td>INT AUTO_INCREMENT PK</td><td>Identifiant unique</td></tr>
+                    <tr><td>sender_id</td><td>INT FK</td><td>Utilisateur expediteur</td></tr>
+                    <tr><td>receiver_id</td><td>INT FK</td><td>Utilisateur destinataire</td></tr>
+                    <tr><td>annonce_id</td><td>INT FK</td><td>Annonce concernee</td></tr>
+                    <tr><td>content</td><td>TEXT</td><td>Contenu du message</td></tr>
+                    <tr><td>created_at</td><td>DATETIME</td><td>Date d'envoi</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Table <code>reports</code></h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>id</td><td>INT AUTO_INCREMENT PK</td><td>Identifiant unique</td></tr>
+                    <tr><td>annonce_id</td><td>INT FK</td><td>Annonce signalee</td></tr>
+                    <tr><td>user_id</td><td>INT FK</td><td>Utilisateur ayant signale</td></tr>
+                    <tr><td>reason</td><td>TEXT</td><td>Motif du signalement</td></tr>
+                    <tr><td>created_at</td><td>DATETIME</td><td>Date du signalement</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 5. Securite -->
+        <h2>5. Securite</h2>
+        <div class="card">
+            <h3>Protection contre l'injection SQL</h3>
+            <p>Toutes les requetes sont executees via des <strong>prepared statements PDO</strong>. Les parametres utilisateurs ne sont jamais concatenes directement dans les requetes SQL, eliminant ainsi le risque d'injection.</p>
+
+            <h3>Protection XSS</h3>
+            <ul>
+                <li>Echappement systematique des sorties avec <code>htmlspecialchars()</code></li>
+                <li>En-tetes Content-Security-Policy (CSP) pour limiter les sources de scripts</li>
+                <li>Validation et sanitization des entrees utilisateur</li>
+            </ul>
+
+            <h3>Protection CSRF</h3>
+            <ul>
+                <li>Generation de tokens CSRF uniques par session</li>
+                <li>Verification du token sur chaque formulaire soumis en POST</li>
+                <li>Renouvellement du token apres chaque action sensible</li>
+            </ul>
+
+            <h3>Hashage des mots de passe</h3>
+            <ul>
+                <li>Utilisation de <code>password_hash()</code> avec l'algorithme <code>bcrypt</code></li>
+                <li>Verification via <code>password_verify()</code> sans jamais comparer en clair</li>
+                <li>Cout de hashage configure pour un bon equilibre securite/performance</li>
+            </ul>
+
+            <h3>Validation cote serveur</h3>
+            <ul>
+                <li>Toutes les entrees utilisateur sont validees cote serveur (jamais uniquement cote client)</li>
+                <li>Verification des types, longueurs, formats et plages de valeurs</li>
+                <li>Messages d'erreur generiques pour ne pas divulguer d'informations sensibles</li>
+            </ul>
+
+            <h3>Upload securise</h3>
+            <ul>
+                <li>Whitelist stricte d'extensions autorisees (<code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>, <code>.webp</code>)</li>
+                <li>Verification du type MIME reel avec <code>finfo_file()</code></li>
+                <li>Stockage en dehors du repertoire web accessible quand possible</li>
+            </ul>
+        </div>
+
+        <!-- 6. Architecture MVC -->
+        <h2>6. Architecture MVC</h2>
+        <div class="card">
+            <p>L'architecture Modele-Vue-Controleur (MVC) permet de separer clairement les responsabilites au sein de l'application, facilitant la maintenance et l'evolution du code.</p>
+
+            <h3>Models — Acces aux donnees</h3>
+            <ul>
+                <li>Classes PHP dediees a l'interaction avec la base de donnees via <code>PDO</code></li>
+                <li>Un modele par entite (UserModel, AnnonceModel, CategoryModel, MessageModel)</li>
+                <li>Methodes CRUD standardisees (find, findAll, create, update, delete)</li>
+                <li>Encapsulation de la logique d'acces aux donnees</li>
+            </ul>
+
+            <h3>Views — Templates HTML/PHP</h3>
+            <ul>
+                <li>Fichiers PHP melangeant HTML et donnees transmises par le controleur</li>
+                <li>Systeme de layout avec header/footer partages</li>
+                <li>Echappement systematique des variables affichees</li>
+                <li>Templates reutilisables pour les composants recurrents (cards, formulaires)</li>
+            </ul>
+
+            <h3>Controllers — Logique metier et routing</h3>
+            <ul>
+                <li>Front controller (<code>index.php</code>) recevant toutes les requetes</li>
+                <li>Routeur analysant l'URL pour dispatcher vers le bon controleur/methode</li>
+                <li>Chaque controleur gere un domaine fonctionnel (AuthController, AnnonceController, AdminController)</li>
+                <li>Validation des entrees, appel aux modeles, transmission des donnees aux vues</li>
+                <li>Middlewares pour la verification d'authentification et d'autorisation</li>
+            </ul>
+
+            <h3>Structure des repertoires</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Repertoire</th>
+                        <th>Contenu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>/app/controllers/</code></td><td>Controleurs de l'application</td></tr>
+                    <tr><td><code>/app/models/</code></td><td>Modeles d'acces aux donnees</td></tr>
+                    <tr><td><code>/app/views/</code></td><td>Templates HTML/PHP</td></tr>
+                    <tr><td><code>/public/</code></td><td>Point d'entree, assets CSS/JS/images</td></tr>
+                    <tr><td><code>/config/</code></td><td>Configuration (BDD, constantes)</td></tr>
+                    <tr><td><code>/uploads/</code></td><td>Fichiers uploades par les utilisateurs</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 7. Competences BTS SIO -->
+        <h2>7. Competences BTS SIO</h2>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Competence</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Developpement backend</strong></td>
+                        <td>Conception et developpement d'une application PHP native avec architecture MVC</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Base de donnees</strong></td>
+                        <td>Modelisation, creation et interrogation d'une base MySQL avec recherche full-text</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Securite applicative</strong></td>
+                        <td>Implementation des protections contre les vulnerabilites courantes (SQLi, XSS, CSRF)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Authentification</strong></td>
+                        <td>Mise en place d'un systeme d'inscription/connexion securise avec gestion des roles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Integration frontend</strong></td>
+                        <td>Developpement d'interfaces responsives en HTML5, CSS3 et JavaScript</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Architecture logicielle</strong></td>
+                        <td>Application du pattern MVC pour une separation claire des responsabilites</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestion de fichiers</strong></td>
+                        <td>Upload securise avec validation, renommage et stockage organise</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gestion de projet</strong></td>
+                        <td>Planification, developpement iteratif et documentation du projet</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            S. MIR — BTS SIO 2025 | Annonz — Plateforme d'annonces
+        </div>
+
+    </div>
+</body>
+</html>

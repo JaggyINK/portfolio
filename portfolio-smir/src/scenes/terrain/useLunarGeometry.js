@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { clamp } from "@/utils/math3d";
 
@@ -9,7 +9,7 @@ import { clamp } from "@/utils/math3d";
  * - coloration en nuances de gris (léger bleu froid)
  */
 export default function useLunarGeometry(RADIUS, segs = 168) {
-  return useMemo(() => {
+  const geo = useMemo(() => {
     const g = new THREE.SphereGeometry(RADIUS, segs, segs);
     const pos = g.attributes.position;
     const v = new THREE.Vector3();
@@ -76,4 +76,8 @@ export default function useLunarGeometry(RADIUS, segs = 168) {
     g.computeVertexNormals();
     return g;
   }, [RADIUS, segs]);
+
+  useEffect(() => () => geo.dispose(), [geo]);
+
+  return geo;
 }

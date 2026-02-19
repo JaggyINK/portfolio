@@ -8,27 +8,68 @@ const INV = 1 / PHI;
 /* ============================ */
 const THEME = {
   bg: "#0b1020",
-  card: "rgba(11,16,32,0.90)",
+  card: "rgba(11,16,32,0.78)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
-  sub: "#9AA7BF",
+  sub: "#C5D3E8",
   brandFrom: "#22d3ee",
   brandTo: "#a855f7",
+  line:
+    "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
 };
 
 /* ============================ */
 const PROJECTS = [
+  {
+    id: "familidocs",
+    title: "FamiliDocs",
+    date: "2025–2026",
+    description: "Coffre administratif numerique familial — Projet E5 BTS SIO",
+    detail:
+      "Projet principal BTS SIO SLAM (epreuve E5). Application web Python/Flask permettant aux familles de centraliser et securiser leurs documents administratifs. 9 modeles de donnees, chiffrement AES, versioning, tags, partage granulaire avec permissions temporaires, notifications temps reel, 41 tests pytest. Architecture MVC complete avec 7 services metier et 8 blueprints.",
+    tags: ["Python", "Flask", "SQLite", "AES", "pytest"],
+    category: "projets",
+    color: "#8b5cf6",
+    docUrl: "/docs/familidocs-doc.html",
+    highlight: "Projet E5 BTS SIO SLAM",
+  },
   {
     id: "cpms",
     title: "Intranet CPMS",
     date: "2025",
     description: "Administration & self-care pour 180+ collaborateurs",
     detail:
-      "Développement fullstack de fonctionnalités critiques : réinitialisation de mot de passe sécurisée, réactivation de compte, déverrouillage via questions de sécurité. Intégration d'un lecteur PDF natif, refonte UX/UI complète. Documentation technique et user, captures d'écran de production.",
-    tags: ["React", "PHP", "MySQL", "API REST"],
+      "Plateforme self-service Laravel 12 + Vue 3 pour la CPMS : changement de mot de passe multi-systemes (Active Directory + AS400) en temps reel, deverrouillage de compte via questions de securite (bcrypt + leurres), dashboard admin avec stats temps reel, portail intranet centralise. Impact : -80% tickets IT, disponibilite 24/7.",
+    tags: ["Laravel 12", "Vue 3", "LDAP", "AS400", "PHP"],
     category: "projets",
     color: "#22d3ee",
-    docUrl: "/docs/CPMS.pdf",
+    docUrl: "/docs/cpms-doc.html",
+  },
+  {
+    id: "earth-sanitation",
+    title: "Earth Sanitation",
+    date: "2025",
+    description: "Site vitrine & SEO pour entreprise d'assainissement 24h/24",
+    detail:
+      "Développement complet d'un site professionnel pour Earth Sanitation (débouchage & assainissement) : architecture Next.js + Tailwind CSS, 7 pages services détaillées, formulaire de devis, intégration WhatsApp, SEO local avancé (schema JSON-LD, annuaire 30+ villes), design responsive, animations fluides. Couverture Montpellier, Nîmes et 100 km autour.",
+    tags: ["Next.js", "Tailwind CSS", "SEO", "React"],
+    category: "projets",
+    color: "#10b981",
+    siteUrl: "https://earth-sanitation.fr",
+    docUrl: "/docs/earth-sanitation-doc.html",
+  },
+  {
+    id: "drainage-academy",
+    title: "Drainage Academy",
+    date: "2025",
+    description: "Plateforme complète pour école de drainage lymphatique",
+    detail:
+      "Développement fullstack front + back + middleware : site vitrine avec agenda, annuaire praticiens, témoignages vidéo. Espace praticien sécurisé avec authentification. Back-office admin complet permettant la gestion dynamique du contenu (blog, avis, photos, activation/désactivation de pages). Fondateur : Dan Samama.",
+    tags: ["React", "Node.js", "Auth", "Admin Panel"],
+    category: "projets",
+    color: "#d4af37",
+    siteUrl: "https://drainage-academy.fr",
+    docUrl: "/docs/drainage-academy-doc.html",
   },
   {
     id: "discord-bot",
@@ -40,7 +81,7 @@ const PROJECTS = [
     tags: ["Python", "Discord API", "RSS", "Automation"],
     category: "projets",
     color: "#5865F2",
-    docUrl: "/docs/bot_discord.pdf",
+    docUrl: "/docs/discord-bot-doc.html",
   },
   {
     id: "alafrenchcare",
@@ -52,7 +93,8 @@ const PROJECTS = [
     tags: ["Shopify", "Liquid", "E-commerce", "Webhooks", "SEO"],
     category: "projets",
     color: "#f59e0b",
-    docUrl: "https://alafrenchcare.com",
+    siteUrl: "https://alafrenchcare.com",
+    docUrl: "/docs/alafrench-care-doc.html",
   },
   {
     id: "alafrenchfr",
@@ -64,8 +106,8 @@ const PROJECTS = [
     tags: ["Shopify", "Liquid", "E-commerce", "Branding", "SEO"],
     category: "projets",
     color: "#a855f7",
-    docUrl: "https://alafrench.fr",
-    highlight: "💎 Thème Liquid développé de A à Z",
+    siteUrl: "https://alafrench.fr",
+    docUrl: "/docs/alafrench-doc.html",
   },
   {
     id: "portfolio",
@@ -76,8 +118,8 @@ const PROJECTS = [
       "Portfolio personnel en 3D temps réel : scènes interactives Three.js, optimisation WebGL avancée, architecture React modulaire, animations fluides, responsive design. Documentation technique complète avec captures d'écran et vidéos du rendu final.",
     tags: ["React", "Three.js", "WebGL", "3D"],
     category: "projets",
-    color: "#10b981",
-    docUrl: "/docs/PF_doc.pdf",
+    color: "#06b6d4",
+    docUrl: "/docs/portfolio-3d-doc.html",
   },
   {
     id: "flipper",
@@ -89,8 +131,7 @@ const PROJECTS = [
     tags: ["Hardware", "Pentest", "Firmware", "Security"],
     category: "projets",
     color: "#ef4444",
-    docUrl: "/docs/Fl_0.pdf",
-    highlight: "🔒 Pentest interne",
+    docUrl: "/docs/flipper-zero-doc.html",
   },
   {
     id: "dev_annonce",
@@ -102,7 +143,7 @@ const PROJECTS = [
     tags: ["PHP", "MySQL", "Full-text", "Auth"],
     category: "projets",
     color: "#3b82f6",
-    docUrl: "/docs/Annonz.pdf",
+    docUrl: "/docs/annonz-doc.html",
   },
   {
     id: "tp_sql",
@@ -167,11 +208,32 @@ const PROJECTS = [
 ];
 
 /* ============================ */
-const CATEGORY_META = {
-  all: { label: "Tous", color: "#64748b", icon: "🌟" },
-  projets: { label: "Projets", color: "#10b981", icon: "🚀" },
-  guides: { label: "Guides & Installations", color: "#3b82f6", icon: "📚" },
-};
+const CATEGORIES = [
+  {
+    key: "projets",
+    label: "Projets",
+    description: "Applications web, sites professionnels, outils et projets personnels",
+    color: "#10b981",
+    gradient: "linear-gradient(135deg, #10b981, #059669)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-10 h-10">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+      </svg>
+    ),
+  },
+  {
+    key: "guides",
+    label: "Guides & Installations",
+    description: "Tutoriels, rapports de sécurité, guides d'administration et virtualisation",
+    color: "#3b82f6",
+    gradient: "linear-gradient(135deg, #3b82f6, #2563eb)",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-10 h-10">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+      </svg>
+    ),
+  },
+];
 
 /* ============================ */
 function ProjectCard({ p }) {
@@ -219,30 +281,10 @@ function ProjectCard({ p }) {
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
-                <span
-                  className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white rounded-full shadow-lg"
-                  style={{ backgroundColor: p.color }}
-                >
-                  {CATEGORY_META[p.category].icon} {CATEGORY_META[p.category].label}
-                </span>
                 <span className="text-xs font-semibold" style={{ color: THEME.sub }}>
                   {p.date}
                 </span>
               </div>
-
-              {/* Highlight badge (si existe) */}
-              {p.highlight && (
-                <div
-                  className="px-3 py-1.5 mb-3 text-xs font-bold text-center rounded-lg"
-                  style={{
-                    background: `linear-gradient(135deg, ${p.color}30, ${p.color}10)`,
-                    border: `1px solid ${p.color}60`,
-                    color: p.color,
-                  }}
-                >
-                  {p.highlight}
-                </div>
-              )}
 
               {/* Titre */}
               <h3
@@ -282,7 +324,7 @@ function ProjectCard({ p }) {
               {/* Footer */}
               <div className="pt-3 mt-auto border-t" style={{ borderColor: `${p.color}30` }}>
                 <p className="text-xs italic text-center transition-all group-hover:scale-105" style={{ color: THEME.sub }}>
-                  Cliquer pour voir les détails →
+                  Cliquer pour voir les détails
                 </p>
               </div>
             </div>
@@ -303,7 +345,7 @@ function ProjectCard({ p }) {
               {/* Header verso */}
               <div className="flex items-center justify-between mb-3">
                 <h4 className="text-base font-bold" style={{ color: p.color }}>
-                  📋 Détails
+                  {p.title}
                 </h4>
                 <span className="text-xs" style={{ color: THEME.sub }}>
                   {p.date}
@@ -335,19 +377,41 @@ function ProjectCard({ p }) {
               )}
 
               {/* CTA */}
-              <a
-                href={p.docUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="block w-full py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
-                style={{
-                  background: `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
-                  boxShadow: `0 4px 16px ${p.color}40`
-                }}
-              >
-                📄 Voir la documentation
-              </a>
+              <div className="flex gap-2">
+                {p.siteUrl && (
+                  <a
+                    href={p.siteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex-1 py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                    style={{
+                      background: `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
+                      boxShadow: `0 4px 16px ${p.color}40`,
+                    }}
+                  >
+                    Voir le site
+                  </a>
+                )}
+                {p.docUrl && (
+                  <a
+                    href={p.docUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className={`${p.siteUrl ? "flex-1" : "w-full"} py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40`}
+                    style={{
+                      background: p.siteUrl
+                        ? `rgba(255,255,255,0.1)`
+                        : `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
+                      border: p.siteUrl ? `1px solid ${p.color}60` : "none",
+                      boxShadow: p.siteUrl ? "none" : `0 4px 16px ${p.color}40`,
+                    }}
+                  >
+                    {p.docUrl.startsWith("http") ? "Voir le site" : "Documentation"}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -357,24 +421,90 @@ function ProjectCard({ p }) {
 }
 
 /* ============================ */
+function CategoryCard({ cat, count, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="relative w-full overflow-hidden border-2 cursor-pointer group rounded-2xl backdrop-blur-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white/30"
+      style={{
+        borderColor: `${cat.color}50`,
+        background: THEME.card,
+        boxShadow: `0 8px 32px ${cat.color}20`,
+        minHeight: "16rem",
+      }}
+    >
+      {/* Gradient overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.08] group-hover:opacity-[0.15] transition-opacity duration-300"
+        style={{ background: cat.gradient }}
+      />
+
+      <div className="relative flex flex-col items-center justify-center h-full gap-5 p-8">
+        {/* Icon */}
+        <div
+          className="flex items-center justify-center w-20 h-20 rounded-full transition-transform duration-300 group-hover:scale-110"
+          style={{
+            background: `${cat.color}20`,
+            border: `2px solid ${cat.color}50`,
+            color: cat.color,
+          }}
+        >
+          {cat.icon}
+        </div>
+
+        {/* Label */}
+        <h3
+          className="text-2xl font-extrabold tracking-tight"
+          style={{
+            color: cat.color,
+            fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
+          }}
+        >
+          {cat.label}
+        </h3>
+
+        {/* Description */}
+        <p className="max-w-sm text-sm leading-relaxed text-center" style={{ color: THEME.sub }}>
+          {cat.description}
+        </p>
+
+        {/* Count badge */}
+        <span
+          className="px-4 py-1.5 text-sm font-bold text-white rounded-full"
+          style={{ background: cat.gradient }}
+        >
+          {count} {count > 1 ? "items" : "item"}
+        </span>
+      </div>
+    </button>
+  );
+}
+
+/* ============================ */
 export default function ProjectsSection() {
-  const [filter, setFilter] = useState("all");
+  const [activeCategory, setActiveCategory] = useState(null);
+
+  const projectCount = useMemo(() => PROJECTS.filter((p) => p.category === "projets").length, []);
+  const guideCount = useMemo(() => PROJECTS.filter((p) => p.category === "guides").length, []);
 
   const filtered = useMemo(() => {
-    if (filter === "all") return PROJECTS;
-    return PROJECTS.filter((p) => p.category === filter);
-  }, [filter]);
+    if (!activeCategory) return [];
+    return PROJECTS.filter((p) => p.category === activeCategory);
+  }, [activeCategory]);
+
+  const activeMeta = CATEGORIES.find((c) => c.key === activeCategory);
 
   return (
     <section
       id="projets"
-      className="relative min-h-screen py-20 snap-center text-slate-100 px-4"
+      className="relative min-h-[100svh] snap-center text-slate-100"
       style={{
         background:
-          "radial-gradient(60% 60% at 50% 20%, rgba(212,175,55,.04), transparent 70%)," +
-          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.03), transparent 70%), rgba(8,12,24,0.3)",
+          "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
+          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
         backdropFilter: "blur(2px)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
+        padding: `${INV * PHI * PHI}rem ${1.0 * PHI}rem`,
       }}
     >
       <style>{`
@@ -394,70 +524,86 @@ export default function ProjectsSection() {
         }
       `}</style>
 
-      <div className="w-full mx-auto" style={{ maxWidth: "1400px" }}>
+      <div className="w-full mx-auto" style={{ maxWidth: `${48 * PHI}rem` }}>
         {/* Header */}
-        <header className="mb-16 text-center">
+        <header className="mb-8 text-center">
           <h2
             className="font-extrabold tracking-tight"
             style={{
               fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
+              fontSize: `clamp(1.5rem, ${1.4 * PHI}rem, 2.35rem)`,
+              lineHeight: 1.0 + INV,
               color: THEME.text,
-              fontSize: "clamp(2rem, 4vw, 3.5rem)",
-              lineHeight: 1.2,
             }}
           >
             Mes Projets
           </h2>
-          <div
-            className="h-1 mx-auto mt-4 rounded-full"
-            style={{
-              width: "clamp(8rem, 20vw, 16rem)",
-              background: "linear-gradient(90deg, #22d3ee, #f59e0b, #a855f7)",
-            }}
-          />
-          <p className="max-w-3xl mx-auto mt-6 text-base leading-relaxed" style={{ color: THEME.sub }}>
-            Une sélection de projets professionnels, scolaires et personnels démontrant mes compétences en développement fullstack, sécurité et infrastructure.
+          <p className="mt-1.5 text-[0.88rem]" style={{ color: THEME.sub }}>
+            Projets professionnels, scolaires et personnels — fullstack, sécurité, infrastructure
           </p>
+          <div className="mx-auto mt-3 h-[2px] w-32" style={{ background: THEME.line }} />
         </header>
 
-        {/* Filtres */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-          {Object.entries(CATEGORY_META).map(([k, meta]) => (
-            <button
-              key={k}
-              onClick={() => setFilter(k)}
-              className={`px-5 py-2.5 rounded-xl font-bold text-white text-sm transition-all focus:outline-none focus:ring-2 focus:ring-white/30 ${
-                filter === k
-                  ? "scale-105 shadow-xl"
-                  : "opacity-80 hover:opacity-100 hover:scale-105"
-              }`}
-              style={{
-                backgroundColor: meta.color,
-                boxShadow: filter === k ? `0 8px 24px ${meta.color}40` : "none"
-              }}
-              aria-pressed={filter === k}
-            >
-              {meta.icon} {meta.label}
-            </button>
-          ))}
-        </div>
+        {/* Catégories ou contenu */}
+        {!activeCategory ? (
+          /* ===== 2 cartes catégories ===== */
+          <div className="grid max-w-4xl gap-8 mx-auto grid-cols-1 sm:grid-cols-2">
+            <CategoryCard
+              cat={CATEGORIES[0]}
+              count={projectCount}
+              onClick={() => setActiveCategory("projets")}
+            />
+            <CategoryCard
+              cat={CATEGORIES[1]}
+              count={guideCount}
+              onClick={() => setActiveCategory("guides")}
+            />
+          </div>
+        ) : (
+          /* ===== Projets de la catégorie sélectionnée ===== */
+          <div>
+            {/* Barre retour */}
+            <div className="flex items-center gap-4 mb-6">
+              <button
+                onClick={() => setActiveCategory(null)}
+                className="flex items-center gap-2 px-4 py-2 text-sm font-bold text-white transition-all rounded-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/30"
+                style={{
+                  background: `${activeMeta.color}30`,
+                  border: `1px solid ${activeMeta.color}50`,
+                }}
+              >
+                <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                  <path fillRule="evenodd" d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z" clipRule="evenodd" />
+                </svg>
+                Retour
+              </button>
+              <h3
+                className="text-xl font-bold"
+                style={{
+                  color: activeMeta.color,
+                  fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
+                }}
+              >
+                {activeMeta.label}
+              </h3>
+              <span className="text-sm" style={{ color: THEME.sub }}>
+                {filtered.length} {filtered.length > 1 ? "items" : "item"}
+              </span>
+            </div>
 
-        {/* Grille responsive */}
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((p) => (
-            <ProjectCard key={p.id} p={p} />
-          ))}
-        </div>
+            {/* Grille responsive */}
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((p) => (
+                <ProjectCard key={p.id} p={p} />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
-        <div className="mt-12 text-center">
-          <p className="text-sm" style={{ color: THEME.sub }}>
-            <span className="font-semibold" style={{ color: THEME.text }}>
-              {filtered.length}
-            </span>{" "}
-            projet{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""} • Cliquez sur une carte pour voir les détails
-          </p>
-        </div>
+        <p className="mt-6 text-center text-[0.72rem]" style={{ color: THEME.sub }}>
+          {PROJECTS.length} projets au total — cliquer sur une carte pour les détails
+        </p>
       </div>
     </section>
   );

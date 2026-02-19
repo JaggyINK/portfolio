@@ -1,276 +1,199 @@
 // src/pages/sections/SchoolsSection.jsx
 import React from "react";
+import useReveal from "../../hooks/useReveal";
 
-/* ===== nombre d’or & thème ===== */
+/* ===== Système φ ===== */
 const PHI = 1.618;
 const INV = 1 / PHI;
-const INV2 = INV * INV;
 
 const THEME = {
-  bg: "#0a0f1c",
-  card: "rgba(10,16,30,0.78)",
+  card: "rgba(11,16,32,0.78)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
-  sub: "#9AA7BF",
+  sub: "#C5D3E8",
   brandFrom: "#22d3ee",
   brandTo: "#a855f7",
   line:
     "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
 };
 
-/* ===== données ===== */
+/* ===== Données ===== */
 const SCHOOLS = [
   {
-    id: "ifcv-ndrc",
     school: "IFCV",
-    program: "BTS NDRC (Négociation et Digitalisation de la Relation Client)",
+    program: "BTS NDRC",
+    full: "Négociation et Digitalisation de la Relation Client",
     link: "https://www.ifcv.fr/",
-    period: "Alternance",
-    rhythm: "1 semaine entreprise / 1 semaine cours",
-    focus: [
-      "Prospection & négociation",
-      "Social selling & CRM",
-      "Parcours client omnicanal",
-      "E-commerce & outils digitaux",
-    ],
+    rhythm: "1 sem. entreprise / 1 sem. cours",
+    focus: ["Prospection & négociation", "Social selling & CRM", "Parcours client omnicanal", "E-commerce & outils digitaux"],
     color: "#22d3ee",
   },
   {
-    id: "cfa-stephenson-softec",
     school: "CFA Stephenson",
-    program: "Titre professionnel SOFTEC",
-    link:  "https://stephenson-formation.fr/",
-    period: "Alternance",
-    rhythm: "1 semaine entreprise / 1 semaine cours",
-    focus: [
-      "Gestion opérationnelle",
-      "Tech & support utilisateur",
-      "Organisation de projet",
-      "Qualité & méthodologie",
-    ],
+    program: "Titre SOFTEC",
+    full: "Support des Opérations Fonctionnelles et Techniques",
+    link: "https://stephenson-formation.fr/",
+    rhythm: "1 sem. entreprise / 1 sem. cours",
+    focus: ["Gestion opérationnelle", "Tech & support utilisateur", "Organisation de projet", "Qualité & méthodologie"],
     color: "#f59e0b",
   },
   {
-    id: "dsp-ief2i-sio",
-    school: "Digital School of Paris – IEF2I",
-    program: "BTS SIO (Services Informatiques aux Organisations)",
-    link: "https://www.digitalschool.paris//",
-    period: "Alternance",
-    rhythm: "1 semaine entreprise / 1 semaine cours",
-    focus: [
-      "Dév. applicatif (option SLAM)",
-      "Bases de données & SQL",
-      "Réseaux / Systèmes (SI)",
-      "Sécurité & bonnes pratiques",
-    ],
+    school: "DSP – IEF2I",
+    program: "BTS SIO (SLAM)",
+    full: "Services Informatiques aux Organisations",
+    link: "https://www.digitalschool.paris/",
+    rhythm: "1 sem. entreprise / 1 sem. cours",
+    focus: ["Dév. applicatif (option SLAM)", "Bases de données & SQL", "Réseaux / Systèmes (SI)", "Sécurité & bonnes pratiques"],
     color: "#a855f7",
   },
 ];
 
-/* ===== primitives UI ===== */
-function Panel({ title, subtitle, right, children, bodyClass = "" }) {
-  return (
-    <section
-      className="relative rounded-[1.0rem] border shadow-xl backdrop-blur-xl overflow-hidden"
-      style={{ borderColor: THEME.border, background: THEME.card }}
-    >
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          maskImage:
-            "radial-gradient(140% 100% at 0% 0%, transparent 0%, black 50%, black 100%)",
-          background: `conic-gradient(from 0deg, ${THEME.brandFrom}, ${THEME.brandTo}, ${THEME.brandFrom})`,
-          opacity: 0.06,
-          animation: "spin-slow 18s linear infinite",
-        }}
-      />
-      <header
-        className="relative flex items-center justify-between border-b border-white/10"
-        style={{ padding: `${0.618 * PHI}rem ${1.0 * PHI}rem` }}
-      >
-        <div>
-          <h3
-            className="font-extrabold tracking-tight"
-            style={{
-              fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-              fontSize: `${1.0 * PHI}rem`,
-              lineHeight: 1.0 + INV2,
-            }}
-          >
-            {title}
-          </h3>
-          {subtitle && (
-            <p className="mt-[0.382rem] text-sm" style={{ color: THEME.sub }}>
-              {subtitle}
-            </p>
-          )}
-        </div>
-        {right}
-      </header>
-      <div className={`relative p-4 ${bodyClass}`}>{children}</div>
-      <div className="h-[0.236rem] w-full" style={{ background: THEME.line }} />
-    </section>
-  );
-}
-
-function Badge({ children }) {
-  return (
-    <span className="px-2 py-1 text-[0.78rem] rounded-full border border-white/10 bg-white/5">
-      {children}
-    </span>
-  );
-}
-
-function SchoolCard({ s }) {
+/* ===== Compact school card ===== */
+const SchoolCard = React.memo(function SchoolCard({ s }) {
   return (
     <a
       href={s.link}
       target="_blank"
       rel="noreferrer"
-      className="group block rounded-[1rem] border border-white/10 bg-slate-900/55 hover:bg-slate-900/70 transition overflow-hidden"
-      style={{ boxShadow: "0 0.618rem 1.618rem rgba(0,0,0,.35)" }}
+      className="group block rounded-xl border-l-[3px] transition-all hover:bg-white/[0.02]"
+      style={{
+        background: THEME.card,
+        borderLeftColor: s.color,
+      }}
     >
-      {/* bandeau couleur */}
-      <div
-        className="h-[0.3rem] w-full"
-        style={{ background: `linear-gradient(90deg, ${s.color}, transparent 80%)` }}
-      />
-      <div className="p-4">
-        <div className="flex items-start justify-between gap-2">
-          <div>
-            <h4
-              className="font-bold leading-tight"
-              style={{ color: THEME.text, fontSize: "1.05rem" }}
-            >
-              {s.school}
-            </h4>
-            <p className="text-sm" style={{ color: THEME.sub }}>
-              {s.program}
-            </p>
-          </div>
+      <div className="p-3.5">
+        <div className="flex items-center justify-between mb-1">
+          <h4 className="text-[0.88rem] font-bold" style={{ color: s.color }}>
+            {s.school}
+          </h4>
           <span
-            className="px-2 py-1 text-[0.75rem] rounded-md border"
-            style={{
-              borderColor: "rgba(255,255,255,.12)",
-              background: "rgba(255,255,255,.04)",
-              color: THEME.text,
-            }}
-            title="Rythme de formation"
+            className="px-1.5 py-0.5 text-[0.6rem] font-bold rounded"
+            style={{ background: `${s.color}15`, color: s.color, border: `1px solid ${s.color}25` }}
           >
-            {s.period}
+            Alternance
           </span>
         </div>
+        <p className="text-[0.78rem] font-semibold mb-0.5" style={{ color: THEME.text }}>
+          {s.program}
+        </p>
+        <p className="text-[0.65rem] mb-2" style={{ color: THEME.sub }}>
+          {s.full} · {s.rhythm}
+        </p>
 
-        <div className="mt-[0.618rem] text-xs text-slate-300">
-          <div className="mb-1 font-semibold">Rythme :</div>
-          <div>{s.rhythm}</div>
-        </div>
-
-        <ul className="mt-[0.618rem] grid grid-cols-1 gap-[0.382rem] text-sm text-slate-300">
-          {s.focus.map((f, i) => (
-            <li key={i} className="flex items-start gap-2">
-              <span className="mt-[0.2rem] text-cyan-300">•</span>
-              <span className="leading-snug">{f}</span>
-            </li>
+        <div className="flex flex-wrap gap-1">
+          {s.focus.map((f) => (
+            <span
+              key={f}
+              className="px-1.5 py-0.5 text-[0.6rem] rounded border border-white/6"
+              style={{ color: THEME.sub }}
+            >
+              {f}
+            </span>
           ))}
-        </ul>
-
-        <div className="mt-[0.618rem] flex flex-wrap items-center gap-[0.382rem]">
-          <Badge>Alternance</Badge>
-          <Badge>Lien officiel ↗</Badge>
         </div>
+
+        <span
+          className="inline-block mt-2 text-[0.6rem] font-medium opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{ color: s.color }}
+        >
+          Site officiel ↗
+        </span>
       </div>
     </a>
   );
-}
+});
 
-/* ===== objectif M2 Big Data & IA ===== */
-function GoalCard() {
-  return (
-    <Panel
-      title="Objectif parcours — M2 Big Data & IA"
-      subtitle="Consolider le socle dev / data / cloud et viser un master orienté ML, data engineering & MLOps"
-      right={<Badge>Prochain cap</Badge>}
-    >
-      <div className="grid grid-cols-1 gap-[0.618rem] md:grid-cols-2">
-        <div className="rounded-md border border-white/10 bg-white/5 p-[0.618rem]">
-          <div className="text-sm font-semibold text-slate-100">Compétences cibles</div>
-          <ul className="mt-[0.382rem] space-y-[0.236rem] text-sm text-slate-300">
-            <li>• Python data (NumPy, Pandas, PyTorch/TF, scikit-learn)</li>
-            <li>• SQL avancé, modélisation, optimisation requêtes</li>
-            <li>• Data eng. (ETL, Airflow, Spark, dbt)</li>
-            <li>• Cloud & MLOps (Docker, Git, CI, déploiement)</li>
-            <li>• Notions IA générative & RAG</li>
-          </ul>
-        </div>
-        <div className="rounded-md border border-white/10 bg-white/5 p-[0.618rem]">
-          <div className="text-sm font-semibold text-slate-100">Pistes & infos utiles</div>
-          <ul className="mt-[0.382rem] space-y-[0.236rem] text-sm text-slate-300">
-            <li>• Mastères Big Data/IA (écoles d’ingé, écoles du numérique)</li>
-            <li>• Alternance possible en M1/M2 (data analyst/engineer junior)</li>
-            <li>• Projets concrets : pipelines, dashboards, modèles ML</li>
-            <li>• Certifs utiles : Azure DP-203, AWS Data Engineering, Databricks</li>
-          </ul>
-        </div>
-      </div>
-    </Panel>
-  );
-}
-
-/* ===== section ===== */
+/* ===== Section ===== */
 export default function SchoolsSection() {
+  const { ref, revealed } = useReveal();
   return (
     <section
+      ref={ref}
       id="ecole"
-      className="min-h-[100svh] snap-center text-slate-100"
+      className={`min-h-[100svh] snap-center text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
       style={{
         background:
-        "radial-gradient(60% 60% at 30% 20%, rgba(212,175,55,.05), transparent 62%), radial-gradient(40% 40% at 80% 70%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
+          "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
+          "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
         backdropFilter: "blur(2px)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
-        padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`,
+        padding: `${INV * PHI * PHI}rem ${1.0 * PHI}rem`,
       }}
     >
-      <style>{`
-        @keyframes spin-slow { to { transform: rotate(360deg); } }
-      `}</style>
-
-      <div className="w-full mx-auto" style={{ maxWidth: `${56 * PHI}rem` }}>
-        {/* header centré */}
-        <div className="mb-[1.0rem] text-center">
+      <div className="w-full mx-auto" style={{ maxWidth: `${48 * PHI}rem` }}>
+        {/* Header */}
+        <header className="text-center mb-6">
           <h2
             className="font-extrabold tracking-tight"
             style={{
               fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-              fontSize: `clamp(1.8rem, ${1.618 * PHI}rem, 3rem)`,
+              fontSize: `clamp(1.5rem, ${1.4 * PHI}rem, 2.35rem)`,
               lineHeight: 1.0 + INV,
+              color: THEME.text,
             }}
           >
-            Parcours scolaire & formations
+            Parcours scolaire
           </h2>
-          <p className="mx-auto mt-[0.382rem] max-w-3xl text-[0.95rem]" style={{ color: THEME.sub }}>
-            Alternance continue — <strong>1 semaine entreprise</strong> / <strong>1 semaine cours</strong>.  
-            Focus commercial, opérationnel et technique jusqu’au <strong>BTS SIO</strong>, puis projection **M2 Big Data & IA**.
+          <p className="mt-1.5 text-[0.85rem]" style={{ color: THEME.sub }}>
+            Alternance continue — 1 semaine entreprise / 1 semaine cours
           </p>
-        </div>
+          <div className="mx-auto mt-3 h-[2px] w-32" style={{ background: THEME.line }} />
+        </header>
 
-        {/* cards écoles */}
-        <div className="grid grid-cols-1 gap-[1.0rem] md:grid-cols-2 lg:grid-cols-3">
+        {/* School cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
           {SCHOOLS.map((s) => (
-            <SchoolCard key={s.id} s={s} />
+            <SchoolCard key={s.school} s={s} />
           ))}
         </div>
 
-        {/* objectif M2 */}
-        <div className="mt-[1.0rem]">
-          <GoalCard />
+        {/* Objectif M2 — compact banner */}
+        <div
+          className="rounded-xl border px-5 py-4"
+          style={{
+            background: "linear-gradient(135deg, rgba(34,211,238,0.04), rgba(168,85,247,0.04))",
+            borderColor: "rgba(34,211,238,0.15)",
+          }}
+        >
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">🎯</span>
+              <div>
+                <h3
+                  className="text-[0.88rem] font-extrabold"
+                  style={{
+                    fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
+                    color: THEME.brandFrom,
+                  }}
+                >
+                  Objectif : M2 Big Data & IA
+                </h3>
+                <p className="text-[0.72rem]" style={{ color: THEME.sub }}>
+                  Consolider dev / data / cloud — viser ML, data engineering & MLOps
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-1.5 sm:ml-auto">
+              {["Python data", "SQL avancé", "ETL / Spark", "MLOps", "IA générative"].map((t) => (
+                <span
+                  key={t}
+                  className="px-2 py-0.5 text-[0.62rem] font-medium rounded-md"
+                  style={{
+                    background: "rgba(34,211,238,0.08)",
+                    color: THEME.brandFrom,
+                    border: "1px solid rgba(34,211,238,0.18)",
+                  }}
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {/* infos utiles */}
-        <div className="mt-[1.0rem] text-center text-[0.9rem]" style={{ color: THEME.sub }}>
-          Besoin d’attestations, bulletins, ou référentiels de compétences ? Je peux les fournir sur demande.
-        </div>
+        <p className="mt-5 text-center text-[0.72rem]" style={{ color: THEME.sub }}>
+          Documents et attestations disponibles sur demande
+        </p>
       </div>
     </section>
   );

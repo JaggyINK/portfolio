@@ -22,6 +22,11 @@ export function SettingsProvider({ children }) {
     localStorage.setItem("sagario_settings", JSON.stringify(settings));
   }, [settings]);
 
+  /* Sync reduceMotion to DOM for CSS targeting */
+  useEffect(() => {
+    document.documentElement.dataset.reduceMotion = settings.reduceMotion ? "true" : "false";
+  }, [settings.reduceMotion]);
+
   const value = useMemo(() => ({ settings, setSettings }), [settings]);
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>;
 }

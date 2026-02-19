@@ -1,6 +1,7 @@
 // src/pages/sections/UserStorySection.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useSectionReveal from "../../hooks/useReveal";
 
 /* ============================
    Nombre d'or & Thème
@@ -10,11 +11,11 @@ const INV = 1 / PHI;     // 0.618
 const INV2 = INV * INV;  // 0.382
 
 const THEME = {
-  bg: "#08101e",
-  card: "rgba(12,18,36,0.78)",
+  bg: "#0b1020",
+  card: "rgba(11,16,32,0.78)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
-  sub: "#9AA7BF",
+  sub: "#C5D3E8",
   brandFrom: "#22d3ee",  // cyan
   brandTo: "#a855f7",    // violet
   gold: "#d4af37",
@@ -70,6 +71,7 @@ function useReveal() {
    ============================ */
 export default function UserStorySection() {
   const navigate = useNavigate();
+  const { ref: sectionRef, revealed } = useSectionReveal();
   const refHero = useReveal();
   const refContact = useReveal();
   const refEasterEgg = useReveal();
@@ -95,8 +97,9 @@ export default function UserStorySection() {
 
   return (
     <section
+      ref={sectionRef}
       id="user-story"
-      className="min-h-[100svh] snap-center text-slate-100 relative overflow-hidden"
+      className={`min-h-[100svh] snap-center text-slate-100 relative overflow-hidden section-reveal${revealed ? " revealed" : ""}`}
       style={{
         background:
         "radial-gradient(60% 60% at 30% 15%, rgba(212,175,55,.05), transparent 62%)," +
@@ -176,14 +179,14 @@ export default function UserStorySection() {
         .orbit-particle:nth-child(3) { animation-delay: -2s; }
       `}</style>
 
-      <div className="max-w-6xl mx-auto space-y-[1.618rem]">
+      <div className="w-full mx-auto space-y-[1.618rem]" style={{ maxWidth: `${48 * PHI}rem` }}>
         {/* ======= HERO - REMERCIEMENT ======= */}
         <div ref={refHero} className="relative text-center reveal particles">
           <h2
             className="font-extrabold tracking-tight mb-[0.618rem]"
             style={{
               fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-              fontSize: `clamp(2rem, ${1.618 * PHI}rem, 3.5rem)`,
+              fontSize: `clamp(1.5rem, ${1.4 * PHI}rem, 2.35rem)`,
               lineHeight: 1.0 + INV,
               background: `linear-gradient(135deg, ${THEME.brandFrom}, ${THEME.brandTo}, ${THEME.gold})`,
               WebkitBackgroundClip: "text",
@@ -252,7 +255,7 @@ export default function UserStorySection() {
                   icon="🐙"
                   title="GitHub"
                   value="smir75"
-                  href="https://github.com/smir75"
+                  href="https://github.com/JaggyINK"
                   color="#ffffff"
                   external
                 />
