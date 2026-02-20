@@ -26,8 +26,8 @@ const THEME = {
 /* ===== KPI Data ===== */
 const KPIS = [
   { value: "180+", label: "Utilisateurs quotidiens", color: THEME.brandFrom },
-  { value: "-60%", label: "Tickets IT r\u00e9solus", color: THEME.green },
-  { value: "7+", label: "Ans d\u2019exp\u00e9rience pro", color: THEME.brandTo },
+  { value: "-60%", label: "Tickets IT en moins", color: THEME.green },
+  { value: "7+", label: "Années d\u2019exp\u00e9rience pro", color: THEME.brandTo },
   { value: "6+", label: "Applications livr\u00e9es", color: THEME.gold },
 ];
 
@@ -40,7 +40,7 @@ const STRENGTHS = [
   },
   {
     title: "Impact mesurable",
-    desc: "\u221280% tickets \u00b7 4 sites live \u00b7 self-service 24/7",
+    desc: "\u221260% tickets \u00b7 4 sites live \u00b7 self-service 24/7",
     color: THEME.green,
   },
   {
@@ -50,7 +50,7 @@ const STRENGTHS = [
   },
   {
     title: "Livraison document\u00e9e",
-    desc: "41 tests pytest, guides techniques, APIs REST",
+    desc: "+Guides techniques,, tutoriels,  APIs REST,...",
     color: THEME.gold,
   },
 ];
@@ -187,7 +187,7 @@ export default function AboutSection() {
 
           {/* Formation */}
           <p className="about-edu-line">
-            BTS SIO SLAM &middot; Digital School of Paris &middot; Dipl\u00f4me juin 2026
+            BTS SIO SLAM &middot; Digital School of Paris &middot; Diplôme en juin 2026
             <span className="about-stack-dash">&mdash;</span>
             <span style={{ color: THEME.brandFrom }}>Objectif : M2 Big Data &amp; IA</span>
           </p>
@@ -257,7 +257,7 @@ export default function AboutSection() {
         {/* ========== BLOC E — CTAs ========== */}
         <div className="about-cta">
           <a href="/cv.pdf" className="about-cta-btn about-cta-btn-primary">
-            T\u00e9l\u00e9charger mon CV
+            Télécharger mon CV
           </a>
           <Link to="/Contact" className="about-cta-btn about-cta-btn-secondary">
             Me contacter
