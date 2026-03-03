@@ -28,29 +28,29 @@ const THEME = {
 const KPIS = [
   { value: "180+", label: "Utilisateurs quotidiens", color: THEME.brandFrom },
   { value: "-60%", label: "Tickets IT en moins", color: THEME.green },
-  { value: "7+", label: "Années d\u2019exp\u00e9rience pro", color: THEME.brandTo },
-  { value: "6+", label: "Applications livr\u00e9es", color: THEME.gold },
+  { value: "7+", label: "Années d'expérience pro", color: THEME.brandTo },
+  { value: "6+", label: "Applications livrées", color: THEME.gold },
 ];
 
 /* ===== What I bring ===== */
 const STRENGTHS = [
   {
-    title: "Fullstack op\u00e9rationnel",
+    title: "Fullstack opérationnel",
     desc: "Python, Vue.js, Laravel 12, LDAP/AD",
     color: THEME.brandFrom,
   },
   {
     title: "Impact mesurable",
-    desc: "\u221260% tickets \u00b7 4 sites live \u00b7 self-service 24/7",
+    desc: "−60% tickets · 4 sites live · self-service 24/7",
     color: THEME.green,
   },
   {
-    title: "S\u00e9curit\u00e9 by design",
+    title: "Sécurité by design",
     desc: "OWASP, bcrypt, AES, LDAP, SecNum 100%",
     color: THEME.brandTo,
   },
   {
-    title: "Livraison document\u00e9e",
+    title: "Livraison documentée",
     desc: "Guides techniques, tutoriels, APIs REST",
     color: THEME.gold,
   },
@@ -63,7 +63,7 @@ const DOMAINS = [
   { label: "Data & SI", chips: ["MySQL", "PostgreSQL", "SQLite", "APIs REST", "LDAP"] },
   { label: "DevOps", chips: ["Docker", "Git", "Vite", "CI/CD"] },
   { label: "E-commerce", chips: ["Shopify", "Liquid", "Custom apps"] },
-  { label: "S\u00e9curit\u00e9", chips: ["OWASP", "Active Directory", "SSO"] },
+  { label: "Sécurité", chips: ["OWASP", "Active Directory", "SSO"] },
 ];
 
 /* ===== Grouped tech badges ===== */
@@ -95,7 +95,7 @@ const TECH_GROUPS = [
   { label: "E-commerce", techs: [
     { name: "Shopify", color: "#95BF46" },
   ]},
-  { label: "S\u00e9curit\u00e9", techs: [
+  { label: "Sécurité", techs: [
     { name: "OWASP", color: "#E34F26" },
     { name: "Active Directory", color: "#0078D4" },
   ]},
@@ -225,7 +225,7 @@ export default function AboutSection() {
           {/* Right — Domaines clés */}
           <div className="about-col-right">
             <h3 className="about-col-title" style={{ color: THEME.brandTo }}>
-              Domaines cl\u00e9s
+              Domaines clés
             </h3>
             <div className="about-domains">
               {DOMAINS.map((d) => (
