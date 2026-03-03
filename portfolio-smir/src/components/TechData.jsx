@@ -26,7 +26,7 @@ export const TECH_DATA = {
 
   // ===== BACKEND =====
   Python: {
-    description: "Langage principal de l'intranet CPMS (40% du codebase). Développement d'APIs, chatbot FAQ, intégrations Jira/SSO et automatisations.",
+    description: "Langage principal de l'intranet CPMS. Développement d'APIs, chatbot FAQ, intégrations Jira/SSO et automatisations.",
     projects: ["Intranet CPMS", "Bot Discord Veille Tech", "Scripts automatisation"]
   },
   PHP: {
@@ -62,6 +62,10 @@ export const TECH_DATA = {
   MySQL: {
     description: "Base de données relationnelle utilisée sur la majorité des projets. Conception de schémas, optimisation de requêtes et gestion des relations.",
     projects: ["CPMS", "Annonz", "Projets Laravel"]
+  },
+  PostgreSQL: {
+    description: "SGBD relationnel avancé utilisé pour les projets nécessitant des fonctionnalités avancées (JSON, full-text search, extensions). Robuste et performant en production.",
+    projects: ["CPMS", "Projets professionnels"]
   },
 
   // ===== AUTOMATISATION & DEVOPS =====

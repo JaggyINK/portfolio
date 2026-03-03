@@ -1,18 +1,19 @@
 import React from "react";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ============ Système φ ============ */
 const PHI = 1.618;
 const INV = 1 / PHI;
 
 const THEME = {
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
   brandFrom: "#22d3ee",
   brandTo: "#a855f7",
-  pro: "#ef4444",
-  formation: "#3b82f6",
+  pro: "#d4af37",
+  formation: "#22d3ee",
   line:
     "linear-gradient(90deg, rgba(56,189,248,.0) 0%, rgba(56,189,248,.45) 24%, rgba(212,175,55,.85) 50%, rgba(147,51,234,.55) 76%, rgba(56,189,248,.0) 100%)",
 };
@@ -133,7 +134,7 @@ export default function ParcoursSection() {
   return (
     <section
       id="parcours"
-      className="relative min-h-[100svh] snap-center text-slate-100"
+      className="relative min-h-[100svh] snap-start text-slate-100"
       style={{
         background:
           "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
@@ -194,7 +195,7 @@ export default function ParcoursSection() {
                   className="inline-block text-[0.72rem] font-extrabold"
                   style={{
                     fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-                    background: "linear-gradient(135deg, #fbbf24, #a855f7)",
+                    background: "linear-gradient(135deg, #d4af37, #a855f7)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                   }}
@@ -213,7 +214,7 @@ export default function ParcoursSection() {
                   className="sm:hidden inline-block mb-2 text-[0.72rem] font-extrabold"
                   style={{
                     fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
-                    background: "linear-gradient(135deg, #fbbf24, #a855f7)",
+                    background: "linear-gradient(135deg, #d4af37, #a855f7)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                   }}
@@ -234,6 +235,8 @@ export default function ParcoursSection() {
         <p className="mt-6 text-center text-[0.72rem] italic" style={{ color: THEME.sub }}>
           Progression continue du terrain au code
         </p>
+
+        <ScrollDownHint targetId="projets" />
       </div>
     </section>
   );

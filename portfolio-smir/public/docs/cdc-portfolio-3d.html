@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Portfolio 3D</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #0891b2; --accent2: #06b6d4; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(6,182,212,0.15); color: var(--accent2); border: 1px solid rgba(6,182,212,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(6,182,212,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Portfolio 3D</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Expérience immersive React + Three.js</p>
+<div class="header-line"></div>
+
+<div><span class="badge">React</span><span class="badge">Three.js</span><span class="badge">WebGL</span><span class="badge">3D</span></div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Portfolio 3D — Expérience immersive lunaire</td></tr>
+  <tr><th>Commanditaire</th><td>Projet personnel</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR</td></tr>
+  <tr><th>Date</th><td>2025</td></tr>
+  <tr><th>Statut</th><td>En production</td></tr>
+  <tr><th>Type</th><td>Portfolio interactif — Application web 3D temps réel</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Créer un portfolio développeur qui se démarque en combinant une présentation classique avec une expérience 3D interactive explorant une surface lunaire avec des stations de quiz.</td></tr>
+  <tr><th>Objectif principal</th><td>Développer un portfolio dual : mode classique (sections scrollables) + mode 3D (exploration lunaire interactive avec quiz techniques).</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Scène 3D temps réel avec 40+ composants Three.js</li>
+      <li>Physique lunaire réaliste (gravité, inertie, sauts)</li>
+      <li>5 stations de quiz interactives (PHP, Python, JS, SQL, Docker)</li>
+      <li>Portfolio classique avec 9 sections complètes</li>
+      <li>Responsive design et optimisation WebGL</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Mode classique</td><td>Portfolio scrollable : hero, à propos, BTS SIO, parcours, projets, certifications, veille, écoles.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Mode 3D</td><td>Scène lunaire interactive : terrain procédural, astronaute, bases lunaires, astéroïdes, nébuleuses.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Quiz stations</td><td>5 stations sur la lune : quiz PHP, Python, JavaScript, SQL, Docker avec scoring.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Navigation</td><td>WASD/flèches + souris drag (inertie). Saut avec physique lunaire.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Responsive</td><td>Adapté mobile/desktop. DPR dynamique, lazy loading des éléments 3D lointains.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Accessibilité</td><td>Support prefers-reduced-motion, navigation clavier complète.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Framework</td><td>React 19 + React Router 6 — Architecture dual-layer</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">3D Engine</td><td>Three.js 0.180 + React Three Fiber 9 + Drei 10</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Build</td><td>Vite 5 avec manual chunking (MoonScene séparé)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Styles</td><td>Tailwind CSS 3.4 + thème centralisé (PHI/golden ratio)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Physique</td><td>Refs-based physics (quaternions, inertie, gravité) dans useFrame</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">State</td><td>Context API + localStorage. Custom events pour React ↔ Three.js</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Performance</td><td>60 FPS constant. DPR max 1.75x, lazy loading des éléments décoratifs.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Compatibilité</td><td>Fonctionne sur mobile et desktop. Fallback si WebGL non supporté.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Taille bundle</td><td>Chunking manuel pour éviter un bundle monolithique (Three.js ~ 600KB).</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Application web</td><td>Portfolio déployé sur Vercel</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Code source</td><td>Repository Git avec 40+ composants documentés</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation</td><td>CLAUDE.md, architecture, constantes physiques</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Portfolio 3D — Sagar MIR — 2025</div>
+</div>
+</body>
+</html>

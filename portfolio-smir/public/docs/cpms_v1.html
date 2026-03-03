@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Intranet CPMS V1</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #0d9488; --accent2: #14b8a6; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(13,148,136,0.15); color: var(--accent2); border: 1px solid rgba(13,148,136,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(13,148,136,0.1); color: var(--accent2); font-weight: 600; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(13,148,136,0.1); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  pre { background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+  pre code { background: none; padding: 0; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent2); text-decoration: none; font-size: 0.9rem; }
+  .toc a:hover { text-decoration: underline; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.2rem; text-align: center; }
+  .stat-card .value { font-size: 1.8rem; font-weight: 800; color: var(--accent2); }
+  .stat-card .label { font-size: 0.8rem; color: var(--sub); margin-top: 0.3rem; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .card h3:first-child { margin-top: 0; }
+  .version-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 0.5rem; vertical-align: middle; }
+  .v1 { background: rgba(13,148,136,0.15); color: var(--accent2); border: 1px solid rgba(13,148,136,0.3); }
+  .arch-flow { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+  .arch-box { background: rgba(13,148,136,0.1); border: 1px solid rgba(13,148,136,0.3); border-radius: 0.5rem; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--accent2); font-weight: 600; text-align: center; }
+  .arch-arrow { color: var(--sub); font-size: 1.2rem; }
+  .three-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ================================================================ -->
+<!-- HEADER                                                            -->
+<!-- ================================================================ -->
+
+<h1>Intranet CPMS V1</h1>
+<p style="font-size: 1.1rem; color: var(--sub); margin-bottom: 0.5rem;">Portail interne &mdash; Self-service mot de passe, administration IT et FAQ</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025 - 2026</div>
+  <div class="meta-item"><strong>Type :</strong> Projet BTS SIO SLAM &mdash; Épreuve E5</div>
+  <div class="meta-item"><strong>Statut :</strong> <span style="color:#4ade80; font-weight:600;">Production</span></div>
+  <div class="meta-item"><strong>Version :</strong> <span class="version-badge v1">V1</span></div>
+</div>
+
+<div>
+  <span class="badge">Vue 3.3</span>
+  <span class="badge">Vite 7</span>
+  <span class="badge">Tailwind CSS 3.4</span>
+  <span class="badge">Laravel 12</span>
+  <span class="badge">PHP 8.2+</span>
+  <span class="badge">Sanctum</span>
+  <span class="badge">LdapRecord</span>
+  <span class="badge">MySQL</span>
+  <span class="badge">Python 3</span>
+  <span class="badge">pyodbc</span>
+  <span class="badge">LDAPS</span>
+  <span class="badge">AS400</span>
+</div>
+
+<div style="margin-top:1.5rem; margin-bottom:1.5rem;">
+  <a href="/docs/CPMS.pdf" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.65rem 1.5rem; background:linear-gradient(135deg, rgba(212,175,55,0.2), rgba(212,175,55,0.1)); border:1px solid rgba(212,175,55,0.4); border-radius:0.75rem; color:#d4af37; font-weight:700; font-size:0.9rem; text-decoration:none; transition:all 0.2s ease;">
+    Cahier des charges V1 (PDF)
+  </a>
+</div>
+
+<div class="stat-grid" style="margin-top:1.5rem;">
+  <div class="stat-card"><div class="value">22</div><div class="label">Vues Vue.js</div></div>
+  <div class="stat-card"><div class="value">10</div><div class="label">Composants</div></div>
+  <div class="stat-card"><div class="value">20+</div><div class="label">Routes frontend</div></div>
+  <div class="stat-card"><div class="value">14</div><div class="label">Endpoints API</div></div>
+  <div class="stat-card"><div class="value">4</div><div class="label">Services Laravel</div></div>
+  <div class="stat-card"><div class="value">7</div><div class="label">Tables BDD</div></div>
+  <div class="stat-card"><div class="value">50</div><div class="label">Entrées FAQ</div></div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SOMMAIRE                                                          -->
+<!-- ================================================================ -->
+
+<h2>Sommaire</h2>
+<ol class="toc">
+  <li><a href="#contexte">1. Contexte et objectifs</a></li>
+  <li><a href="#perimetre">2. Périmètre et modules</a></li>
+  <li><a href="#architecture">3. Architecture technique</a></li>
+  <li><a href="#frontend">4. Frontend &mdash; Vue 3 SPA</a></li>
+  <li><a href="#backend">5. Backend &mdash; Laravel 12 API</a></li>
+  <li><a href="#base">6. Base de données</a></li>
+  <li><a href="#fonctionnalites">7. Fonctionnalités détaillées</a></li>
+  <li><a href="#sécurité">8. Sécurité</a></li>
+  <li><a href="#routes">9. API et routes</a></li>
+  <li><a href="#intégrations">10. Intégrations externes</a></li>
+  <li><a href="#déploiement">11. Déploiement et CI/CD</a></li>
+  <li><a href="#bts">12. Compétences BTS SIO SLAM</a></li>
+</ol>
+
+<!-- ================================================================ -->
+<!-- 1. CONTEXTE ET OBJECTIFS                                          -->
+<!-- ================================================================ -->
+
+<h2 id="contexte">1. Contexte et objectifs</h2>
+
+<p>L'Intranet CPMS V1 est un <strong>portail numérique interne</strong> conçu pour la Caisse de Prévoyance Mutuelle Santé (CPMS). Cette première version représente une <strong>application modulaire</strong> avec une interface moderne, permettant aux collaborateurs de gérer leurs mots de passe, débloquer leurs comptes et consulter une FAQ interactive.</p>
+
+<p>Le projet s'inscrit dans le cadre du <strong>BTS SIO option SLAM</strong>, épreuve E5 (Conception et maintenance de solutions informatiques). Il illustre la maîtrise complète du cyclé de développement d'une application web full-stack moderne, de la conception à lamise en production, incluant l'intégration de multiples systèmes d'entreprise (Active Directory, AS400, LDAPS).</p>
+
+<div class="card">
+<h3>Objectifs fonctionnels</h3>
+<ul>
+  <li><strong>Centralisation documentaire :</strong> regrouper tous les documents RH avec visionneuse PDF intégrée, recherche, filtres par tags et deep linking</li>
+  <li><strong>Self-service mot de passe :</strong> permettre le changement de mot de passe sur trois systèmes simultanément (Active Directory, AS400, ODBC)</li>
+  <li><strong>Déblocage de compte :</strong> offrir un mécanisme autonome de déblocage de compte AD via questions de sécurité</li>
+  <li><strong>Administration centralisée :</strong> fournir un tableau de bord aux administrateurs IT pour gérer les comptes AD verrouillés/suspendus</li>
+  <li><strong>FAQ interactive :</strong> proposer un chatbot et un accordeon FAQ couvrant 50 questions en 11 catégories</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Public cible</h3>
+<ul>
+  <li><strong>Collaborateurs CPMS :</strong> tous les salariés de l'entreprise, tout profil technique confondu</li>
+  <li><strong>Administrateurs IT :</strong> équipe technique utilisant le dashboard admin pour la gestion des comptes AD</li>
+  <li><strong>Managers :</strong> encadrants consultant les tutoriels vidéo et les documents internes</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 2. PERIMETRE ET MODULES                                           -->
+<!-- ================================================================ -->
+
+<h2 id="perimetre">2. Périmètre et modules</h2>
+
+<p>L'Intranet CPMS V1 couvre <strong>4 modules fonctionnels</strong> interconnectés, chacun répondant à unbesoin métier identifié au sein de la CPMS.</p>
+
+<div class="card">
+<h3>Vue d'ensemble des modules</h3>
+<table>
+  <tr><th>Module</th><th>Description</th><th>Utilisateurs</th></tr>
+  <tr><td><strong>Portail documentaire</strong></td><td>33+ documents PDF et 10+ vidéos repartis en 8 visionneuses avec recherche, filtres, deep linking et visionneuse PDF inline</td><td>Tous les collaborateurs</td></tr>
+  <tr><td><strong>Hub d'outils</strong></td><td>Pages dédiées pour 12+ outils externes (iLucca, Nibelis, Swile, Deskare, JIRA, Digiposte, Teale, AXA, Action Logement) avec guides pas-a-pas et FAQ</td><td>Tous les collaborateurs</td></tr>
+  <tr><td><strong>Sécurité des comptes</strong></td><td>Changement de mot de passe multi-système (AD + AS400 + ODBC), déblocage de compte via questions de sécurité, politique MDP 15 caracteres</td><td>Tous les collaborateurs</td></tr>
+  <tr><td><strong>Administration IT</strong></td><td>Dashboard de gestion des comptes AD verrouillés/suspendus, KPI temps réel, historique des déblocages, déblocage administratif</td><td>Équipe IT</td></tr>
+  <tr><td><strong>FAQ interactive</strong></td><td>Chatbot conversationnel + accordeon FAQ couvrant 50 questions en 11 catégories avec moteur de scoring pondere</td><td>Tous les collaborateurs</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Points forts de la V1</h3>
+<div class="three-col">
+  <div class="card" style="border-color: rgba(239,68,68,0.3); text-align:center;">
+    <p style="font-size:1.3rem; font-weight:800; color:#ef4444; margin:0;">Multi-système</p>
+    <p style="font-size:0.8rem; margin:0;">AD + AS400 + ODBC en un clic</p>
+  </div>
+  <div class="card" style="border-color: rgba(99,102,241,0.3); text-align:center;">
+    <p style="font-size:1.3rem; font-weight:800; color:#818cf8; margin:0;">Dashboard Admin</p>
+    <p style="font-size:0.8rem; margin:0;">Gestion des comptes AD en temps réel</p>
+  </div>
+  <div class="card" style="border-color: rgba(34,197,94,0.3); text-align:center;">
+    <p style="font-size:1.3rem; font-weight:800; color:#22c55e; margin:0;">FAQ Chatbot</p>
+    <p style="font-size:0.8rem; margin:0;">50 questions, 11 catégories</p>
+  </div>
+</div>
+</div>
+
+<div class="card">
+<h3>Chiffres clés</h3>
+<table>
+  <tr><th>Metrique</th><th>Valeur</th></tr>
+  <tr><td>Vues Vue.js</td><td>22 pages détaillées</td></tr>
+  <tr><td>Composants reutilisables</td><td>10 (shared, content)</td></tr>
+  <tr><td>Routes frontend</td><td>20+ (history mode, lazy loading, guards d'authentification)</td></tr>
+  <tr><td>Endpoints API</td><td>14 (6 publics, 8 admin IT)</td></tr>
+  <tr><td>Services Laravel</td><td>4 (LDAP, AS400, Admin AD, Directory Reader)</td></tr>
+  <tr><td>Controllers</td><td>4 (PasswordController, SecurityQuestionController, AuthController, AdminDashboardController)</td></tr>
+  <tr><td>Tables MySQL</td><td>7 (sécurité/audit/administration)</td></tr>
+  <tr><td>Documents PDF</td><td>33+ servis en statique</td></tr>
+  <tr><td>Videos tutoriels</td><td>10+ (pointages, absences, validation)</td></tr>
+  <tr><td>FAQ</td><td>50 questions en 11 catégories</td></tr>
+  <tr><td>Intégrations externes</td><td>12+ services (iLucca, Nibelis, Swile, JIRA, etc.)</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 3. ARCHITECTURE TECHNIQUE                                         -->
+<!-- ================================================================ -->
+
+<h2 id="architecture">3. Architecture technique</h2>
+
+<div class="card">
+<h3>Architecture trois-tiers découplée</h3>
+<p>L'application V1 repose sur une architecture <strong>SPA + API REST</strong> avec intégration de multiples systèmes d'entreprise :</p>
+
+<div class="arch-flow">
+  <div class="arch-box">Navigateur<br><small>Vue 3 SPA</small></div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box">API REST<br><small>Laravel 12</small></div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box">Active Directory<br><small>LDAPS :636</small></div>
+</div>
+<div class="arch-flow">
+  <div style="width:120px"></div>
+  <div class="arch-arrow" style="margin-left:8.5rem;">&searr;</div>
+  <div class="arch-box">MySQL<br><small>7 tables</small></div>
+  <div class="arch-arrow">&searr;</div>
+  <div class="arch-box">Middleware Python<br><small>pyodbc</small></div>
+  <div class="arch-arrow">&rarr;</div>
+  <div class="arch-box">AS400<br><small>IBM i ODBC</small></div>
+</div>
+
+<ul>
+  <li><strong>Frontend (SPA) :</strong> application Vue 3 avec composants reutilisables et routage SPA</li>
+  <li><strong>Backend (API) :</strong> API REST Laravel avec 4 services et authentification admin Bearer</li>
+  <li><strong>Active Directory :</strong> connexion LDAPS pour l'authentification admin, le changement de mot de passe et le déblocage de compte</li>
+  <li><strong>MySQL :</strong> 7 tables couvrant la sécurité, l'audit et l'administration</li>
+  <li><strong>Middleware ODBC :</strong> script Python pour les changements de mot de passe AS400</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Stack technique complète</h3>
+<table>
+  <tr><th>Couche</th><th>Technologie</th><th>Version</th></tr>
+  <tr><td>Frontend &mdash; Framework</td><td>Vue.js (Composition API + Options API)</td><td>3.3</td></tr>
+  <tr><td>Frontend &mdash; Routeur</td><td>Vue Router (history mode)</td><td>4.5</td></tr>
+  <tr><td>Frontend &mdash; Build</td><td>Vite</td><td>7.1</td></tr>
+  <tr><td>Frontend &mdash; CSS</td><td>Tailwind CSS</td><td>3.4</td></tr>
+  <tr><td>Frontend &mdash; PDF</td><td>pdfjs-dist</td><td>5.4</td></tr>
+  <tr><td>Frontend &mdash; Police</td><td>Google Fonts &mdash; Montserrat</td><td>300-700</td></tr>
+  <tr><td>Backend &mdash; Framework</td><td>Laravel</td><td>12</td></tr>
+  <tr><td>Backend &mdash; Langage</td><td>PHP</td><td>8.2+</td></tr>
+  <tr><td>Backend &mdash; Auth tokens</td><td>Laravel Sanctum</td><td>&mdash;</td></tr>
+  <tr><td>Backend &mdash; LDAP</td><td>directorytree/ldaprecord-laravel</td><td>&mdash;</td></tr>
+  <tr><td>Backend &mdash; BDD</td><td>MySQL</td><td>&mdash;</td></tr>
+  <tr><td>Middleware &mdash; Langage</td><td>Python</td><td>3.x</td></tr>
+  <tr><td>Middleware &mdash; ODBC</td><td>pyodbc + IBM i Access ODBC Driver</td><td>&mdash;</td></tr>
+  <tr><td>CI/CD</td><td>GitLab CI</td><td>&mdash;</td></tr>
+  <tr><td>Serveur web</td><td>Nginx (reverse proxy)</td><td>&mdash;</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Structure du projet</h3>
+<pre><code>intranet/
+├── intra-front/                        # Vue 3 SPA (V1)
+│   ├── public/
+│   │   └── docs/                       # Documents PDF et vidéos statiques
+│   │       ├── aideLogement/           # PDFs aides au logement
+│   │       ├── chartes/                # PDFs chartes CPMS
+│   │       ├── epsalariale/            # PDFs epargne salariale
+│   │       ├── mutuelle/               # PDFs garanties sante/prevoyance
+│   │       ├── outils/                 # Videos + PDFs prevention
+│   │       ├── pointages/              # Videos + PDFs presence/badgeuse
+│   │       ├── rh/                     # PDFs livret accueil, reglement, CCN
+│   │       └── sécurité/               # PDF guide incendie
+│   ├── src/
+│   │   ├── main.js                     # Point d'entree Vue
+│   │   ├── App.vue                     # Composant racine (RouterView)
+│   │   ├── style.css                   # Tailwind + composants globaux
+│   │   ├── router/
+│   │   │   └── index.js                # 20+ routes (Vue Router 4, history mode)
+│   │   ├── components/
+│   │   │   ├── shared/                 # Composants partages
+│   │   │   │   ├── ThemeToggle.vue     # Bascule theme (62 lignes)
+│   │   │   │   ├── Breadcrumb.vue      # Fil d'Ariane (93 lignes)
+│   │   │   │   └── OnlineStatus.vue    # Indicateur en ligne (92 lignes)
+│   │   │   └── ChatBot.vue            # Chatbot FAQ (1077 lignes)
+│   │   ├── views/                      # 22 vues page-level
+│   │   │   ├── MainView.vue           # Homepage dashboard
+│   │   │   └── ...                    # 22 vues détaillées
+│   │   ├── utils/
+│   │   │   └── api.js                 # Utilitaire API admin (52 lignes)
+│   │   └── data/
+│   │       └── faq.js                 # 50 FAQ, 11 catégories (617 lignes)
+│   ├── vite.config.js
+│   ├── tailwind.config.js
+│   └── package.json
+│
+├── intranet-backend/                   # Laravel 12 API
+│   ├── app/
+│   │   ├── Http/
+│   │   │   ├── Controllers/
+│   │   │   │   ├── PasswordController.php
+│   │   │   │   └── Api/
+│   │   │   │       ├── SecurityQuestionController.php
+│   │   │   │       └── Admin/
+│   │   │   │           ├── AuthController.php
+│   │   │   │           └── AdminDashboardController.php
+│   │   │   └── Middleware/
+│   │   │       └── AdminApiAuth.php
+│   │   └── Services/
+│   │       ├── LdapService.php
+│   │       ├── As400Service.php
+│   │       ├── AdAdminService.php
+│   │       └── AdDirectoryReader.php
+│   ├── routes/api.php
+│   ├── database/migrations/                           # 7 migrations
+│   └── composer.json
+│
+└── intra-odbc/                         # Middleware Python ODBC
+    ├── change_password.py
+    └── requirements.txt</code></pre>
+</div>
+
+<!-- ================================================================ -->
+<!-- 4. FRONTEND                                                       -->
+<!-- ================================================================ -->
+
+<h2 id="frontend">4. Frontend &mdash; Vue 3 SPA</h2>
+
+<div class="card">
+<h3>Routeur &mdash; 20+ routes</h3>
+<table>
+  <tr><th>Route</th><th>Composant</th><th>Charge.</th><th>Categorie</th></tr>
+  <tr><td><code>/</code></td><td>MainView</td><td>Eager</td><td>Homepage</td></tr>
+  <tr><td colspan="4" style="color:var(--accent2); font-weight:600;">Outils</td></tr>
+  <tr><td><code>/mes-pointages-et-absences</code></td><td>MesPointagesAbsences</td><td>Eager</td><td>Outils</td></tr>
+  <tr><td><code>/swile</code></td><td>Swile</td><td>Lazy</td><td>Outils</td></tr>
+  <tr><td><code>/tuto-deskare</code></td><td>TutoDeskare</td><td>Eager</td><td>Outils</td></tr>
+  <tr><td><code>/swile-deplacement</code></td><td>SwileDeplacement</td><td>Lazy</td><td>Outils</td></tr>
+  <tr><td><code>/jira</code></td><td>Jira</td><td>Lazy</td><td>Outils</td></tr>
+  <tr><td><code>/sirh</code></td><td>Sirh</td><td>Lazy</td><td>Outils</td></tr>
+  <tr><td colspan="4" style="color:var(--accent2); font-weight:600;">Documents RH</td></tr>
+  <tr><td><code>/mon-espace-cpms</code></td><td>MonEspaceCPMS</td><td>Eager</td><td>Documents</td></tr>
+  <tr><td><code>/paie</code></td><td>Paie</td><td>Lazy</td><td>Documents</td></tr>
+  <tr><td><code>/aides-au-logement</code></td><td>AideLogement</td><td>Eager</td><td>Documents</td></tr>
+  <tr><td colspan="4" style="color:var(--accent2); font-weight:600;">Santé &amp; Avantages</td></tr>
+  <tr><td><code>/ma-protection</code></td><td>MaProtection</td><td>Eager</td><td>Avantages</td></tr>
+  <tr><td><code>/epargne-salariale</code></td><td>EpargneSalariale</td><td>Eager</td><td>Avantages</td></tr>
+  <tr><td><code>/outils-prevention</code></td><td>Outils</td><td>Lazy</td><td>Avantages</td></tr>
+  <tr><td><code>/sécurité</code></td><td>Sécurité</td><td>Lazy</td><td>Avantages</td></tr>
+  <tr><td><code>/teale</code></td><td>Teale</td><td>Lazy</td><td>Avantages</td></tr>
+  <tr><td colspan="4" style="color:var(--accent2); font-weight:600;">Support</td></tr>
+  <tr><td><code>/contact-rh</code></td><td>ContactRH</td><td>Eager</td><td>Support</td></tr>
+  <tr><td><code>/changer-mot-de-passe</code></td><td>PasswordChange</td><td>Eager</td><td>Support (maint.)</td></tr>
+  <tr><td><code>/reactiver-compte</code></td><td>AccountUnlock</td><td>Eager</td><td>Support (maint.)</td></tr>
+  <tr><td><code>/definir-question</code></td><td>SecurityQuestionSetup</td><td>Eager</td><td>Support (maint.)</td></tr>
+  <tr><td colspan="4" style="color:var(--accent2); font-weight:600;">Administration</td></tr>
+  <tr><td><code>/admin</code></td><td>AdminLogin</td><td>Eager</td><td>Admin</td></tr>
+  <tr><td><code>/admin-dashboard</code></td><td>AdminDashboard</td><td>Lazy</td><td>Admin (auth)</td></tr>
+</table>
+<p><strong>Navigation guards :</strong> <code>/admin-dashboard</code> redirige vers <code>/admin</code> sans <code>admin_token</code>. Catch-all <code>/:pathMatch(.*)*</code> redirige vers <code>/</code>.</p>
+</div>
+
+<div class="card">
+<h3>Utilitaire API &mdash; système d'authentification admin</h3>
+<h3><code>api.js</code> (52 lignes)</h3>
+<p>Utilitaire pour les routes <strong>admin</strong> :</p>
+<ul>
+  <li><code>authFetch()</code> : Bearer token depuis <code>admin_token</code></li>
+  <li><code>authJson()</code> : parse JSON + auto-logout 401 &rarr; <code>/admin</code></li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 5. BACKEND                                                        -->
+<!-- ================================================================ -->
+
+<h2 id="backend">5. Backend &mdash; Laravel 12 API</h2>
+
+<div class="card">
+<h3>Architecture Service Layer</h3>
+
+<h3>Services (4)</h3>
+<table>
+  <tr><th>Service</th><th>Responsabilite</th></tr>
+  <tr><td><code>LdapService</code></td><td>Connexion LDAPS port 636, changement <code>unicodePwd</code> (UTF-16LE), déblocage de compte, authentification</td></tr>
+  <tr><td><code>As400Service</code></td><td>Execution du script Python <code>change_password.py</code>, passage du mot de passe ancien via variable d'environnement</td></tr>
+  <tr><td><code>AdAdminService</code></td><td>Authentification admin contre AD, vérification appartenance groupe, génération et validation de tokens</td></tr>
+  <tr><td><code>AdDirectoryReader</code></td><td>Lecture des comptes AD : comptes verrouillés (<code>lockoutTime</code>), comptes suspendus (<code>userAccountControl</code>)</td></tr>
+</table>
+
+<h3>Controllers (4)</h3>
+<table>
+  <tr><th>Controller</th><th>Responsabilite</th></tr>
+  <tr><td><code>PasswordController</code></td><td>Changement de mot de passe multi-système et déblocage de compte AD</td></tr>
+  <tr><td><code>SecurityQuestionController</code></td><td>CRUD questions de sécurité, vérification des réponses, challenges de déblocage</td></tr>
+  <tr><td><code>Admin\AuthController</code></td><td>Authentification admin via AD et groupe <code>Intranet-Admins</code></td></tr>
+  <tr><td><code>Admin\AdminDashboardController</code></td><td>Dashboard statistiques, comptes verrouillés/suspendus, historique</td></tr>
+</table>
+
+<h3>Middleware (1)</h3>
+<table>
+  <tr><th>Middleware</th><th>Alias</th><th>Responsabilite</th></tr>
+  <tr><td><code>AdminApiAuth</code></td><td><code>admin.auth</code></td><td>Verification Bearer token admin : validite, correspondance IP et User-Agent</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 6. BASE DE DONNEES                                                -->
+<!-- ================================================================ -->
+
+<h2 id="base">6. Base de données</h2>
+
+<div class="card">
+<h3>Configuration</h3>
+<table>
+  <tr><th>Parametre</th><th>Valeur</th></tr>
+  <tr><td>SGBD</td><td>MySQL</td></tr>
+  <tr><td>Base</td><td><code>intranet_unlock</code></td></tr>
+  <tr><td>ORM</td><td>Eloquent (Laravel)</td></tr>
+  <tr><td>Migrations</td><td>7 migrations Laravel</td></tr>
+</table>
+</div>
+
+<p>Le schema V1 comporte <strong>7 tables</strong> de sécurité, audit et administration.</p>
+
+<div class="card">
+<h3>Tables sécurité et administration &mdash; 7 tables</h3>
+<table>
+  <tr><th>Table</th><th>Description</th><th>Colonnes clés</th></tr>
+  <tr><td><code>security_questions_bank</code></td><td>Banque de questions predefinies</td><td>id, question</td></tr>
+  <tr><td><code>security_questions</code></td><td>Reponses utilisateurs (hachees + salees)</td><td>id, user_id, question_id, answer_hash, salt</td></tr>
+  <tr><td><code>security_questions_attempts</code></td><td>Journal des tentatives de vérification</td><td>id, user_id, ip_address, success</td></tr>
+  <tr><td><code>account_unlock_logs</code></td><td>Journal des déblocages AD reussis</td><td>id, user_id, unlocked_by, ip_address</td></tr>
+  <tr><td><code>security_questions_audit</code></td><td>Piste d'audit des operations sur les questions</td><td>id, user_id, action, details, ip_address</td></tr>
+  <tr><td><code>admin_api_tokens</code></td><td>Tokens de session admin</td><td>id, token, username, ip_address, user_agent, expires_at</td></tr>
+  <tr><td><code>intra_accèss</code></td><td>Droits d'accès utilisateurs</td><td>id, user_id, accèss_level</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 7. FONCTIONNALITES DETAILLEES                                     -->
+<!-- ================================================================ -->
+
+<h2 id="fonctionnalites">7. Fonctionnalités détaillées</h2>
+
+<div class="card">
+<h3>7.a Homepage &mdash; Dashboard principal</h3>
+<p>Page d'accueil <code>MainView.vue</code> &mdash; dashboard avec accès rapide aux fonctionnalites principales :</p>
+<ul>
+  <li><strong>Widget meteo :</strong> emoji + temperature + ville via API Open-Meteo (gratuite)</li>
+  <li><strong>Section FAQ :</strong> chatbot interactif integre</li>
+  <li><strong>Animations decalees :</strong> apparition progressive des sections au chargement</li>
+  <li><strong>Indicateur online/offline :</strong> detection en temps réel de la connectivite</li>
+  <li><strong>Mode sombre :</strong> bascule via composant <code>ThemeToggle</code></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>7.b Visionneuses documentaires</h3>
+<p>8 vues dédiées à laconsultation de documents PDF avec le pattern "Document Viewer" :</p>
+<ul>
+  <li><strong>Barre de recherche :</strong> filtrage temps réel sur titre, introduction et tags</li>
+  <li><strong>Filtres par tags :</strong> chips cliquables avec toggle et cléar</li>
+  <li><strong>Tri configurable :</strong> par titre (alpha) ou date de mise a jour (recent)</li>
+  <li><strong>Actions par document :</strong> afficher/fermer (visionneuse PDF inline), copier le lien, ouvrir dans un nouvel onglet, telecharger, imprimer</li>
+  <li><strong>Deep linking :</strong> ancrage par hash URL (<code>#doc-key</code>) pour partager un document spécifique</li>
+  <li><strong>Persistance :</strong> etat ouvert/ferme, recherche, tri et tags sauvegardes dans <code>localStorage</code></li>
+</ul>
+<p><strong>Total : 33+ documents PDF</strong> servis en statique depuis <code>/public/docs/</code>.</p>
+</div>
+
+<div class="card">
+<h3>7.c Changement de mot de passe multi-système</h3>
+<p><code>PasswordChange.vue</code> (456 lignes) &mdash; formulaire self-service pour 3 systèmes :</p>
+<table>
+  <tr><th>Systeme</th><th>Protocole</th><th>Backend</th></tr>
+  <tr><td>Active Directory (WAD)</td><td>LDAPS port 636</td><td><code>LdapService</code> &rarr; <code>ldap_modify_batch(unicodePwd)</code></td></tr>
+  <tr><td>AS400 (IBM i)</td><td>ODBC</td><td><code>As400Service</code> &rarr; <code>change_password.py</code> &rarr; <code>CHGUSRPRF</code></td></tr>
+  <tr><td>ODBC generique</td><td>ODBC</td><td>Middleware Python avec whitelist de DSN</td></tr>
+</table>
+<p><strong>Politique :</strong> minimum 15 caracteres, 1 majuscule, 1 chiffre, 1 caractere special. Jauge de force 4 niveaux. Detection CapsLock.</p>
+</div>
+
+<div class="card">
+<h3>7.d Déblocage de compte AD</h3>
+<p><code>AccountUnlock.vue</code> (470 lignes) &mdash; parcours en 3 étapes :</p>
+<ol>
+  <li><strong>Identification :</strong> saisie du sAMAccountName</li>
+  <li><strong>Verification :</strong> réponse à laquestion de sécurité</li>
+  <li><strong>Resultat :</strong> déblocage ou message d'erreur</li>
+</ol>
+<p><strong>Protections :</strong> copier/coller desactive, effacement sur perte de focus, limite 3 succes et 3 echecs par jour, rate limiting 429.</p>
+</div>
+
+<div class="card">
+<h3>7.e Administration IT</h3>
+<p><code>AdminDashboard.vue</code> (1007 lignes) &mdash; tableau de bord complet :</p>
+<div class="three-col">
+  <div class="card" style="border-color: rgba(239,68,68,0.3); text-align:center;">
+    <p style="font-size:1.3rem; font-weight:800; color:#ef4444; margin:0;">N</p>
+    <p style="font-size:0.8rem; margin:0;">Comptes verrouillés</p>
+  </div>
+  <div class="card" style="border-color: rgba(34,197,94,0.3); text-align:center;">
+    <p style="font-size:1.3rem; font-weight:800; color:#22c55e; margin:0;">N</p>
+    <p style="font-size:0.8rem; margin:0;">Déblocages 24h</p>
+  </div>
+  <div class="card" style="border-color: rgba(234,179,8,0.3); text-align:center;">
+    <p style="font-size:1.3rem; font-weight:800; color:#eab308; margin:0;">N</p>
+    <p style="font-size:0.8rem; margin:0;">Echecs 24h</p>
+  </div>
+</div>
+<p><strong>4 onglets :</strong> Verrouilles, Suspendus, Top echecs, Historique. Recherche debounced, pagination configurable, skeleton loader, copie sAMAccountName, toast de confirmation.</p>
+</div>
+
+<div class="card">
+<h3>7.f FAQ interactive &mdash; 50 questions, 11 catégories</h3>
+<table>
+  <tr><th>Categorie</th><th>Nb</th><th>Exemples</th></tr>
+  <tr><td>Mutuelle &amp; Prévoyance</td><td>8</td><td>Remboursements, carte tiers payant, reseau soins</td></tr>
+  <tr><td>Conges &amp; Absences</td><td>7</td><td>Jours CP, RTT, conge parental, maladie</td></tr>
+  <tr><td>Paie &amp; Documents</td><td>6</td><td>Bulletins Digiposte, avance, impots</td></tr>
+  <tr><td>Administration</td><td>6</td><td>Mot de passe, déblocage, problemes tech</td></tr>
+  <tr><td>Chartes CPMS</td><td>3</td><td>Charte informatique, teletravail, RGPD</td></tr>
+  <tr><td>SIRH Lucca</td><td>3</td><td>Acces, trombinoscope, conges</td></tr>
+  <tr><td>Tickets Restaurant Swile</td><td>4</td><td>Activation, montant, solde, utilisation</td></tr>
+  <tr><td>Epargne Salariale</td><td>3</td><td>PEE, CET, déblocage anticipe</td></tr>
+  <tr><td>Reservations Okarito</td><td>2</td><td>Delai reservation, politique hotel</td></tr>
+  <tr><td>Prevention &amp; Teale</td><td>3</td><td>Santé mentale, signalement, ecoute</td></tr>
+  <tr><td>Sécurité Incendie</td><td>3</td><td>Evacuations, SST, numeros urgence</td></tr>
+</table>
+<p><strong>ChatBot :</strong> moteur de scoring pondere (question +10, réponse +3, phrase exacte +20), normalisation diacritiques, boutons rapides, persistance historique, raccourci <code>Ctrl+K</code>.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 8. SECURITE                                                       -->
+<!-- ================================================================ -->
+
+<h2 id="sécurité">8. Sécurité</h2>
+
+<div class="card">
+<h3>Systeme d'authentification admin</h3>
+<table>
+  <tr><th>Systeme</th><th>Methode</th><th>Stockage token</th><th>Middleware</th></tr>
+  <tr><td>Admin IT</td><td>AD + groupe <code>Intranet-Admins</code></td><td><code>admin_token</code></td><td><code>AdminApiAuth</code></td></tr>
+</table>
+<ul>
+  <li><strong>Validation triple :</strong> le middleware vérifié le token, l'adresse IP et le User-Agent</li>
+  <li><strong>CSRF Sanctum :</strong> les operations publiques utilisent le cookie CSRF (<code>X-XSRF-TOKEN</code>)</li>
+  <li><strong>Auto-logout :</strong> redirection automatique sur 401 (token expire)</li>
+  <li><strong>Isolation credentials :</strong> <code>credentials: 'omit'</code> pour admin, <code>credentials: 'include'</code> pour les routes CSRF</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Protection contre le brute-force</h3>
+<table>
+  <tr><th>Mecanisme</th><th>Configuration</th><th>Endpoint</th></tr>
+  <tr><td>Rate limiting</td><td>5 requêtes / minute</td><td><code>POST /change-password</code></td></tr>
+  <tr><td>Rate limiting</td><td>3 requêtes / 10 minutes</td><td><code>POST /unlock-account</code></td></tr>
+  <tr><td>Rate limiting</td><td>3 requêtes / 10 minutes</td><td><code>POST /security-questions/*</code></td></tr>
+  <tr><td>Rate limiting</td><td>10 requêtes / minute</td><td><code>POST /admin/login</code></td></tr>
+  <tr><td>Limite quotidienne</td><td>3 succes + 3 echecs / jour</td><td>Déblocage self-service</td></tr>
+  <tr><td>Timer frontend</td><td>Countdown 60s sur 429</td><td>Tous les formulaires</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Sécurité LDAP et AS400</h3>
+<ul>
+  <li><strong>LDAPS :</strong> connexion chiffrée TLS sur le port 636</li>
+  <li><strong>Comptes de service dédiés :</strong> principe du moindre privilege (un compte pour reset, un pour unlock)</li>
+  <li><strong>Variable d'environnement :</strong> mot de passe AS400 passe via <code>AS400_OLD_PASSWORD</code> (jamais en argument)</li>
+  <li><strong>Echappement :</strong> identifiant et mot de passe echappes via <code>escapeshellarg()</code></li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 9. API ET ROUTES                                                  -->
+<!-- ================================================================ -->
+
+<h2 id="routes">9. API et routes</h2>
+
+<p>L'API V1 expose <strong>14 endpoints</strong> prefixes par <code>/api</code>, repartis entre routes publiques et admin IT.</p>
+
+<div class="card">
+<h3>Endpoints publics &mdash; Sécurité</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th><th>Rate limit</th></tr>
+  <tr><td>POST</td><td><code>/api/change-password</code></td><td>Changement MDP multi-système</td><td>5/min</td></tr>
+  <tr><td>POST</td><td><code>/api/unlock-account</code></td><td>Déblocage AD</td><td>3/10min</td></tr>
+  <tr><td>POST</td><td><code>/api/security-questions/challenge</code></td><td>Demander la question</td><td>3/10min</td></tr>
+  <tr><td>POST</td><td><code>/api/security-questions/verify</code></td><td>Verifier et débloquer</td><td>3/10min</td></tr>
+  <tr><td>POST</td><td><code>/api/security-question</code></td><td>Creer/modifier sa question</td><td>&mdash;</td></tr>
+  <tr><td>GET</td><td><code>/api/security-questions-bank</code></td><td>Liste des questions disponibles</td><td>&mdash;</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Endpoints admin IT (Bearer token <code>admin_token</code>)</h3>
+<table>
+  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>POST</td><td><code>/api/admin/login</code></td><td>Connexion admin (AD + groupe Intranet-Admins)</td></tr>
+  <tr><td>GET</td><td><code>/api/admin/ping</code></td><td>Validation token (whoami)</td></tr>
+  <tr><td>GET</td><td><code>/api/admin/dashboard/summary</code></td><td>KPI : verrouillés, déblocages 24h, echecs 24h</td></tr>
+  <tr><td>GET</td><td><code>/api/admin/dashboard/locked-accounts</code></td><td>Comptes AD verrouillés (pagine, recherche)</td></tr>
+  <tr><td>GET</td><td><code>/api/admin/dashboard/suspended-accounts</code></td><td>Comptes AD suspendus (pagine, recherche)</td></tr>
+  <tr><td>GET</td><td><code>/api/admin/dashboard/top-failures</code></td><td>Classement echecs (parametre : days)</td></tr>
+  <tr><td>GET</td><td><code>/api/admin/dashboard/unlocks-history</code></td><td>Historique déblocages (pagine)</td></tr>
+  <tr><td>POST</td><td><code>/api/admin/accounts/{sam}/unlock</code></td><td>Déblocage admin d'un compte</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 10. INTEGRATIONS EXTERNES                                         -->
+<!-- ================================================================ -->
+
+<h2 id="intégrations">10. Intégrations externes</h2>
+
+<p>L'Intranet V1 sert de <strong>hub centralise</strong> vers <strong>12+ services externes</strong> utilises par la CPMS.</p>
+
+<div class="card">
+<table>
+  <tr><th>Service</th><th>Fonction</th><th>Page dédiée</th></tr>
+  <tr><td><strong>Generation Mutuelle</strong></td><td>Portail assurance sante</td><td>MaProtection</td></tr>
+  <tr><td><strong>iLucca SIRH</strong></td><td>Dossier RH, trombinoscope, organigramme</td><td>Sirh</td></tr>
+  <tr><td><strong>Nibelis</strong></td><td>Pointages, absences, paie</td><td>MesPointagesAbsences</td></tr>
+  <tr><td><strong>Digiposte / La Poste</strong></td><td>Bulletins de paie numériques</td><td>Paie</td></tr>
+  <tr><td><strong>Swile (Repas)</strong></td><td>Titres restaurant</td><td>Swile</td></tr>
+  <tr><td><strong>Swile (Deplacement)</strong></td><td>Reservation voyages professionnels</td><td>SwileDeplacement</td></tr>
+  <tr><td><strong>Teale</strong></td><td>Santé mentale, accompagnement psychologique</td><td>Teale + Outils</td></tr>
+  <tr><td><strong>Deskare</strong></td><td>Reservation de bureaux (flex office)</td><td>TutoDeskare</td></tr>
+  <tr><td><strong>JIRA Service Desk</strong></td><td>Support informatique, tickets</td><td>Jira</td></tr>
+  <tr><td><strong>AXA Epargne Entreprise</strong></td><td>Epargne salariale (PEE)</td><td>EpargneSalariale</td></tr>
+  <tr><td><strong>Action Logement</strong></td><td>Aides au logement</td><td>AideLogement</td></tr>
+  <tr><td><strong>Active Directory</strong></td><td>Authentification, gestion comptes</td><td>Admin + PasswordChange</td></tr>
+  <tr><td><strong>Open-Meteo</strong></td><td>API meteo gratuite (geocoding + forecast)</td><td>MainView (widget meteo)</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 11. DEPLOIEMENT ET CI/CD                                          -->
+<!-- ================================================================ -->
+
+<h2 id="déploiement">11. Déploiement et CI/CD</h2>
+
+<div class="card">
+<h3>Pipeline CI/CD GitLab</h3>
+<p>Pipeline <strong>4 étapes</strong> configuré dans <code>.gitlab-ci.yml</code> :</p>
+<table>
+  <tr><th>Stage</th><th>Job</th><th>Description</th><th>Condition</th></tr>
+  <tr><td>1. install</td><td><code>install</code></td><td><code>npm install</code>, artefact <code>node_modules/</code></td><td>Toutes branches</td></tr>
+  <tr><td>2. test</td><td><em>(commente)</em></td><td>Lint, Prettier, audit, tests unitaires</td><td>&mdash;</td></tr>
+  <tr><td>3. build</td><td><code>build</code></td><td><code>npm run build</code>, artefact <code>dist/</code></td><td>Branche <code>main</code></td></tr>
+  <tr><td>4. deploy</td><td><code>deploy-production</code></td><td><code>scp -r dist/*</code> vers serveur de production</td><td>Manuel</td></tr>
+</table>
+<p><strong>Image Docker :</strong> <code>node:20</code></p>
+</div>
+
+<div class="card">
+<h3>Infrastructure de production</h3>
+<ul>
+  <li><strong>Frontend :</strong> fichiers statiques servis via Nginx en reverse proxy</li>
+  <li><strong>Backend :</strong> API Laravel derriere Nginx + PHP-FPM</li>
+  <li><strong>SPA routing :</strong> toutes les routes redirigees vers <code>index.html</code> (Nginx <code>try_files</code>)</li>
+  <li><strong>HTTPS :</strong> certificats TLS pour le frontend et l'API</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Variables d'environnement</h3>
+<div class="two-col">
+<div>
+<h3>Frontend</h3>
+<table>
+  <tr><th>Variable</th><th>Description</th></tr>
+  <tr><td><code>VITE_APP_NAME</code></td><td>Nom de l'application</td></tr>
+  <tr><td><code>VITE_RUNTIME_PROFILE</code></td><td>Profil d'execution</td></tr>
+  <tr><td><code>VITE_API_BASE</code></td><td>URL de l'API backend</td></tr>
+  <tr><td><code>VITE_EPARGNE_URL</code></td><td>URL epargne salariale</td></tr>
+  <tr><td><code>VITE_EPARGNE_LABEL</code></td><td>Libelle du lien epargne</td></tr>
+</table>
+</div>
+<div>
+<h3>Backend</h3>
+<table>
+  <tr><th>Variable</th><th>Description</th></tr>
+  <tr><td><code>LDAP_HOST</code></td><td>Serveur Active Directory</td></tr>
+  <tr><td><code>LDAP_PORT</code></td><td>Port LDAPS (636)</td></tr>
+  <tr><td><code>LDAP_BASE_DN</code></td><td>Base DN pour les recherches</td></tr>
+  <tr><td><code>ADMIN_AD_GROUP</code></td><td>Groupe AD pour auth admin</td></tr>
+  <tr><td><code>AS400_OLD_PASSWORD</code></td><td>Variable d'env pour le script Python</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h3>Commandes de développement</h3>
+<div class="two-col">
+<div>
+<h3>Frontend</h3>
+<pre><code>cd intra-front
+npm install          # Dependances
+npm run dev          # Serveur Vite
+npm run build        # Build production
+npm run preview      # Previsualisation</code></pre>
+</div>
+<div>
+<h3>Backend</h3>
+<pre><code>cd intranet-backend
+composer install     # Dependances
+php artisan serve    # Serveur dev
+php artisan migrate  # Migrations BDD
+php artisan test     # Tests PHPUnit</code></pre>
+</div>
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!-- 12. COMPETENCES BTS SIO                                           -->
+<!-- ================================================================ -->
+
+<h2 id="bts">12. Compétences BTS SIO SLAM</h2>
+
+<p>Le projet Intranet CPMS V1 mobilise l'ensemble des compétences du référentiel BTS SIO option SLAM, épreuve E5.</p>
+
+<div class="card">
+<table>
+  <tr><th>Bloc</th><th>Competence</th><th>Mise en oeuvre dans l'Intranet CPMS V1</th></tr>
+  <tr>
+    <td rowspan="4"><strong>B1 &mdash; Gerer le patrimoine informatique</strong></td>
+    <td>Recenser et identifiér les ressources numériques</td>
+    <td>Inventaire des 12+ services externes, documentation des stacks (Vue 3, Laravel 12, Tailwind)</td>
+  </tr>
+  <tr>
+    <td>Exploiter des référentiels, normes et standards</td>
+    <td>Architecture SPA + API REST, Composition API Vue 3, pattern Service Layer, protocole LDAPS, norme ODBC, politique MDP conforme ANSSI</td>
+  </tr>
+  <tr>
+    <td>Mettre en place et vérifiér les niveaux d'habilitation</td>
+    <td>Authentification admin Bearer tokens, CSRF Sanctum, navigation guards Vue Router</td>
+  </tr>
+  <tr>
+    <td>Verifier les conditions de la continuite d'un service informatique</td>
+    <td>Rate limiting multi-niveaux, pipeline CI/CD GitLab, indicateur online/offline, mode maintenance</td>
+  </tr>
+  <tr>
+    <td rowspan="3"><strong>B2 &mdash; Repondre aux incidents et aux demandes</strong></td>
+    <td>Collecter, suivre et orienter des demandes</td>
+    <td>Page JIRA Service Desk, chatbot FAQ 50 questions, contact RH</td>
+  </tr>
+  <tr>
+    <td>Traiter des demandes concernant les services reseau et système</td>
+    <td>Dashboard admin : gestion comptes AD verrouillés/suspendus, déblocage admin, KPI temps réel, historique</td>
+  </tr>
+  <tr>
+    <td>Traiter des demandes concernant les applications</td>
+    <td>Self-service MDP multi-système (AD + AS400), déblocage de compte 3 étapes</td>
+  </tr>
+  <tr>
+    <td rowspan="4"><strong>B3 &mdash; Developper la presence en ligne</strong></td>
+    <td>Participer à lavalorisation de l'image de l'organisation</td>
+    <td>Identite visuelle CPMS (palette teal), design moderne, mode sombre, design responsive, police Montserrat, favicon SVG</td>
+  </tr>
+  <tr>
+    <td>Referencement et visibilite</td>
+    <td>Meta noindex/nofollow, lang="fr", HTML semantique, URLs lisibles</td>
+  </tr>
+  <tr>
+    <td>Participer à l'evolution d'un site web</td>
+    <td>Conception complète de la V1 : portail documentaire, self-service MDP, dashboard admin, FAQ chatbot</td>
+  </tr>
+  <tr>
+    <td>Gestion de contenu numérique</td>
+    <td>33+ PDF, 10+ vidéos, visionneuse PDF intégrée avec recherche et filtres</td>
+  </tr>
+  <tr>
+    <td rowspan="4"><strong>B4 &mdash; Travailler en mode projet</strong></td>
+    <td>Analyser les objectifs et les modalites d'organisation</td>
+    <td>Analyse des besoins, specification des 14 endpoints, schema 7 tables</td>
+  </tr>
+  <tr>
+    <td>Planifier les activites</td>
+    <td>Développement itératif par modules (portail, sécurité, admin), pipeline CI/CD 4 étapes, migrations incrémentales, déploiement contrôle</td>
+  </tr>
+  <tr>
+    <td>Evaluer les indicateurs de suivi et d'impact</td>
+    <td>Dashboard admin (KPI), logging des operations, historique déblocages</td>
+  </tr>
+  <tr>
+    <td>Documenter les projets</td>
+    <td>Documentation technique complète (cette documentation HTML), FAQ 50 questions, guides pas-a-pas pour chaque outil</td>
+  </tr>
+  <tr>
+    <td rowspan="5"><strong>B5 &mdash; Mettre a disposition un service informatique (SLAM)</strong></td>
+    <td>Realiser des composants logiciels</td>
+    <td>22 vues, 10 composants, 4 services Laravel, 4 controllers, 1 middleware, données FAQ</td>
+  </tr>
+  <tr>
+    <td>Concevoir une base de données</td>
+    <td>Schema MySQL 7 tables avec FK, indexation, horodatage automatique, tokens avec expiration et revocation</td>
+  </tr>
+  <tr>
+    <td>Developper des composants d'accès aux données</td>
+    <td>Eloquent ORM, requêtes LDAP via LdapRecord, ODBC AS400 via pyodbc, pattern authFetch/authJson</td>
+  </tr>
+  <tr>
+    <td>Securiser une solution applicative</td>
+    <td>Auth Bearer + triple validation, CSRF Sanctum, rate limiting multi-niveaux, MDP 15 cars, hachage + sel, LDAPS</td>
+  </tr>
+  <tr>
+    <td>Tester et valider une solution applicative</td>
+    <td>Validation frontend (regex, jauge de force), gestion exhaustive HTTP (200-500), skeleton loaders, toasts, mode maintenance, guards de navigation</td>
+  </tr>
+  <tr>
+    <td rowspan="3"><strong>B6 &mdash; Organiser son développement professionnel</strong></td>
+    <td>Mettre en place son environnement d'apprentissage</td>
+    <td>Apprentissage Vue 3 Composition API, Laravel Sanctum, intégration LDAPS, intégration AS400 ODBC</td>
+  </tr>
+  <tr>
+    <td>Mettre en oeuvre des outils et strategies de veille</td>
+    <td>Documentation officielle Vue/Laravel/Tailwind, migration vers les versions stables recentes, adoption des patterns modernes</td>
+  </tr>
+  <tr>
+    <td>Developper son projet professionnel</td>
+    <td>Projet complet demonstrant la maîtrise full-stack : SPA modulaire, intégration systèmes d'entreprise, CI/CD</td>
+  </tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- FOOTER                                                            -->
+<!-- ================================================================ -->
+
+<div class="footer">
+  <p>Intranet CPMS V1 &mdash; Sagar MIR &mdash; BTS SIO SLAM 2025-2026</p>
+  <p style="margin-top:0.5rem;">
+    Vue 3.3 &middot; Laravel 12 &middot; Tailwind CSS &middot; 22 vues &middot; 10 composants &middot; 14 endpoints &middot; 7 tables
+  </p>
+</div>
+
+</div>
+</body>
+</html>

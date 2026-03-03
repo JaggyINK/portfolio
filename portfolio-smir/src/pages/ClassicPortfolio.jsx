@@ -18,7 +18,7 @@ const EasterEggMoon = lazy(() => import("../components/EasterEggMoon"));
 
 export default function ClassicPortfolio() {
   return (
-    <main className="h-screen overflow-y-scroll snap-y snap-mandatory">
+    <main className="h-screen overflow-y-scroll snap-y snap-proximity scroll-pt-0 [-webkit-overflow-scrolling:touch]">
       <LeftDockNav />
       {/* Above the fold — eagerly loaded */}
       <ClassicHero />

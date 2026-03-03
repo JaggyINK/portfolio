@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Intranet CPMS</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #0891b2; --accent2: #22d3ee; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(34,211,238,0.15); color: var(--accent2); border: 1px solid rgba(34,211,238,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(34,211,238,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Intranet CPMS</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Plateforme self-service pour 180+ collaborateurs</p>
+<div class="header-line"></div>
+
+<div>
+  <span class="badge">Laravel 12</span>
+  <span class="badge">Vue 3</span>
+  <span class="badge">LDAP</span>
+  <span class="badge">AS400</span>
+  <span class="badge">PHP</span>
+  <span class="badge">Python</span>
+  <span class="badge">MySQL</span>
+  <span class="badge">PostgreSQL</span>
+</div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Intranet CPMS — Portail self-service et administration</td></tr>
+  <tr><th>Commanditaire</th><td>CPMS — Direction des Systèmes d'Information</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR (alternance)</td></tr>
+  <tr><th>Date</th><td>2025 – 2026</td></tr>
+  <tr><th>Statut</th><td>V1 en production — V2 en développement</td></tr>
+  <tr><th>Type</th><td>Application web interne — Projet professionnel (Épreuve U4 BTS SIO)</td></tr>
+  <tr><th>Utilisateurs cibles</th><td>180+ collaborateurs CPMS + équipe IT (administrateurs)</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>La CPMS gère 180+ collaborateurs dont les comptes sont répartis sur Active Directory et AS400. Les demandes de réinitialisation de mot de passe et de déverrouillage de compte généraient un volume important de tickets IT (support téléphonique, délais, indisponibilités).</td></tr>
+  <tr><th>Objectif principal</th><td>Réduire de 80% les tickets IT liés à la gestion des comptes en offrant un portail self-service disponible 24/7.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Changement de mot de passe multi-systèmes (AD + AS400) en temps réel</li>
+      <li>Déverrouillage de compte via questions de sécurité</li>
+      <li>Dashboard administrateur avec statistiques temps réel</li>
+      <li>Portail intranet centralisé (FAQ, annuaire, documents)</li>
+      <li>Chatbot FAQ intelligent</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Reset mot de passe</td><td>Changement simultané sur Active Directory et AS400 via LDAP et pyodbc. Vérification des politiques de mot de passe en temps réel.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Déverrouillage compte</td><td>Questions de sécurité personnalisées avec réponses hashées (bcrypt). Système de leurres anti-brute-force.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Dashboard admin</td><td>Statistiques en temps réel : nombre de resets, comptes verrouillés, activité par service, logs d'audit.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Portail intranet</td><td>Page d'accueil centralisée avec accès rapide aux outils internes, FAQ, annuaire collaborateurs.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Chatbot FAQ</td><td>Bot intelligent Python répondant aux questions récurrentes des collaborateurs.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Gestion des rôles</td><td>Rôles admin/user synchronisés avec Active Directory. Permissions granulaires.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Authentification SSO</td><td>Connexion via LDAP/Active Directory. Session sécurisée (Laravel Sanctum).</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Backend</td><td>Laravel 12 (PHP 8.2+) — 5 services, 35+ endpoints API REST</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Frontend</td><td>Vue 3.3 + Vite 7 + Tailwind CSS 3.4 — 31 vues, 23 composants, 5 composables</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Base de données</td><td>MySQL / PostgreSQL — 13 tables</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Authentification</td><td>Laravel Sanctum + LdapRecord (LDAPS)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Intégrations</td><td>Active Directory (LDAP), AS400 (pyodbc/Python 3), APIs REST internes</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sécurité</td><td>bcrypt, CSRF, rate limiting, LDAPS chiffré, logs d'audit</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Disponibilité</td><td>Portail accessible 24/7, même en dehors des heures de bureau.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sécurité</td><td>Données sensibles (mots de passe, comptes AD). Conformité OWASP. Chiffrement LDAPS obligatoire.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Compatibilité</td><td>Intégration avec l'infrastructure existante (AD, AS400, réseau interne).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Performance</td><td>Reset de mot de passe en &lt; 3 secondes sur les deux systèmes simultanément.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Utilisabilité</td><td>Interface simple pour des utilisateurs non-techniques (180+ collaborateurs).</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Application V1</td><td>Portail en production — reset MDP, déverrouillage, dashboard admin</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Application V2</td><td>Évolution en cours — chatbot, portail enrichi, nouvelles fonctionnalités</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation technique</td><td>Architecture, API, schémas BDD, guide d'installation, procédures</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Dossier projet BTS</td><td>Documentation conforme au référentiel U4</td></tr>
+</table>
+
+<h2>7. Résultats mesurés</h2>
+<table>
+  <tr><th>Indicateur</th><th style="width:auto;">Résultat</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Réduction tickets IT</td><td>-80% des tickets liés aux comptes</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Utilisateurs actifs</td><td>180+ collaborateurs quotidiens</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Disponibilité</td><td>24/7 sans intervention IT</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Intranet CPMS — Sagar MIR — 2025-2026</div>
+</div>
+</body>
+</html>

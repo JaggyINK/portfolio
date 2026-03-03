@@ -1,5 +1,5 @@
 // src/pages/ClassicHero.jsx
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { useSettings } from "../state/settings.jsx";
 
 /* ===== Golden ratio ===== */
@@ -121,11 +121,14 @@ export default function ClassicHero() {
     <section
       ref={heroRef}
       id="hero"
-      className="relative min-h-[100svh] w-full overflow-hidden text-slate-100 snap-center"
+      className="relative min-h-[100svh] w-full overflow-hidden text-slate-100 snap-start"
       aria-label="Bienvenue sur mon portfolio"
     >
       {/* BACKGROUND */}
       <canvas ref={canvasRef} className="absolute inset-0 block w-full h-full" />
+
+      {/* SPOTLIGHTS — retirer cette ligne pour désactiver l'effet */}
+      <SpotlightOverlay containerRef={heroRef} />
 
       {/* HEADER FIXE (titre uniquement) */}
       <header className="absolute left-0 right-0 z-30 px-6 pointer-events-none top-2 md:top-3">
@@ -154,7 +157,7 @@ export default function ClassicHero() {
 
             {/* S.MIR - Nom principal */}
             <h2
-              className="mt-4 font-extrabold text-[clamp(1.8rem,4.4vw,2.6rem)] text-[#60a5fa] fade-in stagger-1"
+              className="mt-4 font-extrabold text-[clamp(1.8rem,4.4vw,2.6rem)] text-[#22d3ee] fade-in stagger-1"
               style={{
                 fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
               }}
@@ -178,13 +181,20 @@ export default function ClassicHero() {
       <footer className="absolute left-0 right-0 z-30 px-6 bottom-10">
         <div className="max-w-3xl mx-auto space-y-2 text-center">
           {/* hint scroll */}
-          <div className="flex flex-col items-center pt-3">
-            <span className="text-xs font-light tracking-wide text-slate-300/80">
+          <button
+            type="button"
+            onClick={() => {
+              const next = document.getElementById("about");
+              if (next) next.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="flex flex-col items-center mx-auto pt-3 cursor-pointer group"
+          >
+            <span className="text-xs font-light tracking-wide transition-colors text-slate-300/80 group-hover:text-slate-100">
               Faites défiler pour découvrir
             </span>
             <div className="relative w-5 h-5 mt-2">
               <svg
-                className="absolute inset-0 w-full h-full animate-bounce-slow text-[#f5c542]"
+                className="absolute inset-0 w-full h-full animate-bounce-slow text-[#f5c542] transition-transform group-hover:translate-y-1"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -198,13 +208,13 @@ export default function ClassicHero() {
               </svg>
               <div className="absolute inset-0 blur-lg bg-[radial-gradient(closest-side,#f5c54233,transparent)] animate-pulse-slow rounded-full" />
             </div>
-          </div>
+          </button>
         </div>
       </footer>
 
       {/* Top/Bottom glow lines */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent opacity-60" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#a41d28] to-transparent opacity-60" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[#d4af37] to-transparent opacity-60" />
 
       <style>{`
         @keyframes bounce-slow { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
@@ -236,7 +246,7 @@ function AvatarCard() {
         className="absolute -inset-[18%] rounded-full"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(96,165,250,.18), rgba(168,85,247,.12), rgba(0,0,0,0) 70%)",
+            "radial-gradient(closest-side, rgba(34,211,238,.18), rgba(168,85,247,.12), rgba(0,0,0,0) 70%)",
           filter: "blur(22px)",
         }}
       />
@@ -259,9 +269,9 @@ function AvatarCard() {
           height: `clamp(200px, 28vw, 320px)`,
           background:
             "linear-gradient(135deg, rgba(14,20,38,.50), rgba(8,12,24,.50))",
-          border: "3px solid rgba(96,165,250,.35)",
+          border: "3px solid rgba(34,211,238,.35)",
           boxShadow:
-            "0 20px 70px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.1), 0 0 50px rgba(96,165,250,.2)",
+            "0 20px 70px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.1), 0 0 50px rgba(34,211,238,.2)",
           backdropFilter: "blur(10px)",
         }}
       >
@@ -295,6 +305,153 @@ function AvatarCard() {
         @keyframes spin-halo { to { transform: rotate(360deg); } }
       `}</style>
     </div>
+  );
+}
+
+/* ================================ */
+/* Projecteurs : 2 faisceaux coniques depuis les côtés */
+/* Retirer <SpotlightOverlay /> du JSX pour désactiver */
+/* ================================ */
+function SpotlightOverlay({ containerRef }) {
+  const cvRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = cvRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+    const ctx = canvas.getContext("2d");
+
+    let W, H;
+    function resize() {
+      W = canvas.width = container.offsetWidth;
+      H = canvas.height = container.offsetHeight;
+    }
+    resize();
+
+    let raf = 0;
+    let mouseIn = false;
+    let mx = W * 0.5;
+    let my = H * 0.4;
+
+    /* — Deux projecteurs : origine fixe, cible mobile — */
+    const spots = [
+      { ox: -10, oy: H + 10, x: W * 0.35, y: H * 0.3, phase: 0, speed: 0.35 },
+      { ox: W + 10, oy: H + 10, x: W * 0.65, y: H * 0.3, phase: Math.PI * 0.8, speed: 0.45 },
+    ];
+
+    const LERP_SEARCH = 0.012;
+    const LERP_TRACK = 0.04;
+    const DARKNESS = 0.62;
+    const CONE_SPREAD = 0.18;   // ouverture du cône (radians-like factor)
+
+    function searchTarget(spot, t) {
+      const a = t * spot.speed + spot.phase;
+      return {
+        tx: W * 0.5 + Math.sin(a) * W * 0.32,
+        ty: H * 0.35 + Math.sin(a * 1.6) * H * 0.2,
+      };
+    }
+
+    function drawBeam(spot) {
+      const { ox, oy, x, y } = spot;
+      const angle = Math.atan2(y - oy, x - ox);
+      const dist = Math.hypot(x - ox, y - oy);
+      const halfW = dist * CONE_SPREAD;
+      const poolR = Math.min(W, H) * 0.2;
+
+      /* — Cône lumineux — */
+      ctx.beginPath();
+      ctx.moveTo(ox, oy);
+      ctx.arc(x, y, halfW, angle - Math.PI / 2, angle + Math.PI / 2);
+      ctx.closePath();
+
+      const grad = ctx.createLinearGradient(ox, oy, x, y);
+      grad.addColorStop(0, "rgba(0,0,0,0.05)");
+      grad.addColorStop(0.5, "rgba(0,0,0,0.45)");
+      grad.addColorStop(1, "rgba(0,0,0,0.85)");
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      /* — Halo circulaire au bout du faisceau — */
+      const pool = ctx.createRadialGradient(x, y, 0, x, y, poolR);
+      pool.addColorStop(0, "rgba(0,0,0,1)");
+      pool.addColorStop(0.55, "rgba(0,0,0,0.6)");
+      pool.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.beginPath();
+      ctx.arc(x, y, poolR, 0, Math.PI * 2);
+      ctx.fillStyle = pool;
+      ctx.fill();
+    }
+
+    function draw(now) {
+      const t = now / 1000;
+      ctx.clearRect(0, 0, W, H);
+
+      /* Couche sombre */
+      ctx.fillStyle = `rgba(0,0,0,${DARKNESS})`;
+      ctx.fillRect(0, 0, W, H);
+
+      /* Percer les faisceaux */
+      ctx.globalCompositeOperation = "destination-out";
+
+      for (let i = 0; i < spots.length; i++) {
+        const spot = spots[i];
+        let tx, ty;
+
+        if (mouseIn) {
+          const off = i === 0 ? -25 : 25;
+          tx = mx + off;
+          ty = my;
+        } else {
+          const s = searchTarget(spot, t);
+          tx = s.tx;
+          ty = s.ty;
+        }
+
+        const lerp = mouseIn ? LERP_TRACK : LERP_SEARCH;
+        spot.x += (tx - spot.x) * lerp;
+        spot.y += (ty - spot.y) * lerp;
+
+        /* Garder l'origine ancrée aux coins */
+        spot.ox = i === 0 ? -10 : W + 10;
+        spot.oy = H + 10;
+
+        drawBeam(spot);
+      }
+
+      ctx.globalCompositeOperation = "source-over";
+      raf = requestAnimationFrame(draw);
+    }
+
+    raf = requestAnimationFrame(draw);
+
+    function onMove(e) {
+      const rect = container.getBoundingClientRect();
+      mx = e.clientX - rect.left;
+      my = e.clientY - rect.top;
+      mouseIn = true;
+    }
+    function onLeave() { mouseIn = false; }
+    function onResize() { resize(); }
+
+    container.addEventListener("mousemove", onMove);
+    container.addEventListener("mouseleave", onLeave);
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      container.removeEventListener("mousemove", onMove);
+      container.removeEventListener("mouseleave", onLeave);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [containerRef]);
+
+  return (
+    <canvas
+      ref={cvRef}
+      className="absolute inset-0 z-10 pointer-events-none"
+      aria-hidden
+    />
   );
 }
 

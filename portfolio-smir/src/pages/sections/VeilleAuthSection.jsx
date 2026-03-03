@@ -1,12 +1,13 @@
 import React, { useState, useMemo } from "react";
 import useReveal from "../../hooks/useReveal";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ============ Système φ ============ */
 const PHI = 1.618;
 const INV = 1 / PHI;
 
 const THEME = {
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -66,8 +67,8 @@ const PRACTICES = [
   { icon: "🛡️", title: "Rate limiting", desc: "5 tentatives/min max, temporisation progressive" },
   { icon: "📋", title: "Audit trail", desc: "Logger chaque action sensible (qui, quand, IP)" },
   { icon: "🍪", title: "Tokens", desc: "JWT courte durée + cookies HttpOnly/Secure/SameSite" },
-  { icon: "🧱", title: "OWASP", desc: "CSRF tokens, CSP headers, validation inputs, CORS strict" },
-  { icon: "🔑", title: "Mots de passe", desc: "12+ caractères, NIST guidelines, pas de rotation forcée" },
+  { icon: "🧱", title: "OWASP 2025", desc: "A07: Authentication Failures, A01: Broken Access Control, CSP headers, CORS strict" },
+  { icon: "🔑", title: "Mots de passe", desc: "12+ caractères, NIST SP 800-63B, pas de rotation forcée" },
 ];
 
 /* ============ Veille méthodo ============ */
@@ -231,7 +232,7 @@ export default function VeilleAuthSection() {
     <section
       ref={ref}
       id="veille-auth"
-      className={`min-h-[100svh] snap-center text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
+      className={`min-h-[100svh] snap-start text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
       style={{
         background:
           "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
@@ -288,6 +289,26 @@ export default function VeilleAuthSection() {
           <div className="mx-auto mt-4 h-[2px] w-32" style={{ background: THEME.line }} />
         </header>
 
+        {/* ── CONTEXTE JURY ── */}
+        <div
+          className="mb-8 rounded-xl border px-5 py-4"
+          style={{
+            background: "linear-gradient(135deg, rgba(212,175,55,0.04), rgba(168,85,247,0.04))",
+            borderColor: "rgba(212,175,55,0.15)",
+          }}
+        >
+          <h3 className="text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: THEME.sub }}>
+            Contexte &amp; Enjeux
+          </h3>
+          <p className="text-[0.82rem] leading-relaxed" style={{ color: THEME.sub }}>
+            Dans le cadre de mon alternance chez <strong style={{ color: THEME.text }}>CPMS</strong>,
+            j&apos;ai conçu un intranet (Laravel + React) connecté à <strong style={{ color: THEME.text }}>Active Directory</strong>.
+            L&apos;enjeu : authentifier les employés de manière sécurisée sans dupliquer les mots de passe,
+            tout en respectant les recommandations <strong style={{ color: THEME.text }}>OWASP Top 10:2025</strong> (A07 — Authentication Failures)
+            et les guidelines <strong style={{ color: THEME.text }}>NIST SP 800-63B</strong>.
+          </p>
+        </div>
+
         {/* ── ARCHITECTURE FLOW ── */}
         <div className="mb-8">
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: THEME.sub }}>
@@ -334,7 +355,7 @@ export default function VeilleAuthSection() {
         {/* ── BONNES PRATIQUES ── */}
         <div className="mb-8">
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
-            Bonnes pratiques 2025
+            Bonnes pratiques (OWASP Top 10 : 2025)
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {PRACTICES.map((p, i) => (
@@ -488,13 +509,21 @@ export default function VeilleAuthSection() {
           </div>
           <p className="text-[0.82rem] leading-relaxed max-w-xl mx-auto" style={{ color: THEME.sub }}>
             Interroger AD via ODBC, authentifier via LDAP Bind sans stocker de mots de passe,
-            et sécuriser l&apos;API avec des tokens JWT Sanctum.
+            et sécuriser l&apos;API avec des tokens JWT Sanctum — en conformité avec OWASP Top 10:2025.
           </p>
         </div>
 
-        <p className="mt-5 text-center text-[0.72rem]" style={{ color: THEME.sub }}>
-          Veille maintenue mensuellement — mise à jour : <strong>février 2026</strong>
-        </p>
+        {/* ── SOURCES ── */}
+        <div className="mt-5 text-center space-y-1">
+          <p className="text-[0.72rem]" style={{ color: THEME.sub }}>
+            Veille maintenue mensuellement — mise à jour : <strong>mars 2026</strong>
+          </p>
+          <p className="text-[0.65rem]" style={{ color: THEME.sub, opacity: 0.7 }}>
+            Sources : OWASP Top 10:2025 · NIST SP 800-63B · Laravel Security · HackerNews · BleepingComputer
+          </p>
+        </div>
+
+        <ScrollDownHint targetId="ecole" />
       </div>
     </section>
   );

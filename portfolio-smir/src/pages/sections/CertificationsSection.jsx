@@ -1,13 +1,14 @@
 // src/pages/sections/CertificationsSection.jsx
 import React, { useState, useCallback } from "react";
 import useReveal from "../../hooks/useReveal";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ============ Système φ ============ */
 const PHI = 1.618;
 const INV = 1 / PHI;
 
 const THEME = {
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -323,7 +324,7 @@ export default function CertificationsSection() {
     <section
       ref={ref}
       id="certifications"
-      className={`flex flex-col justify-center min-h-screen snap-center text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
+      className={`flex flex-col justify-center min-h-screen snap-start text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
       style={{
         background:
           "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
@@ -409,6 +410,8 @@ export default function CertificationsSection() {
         <p className="mt-6 text-center text-[0.72rem]" style={{ color: THEME.sub }}>
           Cliquer sur une carte pour voir les détails
         </p>
+
+        <ScrollDownHint targetId="veille" />
       </div>
     </section>
   );

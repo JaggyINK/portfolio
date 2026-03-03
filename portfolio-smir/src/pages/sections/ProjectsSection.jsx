@@ -1,5 +1,6 @@
 // src/pages/sections/ProjectsSection.jsx
 import React, { useState, useMemo, useCallback } from "react";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ============================ */
 const PHI = 1.618;
@@ -8,7 +9,7 @@ const INV = 1 / PHI;
 /* ============================ */
 const THEME = {
   bg: "#0b1020",
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -24,14 +25,15 @@ const PROJECTS = [
     id: "familidocs",
     title: "FamiliDocs",
     date: "2025–2026",
-    description: "Coffre administratif numerique familial — Projet E5 BTS SIO",
+    description: "Coffre administratif numerique familial — Projet U5 BTS SIO",
     detail:
-      "Projet principal BTS SIO SLAM (epreuve E5). Application web Python/Flask permettant aux familles de centraliser et securiser leurs documents administratifs. 9 modeles de donnees, chiffrement AES, versioning, tags, partage granulaire avec permissions temporaires, notifications temps reel, 41 tests pytest. Architecture MVC complete avec 7 services metier et 8 blueprints.",
+      "Projet principal BTS SIO SLAM (epreuve U5). Application web Python/Flask permettant aux familles de centraliser et securiser leurs documents administratifs. 9 modeles de donnees, chiffrement AES, versioning, tags, partage granulaire avec permissions temporaires, notifications temps reel, 41 tests pytest. Architecture MVC complete avec 7 services metier et 8 blueprints.",
     tags: ["Python", "Flask", "SQLite", "AES", "pytest"],
     category: "projets",
     color: "#8b5cf6",
     docUrl: "/docs/familidocs-doc.html",
-    highlight: "Projet E5 BTS SIO SLAM",
+    cdcUrl: "/docs/cdc-familidocs.html",
+    highlight: "Projet U5 BTS SIO SLAM",
   },
   {
     id: "cpms",
@@ -39,11 +41,14 @@ const PROJECTS = [
     date: "2025",
     description: "Administration & self-care pour 180+ collaborateurs",
     detail:
-      "Plateforme self-service Laravel 12 + Vue 3 pour la CPMS : changement de mot de passe multi-systemes (Active Directory + AS400) en temps reel, deverrouillage de compte via questions de securite (bcrypt + leurres), dashboard admin avec stats temps reel, portail intranet centralise. Impact : -80% tickets IT, disponibilite 24/7.",
+      "Plateforme self-service Laravel 12 + Vue 3 pour la CPMS : changement de mot de passe multi-systemes (Active Directory + AS400) en temps reel, deverrouillage de compte via questions de securite (bcrypt + leurres), dashboard admin avec stats temps reel, portail intranet centralise. V1 en production, V2 en developpement. Impact : -80% tickets IT, disponibilite 24/7.",
     tags: ["Laravel 12", "Vue 3", "LDAP", "AS400", "PHP"],
     category: "projets",
     color: "#22d3ee",
-    docUrl: "/docs/cpms-doc.html",
+    docV1: "/docs/cpms_v1.html",
+    docV2: "/docs/cpms_v2.html",
+    pdfUrl: "/docs/CPMS.pdf",
+    cdcUrl: "/docs/cdc-cpms.html",
   },
   {
     id: "earth-sanitation",
@@ -57,6 +62,7 @@ const PROJECTS = [
     color: "#10b981",
     siteUrl: "https://earth-sanitation.fr",
     docUrl: "/docs/earth-sanitation-doc.html",
+    cdcUrl: "/docs/cdc-earth-sanitation.html",
   },
   {
     id: "drainage-academy",
@@ -70,6 +76,7 @@ const PROJECTS = [
     color: "#d4af37",
     siteUrl: "https://drainage-academy.fr",
     docUrl: "/docs/drainage-academy-doc.html",
+    cdcUrl: "/docs/cdc-drainage-academy.html",
   },
   {
     id: "discord-bot",
@@ -82,6 +89,7 @@ const PROJECTS = [
     category: "projets",
     color: "#5865F2",
     docUrl: "/docs/discord-bot-doc.html",
+    cdcUrl: "/docs/cdc-discord-bot.html",
   },
   {
     id: "alafrenchcare",
@@ -95,6 +103,7 @@ const PROJECTS = [
     color: "#f59e0b",
     siteUrl: "https://alafrenchcare.com",
     docUrl: "/docs/alafrench-care-doc.html",
+    cdcUrl: "/docs/cdc-alafrench-care.html",
   },
   {
     id: "alafrenchfr",
@@ -108,6 +117,7 @@ const PROJECTS = [
     color: "#a855f7",
     siteUrl: "https://alafrench.fr",
     docUrl: "/docs/alafrench-doc.html",
+    cdcUrl: "/docs/cdc-alafrench.html",
   },
   {
     id: "portfolio",
@@ -120,6 +130,7 @@ const PROJECTS = [
     category: "projets",
     color: "#06b6d4",
     docUrl: "/docs/portfolio-3d-doc.html",
+    cdcUrl: "/docs/cdc-portfolio-3d.html",
   },
   {
     id: "flipper",
@@ -132,6 +143,7 @@ const PROJECTS = [
     category: "projets",
     color: "#ef4444",
     docUrl: "/docs/flipper-zero-doc.html",
+    cdcUrl: "/docs/cdc-flipper-zero.html",
   },
   {
     id: "dev_annonce",
@@ -144,6 +156,7 @@ const PROJECTS = [
     category: "projets",
     color: "#3b82f6",
     docUrl: "/docs/annonz-doc.html",
+    cdcUrl: "/docs/cdc-annonz.html",
   },
   {
     id: "tp_sql",
@@ -155,7 +168,7 @@ const PROJECTS = [
     tags: ["Security", "SQL Injection", "OWASP", "Mitigation"],
     category: "guides",
     color: "#8b5cf6",
-    docUrl: "/docs/SQL.pdf",
+    docUrl: "/docs/guide-injection-sql.html",
   },
   {
     id: "linux_installs",
@@ -167,7 +180,7 @@ const PROJECTS = [
     tags: ["Linux", "Automation", "Bash", "VM"],
     category: "guides",
     color: "#14b8a6",
-    docUrl: "/docs/linux.pdf",
+    docUrl: "/docs/guide-lab-linux.html",
   },
   {
     id: "bootable_keys",
@@ -179,7 +192,7 @@ const PROJECTS = [
     tags: ["Bootable USB", "Recovery", "Windows", "Linux"],
     category: "guides",
     color: "#eab308",
-    docUrl: "/docs/usb.pdf",
+    docUrl: "/docs/guide-cles-bootables.html",
   },
   {
     id: "win_server",
@@ -191,7 +204,7 @@ const PROJECTS = [
     tags: ["Windows Server", "Active Directory", "GPO", "Admin"],
     category: "guides",
     color: "#06b6d4",
-    docUrl: "/docs/win22.pdf",
+    docUrl: "/docs/guide-active-directory.html",
   },
   {
     id: "virtual_vm",
@@ -203,7 +216,31 @@ const PROJECTS = [
     tags: ["VirtualBox", "VMware", "Virtualization", "Networking"],
     category: "guides",
     color: "#6366f1",
-    docUrl: "/docs/VM.pdf",
+    docUrl: "/docs/guide-virtualisation.html",
+  },
+  {
+    id: "docker_guide",
+    title: "Docker & Containers",
+    date: "2025",
+    description: "Conteneurisation d'applications",
+    detail:
+      "Guide complet Docker : concepts (images, conteneurs, volumes, reseaux), Dockerfile, docker-compose multi-services, bonnes pratiques de containerisation. Deploiement d'environnements de dev reproductibles.",
+    tags: ["Docker", "Containers", "DevOps", "Compose"],
+    category: "guides",
+    color: "#0ea5e9",
+    docUrl: "/docs/guide-docker.html",
+  },
+  {
+    id: "git_guide",
+    title: "Git & GitHub",
+    date: "2025",
+    description: "Gestion de versions & collaboration",
+    detail:
+      "Workflow Git professionnel : branches, commits, merge, rebase, pull requests, gestion de conflits, .gitignore, tags, GitHub Actions. Bonnes pratiques pour le travail en equipe et le versionning de projets.",
+    tags: ["Git", "GitHub", "Version Control", "CI/CD"],
+    category: "guides",
+    color: "#f97316",
+    docUrl: "/docs/guide-git.html",
   },
 ];
 
@@ -377,38 +414,103 @@ function ProjectCard({ p }) {
               )}
 
               {/* CTA */}
-              <div className="flex gap-2">
-                {p.siteUrl && (
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  {p.siteUrl && (
+                    <a
+                      href={p.siteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                      style={{
+                        background: `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
+                        boxShadow: `0 4px 16px ${p.color}40`,
+                      }}
+                    >
+                      Voir le site
+                    </a>
+                  )}
+                  {p.docUrl && (
+                    <a
+                      href={p.docUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className={`${p.siteUrl ? "flex-1" : "w-full"} py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40`}
+                      style={{
+                        background: p.siteUrl
+                          ? `rgba(255,255,255,0.1)`
+                          : `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
+                        border: p.siteUrl ? `1px solid ${p.color}60` : "none",
+                        boxShadow: p.siteUrl ? "none" : `0 4px 16px ${p.color}40`,
+                      }}
+                    >
+                      {p.docUrl.startsWith("http") ? "Voir le site" : "Documentation"}
+                    </a>
+                  )}
+                </div>
+                {/* CPMS: V1/V2 selector + PDF */}
+                {p.docV1 && p.docV2 && (
+                  <div className="flex gap-2">
+                    <a
+                      href={p.docV1}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 py-2.5 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                      style={{
+                        background: `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
+                        boxShadow: `0 4px 16px ${p.color}40`,
+                      }}
+                    >
+                      Doc V1 (prod)
+                    </a>
+                    <a
+                      href={p.docV2}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="flex-1 py-2.5 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                      style={{
+                        background: `rgba(255,255,255,0.1)`,
+                        border: `1px solid ${p.color}60`,
+                      }}
+                    >
+                      Doc V2 (dev)
+                    </a>
+                  </div>
+                )}
+                {p.pdfUrl && (
                   <a
-                    href={p.siteUrl}
+                    href={p.pdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className="flex-1 py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                    className="w-full py-2 text-xs font-semibold text-center transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
                     style={{
-                      background: `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
-                      boxShadow: `0 4px 16px ${p.color}40`,
+                      background: `rgba(212,175,55,0.12)`,
+                      color: "#d4af37",
+                      border: `1px solid rgba(212,175,55,0.3)`,
                     }}
                   >
-                    Voir le site
+                    Document explicatif (PDF)
                   </a>
                 )}
-                {p.docUrl && (
+                {p.cdcUrl && (
                   <a
-                    href={p.docUrl}
+                    href={p.cdcUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={(e) => e.stopPropagation()}
-                    className={`${p.siteUrl ? "flex-1" : "w-full"} py-3 text-sm font-bold text-center text-white transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40`}
+                    className="w-full py-2 text-xs font-semibold text-center transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
                     style={{
-                      background: p.siteUrl
-                        ? `rgba(255,255,255,0.1)`
-                        : `linear-gradient(135deg, ${p.color}, ${p.color}dd)`,
-                      border: p.siteUrl ? `1px solid ${p.color}60` : "none",
-                      boxShadow: p.siteUrl ? "none" : `0 4px 16px ${p.color}40`,
+                      background: `rgba(168,85,247,0.12)`,
+                      color: "#a855f7",
+                      border: `1px solid rgba(168,85,247,0.3)`,
                     }}
                   >
-                    {p.docUrl.startsWith("http") ? "Voir le site" : "Documentation"}
+                    Cahier des charges
                   </a>
                 )}
               </div>
@@ -497,7 +599,7 @@ export default function ProjectsSection() {
   return (
     <section
       id="projets"
-      className="relative min-h-[100svh] snap-center text-slate-100"
+      className="relative min-h-[100svh] snap-start text-slate-100"
       style={{
         background:
           "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
@@ -604,6 +706,8 @@ export default function ProjectsSection() {
         <p className="mt-6 text-center text-[0.72rem]" style={{ color: THEME.sub }}>
           {PROJECTS.length} projets au total — cliquer sur une carte pour les détails
         </p>
+
+        <ScrollDownHint targetId="certifications" />
       </div>
     </section>
   );

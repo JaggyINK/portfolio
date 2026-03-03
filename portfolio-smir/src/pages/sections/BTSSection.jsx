@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ============ Système φ (nombre d'or) ============ */
 const PHI = 1.618;
@@ -7,7 +8,7 @@ const INV = 1 / PHI;
 /* ============ Thème sobre & pro ============ */
 const THEME = {
   bg: "#0b1020",
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -20,7 +21,7 @@ const THEME = {
 /* ============ Épreuves ============ */
 const EPREUVES = [
   {
-    code: "E4",
+    code: "U4",
     label: "Conception & maintenance de solutions informatiques",
     icon: "🛠",
     color: "#22d3ee",
@@ -34,10 +35,10 @@ const EPREUVES = [
       "Maquettage, diagrammes UML, modélisation de données",
       "Justifier ses choix d'architecture et de technologie",
     ],
-    perso: "Mon projet E4 : Intranet CPMS — refonte complète du SI interne (Laravel 12, Vue 3, LDAP, AS400).",
+    perso: "Mon projet U4 : Intranet CPMS — V1 en production, V2 en développement (Laravel 12, Vue 3, LDAP, AS400).",
   },
   {
-    code: "E5",
+    code: "U5",
     label: "Production & fourniture de services informatiques",
     icon: "🚀",
     color: "#a855f7",
@@ -51,10 +52,10 @@ const EPREUVES = [
       "Projets personnels ou scolaires documentés",
       "Démonstration technique et argumentation des choix",
     ],
-    perso: "Mon projet E5 : FamiliDocs — coffre administratif numérique familial (Python/Flask, AES, 41 tests).",
+    perso: "Mon projet U5 : FamiliDocs — coffre administratif numérique familial (Python/Flask, AES, 41 tests).",
   },
   {
-    code: "E6",
+    code: "U6",
     label: "Parcours de professionnalisation",
     icon: "📋",
     color: "#d4af37",
@@ -122,7 +123,7 @@ export default function BTSSection() {
   return (
     <section
       id="bts"
-      className="min-h-[100svh] snap-center text-slate-100"
+      className="min-h-[100svh] snap-start text-slate-100"
       style={{
         background:
           "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
@@ -493,6 +494,8 @@ export default function BTSSection() {
             </a>
           ))}
         </div>
+
+        <ScrollDownHint targetId="parcours" />
       </div>
     </section>
   );

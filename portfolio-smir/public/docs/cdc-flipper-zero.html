@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Flipper Zero</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #dc2626; --accent2: #ef4444; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(239,68,68,0.15); color: var(--accent2); border: 1px solid rgba(239,68,68,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(239,68,68,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Flipper Zero</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Pentest hardware & développement firmware</p>
+<div class="header-line"></div>
+
+<div><span class="badge">Hardware</span><span class="badge">Pentest</span><span class="badge">Firmware</span><span class="badge">Security</span></div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Flipper Zero — Sécurité matérielle et firmware</td></tr>
+  <tr><th>Commanditaire</th><td>Projet personnel — Recherche en sécurité</td></tr>
+  <tr><th>Auteur</th><td>Sagar MIR</td></tr>
+  <tr><th>Date</th><td>2025</td></tr>
+  <tr><th>Statut</th><td>En cours (documentation et expérimentations)</td></tr>
+  <tr><th>Type</th><td>Recherche sécurité — Pentest hardware pédagogique</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Le Flipper Zero est un outil de pentest matériel multi-protocoles (Sub-GHz, RFID, NFC, IR, GPIO). Ce projet documente les expérimentations de sécurité et le développement de scripts custom dans un cadre pédagogique et éthique.</td></tr>
+  <tr><th>Objectif principal</th><td>Documenter les techniques de pentest matériel et développer des scripts firmware personnalisés à des fins pédagogiques.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Comptes-rendus de pentest sur différents protocoles</li>
+      <li>Documentation sur les firmwares alternatifs</li>
+      <li>Développement de scripts personnalisés</li>
+      <li>Procédures de test reproductibles</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Domaine</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Sub-GHz</td><td>Analyse et tests sur les protocoles radio Sub-GHz (portails, télécommandes, capteurs).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">RFID / NFC</td><td>Lecture, émulation et analyse de badges et cartes sans contact.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Infrarouge</td><td>Capture et replay de signaux IR (télé, climatisation, équipements).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Firmware custom</td><td>Installation et test de firmwares alternatifs. Développement de scripts.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation</td><td>Rapports détaillés de chaque expérimentation avec preuves et mitigations.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Hardware</td><td>Flipper Zero — Outil multi-protocoles</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Firmware</td><td>Firmwares officiels et alternatifs (Xtreme, Unleashed)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Scripts</td><td>Scripts personnalisés en BadUSB, Sub-GHz</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Environnement</td><td>Laboratoire de test isolé (pas de systèmes tiers)</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Éthique</td><td>Tests uniquement sur équipements personnels ou autorisés. Cadre pédagogique strict.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Légalité</td><td>Conformité avec la législation française sur la sécurité informatique.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation</td><td>Chaque test documenté avec méthode, résultats et recommandations de mitigation.</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Rapports pentest</td><td>Dossiers techniques détaillés par protocole</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Scripts custom</td><td>Scripts firmware et BadUSB documentés</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Guide</td><td>Procédures de test reproductibles</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Flipper Zero — Sagar MIR — 2025</div>
+</div>
+</body>
+</html>

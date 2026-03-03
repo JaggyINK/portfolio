@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Git &amp; GitHub — Workflow &amp; Collaboration</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #ea580c; --accent2: #f97316; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 940px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(234,88,12,0.15); color: var(--accent2); border: 1px solid rgba(249,115,22,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card h3:first-child { margin-top: 0; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin: 1rem 0; }
+  .stat-card { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 0.5rem; }
+  .stat-card .num { font-size: 1.6rem; font-weight: 800; color: var(--accent2); display: block; }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(234,88,12,0.12); color: var(--accent2); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+  code { background: rgba(249,115,22,0.12); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+  pre { background: #0d1117; border: 1px solid var(--border); border-radius: 0.6rem; padding: 1.2rem 1.4rem; overflow-x: auto; margin: 1rem 0; line-height: 1.6; }
+  pre code { background: none; padding: 0; color: #c9d1d9; font-size: 0.82rem; }
+  .code-label { display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 0.4rem 0.4rem 0 0; margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em; }
+  .tip { background: rgba(234,88,12,0.07); border-left: 4px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .tip p { margin-bottom: 0; }
+  .tip-title { font-weight: 700; color: var(--accent2); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+  .warning { background: rgba(251,191,36,0.07); border-left: 4px solid #f59e0b; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .warning p { margin-bottom: 0; }
+  .warning-title { font-weight: 700; color: #fbbf24; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent2); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent2); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .meta { gap: 1rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== HEADER ========== -->
+<h1>Git &amp; GitHub</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">Workflow, collaboration et bonnes pratiques &mdash; Guide complet</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+  <div class="meta-item"><strong>Type :</strong> Guide technique</div>
+  <div class="meta-item"><strong>Niveau :</strong> D&eacute;butant &agrave; avanc&eacute;</div>
+</div>
+
+<div style="margin-bottom:2rem;">
+  <span class="badge">Git</span>
+  <span class="badge">GitHub</span>
+  <span class="badge">Branches</span>
+  <span class="badge">Pull Requests</span>
+  <span class="badge">CI/CD</span>
+  <span class="badge">Git Flow</span>
+  <span class="badge">GitHub Actions</span>
+</div>
+
+<!-- ========== STATS ========== -->
+<div class="stat-grid">
+  <div class="stat-card"><span class="num">12</span><span class="lbl">Sections</span></div>
+  <div class="stat-card"><span class="num">50+</span><span class="lbl">Commandes</span></div>
+  <div class="stat-card"><span class="num">3</span><span class="lbl">Workflows</span></div>
+  <div class="stat-card"><span class="num">10+</span><span class="lbl">Exemples</span></div>
+</div>
+
+<!-- ========== TABLE OF CONTENTS ========== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#introduction">Introduction &agrave; Git</a></li>
+    <li><a href="#installation">Installation et configuration</a></li>
+    <li><a href="#concepts">Concepts fondamentaux</a></li>
+    <li><a href="#commandes">Commandes de base</a></li>
+    <li><a href="#branches">Branches</a></li>
+    <li><a href="#merge-rebase">Merge et Rebase</a></li>
+    <li><a href="#github">GitHub</a></li>
+    <li><a href="#pull-requests">Pull Requests</a></li>
+    <li><a href="#gitignore">.gitignore</a></li>
+    <li><a href="#workflow">Workflow professionnel</a></li>
+    <li><a href="#bonnes-pratiques">Bonnes pratiques</a></li>
+    <li><a href="#github-actions">GitHub Actions (CI/CD)</a></li>
+  </ol>
+</div>
+
+<!-- ========== 1. INTRODUCTION ========== -->
+<h2 id="introduction">1. Introduction &agrave; Git</h2>
+
+<p>Le <strong>contr&ocirc;le de version</strong> est un syst&egrave;me qui enregistre les modifications apport&eacute;es &agrave; un ensemble de fichiers au fil du temps. Il permet de suivre l'historique complet, de travailler &agrave; plusieurs sans conflit et de revenir &agrave; un &eacute;tat ant&eacute;rieur en cas de probl&egrave;me.</p>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Centralis&eacute; (SVN, CVS)</h3>
+    <ul>
+      <li>Un seul serveur contient tout l'historique</li>
+      <li>Connexion permanente n&eacute;cessaire</li>
+      <li>Point de d&eacute;faillance unique</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Distribu&eacute; (Git, Mercurial)</h3>
+    <ul>
+      <li>Chaque d&eacute;veloppeur poss&egrave;de une copie compl&egrave;te</li>
+      <li>Travail hors ligne possible</li>
+      <li>Branches l&eacute;g&egrave;res et rapides</li>
+    </ul>
+  </div>
+</div>
+
+<p>Git a &eacute;t&eacute; cr&eacute;&eacute; en <strong>2005</strong> par <strong>Linus Torvalds</strong> (cr&eacute;ateur de Linux) avec des objectifs clairs&nbsp;: vitesse, conception simple, support du d&eacute;veloppement non-lin&eacute;aire et capacit&eacute; &agrave; g&eacute;rer de tr&egrave;s gros projets. Aujourd'hui, plus de <strong>95% des d&eacute;veloppeurs</strong> l'utilisent.</p>
+
+<!-- ========== 2. INSTALLATION ========== -->
+<h2 id="installation">2. Installation et configuration</h2>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Windows</h3>
+    <div class="code-label">PowerShell</div>
+    <pre><code>winget install Git.Git</code></pre>
+    <p style="margin-bottom:0;">Inclut <strong>Git Bash</strong>, terminal &eacute;mulant un environnement Unix.</p>
+  </div>
+  <div class="card">
+    <h3>Linux (Debian / Ubuntu)</h3>
+    <div class="code-label">Bash</div>
+    <pre><code>sudo apt update
+sudo apt install git -y
+git --version</code></pre>
+  </div>
+</div>
+
+<div class="code-label">Bash &mdash; Configuration globale</div>
+<pre><code># Identite (obligatoire)
+git config --global user.name "Sagar MIR"
+git config --global user.email "sagar@example.com"
+
+# Editeur par defaut
+git config --global core.editor "code --wait"
+
+# Branche par defaut (main au lieu de master)
+git config --global init.defaultBranch main
+
+# Verifier la configuration
+git config --list</code></pre>
+
+<h3>Cl&eacute; SSH</h3>
+<div class="code-label">Bash</div>
+<pre><code># Generer une paire de cles Ed25519
+ssh-keygen -t ed25519 -C "sagar@example.com"
+
+# Demarrer l'agent et ajouter la cle
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519
+
+# Copier la cle publique (a coller dans GitHub > Settings > SSH Keys)
+cat ~/.ssh/id_ed25519.pub
+
+# Tester la connexion
+ssh -T git@github.com</code></pre>
+
+<!-- ========== 3. CONCEPTS ========== -->
+<h2 id="concepts">3. Concepts fondamentaux</h2>
+
+<h3>Les trois zones de Git</h3>
+<table>
+  <tr><th>Zone</th><th>Description</th><th>Commande</th></tr>
+  <tr><td><strong>Working Directory</strong></td><td>R&eacute;pertoire de travail &mdash; les fichiers tels que vous les &eacute;ditez</td><td>Votre &eacute;diteur</td></tr>
+  <tr><td><strong>Staging Area (Index)</strong></td><td>Zone interm&eacute;diaire &mdash; pr&eacute;pare le prochain commit</td><td><code>git add</code></td></tr>
+  <tr><td><strong>Repository (.git)</strong></td><td>Base de donn&eacute;es locale contenant tout l'historique</td><td><code>git commit</code></td></tr>
+</table>
+
+<div class="card">
+  <h3>Les 4 &eacute;tats d'un fichier</h3>
+  <ul>
+    <li><strong>Untracked</strong> &mdash; Nouveau fichier, non suivi par Git</li>
+    <li><strong>Unmodified</strong> &mdash; Fichier suivi, identique au dernier commit</li>
+    <li><strong>Modified</strong> &mdash; Fichier modifi&eacute; depuis le dernier commit</li>
+    <li><strong>Staged</strong> &mdash; Modification ajout&eacute;e &agrave; la staging area, pr&ecirc;te pour le commit</li>
+  </ul>
+</div>
+
+<h3>Structure du r&eacute;pertoire <code>.git</code></h3>
+<div class="code-label">Structure interne</div>
+<pre><code>.git/
+  ├── HEAD            # Pointe vers la branche actuelle
+  ├── config          # Configuration locale du depot
+  ├── hooks/          # Scripts executes automatiquement
+  ├── index           # La staging area (binaire)
+  ├── objects/        # Objets Git (blobs, trees, commits)
+  ├── refs/           # References (branches, tags, remotes)
+  └── logs/           # Historique des references</code></pre>
+
+<div class="warning">
+  <div class="warning-title">Attention</div>
+  <p>Ne modifiez <strong>jamais</strong> manuellement le contenu du r&eacute;pertoire <code>.git</code>. Toute manipulation incorrecte peut corrompre l'historique de mani&egrave;re irr&eacute;versible.</p>
+</div>
+
+<!-- ========== 4. COMMANDES DE BASE ========== -->
+<h2 id="commandes">4. Commandes de base</h2>
+
+<div class="code-label">Bash &mdash; Initialisation</div>
+<pre><code># Initialiser un nouveau depot
+git init mon-projet
+
+# Cloner un depot distant (HTTPS ou SSH)
+git clone https://github.com/user/repo.git
+git clone git@github.com:user/repo.git</code></pre>
+
+<h3>Suivi et enregistrement</h3>
+<table>
+  <tr><th>Commande</th><th>Description</th><th>Exemple</th></tr>
+  <tr><td><code>git status</code></td><td>Afficher l'&eacute;tat des fichiers</td><td><code>git status -s</code></td></tr>
+  <tr><td><code>git add</code></td><td>Ajouter &agrave; la staging area</td><td><code>git add fichier.js</code> ou <code>git add .</code></td></tr>
+  <tr><td><code>git commit</code></td><td>Cr&eacute;er un commit</td><td><code>git commit -m "feat: ajout login"</code></td></tr>
+  <tr><td><code>git diff</code></td><td>Voir les diff&eacute;rences non staged</td><td><code>git diff --staged</code></td></tr>
+  <tr><td><code>git rm</code></td><td>Supprimer du suivi et du disque</td><td><code>git rm --cached fichier</code></td></tr>
+  <tr><td><code>git mv</code></td><td>Renommer / d&eacute;placer</td><td><code>git mv old.js new.js</code></td></tr>
+</table>
+
+<h3>Historique</h3>
+<div class="code-label">Bash &mdash; git log</div>
+<pre><code>git log                              # Historique complet
+git log --oneline                    # Une ligne par commit
+git log --oneline --graph --all      # Graphe visuel des branches
+git log -- chemin/fichier.js         # Historique d'un fichier
+git log --author="Sagar"             # Filtrer par auteur
+git log -p -3                        # 3 derniers commits avec diff</code></pre>
+
+<h3>Annuler des modifications</h3>
+<table>
+  <tr><th>Commande</th><th>Effet</th><th>Danger</th></tr>
+  <tr><td><code>git restore fichier</code></td><td>Annuler les modifications non staged</td><td>Perte des modifs locales</td></tr>
+  <tr><td><code>git restore --staged fichier</code></td><td>Retirer de la staging area</td><td>Aucun</td></tr>
+  <tr><td><code>git reset --soft HEAD~1</code></td><td>Annuler le commit, garder le staged</td><td>Faible</td></tr>
+  <tr><td><code>git reset --mixed HEAD~1</code></td><td>Annuler le commit, garder les modifs (non staged)</td><td>Faible</td></tr>
+  <tr><td><code>git reset --hard HEAD~1</code></td><td>Tout supprimer (commit + modifications)</td><td><strong>Irr&eacute;versible</strong></td></tr>
+</table>
+
+<div class="warning">
+  <div class="warning-title">Attention &mdash; git reset --hard</div>
+  <p>Cette commande supprime d&eacute;finitivement les modifications non commit&eacute;es. Privil&eacute;giez <code>git stash</code> pour sauvegarder temporairement.</p>
+</div>
+
+<!-- ========== 5. BRANCHES ========== -->
+<h2 id="branches">5. Branches</h2>
+
+<p>Les branches permettent de travailler sur plusieurs fonctionnalit&eacute;s en parall&egrave;le sans affecter la branche principale.</p>
+
+<div class="code-label">Bash &mdash; Gestion des branches</div>
+<pre><code>git branch                          # Lister les branches locales
+git branch -a                       # Toutes les branches (locales + distantes)
+git branch feature/auth             # Creer une branche
+git switch feature/auth             # Basculer sur une branche
+git switch -c feature/panier        # Creer + basculer
+git branch -d feature/auth          # Supprimer (branche fusionnee)
+git branch -D feature/exp           # Forcer la suppression
+git branch -m nouveau-nom           # Renommer la branche courante</code></pre>
+
+<h3>Conventions de nommage</h3>
+<table>
+  <tr><th>Pr&eacute;fixe</th><th>Usage</th><th>Exemple</th></tr>
+  <tr><td><code>feature/</code></td><td>Nouvelle fonctionnalit&eacute;</td><td><code>feature/panier-achat</code></td></tr>
+  <tr><td><code>bugfix/</code></td><td>Correction de bug</td><td><code>bugfix/login-redirect</code></td></tr>
+  <tr><td><code>hotfix/</code></td><td>Correction urgente en production</td><td><code>hotfix/faille-xss</code></td></tr>
+  <tr><td><code>release/</code></td><td>Pr&eacute;paration d'une version</td><td><code>release/2.1.0</code></td></tr>
+  <tr><td><code>chore/</code></td><td>T&acirc;ches techniques</td><td><code>chore/update-deps</code></td></tr>
+</table>
+
+<div class="tip">
+  <div class="tip-title">Tip &mdash; Alias utile</div>
+  <p>Cr&eacute;ez un alias pour visualiser vos branches&nbsp;: <code>git config --global alias.lg "log --oneline --graph --all --decorate"</code>. Tapez ensuite <code>git lg</code>.</p>
+</div>
+
+<!-- ========== 6. MERGE ET REBASE ========== -->
+<h2 id="merge-rebase">6. Merge et Rebase</h2>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Fast-forward merge</h3>
+    <p>La branche cible n'a pas diverg&eacute; : Git avance le pointeur. Aucun commit de merge.</p>
+    <div class="code-label">Bash</div>
+    <pre><code>git switch main
+git merge feature/auth</code></pre>
+  </div>
+  <div class="card">
+    <h3>Merge 3-way</h3>
+    <p>Les branches ont diverg&eacute; : Git cr&eacute;e un <strong>commit de merge</strong> avec deux parents.</p>
+    <div class="code-label">Bash</div>
+    <pre><code>git switch main
+git merge feature/panier</code></pre>
+  </div>
+</div>
+
+<h3>R&eacute;soudre un conflit</h3>
+<div class="code-label">Fichier en conflit</div>
+<pre><code>function getUser() {
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+  return fetchUserFromAPI('/api/v2/users');
+=======
+  return fetchUserFromCache();
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/cache
+}</code></pre>
+
+<div class="code-label">Bash &mdash; R&eacute;solution</div>
+<pre><code># 1. Ouvrir le fichier, choisir la bonne version, supprimer les marqueurs
+# 2. Marquer comme resolu
+git add fichier-en-conflit.js
+# 3. Finaliser le merge
+git commit</code></pre>
+
+<h3>Rebase</h3>
+<div class="code-label">Bash</div>
+<pre><code># Rebaser feature/auth sur main (historique lineaire)
+git switch feature/auth
+git rebase main
+
+# Puis fast-forward merge
+git switch main
+git merge feature/auth</code></pre>
+
+<h3>Merge vs Rebase</h3>
+<table>
+  <tr><th>Crit&egrave;re</th><th>Merge</th><th>Rebase</th></tr>
+  <tr><td>Historique</td><td>Non-lin&eacute;aire, chronologie r&eacute;elle</td><td>Lin&eacute;aire et propre</td></tr>
+  <tr><td>Commit suppl&eacute;mentaire</td><td>Oui (merge commit)</td><td>Non</td></tr>
+  <tr><td>S&eacute;curit&eacute;</td><td>Ne r&eacute;&eacute;crit pas l'historique</td><td>R&eacute;&eacute;crit les SHA</td></tr>
+  <tr><td>Branches partag&eacute;es</td><td>S&ucirc;r</td><td>Dangereux</td></tr>
+  <tr><td>Usage</td><td>Int&eacute;gration dans main</td><td>Mise &agrave; jour d'une branche locale</td></tr>
+</table>
+
+<div class="warning">
+  <div class="warning-title">R&egrave;gle d'or du Rebase</div>
+  <p><strong>Ne jamais rebaser une branche push&eacute;e et partag&eacute;e.</strong> Le rebase r&eacute;&eacute;crit les SHA, causant des conflits pour les collaborateurs.</p>
+</div>
+
+<h3>Rebase interactif</h3>
+<div class="code-label">Bash</div>
+<pre><code># Reorganiser les 4 derniers commits
+git rebase -i HEAD~4
+
+# Actions : pick (garder), squash (fusionner),
+#           reword (modifier message), drop (supprimer)</code></pre>
+
+<!-- ========== 7. GITHUB ========== -->
+<h2 id="github">7. GitHub</h2>
+
+<div class="code-label">Bash &mdash; Remotes</div>
+<pre><code>git remote -v                                         # Lister les remotes
+git remote add origin git@github.com:user/repo.git    # Ajouter
+git remote set-url origin git@github.com:user/new.git # Modifier l'URL</code></pre>
+
+<h3>Synchronisation</h3>
+<table>
+  <tr><th>Commande</th><th>Direction</th><th>Description</th></tr>
+  <tr><td><code>git push</code></td><td>Local &rarr; Distant</td><td>Envoyer les commits locaux vers le remote</td></tr>
+  <tr><td><code>git pull</code></td><td>Distant &rarr; Local</td><td>R&eacute;cup&eacute;rer et fusionner (<code>fetch</code> + <code>merge</code>)</td></tr>
+  <tr><td><code>git fetch</code></td><td>Distant &rarr; Local</td><td>R&eacute;cup&eacute;rer <strong>sans</strong> fusionner</td></tr>
+</table>
+
+<div class="code-label">Bash</div>
+<pre><code>git push -u origin feature/auth     # Push + tracking (1ere fois)
+git push origin main                # Push classique
+git fetch --all --prune             # Fetch + nettoyage branches supprimees
+git pull origin main                # Pull (fetch + merge)</code></pre>
+
+<h3>Fork vs Clone</h3>
+<div class="two-col">
+  <div class="card">
+    <h3>Clone</h3>
+    <ul>
+      <li>Copie locale d'un d&eacute;p&ocirc;t</li>
+      <li>Pour les collaborateurs directs</li>
+      <li>Push autoris&eacute; si droits d'acc&egrave;s</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Fork</h3>
+    <ul>
+      <li>Copie <strong>serveur</strong> sur votre compte GitHub</li>
+      <li>Pour contribuer &agrave; l'open source</li>
+      <li>Contribution via <strong>Pull Request</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="tip">
+  <div class="tip-title">Tip &mdash; Workflow Fork</div>
+  <p>Apr&egrave;s un fork, ajoutez le d&eacute;p&ocirc;t original comme remote <code>upstream</code>&nbsp;: <code>git remote add upstream https://github.com/original/repo.git</code> puis <code>git pull upstream main</code> r&eacute;guli&egrave;rement.</p>
+</div>
+
+<!-- ========== 8. PULL REQUESTS ========== -->
+<h2 id="pull-requests">8. Pull Requests</h2>
+
+<p>Une <strong>Pull Request</strong> (PR) est une demande de fusion d'une branche vers une autre. C'est le m&eacute;canisme central de la revue de code en &eacute;quipe.</p>
+
+<div class="code-label">Bash &mdash; Workflow PR</div>
+<pre><code># 1. Creer et travailler sur une branche
+git switch -c feature/dashboard
+git add . && git commit -m "feat: ajout page dashboard"
+
+# 2. Pousser la branche
+git push -u origin feature/dashboard
+
+# 3. Creer la PR via GitHub CLI
+gh pr create --title "feat: ajout dashboard" \
+  --body "Ajout de la page dashboard avec graphiques."</code></pre>
+
+<h3>Processus de revue</h3>
+<ol>
+  <li><strong>Ouverture</strong> &mdash; Cr&eacute;er la PR avec titre clair et description</li>
+  <li><strong>Revue</strong> &mdash; Les reviewers commentent et sugg&egrave;rent des modifications</li>
+  <li><strong>Corrections</strong> &mdash; Le d&eacute;veloppeur corrige et re-push</li>
+  <li><strong>Approbation</strong> &mdash; Au moins un reviewer approuve</li>
+  <li><strong>Merge</strong> &mdash; Fusion dans la branche cible</li>
+</ol>
+
+<h3>Strat&eacute;gies de merge</h3>
+<table>
+  <tr><th>Strat&eacute;gie</th><th>R&eacute;sultat</th><th>Quand l'utiliser</th></tr>
+  <tr><td><strong>Merge commit</strong></td><td>Conserve tous les commits + merge commit</td><td>Historique d&eacute;taill&eacute; souhait&eacute;</td></tr>
+  <tr><td><strong>Squash and merge</strong></td><td>Un seul commit regroup&eacute;</td><td>Beaucoup de petits commits</td></tr>
+  <tr><td><strong>Rebase and merge</strong></td><td>Commits re-appliqu&eacute;s (lin&eacute;aire)</td><td>Historique propre</td></tr>
+</table>
+
+<div class="tip">
+  <div class="tip-title">Bonnes pratiques PR</div>
+  <p><strong>Gardez les PR petites</strong> (moins de 400 lignes). Une PR volumineuse est difficile &agrave; relire et ralentit le d&eacute;veloppement. D&eacute;coupez les grosses fonctionnalit&eacute;s en plusieurs PR successives.</p>
+</div>
+
+<!-- ========== 9. GITIGNORE ========== -->
+<h2 id="gitignore">9. .gitignore</h2>
+
+<p>Le fichier <code>.gitignore</code> indique &agrave; Git quels fichiers ignorer (fichiers g&eacute;n&eacute;r&eacute;s, secrets, d&eacute;pendances).</p>
+
+<table>
+  <tr><th>Pattern</th><th>Signification</th><th>Exemple</th></tr>
+  <tr><td><code>*.log</code></td><td>Tous les fichiers .log</td><td>debug.log, error.log</td></tr>
+  <tr><td><code>node_modules/</code></td><td>R&eacute;pertoire complet</td><td>node_modules/express/...</td></tr>
+  <tr><td><code>!important.log</code></td><td>Exception (ne pas ignorer)</td><td>Inclure important.log</td></tr>
+  <tr><td><code>**/temp</code></td><td>Tout r&eacute;pertoire temp, toute profondeur</td><td>src/temp, lib/temp</td></tr>
+</table>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Node.js</h3>
+    <div class="code-label">.gitignore</div>
+    <pre><code>node_modules/
+dist/
+.env
+.env.local
+*.log
+coverage/
+.DS_Store</code></pre>
+  </div>
+  <div class="card">
+    <h3>Python</h3>
+    <div class="code-label">.gitignore</div>
+    <pre><code>__pycache__/
+*.py[cod]
+venv/
+.env
+*.egg-info/
+dist/
+.pytest_cache/
+.coverage</code></pre>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Java</h3>
+  <div class="code-label">.gitignore</div>
+  <pre><code>*.class
+*.jar
+*.war
+target/
+.idea/
+.gradle/
+build/
+out/</code></pre>
+</div>
+
+<div class="code-label">Bash &mdash; Gitignore global</div>
+<pre><code># Configurer un gitignore global (fichiers lies a votre machine)
+git config --global core.excludesFile ~/.gitignore_global
+
+# Contenu typique : .DS_Store, Thumbs.db, .vscode/, .idea/, *.swp</code></pre>
+
+<div class="warning">
+  <div class="warning-title">Attention &mdash; Fichiers d&eacute;j&agrave; suivis</div>
+  <p>Ajouter un pattern dans <code>.gitignore</code> n'affecte pas les fichiers d&eacute;j&agrave; track&eacute;s. Pour cesser de suivre un fichier&nbsp;: <code>git rm --cached fichier</code> puis commitez.</p>
+</div>
+
+<!-- ========== 10. WORKFLOW ========== -->
+<h2 id="workflow">10. Workflow professionnel</h2>
+
+<div class="card">
+  <h3>Git Flow</h3>
+  <p>Mod&egrave;le complet pour les projets avec cycles de release d&eacute;finis&nbsp;:</p>
+  <ul>
+    <li><strong>main</strong> &mdash; Code en production, toujours stable</li>
+    <li><strong>develop</strong> &mdash; Branche d'int&eacute;gration</li>
+    <li><strong>feature/*</strong> &mdash; Fonctionnalit&eacute;s (depuis develop)</li>
+    <li><strong>release/*</strong> &mdash; Pr&eacute;paration de version</li>
+    <li><strong>hotfix/*</strong> &mdash; Corrections urgentes (depuis main)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>GitHub Flow</h3>
+  <p>Workflow simplifi&eacute; pour le d&eacute;ploiement continu&nbsp;:</p>
+  <ol>
+    <li>Cr&eacute;er une branche depuis <code>main</code></li>
+    <li>D&eacute;velopper et commiter</li>
+    <li>Ouvrir une Pull Request</li>
+    <li>Revue de code et approbation</li>
+    <li>Merger dans <code>main</code> et d&eacute;ployer</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>Trunk-Based Development</h3>
+  <p>Approche minimaliste (Google, Meta)&nbsp;: tout le monde travaille sur <code>main</code> avec des branches &agrave; tr&egrave;s courte dur&eacute;e, des commits fr&eacute;quents et des <strong>feature flags</strong>. CI/CD obligatoire.</p>
+</div>
+
+<table>
+  <tr><th>Crit&egrave;re</th><th>Git Flow</th><th>GitHub Flow</th><th>Trunk-Based</th></tr>
+  <tr><td>Complexit&eacute;</td><td>&Eacute;lev&eacute;e</td><td>Mod&eacute;r&eacute;e</td><td>Faible</td></tr>
+  <tr><td>Branches</td><td>5+ permanentes</td><td>main + feature</td><td>main surtout</td></tr>
+  <tr><td>D&eacute;ploiement</td><td>Par release</td><td>Continu (jours)</td><td>Continu (heures)</td></tr>
+  <tr><td>&Eacute;quipe</td><td>Grande</td><td>Petite &agrave; moyenne</td><td>Toute taille</td></tr>
+  <tr><td>Id&eacute;al</td><td>Apps versionn&eacute;es</td><td>Web / SaaS</td><td>DevOps mature</td></tr>
+</table>
+
+<div class="tip">
+  <div class="tip-title">Recommandation</div>
+  <p>Pour un projet BTS SIO ou une &eacute;quipe de 2 &agrave; 5 d&eacute;veloppeurs, <strong>GitHub Flow</strong> est le meilleur choix&nbsp;: simple, bas&eacute; sur les PR, compatible avec le d&eacute;ploiement continu.</p>
+</div>
+
+<!-- ========== 11. BONNES PRATIQUES ========== -->
+<h2 id="bonnes-pratiques">11. Bonnes pratiques</h2>
+
+<h3>Conventional Commits</h3>
+<div class="code-label">Format</div>
+<pre><code>&lt;type&gt;(&lt;scope&gt;): &lt;description&gt;
+
+[corps optionnel]
+[footer optionnel]</code></pre>
+
+<table>
+  <tr><th>Type</th><th>Description</th><th>Exemple</th></tr>
+  <tr><td><code>feat</code></td><td>Nouvelle fonctionnalit&eacute;</td><td><code>feat(auth): ajout connexion Google</code></td></tr>
+  <tr><td><code>fix</code></td><td>Correction de bug</td><td><code>fix(cart): correction calcul TVA</code></td></tr>
+  <tr><td><code>docs</code></td><td>Documentation</td><td><code>docs: mise a jour README</code></td></tr>
+  <tr><td><code>style</code></td><td>Formatage (pas de changement logique)</td><td><code>style: correction indentation</code></td></tr>
+  <tr><td><code>refactor</code></td><td>Refactoring sans changement fonctionnel</td><td><code>refactor(api): extraction service</code></td></tr>
+  <tr><td><code>test</code></td><td>Ajout ou modification de tests</td><td><code>test(auth): tests unitaires login</code></td></tr>
+  <tr><td><code>chore</code></td><td>Maintenance (CI, deps)</td><td><code>chore(deps): maj Express 4.19</code></td></tr>
+  <tr><td><code>perf</code></td><td>Am&eacute;lioration des performances</td><td><code>perf(db): ajout index sur email</code></td></tr>
+</table>
+
+<h3>Commits atomiques</h3>
+<div class="two-col">
+  <div class="card" style="border-color: #ef4444;">
+    <h3 style="color: #f87171;">&Agrave; &eacute;viter</h3>
+    <pre><code>git add .
+git commit -m "modifs diverses"</code></pre>
+    <p style="margin-bottom:0;">Un commit m&eacute;langeant feature, fix et style.</p>
+  </div>
+  <div class="card" style="border-color: #22c55e;">
+    <h3 style="color: #4ade80;">&Agrave; pr&eacute;f&eacute;rer</h3>
+    <pre><code>git add src/auth/
+git commit -m "feat(auth): login"
+
+git add src/header.css
+git commit -m "style: header"</code></pre>
+    <p style="margin-bottom:0;">Un commit = un sujet pr&eacute;cis.</p>
+  </div>
+</div>
+
+<div class="warning">
+  <div class="warning-title">Attention &mdash; Secrets</div>
+  <p>Ne commitez <strong>jamais</strong> de mots de passe, cl&eacute;s API ou fichiers <code>.env</code>. M&ecirc;me supprim&eacute;s ensuite, ils restent dans l'historique Git.</p>
+</div>
+
+<h3>Tags et releases</h3>
+<div class="code-label">Bash</div>
+<pre><code>git tag -a v1.0.0 -m "Version 1.0.0 - release stable"   # Tag annote
+git tag --list                                             # Lister les tags
+git push origin v1.0.0                                     # Pousser un tag
+git push origin --tags                                     # Pousser tous les tags</code></pre>
+
+<h3>Git Stash</h3>
+<div class="code-label">Bash</div>
+<pre><code>git stash                             # Sauvegarder les modifs en cours
+git stash push -m "WIP: formulaire"   # Avec message descriptif
+git stash list                        # Lister les stashes
+git stash pop                         # Restaurer + supprimer
+git stash apply stash@{2}             # Restaurer sans supprimer
+git stash drop stash@{0}              # Supprimer un stash</code></pre>
+
+<!-- ========== 12. GITHUB ACTIONS ========== -->
+<h2 id="github-actions">12. GitHub Actions (CI/CD)</h2>
+
+<p><strong>GitHub Actions</strong> ex&eacute;cute automatiquement des t&acirc;ches (tests, lint, build, d&eacute;ploiement) en r&eacute;ponse &agrave; des &eacute;v&eacute;nements sur le d&eacute;p&ocirc;t.</p>
+
+<table>
+  <tr><th>Terme</th><th>Description</th></tr>
+  <tr><td><strong>Workflow</strong></td><td>Processus d&eacute;fini en YAML dans <code>.github/workflows/</code></td></tr>
+  <tr><td><strong>Event</strong></td><td>D&eacute;clencheur (push, pull_request, schedule)</td></tr>
+  <tr><td><strong>Job</strong></td><td>Ensemble d'&eacute;tapes sur un m&ecirc;me runner</td></tr>
+  <tr><td><strong>Step</strong></td><td>Action individuelle au sein d'un job</td></tr>
+  <tr><td><strong>Runner</strong></td><td>Machine virtuelle (ubuntu-latest, windows-latest)</td></tr>
+</table>
+
+<h3>Exemple &mdash; Pipeline CI (Lint + Tests)</h3>
+<div class="code-label">YAML &mdash; .github/workflows/ci.yml</div>
+<pre><code>name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build</code></pre>
+
+<h3>Badge de statut</h3>
+<div class="code-label">Markdown &mdash; README.md</div>
+<pre><code>![CI](https://github.com/user/repo/actions/workflows/ci.yml/badge.svg)</code></pre>
+
+<div class="card">
+  <h3>Pipeline type pour une application web</h3>
+  <ol>
+    <li><strong>Push sur feature/*</strong> &rarr; Lint + tests unitaires</li>
+    <li><strong>Pull Request vers main</strong> &rarr; Lint + tests + build + preview</li>
+    <li><strong>Merge dans main</strong> &rarr; Lint + tests + build + d&eacute;ploiement production</li>
+  </ol>
+</div>
+
+<div class="code-label">YAML &mdash; .github/workflows/deploy.yml</div>
+<pre><code>name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'</code></pre>
+
+<div class="tip">
+  <div class="tip-title">Tip &mdash; Secrets GitHub</div>
+  <p>Les tokens et cl&eacute;s API utilis&eacute;s dans les workflows doivent &ecirc;tre stock&eacute;s dans <strong>Settings &gt; Secrets and variables &gt; Actions</strong>. Ils sont chiffr&eacute;s et jamais expos&eacute;s dans les logs.</p>
+</div>
+
+<!-- ========== LIENS UTILES ========== -->
+<h2 id="liens-utiles">Liens utiles</h2>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Documentation officielle Git</h3>
+    <p>R&eacute;f&eacute;rence compl&egrave;te de toutes les commandes Git, tutoriels et vid&eacute;os d'introduction.</p>
+    <a href="https://git-scm.com/doc" target="_blank" rel="noopener">git-scm.com/doc &rarr;</a>
+  </div>
+  <div class="card">
+    <h3>GitHub Docs</h3>
+    <p>Documentation officielle de GitHub : repositories, Pull Requests, Actions, Pages, et bien plus.</p>
+    <a href="https://docs.github.com" target="_blank" rel="noopener">docs.github.com &rarr;</a>
+  </div>
+  <div class="card">
+    <h3>Pro Git (livre gratuit)</h3>
+    <p>Le livre de r&eacute;f&eacute;rence sur Git, &eacute;crit par Scott Chacon et Ben Straub, disponible gratuitement en ligne.</p>
+    <a href="https://git-scm.com/book/fr/v2" target="_blank" rel="noopener">git-scm.com/book &rarr;</a>
+  </div>
+  <div class="card">
+    <h3>GitHub Skills</h3>
+    <p>Parcours interactifs pour apprendre Git et GitHub pas &agrave; pas, directement dans un repository.</p>
+    <a href="https://skills.github.com" target="_blank" rel="noopener">skills.github.com &rarr;</a>
+  </div>
+  <div class="card">
+    <h3>Conventional Commits</h3>
+    <p>Sp&eacute;cification compl&egrave;te pour structurer ses messages de commit de mani&egrave;re standardis&eacute;e.</p>
+    <a href="https://www.conventionalcommits.org/fr" target="_blank" rel="noopener">conventionalcommits.org &rarr;</a>
+  </div>
+  <div class="card">
+    <h3>Oh My Git!</h3>
+    <p>Jeu open source pour apprendre Git de mani&egrave;re ludique avec une visualisation interactive de l'arbre de commits.</p>
+    <a href="https://ohmygit.org" target="_blank" rel="noopener">ohmygit.org &rarr;</a>
+  </div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  Guide technique &mdash; Git &amp; GitHub &mdash; Sagar MIR &mdash; 2025
+</div>
+
+</div>
+</body>
+</html>

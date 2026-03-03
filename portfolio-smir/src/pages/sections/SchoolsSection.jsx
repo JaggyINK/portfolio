@@ -1,13 +1,14 @@
 // src/pages/sections/SchoolsSection.jsx
 import React from "react";
 import useReveal from "../../hooks/useReveal";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ===== Système φ ===== */
 const PHI = 1.618;
 const INV = 1 / PHI;
 
 const THEME = {
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -110,7 +111,7 @@ export default function SchoolsSection() {
     <section
       ref={ref}
       id="ecole"
-      className={`min-h-[100svh] snap-center text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
+      className={`min-h-[100svh] snap-start text-slate-100 section-reveal${revealed ? " revealed" : ""}`}
       style={{
         background:
           "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
@@ -194,6 +195,8 @@ export default function SchoolsSection() {
         <p className="mt-5 text-center text-[0.72rem]" style={{ color: THEME.sub }}>
           Documents et attestations disponibles sur demande
         </p>
+
+        <ScrollDownHint targetId="user-story" />
       </div>
     </section>
   );

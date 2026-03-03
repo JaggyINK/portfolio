@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Active Directory — Windows Server 2022</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #0891b2; --accent2: #06b6d4; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 940px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(8,145,178,0.15); color: var(--accent2); border: 1px solid rgba(6,182,212,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card h3:first-child { margin-top: 0; }
+
+  /* Meta */
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+
+  /* Header line */
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(8,145,178,0.12); color: var(--accent2); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+
+  /* Code */
+  code { background: rgba(6,182,212,0.1); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+  pre { background: #0d1525; border: 1px solid var(--border); border-radius: 0.6rem; padding: 1.1rem 1.3rem; overflow-x: auto; margin: 1rem 0; line-height: 1.6; }
+  pre code { background: none; padding: 0; color: #c9d8e8; font-size: 0.82rem; }
+  .code-title { display: block; font-size: 0.72rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; font-weight: 600; }
+
+  /* Tips & Warnings */
+  .tip { background: rgba(6,182,212,0.06); border-left: 3px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .tip::before { content: "Conseil"; display: block; font-size: 0.75rem; font-weight: 700; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+  .tip p { margin-bottom: 0; }
+
+  .warning { background: rgba(251,191,36,0.06); border-left: 3px solid #f59e0b; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .warning::before { content: "Attention"; display: block; font-size: 0.75rem; font-weight: 700; color: #f59e0b; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.3rem; }
+  .warning p { margin-bottom: 0; }
+
+  /* TOC */
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent2); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent2); }
+
+  /* OU Tree */
+  .tree { background: #0d1525; border: 1px solid var(--border); border-radius: 0.6rem; padding: 1.2rem 1.5rem; margin: 1rem 0; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 0.82rem; line-height: 1.7; white-space: pre; overflow-x: auto; color: var(--sub); }
+  .tree .folder { color: var(--accent2); font-weight: 600; }
+  .tree .leaf { color: #9aa7bf; }
+
+  /* Stat grid */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .stat-card { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 0.5rem; }
+  .stat-card .num { font-size: 1.5rem; font-weight: 800; color: var(--accent2); display: block; }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Footer */
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .meta { gap: 1rem; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    pre { padding: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== HEADER ========== -->
+<h1>Active Directory &mdash; Windows Server 2022</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">Guide technique complet &mdash; Installation, configuration et administration</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Plateforme :</strong> Windows Server 2022</div>
+  <div class="meta-item"><strong>Domaine :</strong> entreprise.local</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Type :</strong> Guide technique / BTS SIO</div>
+</div>
+
+<div style="margin-bottom:2rem;">
+  <span class="badge">Windows Server</span>
+  <span class="badge">Active Directory</span>
+  <span class="badge">GPO</span>
+  <span class="badge">DNS</span>
+  <span class="badge">DHCP</span>
+</div>
+
+<div style="margin: 1.5rem 0;">
+  <a href="/docs/win22.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;background:rgba(8,145,178,0.15);color:var(--accent2);border:1px solid rgba(8,145,178,0.3);border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:all 0.2s;">
+    📄 Télécharger le PDF original
+  </a>
+</div>
+
+<!-- ========== TABLE DES MATIERES ========== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#ad-intro">Active Directory, c'est quoi ?</a></li>
+    <li><a href="#elements">Principaux éléments</a></li>
+    <li><a href="#install-adds">Installation AD DS</a></li>
+    <li><a href="#dns">Configuration DNS</a></li>
+    <li><a href="#dhcp">Installation DHCP</a></li>
+    <li><a href="#gpo">Stratégies de groupe (GPO)</a></li>
+    <li><a href="#join-domain">Ajout d'un client au domaine</a></li>
+    <li><a href="#sysprep">Déploiement d'image (Sysprep)</a></li>
+    <li><a href="#monitoring">Monitoring et maintenance</a></li>
+    <li><a href="#admin">Procédures d'administration</a></li>
+    <li><a href="#securite">Sécurité</a></li>
+    <li><a href="#glossaire">Glossaire</a></li>
+  </ol>
+</div>
+
+
+<!-- ========== 1. ACTIVE DIRECTORY, C'EST QUOI ? ========== -->
+<h2 id="ad-intro">1. Active Directory, c'est quoi ?</h2>
+
+<div class="card">
+  <p><strong>Active Directory (AD)</strong> est le service d'annuaire de Microsoft. C'est une base de données centralisée qui stocke et organise l'ensemble des informations d'un réseau d'entreprise :</p>
+  <ul>
+    <li><strong>Utilisateurs</strong> et mots de passe</li>
+    <li><strong>Ordinateurs</strong> et imprimantes</li>
+    <li><strong>Groupes</strong> et permissions</li>
+    <li><strong>Stratégies de groupe (GPO)</strong></li>
+  </ul>
+</div>
+
+<h3>Pourquoi utiliser Active Directory ?</h3>
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="num">1</span>
+    <span class="lbl">Authentification centralisée</span>
+  </div>
+  <div class="stat-card">
+    <span class="num">2</span>
+    <span class="lbl">Gestion des droits</span>
+  </div>
+  <div class="stat-card">
+    <span class="num">3</span>
+    <span class="lbl">Déploiement GPO</span>
+  </div>
+  <div class="stat-card">
+    <span class="num">4</span>
+    <span class="lbl">Organisation réseau</span>
+  </div>
+</div>
+
+<ul>
+  <li><strong>Centraliser l'authentification :</strong> un seul compte utilisateur pour tous les PC du domaine</li>
+  <li><strong>Gérer les droits d'accès :</strong> définir qui a accès à quoi (dossiers, imprimantes, applications)</li>
+  <li><strong>Déployer des GPO :</strong> appliquer des configurations et restrictions à distance</li>
+  <li><strong>Organiser le réseau :</strong> structurer les ressources en unités d'organisation (OU)</li>
+</ul>
+
+<div class="tip">
+  <p>Un seul compte AD permet à un utilisateur de se connecter sur n'importe quel poste du domaine avec le même identifiant et mot de passe.</p>
+</div>
+
+
+<!-- ========== 2. PRINCIPAUX ELEMENTS ========== -->
+<h2 id="elements">2. Principaux éléments</h2>
+
+<div class="card">
+  <h3>Domaine</h3>
+  <p>Unité de base de l'AD. Chaque domaine possède un nom unique (ex: <code>entreprise.local</code>) et contient un ensemble d'objets (utilisateurs, ordinateurs, etc.).</p>
+
+  <h3>Forêt (Forest)</h3>
+  <p>Ensemble de domaines partageant un catalogue global commun. La forêt est la frontière de sécurité la plus haute dans AD.</p>
+
+  <h3>Unité d'Organisation (OU)</h3>
+  <p>Conteneur logique permettant d'organiser les objets du domaine en arborescence hiérarchique. Les OU servent à structurer l'annuaire et à appliquer des GPO ciblées.</p>
+</div>
+
+<h3>Exemple d'arborescence OU</h3>
+<div class="tree"><span class="folder">CPMS</span> (Domaine racine)
+<span class="folder">  |-- Utilisateurs</span>
+<span class="leaf">  |     |-- RH</span>
+<span class="leaf">  |     |-- IT</span>
+<span class="leaf">  |     |-- Direction</span>
+<span class="folder">  |-- Ordinateurs</span>
+<span class="leaf">  |     |-- Laptops</span>
+<span class="leaf">  |     |-- Fixes</span>
+<span class="folder">  |-- Serveurs</span></div>
+
+<div class="card">
+  <h3>Objets</h3>
+  <p>Tout élément stocké dans l'annuaire AD est un objet :</p>
+  <ul>
+    <li>Utilisateurs</li>
+    <li>Groupes (sécurité ou distribution)</li>
+    <li>Ordinateurs</li>
+    <li>Imprimantes</li>
+    <li>Partages réseau</li>
+    <li>Stratégies de groupe (GPO)</li>
+  </ul>
+
+  <h3>Contrôleur de Domaine (DC)</h3>
+  <p>Serveur qui héberge l'annuaire AD et gère l'authentification des utilisateurs. Un domaine nécessite <strong>au minimum 1 DC</strong>, mais il est recommandé d'en avoir <strong>au moins 2</strong> pour assurer la redondance et la continuité de service.</p>
+</div>
+
+<div class="warning">
+  <p>Un seul contrôleur de domaine est un point de défaillance unique (SPOF). Prévoyez toujours un second DC pour la tolérance de pannes.</p>
+</div>
+
+
+<!-- ========== 3. INSTALLATION AD DS ========== -->
+<h2 id="install-adds">3. Installation AD DS</h2>
+
+<h3>Prérequis</h3>
+<div class="card">
+  <ul>
+    <li>Windows Server 2019 ou 2022 installé</li>
+    <li>Adresse IP <strong>statique</strong> configurée</li>
+    <li>Nom du serveur défini (ex: <code>SRV-AD01</code>)</li>
+  </ul>
+</div>
+
+<h3>Étape 1 &mdash; Configurer l'IP statique</h3>
+<p>Ouvrir les paramètres réseau du serveur et configurer une IP fixe :</p>
+
+<table>
+  <tr><th>Paramètre</th><th>Valeur</th></tr>
+  <tr><td>Adresse IP</td><td><code>192.168.1.10</code></td></tr>
+  <tr><td>Masque de sous-réseau</td><td><code>255.255.255.0</code></td></tr>
+  <tr><td>Passerelle par défaut</td><td><code>192.168.1.1</code></td></tr>
+  <tr><td>Serveur DNS préféré</td><td><code>127.0.0.1</code></td></tr>
+</table>
+
+<div class="tip">
+  <p>Le DNS préféré doit pointer vers <code>127.0.0.1</code> (lui-même), car le DC sera aussi serveur DNS. Cela garantit la résolution interne du domaine.</p>
+</div>
+
+<h3>Étape 2 &mdash; Ajouter les rôles AD DS et DNS</h3>
+<ol>
+  <li>Ouvrir <strong>Server Manager</strong> (Gestionnaire de serveur)</li>
+  <li>Cliquer sur <strong>Manage &gt; Add Roles and Features</strong></li>
+  <li>Sélectionner le type d'installation : <strong>Role-based or feature-based installation</strong></li>
+  <li>Cocher les rôles : <strong>Active Directory Domain Services</strong> et <strong>DNS Server</strong></li>
+  <li>Valider et installer</li>
+</ol>
+
+<h3>Étape 3 &mdash; Promouvoir en contrôleur de domaine</h3>
+<ol>
+  <li>Après l'installation, cliquer sur la notification <strong>"Promote this server to a domain controller"</strong></li>
+  <li>Sélectionner <strong>"Add a new forest"</strong></li>
+  <li>Entrer le nom du domaine racine : <code>entreprise.local</code></li>
+  <li>Définir le mot de passe <strong>DSRM</strong> (Directory Services Restore Mode)</li>
+  <li>Valider les options par défaut et lancer l'installation</li>
+  <li>Le serveur <strong>redémarrera automatiquement</strong></li>
+</ol>
+
+<div class="warning">
+  <p>Le mot de passe DSRM est indispensable pour la restauration d'Active Directory en mode sans échec. Conservez-le en lieu sûr.</p>
+</div>
+
+
+<!-- ========== 4. CONFIGURATION DNS ========== -->
+<h2 id="dns">4. Configuration DNS</h2>
+
+<div class="card">
+  <p>Active Directory <strong>nécessite obligatoirement</strong> un serveur DNS fonctionnel. Le DNS est utilisé en interne pour :</p>
+  <ul>
+    <li><strong>Localisation du contrôleur de domaine</strong> par les clients</li>
+    <li><strong>Résolution de noms</strong> pour l'application des GPO</li>
+    <li><strong>Enregistrement automatique</strong> des machines dans la zone DNS</li>
+  </ul>
+</div>
+
+<h3>Zones DNS créées automatiquement</h3>
+<table>
+  <tr><th>Zone</th><th>Rôle</th></tr>
+  <tr><td><code>entreprise.local</code></td><td>Zone de recherche directe principale du domaine</td></tr>
+  <tr><td><code>_msdcs.entreprise.local</code></td><td>Zone de localisation des services Microsoft (SRV records)</td></tr>
+</table>
+
+<div class="tip">
+  <p>Le contrôleur de domaine doit <strong>toujours pointer vers lui-même</strong> comme serveur DNS préféré. Ne jamais mettre un DNS externe (8.8.8.8) en DNS principal sur le DC.</p>
+</div>
+
+
+<!-- ========== 5. INSTALLATION DHCP ========== -->
+<h2 id="dhcp">5. Installation DHCP</h2>
+
+<div class="card">
+  <h3>Ajout du rôle DHCP</h3>
+  <ol>
+    <li>Ouvrir <strong>Server Manager &gt; Add Roles and Features</strong></li>
+    <li>Cocher le rôle <strong>DHCP Server</strong></li>
+    <li>Valider et installer</li>
+    <li>Autoriser le serveur DHCP dans Active Directory</li>
+  </ol>
+</div>
+
+<h3>Configuration de l'étendue (Scope)</h3>
+<table>
+  <tr><th>Paramètre</th><th>Valeur</th></tr>
+  <tr><td>Plage d'adresses</td><td><code>192.168.1.100</code> à <code>192.168.1.200</code></td></tr>
+  <tr><td>Adresses réservées</td><td>Serveurs (plage basse, hors du scope)</td></tr>
+  <tr><td>Option : Routeur</td><td><code>192.168.1.1</code></td></tr>
+  <tr><td>Option : Serveur DNS</td><td><code>192.168.1.10</code></td></tr>
+  <tr><td>Durée du bail</td><td>8 jours (par défaut)</td></tr>
+</table>
+
+<div class="tip">
+  <p>Réservez toujours une plage d'adresses fixes pour vos serveurs et équipements réseau (imprimantes, NAS, etc.) en dehors du scope DHCP.</p>
+</div>
+
+
+<!-- ========== 6. GPO ========== -->
+<h2 id="gpo">6. Stratégies de groupe (GPO)</h2>
+
+<p>Les <strong>Group Policy Objects (GPO)</strong> permettent de déployer des configurations et restrictions à grande échelle, appliquées automatiquement aux utilisateurs et ordinateurs du domaine.</p>
+
+<div class="card">
+  <h3>Sécurité</h3>
+  <ul>
+    <li>Imposer des mots de passe complexes (longueur, caractères spéciaux, expiration)</li>
+    <li>Bloquer l'accès au Panneau de configuration</li>
+    <li>Désactiver les ports USB pour empêcher les copies de données</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Personnalisation</h3>
+  <ul>
+    <li>Déployer un fond d'écran d'entreprise sur tous les postes</li>
+    <li>Afficher un message d'accueil (legal notice) à l'ouverture de session</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>Configuration système</h3>
+  <ul>
+    <li>Déployer des logiciels au format MSI automatiquement</li>
+    <li>Exécuter des scripts à l'ouverture ou la fermeture de session (logon/logoff)</li>
+    <li>Mapper des lecteurs réseau automatiquement</li>
+  </ul>
+</div>
+
+<h3>Commandes utiles GPO</h3>
+<pre><code><span class="code-title">Forcer la mise à jour des GPO sur un poste</span>gpupdate /force</code></pre>
+
+<pre><code><span class="code-title">Ouvrir la console de gestion des GPO</span>gpmc.msc</code></pre>
+
+<div class="tip">
+  <p>Testez toujours vos GPO sur une OU de test avant de les déployer en production. Utilisez <code>gpresult /r</code> pour vérifier les GPO appliquées à un utilisateur ou un ordinateur.</p>
+</div>
+
+
+<!-- ========== 7. AJOUT CLIENT AU DOMAINE ========== -->
+<h2 id="join-domain">7. Ajout d'un client au domaine</h2>
+
+<p>Procédure pour joindre un poste Windows 10/11 au domaine Active Directory :</p>
+
+<div class="card">
+  <h3>Étape par étape</h3>
+  <ol>
+    <li><strong>Configurer le DNS :</strong> sur le poste client, mettre l'adresse IP du DC (<code>192.168.1.10</code>) comme serveur DNS préféré</li>
+    <li><strong>Ouvrir les paramètres :</strong> <code>Paramètres &gt; Système &gt; À propos &gt; Renommer ce PC (avancé)</code></li>
+    <li><strong>Modifier le domaine :</strong> cliquer sur <strong>"Modifier"</strong>, cocher <strong>"Domaine"</strong>, entrer <code>entreprise.local</code></li>
+    <li><strong>Authentification :</strong> saisir les identifiants d'un compte administrateur du domaine</li>
+    <li><strong>Redémarrer :</strong> le poste redémarrera pour finaliser la jonction</li>
+    <li><strong>Connexion :</strong> à l'écran de login, sélectionner <strong>"Autre utilisateur"</strong> et se connecter avec un compte AD</li>
+  </ol>
+</div>
+
+<div class="warning">
+  <p>Si la jonction au domaine échoue, vérifiez en priorité : le DNS du poste client (doit pointer vers le DC), la connectivité réseau, et le pare-feu Windows.</p>
+</div>
+
+
+<!-- ========== 8. DEPLOIEMENT IMAGE (SYSPREP) ========== -->
+<h2 id="sysprep">8. Déploiement d'image (Sysprep)</h2>
+
+<p><strong>Sysprep</strong> (System Preparation Tool) permet de généraliser une installation Windows afin de la dupliquer sur plusieurs machines sans conflit d'identifiants (SID).</p>
+
+<div class="card">
+  <h3>Procédure de création d'image</h3>
+  <ol>
+    <li><strong>Installer un Windows modèle :</strong> installation propre de Windows 10/11</li>
+    <li><strong>Installer les logiciels :</strong> déployer les applications nécessaires (Office, navigateurs, outils métier)</li>
+    <li><strong>Configurer le système :</strong> paramètres, profil par défaut, optimisations</li>
+    <li><strong>Lancer Sysprep :</strong></li>
+  </ol>
+
+<pre><code><span class="code-title">Commande Sysprep — généralisation de l'image</span>sysprep /generalize /oobe /shutdown</code></pre>
+
+  <table>
+    <tr><th>Paramètre</th><th>Rôle</th></tr>
+    <tr><td><code>/generalize</code></td><td>Supprime les informations uniques (SID, nom machine, pilotes spécifiques)</td></tr>
+    <tr><td><code>/oobe</code></td><td>Redémarre en mode "Out of Box Experience" (premier démarrage)</td></tr>
+    <tr><td><code>/shutdown</code></td><td>Éteint le poste après généralisation (prêt pour capture)</td></tr>
+  </table>
+
+  <ol start="5">
+    <li><strong>Capturer l'image :</strong> utiliser un outil de capture</li>
+  </ol>
+
+  <table>
+    <tr><th>Outil</th><th>Description</th></tr>
+    <tr><td><strong>WDS</strong></td><td>Windows Deployment Services (role Windows Server)</td></tr>
+    <tr><td><strong>MDT</strong></td><td>Microsoft Deployment Toolkit (déploiement avancé)</td></tr>
+    <tr><td><strong>Clonezilla</strong></td><td>Outil open-source de clonage disque</td></tr>
+    <tr><td><strong>Packer</strong></td><td>Automatisation de création d'images (HashiCorp)</td></tr>
+  </table>
+
+  <ol start="6">
+    <li><strong>Déployer</strong> l'image sur les autres postes du parc</li>
+  </ol>
+</div>
+
+<div class="tip">
+  <p>N'exécutez jamais Sysprep plus de 8 fois sur une même installation Windows. Au-delà, le compteur interne atteint sa limite et l'opération échoue.</p>
+</div>
+
+
+<!-- ========== 9. MONITORING & MAINTENANCE ========== -->
+<h2 id="monitoring">9. Monitoring et maintenance</h2>
+
+<div class="card">
+  <h3>Event Viewer (Observateur d'événements)</h3>
+  <p>Consultez les journaux dans <strong>Event Viewer &gt; Applications and Services Logs &gt; Directory Service</strong> pour surveiller l'état d'Active Directory : réplication, erreurs d'authentification, modifications d'objets.</p>
+</div>
+
+<h3>Commandes de diagnostic</h3>
+
+<pre><code><span class="code-title">Diagnostic complet du contrôleur de domaine</span>dcdiag /v</code></pre>
+
+<pre><code><span class="code-title">État de la réplication entre contrôleurs de domaine</span>repadmin /replsummary</code></pre>
+
+<pre><code><span class="code-title">Forcer la mise à jour des GPO</span>gpupdate /force</code></pre>
+
+<h3>Consoles d'administration</h3>
+<table>
+  <tr><th>Commande</th><th>Console</th><th>Utilité</th></tr>
+  <tr><td><code>dsa.msc</code></td><td>Active Directory Users and Computers</td><td>Gestion des utilisateurs, groupes, ordinateurs, OU</td></tr>
+  <tr><td><code>gpmc.msc</code></td><td>Group Policy Management Console</td><td>Création et gestion des GPO</td></tr>
+  <tr><td><code>dnsmgmt.msc</code></td><td>DNS Manager</td><td>Gestion des zones et enregistrements DNS</td></tr>
+  <tr><td><code>dhcpmgmt.msc</code></td><td>DHCP Manager</td><td>Gestion des étendues et baux DHCP</td></tr>
+</table>
+
+
+<!-- ========== 10. PROCEDURES D'ADMINISTRATION ========== -->
+<h2 id="admin">10. Procédures d'administration</h2>
+
+<div class="card">
+  <h3>Créer un utilisateur</h3>
+  <ol>
+    <li>Ouvrir <code>dsa.msc</code> (Active Directory Users and Computers)</li>
+    <li>Naviguer vers l'OU cible (ex: <code>CPMS &gt; Utilisateurs &gt; IT</code>)</li>
+    <li>Clic droit &gt; <strong>New &gt; User</strong></li>
+    <li>Renseigner : prénom, nom, identifiant de connexion</li>
+    <li>Définir le mot de passe et les options (changement au premier login, etc.)</li>
+    <li>Valider la création</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>Réinitialiser un mot de passe</h3>
+  <ol>
+    <li>Ouvrir <code>dsa.msc</code></li>
+    <li>Rechercher l'utilisateur (clic droit sur le domaine &gt; <strong>Find</strong>)</li>
+    <li>Clic droit sur l'utilisateur &gt; <strong>Reset Password</strong></li>
+    <li>Saisir le nouveau mot de passe et cocher <strong>"User must change password at next logon"</strong></li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>Déplacer un ordinateur dans une OU</h3>
+  <ol>
+    <li>Dans <code>dsa.msc</code>, localiser l'ordinateur dans <strong>Computers</strong> (conteneur par défaut)</li>
+    <li>Clic droit &gt; <strong>Move</strong></li>
+    <li>Sélectionner l'OU de destination (ex: <code>CPMS &gt; Ordinateurs &gt; Laptops</code>)</li>
+    <li>Valider</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>Ajouter un utilisateur à un groupe</h3>
+  <ol>
+    <li>Dans <code>dsa.msc</code>, ouvrir les propriétés de l'utilisateur</li>
+    <li>Onglet <strong>"Member Of"</strong></li>
+    <li>Cliquer <strong>Add</strong> et rechercher le groupe</li>
+    <li>Valider</li>
+  </ol>
+
+  <h4>Groupes courants</h4>
+  <table>
+    <tr><th>Groupe</th><th>Description</th></tr>
+    <tr><td><code>Domain Users</code></td><td>Tous les utilisateurs du domaine (groupe par défaut)</td></tr>
+    <tr><td><code>Domain Admins</code></td><td>Administrateurs du domaine (accès total)</td></tr>
+    <tr><td><code>IT Support</code></td><td>Équipe support informatique (groupe personnalisé)</td></tr>
+    <tr><td><code>Comptabilité</code></td><td>Service comptabilité (groupe personnalisé)</td></tr>
+  </table>
+</div>
+
+
+<!-- ========== 11. SECURITE ========== -->
+<h2 id="securite">11. Sécurité</h2>
+
+<div class="card">
+  <h3>Bonnes pratiques de sécurisation AD</h3>
+  <table>
+    <tr><th>Mesure</th><th>Détail</th></tr>
+    <tr><td><strong>Minimum 2 DC</strong></td><td>Toujours avoir au moins deux contrôleurs de domaine pour la redondance</td></tr>
+    <tr><td><strong>Sauvegardes régulières</strong></td><td>Sauvegarder l'AD avec un outil dédié (ex: Veeam Backup)</td></tr>
+    <tr><td><strong>Comptes admin séparés</strong></td><td>Utiliser un compte admin dédié (ex: <code>adm-smir</code>) distinct du compte utilisateur quotidien</td></tr>
+    <tr><td><strong>DNS interne obligatoire</strong></td><td>Ne jamais utiliser de DNS externe en serveur principal sur le DC</td></tr>
+    <tr><td><strong>Durcissement GPO</strong></td><td>Appliquer des GPO de sécurité (mots de passe, verrouillage, restrictions)</td></tr>
+    <tr><td><strong>Désactiver le compte Administrator</strong></td><td>Désactiver le compte "Administrator" par défaut et créer des comptes nommés</td></tr>
+    <tr><td><strong>Politique de mots de passe stricte</strong></td><td>Longueur minimale 12 caractères, complexité, expiration 90 jours</td></tr>
+    <tr><td><strong>Supervision SIEM</strong></td><td>Mettre en place un SIEM pour surveiller les événements critiques (connexions échouées, modifications de groupes, etc.)</td></tr>
+  </table>
+</div>
+
+<div class="warning">
+  <p>Ne jamais utiliser le compte <code>Administrator</code> par défaut pour les tâches quotidiennes. Créez des comptes administrateurs nommés et traçables.</p>
+</div>
+
+
+<!-- ========== 12. GLOSSAIRE ========== -->
+<h2 id="glossaire">12. Glossaire</h2>
+
+<table>
+  <tr><th>Sigle</th><th>Signification</th><th>Description</th></tr>
+  <tr><td><strong>AD</strong></td><td>Active Directory</td><td>Service d'annuaire Microsoft pour la gestion centralisée des identités et ressources</td></tr>
+  <tr><td><strong>DC</strong></td><td>Domain Controller</td><td>Serveur hébergeant l'annuaire AD et gérant l'authentification</td></tr>
+  <tr><td><strong>OU</strong></td><td>Organizational Unit</td><td>Conteneur logique pour organiser les objets AD en arborescence</td></tr>
+  <tr><td><strong>GPO</strong></td><td>Group Policy Object</td><td>Stratégie de groupe permettant de déployer des configurations à grande échelle</td></tr>
+  <tr><td><strong>DNS</strong></td><td>Domain Name System</td><td>Service de résolution de noms, indispensable au fonctionnement d'AD</td></tr>
+  <tr><td><strong>DHCP</strong></td><td>Dynamic Host Configuration Protocol</td><td>Service d'attribution automatique d'adresses IP aux postes clients</td></tr>
+  <tr><td><strong>Forest</strong></td><td>Forêt</td><td>Ensemble de domaines AD partageant un catalogue global et une relation d'approbation</td></tr>
+  <tr><td><strong>Domain</strong></td><td>Domaine</td><td>Unité de base d'AD, identifiée par un nom DNS unique (ex: entreprise.local)</td></tr>
+  <tr><td><strong>Objects</strong></td><td>Objets</td><td>Tout élément stocké dans AD : utilisateurs, groupes, ordinateurs, imprimantes, GPO</td></tr>
+  <tr><td><strong>DSRM</strong></td><td>Directory Services Restore Mode</td><td>Mode de démarrage pour la restauration d'Active Directory</td></tr>
+  <tr><td><strong>SID</strong></td><td>Security Identifier</td><td>Identifiant unique attribué à chaque objet de sécurité dans Windows</td></tr>
+  <tr><td><strong>SIEM</strong></td><td>Security Information and Event Management</td><td>Système de supervision centralisée des événements de sécurité</td></tr>
+</table>
+
+
+<!-- ========== LIENS UTILES ========== -->
+<h2 id="liens">Liens utiles</h2>
+
+<div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">📘 Documentation AD DS</h4>
+    <p style="font-size:0.85rem;">Documentation officielle Microsoft sur Active Directory Domain Services.</p>
+    <a href="https://learn.microsoft.com/fr-fr/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview" target="_blank" style="font-size:0.85rem;">Consulter &rarr;</a>
+  </div>
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">📋 Référence GPO (TechNet)</h4>
+    <p style="font-size:0.85rem;">Guide de référence complet sur les stratégies de groupe (Group Policy).</p>
+    <a href="https://learn.microsoft.com/fr-fr/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview" target="_blank" style="font-size:0.85rem;">Consulter &rarr;</a>
+  </div>
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">💾 Windows Server Evaluation</h4>
+    <p style="font-size:0.85rem;">Télécharger une version d'évaluation de Windows Server 2022 (180 jours).</p>
+    <a href="https://www.microsoft.com/fr-fr/evalcenter/evaluate-windows-server-2022" target="_blank" style="font-size:0.85rem;">Télécharger &rarr;</a>
+  </div>
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">⚙️ Module PowerShell AD</h4>
+    <p style="font-size:0.85rem;">Documentation du module Active Directory pour PowerShell (cmdlets, exemples).</p>
+    <a href="https://learn.microsoft.com/fr-fr/powershell/module/activedirectory/" target="_blank" style="font-size:0.85rem;">Consulter &rarr;</a>
+  </div>
+</div>
+
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  Guide technique &mdash; Active Directory &mdash; Sagar MIR &mdash; 2025
+</div>
+
+</div>
+</body>
+</html>

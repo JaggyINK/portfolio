@@ -55,11 +55,11 @@
     <!-- 1. Contexte -->
     <h2>1. Contexte</h2>
     <div class="card">
-      <p>Portfolio personnel immersif combinant une experience web classique et une exploration 3D lunaire interactive.</p>
+      <p>Portfolio personnel immersif combinant une expérience web classique et une exploration 3D lunaire interactive.</p>
       <p>Le projet propose une <strong>dual-experience</strong> :</p>
       <ul>
-        <li><strong>Portfolio classique</strong> (<code>/</code>) — presentation traditionnelle des competences, projets et parcours</li>
-        <li><strong>Scene 3D interactive</strong> (<code>/lunar</code>, <code>/scene</code>) — exploration libre d'un environnement lunaire en 3D avec quiz techniques et elements interactifs</li>
+        <li><strong>Portfolio classique</strong> (<code>/</code>) — présentation traditionnelle des compétences, projets et parcours</li>
+        <li><strong>Scène 3D interactive</strong> (<code>/lunar</code>, <code>/scene</code>) — exploration libre d'un environnement lunaire en 3D avec quiz techniques et éléments interactifs</li>
       </ul>
     </div>
 
@@ -81,24 +81,24 @@
           <tr><td>React Three Fiber</td><td>9.4.0</td><td>Binding React pour Three.js</td></tr>
           <tr><td>Drei</td><td>10.7.7</td><td>Helpers et abstractions R3F</td></tr>
           <tr><td>Vite</td><td>5.4.10</td><td>Build tool avec custom chunking</td></tr>
-          <tr><td>Tailwind CSS</td><td>3.4.18</td><td>Utility-first CSS + theme centralise</td></tr>
+          <tr><td>Tailwind CSS</td><td>3.4.18</td><td>Utility-first CSS + thème centralisé</td></tr>
         </tbody>
       </table>
-      <p>Le projet comprend <strong>plus de 40 composants Three.js</strong> organises dans le repertoire <code>scenes/</code>, couvrant le terrain, les villes, le ciel, les stations, les acteurs et l'interface utilisateur.</p>
+      <p>Le projet comprend <strong>plus de 40 composants Three.js</strong> organisés dans le répertoire <code>scenes/</code>, couvrant le terrain, les villes, le ciel, les stations, les acteurs et l'interface utilisateur.</p>
     </div>
 
-    <!-- 3. Scene 3D interactive -->
-    <h2>3. Scene 3D interactive</h2>
+    <!-- 3. Scène 3D interactive -->
+    <h2>3. Scène 3D interactive</h2>
     <div class="card">
       <h3>Terrain lunaire</h3>
       <ul>
-        <li><code>Moon.jsx</code> — generation du terrain lunaire</li>
-        <li><code>Rocks.jsx</code> — rochers et formations geologiques</li>
-        <li>Surface particles — particules de poussiere et effets visuels</li>
+        <li><code>Moon.jsx</code> — génération du terrain lunaire</li>
+        <li><code>Rocks.jsx</code> — rochers et formations géologiques</li>
+        <li>Surface particles — particules de poussière et effets visuels</li>
       </ul>
 
       <h3>Quiz stations</h3>
-      <p>5 stations de quiz techniques disposees sur la surface lunaire :</p>
+      <p>5 stations de quiz techniques disposées sur la surface lunaire :</p>
       <ul>
         <li>JavaScript</li>
         <li>Python</li>
@@ -109,38 +109,38 @@
 
       <h3>Astronaute</h3>
       <ul>
-        <li>Modele 3D avec systeme de physique (saut, poussiere, deplacement)</li>
+        <li>Modèle 3D avec système de physique (saut, poussière, déplacement)</li>
         <li>Animations contextuelles et interactions avec l'environnement</li>
       </ul>
 
       <h3>Villes et colonies</h3>
       <ul>
-        <li><strong>Domes</strong> — structures protectrices des colonies</li>
-        <li><strong>Trafic</strong> — vehicules et circulation entre les domes</li>
+        <li><strong>Dômes</strong> — structures protectrices des colonies</li>
+        <li><strong>Trafic</strong> — véhicules et circulation entre les dômes</li>
         <li><strong>Drones</strong> — essaims de drones survolant les installations</li>
-        <li><strong>Rivieres</strong> — cours d'eau artificiels dans les colonies</li>
+        <li><strong>Rivières</strong> — cours d'eau artificiels dans les colonies</li>
         <li><strong>Pistes d'atterrissage</strong> — runways pour les vaisseaux</li>
       </ul>
 
-      <h3>Elements du ciel</h3>
+      <h3>Éléments du ciel</h3>
       <ul>
-        <li><strong>Nebuleuses</strong> — effets visuels en arriere-plan</li>
+        <li><strong>Nébuleuses</strong> — effets visuels en arrière-plan</li>
         <li><strong>Vaisseaux en survol</strong> — flyby ships traversant le ciel</li>
-        <li><strong>Cycle soleil/lune</strong> — eclairage dynamique jour/nuit</li>
+        <li><strong>Cycle soleil/lune</strong> — éclairage dynamique jour/nuit</li>
         <li><strong>Satellites</strong> — objets en orbite</li>
       </ul>
 
-      <h3>Ceinture d'asteroides</h3>
-      <p>Champ d'asteroides orbitant autour de la scene, ajoutant de la profondeur a l'environnement spatial.</p>
+      <h3>Ceinture d'astéroïdes</h3>
+      <p>Champ d'astéroïdes orbitant autour de la scène, ajoutant de la profondeur à l'environnement spatial.</p>
     </div>
 
-    <!-- 4. Systeme de physique -->
-    <h2>4. Systeme de physique</h2>
+    <!-- 4. Système de physique -->
+    <h2>4. Système de physique</h2>
     <div class="card">
       <h3>Architecture</h3>
-      <p>Le systeme de physique repose sur un <strong>ref-based physics state</strong> qui evite les re-renders React inutiles, garantissant des performances fluides meme avec de nombreux elements 3D.</p>
+      <p>Le système de physique repose sur un <strong>ref-based physics state</strong> qui évite les re-renders React inutiles, garantissant des performances fluides même avec de nombreux éléments 3D.</p>
 
-      <h3>Hooks personnalises</h3>
+      <h3>Hooks personnalisés</h3>
       <table>
         <thead>
           <tr>
@@ -149,14 +149,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td><code>useInput</code></td><td>Capture des entrees clavier</td></tr>
+          <tr><td><code>useInput</code></td><td>Capture des entrées clavier</td></tr>
           <tr><td><code>useInputInertia</code></td><td>Inertie de mouvement fluide</td></tr>
-          <tr><td><code>useJumpAndDust</code></td><td>Saut et effets de poussiere</td></tr>
-          <tr><td><code>useStationAiming</code></td><td>Visee et interaction avec les stations</td></tr>
+          <tr><td><code>useJumpAndDust</code></td><td>Saut et effets de poussière</td></tr>
+          <tr><td><code>useStationAiming</code></td><td>Visée et interaction avec les stations</td></tr>
         </tbody>
       </table>
 
-      <h3>Controles</h3>
+      <h3>Contrôles</h3>
       <table>
         <thead>
           <tr>
@@ -165,10 +165,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>WASD / Fleches</td><td>Navigation</td></tr>
+          <tr><td>WASD / Flèches</td><td>Navigation</td></tr>
           <tr><td>Space</td><td>Saut</td></tr>
           <tr><td>Shift</td><td>Sprint</td></tr>
-          <tr><td>Souris</td><td>Orbite camera</td></tr>
+          <tr><td>Souris</td><td>Orbite caméra</td></tr>
           <tr><td>Scroll</td><td>Zoom</td></tr>
         </tbody>
       </table>
@@ -176,8 +176,8 @@
       <h3>Constantes physiques</h3>
       <ul>
         <li><code>BASE_RADIUS</code> : 9.0</li>
-        <li>Gravite : 1.5 m/s<sup>2</sup></li>
-        <li>Velocite de saut : 1.12 m/s</li>
+        <li>Gravité : 1.5 m/s<sup>2</sup></li>
+        <li>Vélocité de saut : 1.12 m/s</li>
       </ul>
     </div>
 
@@ -187,14 +187,14 @@
       <p>Le portfolio classique accessible depuis la route <code>/</code> comprend 9 sections distinctes :</p>
       <ol>
         <li><strong>Hero</strong> — section d'accroche principale</li>
-        <li><strong>About</strong> — presentation personnelle</li>
+        <li><strong>About</strong> — présentation personnelle</li>
         <li><strong>BTS</strong> — formation BTS SIO</li>
-        <li><strong>Parcours</strong> — parcours professionnel et academique</li>
-        <li><strong>Projects</strong> — projets realises</li>
+        <li><strong>Parcours</strong> — parcours professionnel et académique</li>
+        <li><strong>Projects</strong> — projets réalisés</li>
         <li><strong>Certifications</strong> — certifications obtenues</li>
         <li><strong>Veille</strong> — veille technologique</li>
         <li><strong>Veille Auth</strong> — veille sur l'authentification</li>
-        <li><strong>Schools / User Stories</strong> — etablissements et recits utilisateurs</li>
+        <li><strong>Schools / User Stories</strong> — établissements et récits utilisateurs</li>
       </ol>
     </div>
 
@@ -205,15 +205,15 @@
         <thead>
           <tr>
             <th>Principe</th>
-            <th>Implementation</th>
+            <th>Implémentation</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td>Golden Ratio</td><td>PHI 1.618 applique a tous les espacements</td></tr>
+          <tr><td>Golden Ratio</td><td>PHI 1.618 appliqué à tous les espacements</td></tr>
           <tr><td>Couleurs de marque</td><td>Cyan, purple, gold</td></tr>
           <tr><td>Typographie fluide</td><td><code>clamp()</code> pour une adaptation responsive</td></tr>
-          <tr><td>Glassmorphism</td><td>Pattern de transparence et flou applique aux cartes et overlays</td></tr>
-          <tr><td>Z-index hierarchy</td><td>Systeme organise de couches pour la superposition des elements</td></tr>
+          <tr><td>Glassmorphism</td><td>Pattern de transparence et flou appliqué aux cartes et overlays</td></tr>
+          <tr><td>Z-index hierarchy</td><td>Système organisé de couches pour la superposition des éléments</td></tr>
         </tbody>
       </table>
     </div>
@@ -221,12 +221,12 @@
     <!-- 7. Performance -->
     <h2>7. Performance</h2>
     <div class="card">
-      <p>Plusieurs strategies d'optimisation sont mises en place pour garantir une experience fluide :</p>
+      <p>Plusieurs stratégies d'optimisation sont mises en place pour garantir une expérience fluide :</p>
       <ul>
-        <li><strong>Lazy loading</strong> — chargement differe des elements 3D en champ lointain (far-field)</li>
-        <li><strong>DPR limite</strong> — device pixel ratio plafonne a 1.75x pour equilibrer qualite et performances</li>
-        <li><strong>Manual Vite chunks</strong> — decoupage manuel des bundles pour un chargement optimise</li>
-        <li><strong>Shadows desactivees</strong> — ombres desactivees globalement pour reduire la charge GPU</li>
+        <li><strong>Lazy loading</strong> — chargement différé des éléments 3D en champ lointain (far-field)</li>
+        <li><strong>DPR limité</strong> — device pixel ratio plafonné à 1.75x pour équilibrer qualité et performances</li>
+        <li><strong>Manual Vite chunks</strong> — découpage manuel des bundles pour un chargement optimisé</li>
+        <li><strong>Shadows désactivées</strong> — ombres désactivées globalement pour réduire la charge GPU</li>
       </ul>
     </div>
 
@@ -252,6 +252,20 @@
           <tr><td><code>/scene/php</code></td><td>PhpQuizStation</td><td>Quiz PHP</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- 9. Liens utiles -->
+    <h2>9. Liens utiles</h2>
+    <div class="card">
+      <ul>
+        <li><a href="https://react.dev/" style="color: var(--accent);">Documentation React</a></li>
+        <li><a href="https://threejs.org/docs/" style="color: var(--accent);">Documentation Three.js</a></li>
+        <li><a href="https://r3f.docs.pmnd.rs/" style="color: var(--accent);">React Three Fiber (R3F)</a></li>
+        <li><a href="https://drei.docs.pmnd.rs/" style="color: var(--accent);">Drei — Helpers pour R3F</a></li>
+        <li><a href="https://vite.dev/" style="color: var(--accent);">Vite — Build Tool</a></li>
+        <li><a href="https://tailwindcss.com/docs" style="color: var(--accent);">Tailwind CSS — Documentation</a></li>
+        <li><a href="https://developer.mozilla.org/fr/docs/Web/API/WebGL_API" style="color: var(--accent);">MDN — WebGL API</a></li>
+      </ul>
     </div>
 
     <div class="footer">

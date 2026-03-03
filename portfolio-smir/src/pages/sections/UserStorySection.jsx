@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useSectionReveal from "../../hooks/useReveal";
+import { BackToTop } from "../../components/ScrollHint";
 
 /* ============================
    Nombre d'or & Thème
@@ -12,7 +13,7 @@ const INV2 = INV * INV;  // 0.382
 
 const THEME = {
   bg: "#0b1020",
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -99,11 +100,11 @@ export default function UserStorySection() {
     <section
       ref={sectionRef}
       id="user-story"
-      className={`min-h-[100svh] snap-center text-slate-100 relative overflow-hidden section-reveal${revealed ? " revealed" : ""}`}
+      className={`min-h-[100svh] snap-start text-slate-100 relative overflow-hidden section-reveal${revealed ? " revealed" : ""}`}
       style={{
         background:
-        "radial-gradient(60% 60% at 30% 15%, rgba(212,175,55,.05), transparent 62%)," +
-        "radial-gradient(40% 40% at 80% 85%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
+        "radial-gradient(60% 60% at 50% 0%, rgba(212,175,55,.05), transparent 62%)," +
+        "radial-gradient(40% 40% at 80% 80%, rgba(147,51,234,.04), transparent 62%), rgba(8,12,24,0.25)",
         backdropFilter: "blur(2px)",
         borderTop: "1px solid rgba(255,255,255,0.05)",
         padding: `${(INV * PHI) * PHI}rem ${1.0 * PHI}rem`,
@@ -254,7 +255,7 @@ export default function UserStorySection() {
                 <ContactCard
                   icon="🐙"
                   title="GitHub"
-                  value="smir75"
+                  value="JaggyINK"
                   href="https://github.com/JaggyINK"
                   color="#ffffff"
                   external
@@ -459,9 +460,11 @@ export default function UserStorySection() {
             Fait avec 💙 et beaucoup de ☕ par Sagar
           </p>
           <p className="mt-2 text-xs" style={{ color: THEME.sub, opacity: 0.7 }}>
-            © 2025 • Portfolio interactif • React + Three.js
+            © 2026 • Portfolio interactif • React + Three.js
           </p>
         </div>
+
+        <BackToTop />
       </div>
     </section>
   );

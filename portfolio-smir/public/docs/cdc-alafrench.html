@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — ALAFRENCH</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #7c3aed; --accent2: #a855f7; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(168,85,247,0.15); color: var(--accent2); border: 1px solid rgba(168,85,247,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(168,85,247,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>ALAFRENCH</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Marque de vêtements de luxe — Vitrine & e-commerce</p>
+<div class="header-line"></div>
+
+<div><span class="badge">Shopify</span><span class="badge">Liquid</span><span class="badge">E-commerce</span><span class="badge">Branding</span><span class="badge">SEO</span></div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>ALAFRENCH — Boutique de vêtements de luxe</td></tr>
+  <tr><th>Commanditaire</th><td>H2O (SAS) — Société mère ALAFRENCH / ALAFRENCH CARE</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR (freelance)</td></tr>
+  <tr><th>Date</th><td>2025</td></tr>
+  <tr><th>Statut</th><td>En production — <a href="https://alafrench.fr" style="color:var(--accent2);">alafrench.fr</a></td></tr>
+  <tr><th>Type</th><td>Site vitrine + e-commerce — Shopify custom</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>ALAFRENCH est une marque de vêtements haut de gamme du groupe H2O (SAS). La marque nécessite une présence en ligne à la hauteur de son positionnement premium avec une boutique e-commerce et un site vitrine élégants.</td></tr>
+  <tr><th>Objectif principal</th><td>Créer un site vitrine et boutique Shopify haut de gamme avec une identité visuelle luxe cohérente.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Thème Liquid entièrement personnalisé</li>
+      <li>Architecture Shopify sur mesure</li>
+      <li>Fiches produits optimisées</li>
+      <li>SEO avancé pour la visibilité</li>
+      <li>Identité visuelle haut de gamme</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Thème custom luxe</td><td>Développement intégral du thème en Liquid. Esthétique premium, typographies choisies, animations subtiles.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Catalogue produits</td><td>Fiches produits détaillées avec visuels haute qualité, variantes, tailles.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Vitrine de marque</td><td>Pages storytelling : histoire, valeurs, savoir-faire, lookbooks.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">E-commerce</td><td>Panier, checkout optimisé, gestion des stocks, suivi commandes.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">SEO</td><td>Optimisation complète : meta, schema produit, vitesse, sitemap.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Plateforme</td><td>Shopify — Infrastructure e-commerce managée</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Thème</td><td>Liquid — Thème intégralement custom</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Assets</td><td>Visuels haute qualité, webfonts premium</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Image de marque</td><td>Design luxe impératif. Chaque détail doit refléter le positionnement premium.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Performance</td><td>Chargement rapide malgré les visuels haute qualité (lazy loading, WebP).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Cohérence groupe</td><td>Identité visuelle alignée avec ALAFRENCH CARE (même groupe H2O).</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Boutique Shopify</td><td>Thème custom déployé sur alafrench.fr</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Identité visuelle</td><td>Charte graphique, visuels, branding complet</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation</td><td>Guide d'utilisation et captures d'écran</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — ALAFRENCH — Sagar MIR — 2025</div>
+</div>
+</body>
+</html>

@@ -56,14 +56,14 @@
         <h2>1. Contexte et objectifs</h2>
         <div class="card">
             <p>
-                Bot Discord concu pour automatiser la veille technologique dans le cadre du BTS SIO.
+                Bot Discord conçu pour automatiser la veille technologique dans le cadre du BTS SIO.
                 Il assure la publication automatique, 24 h/24, d'articles issus de sources reconnues
-                en securite informatique et developpement web.
+                en sécurité informatique et développement web.
             </p>
             <p>
                 L'objectif est de centraliser la collecte d'informations techniques dans un serveur
-                Discord dedie, permettant aux etudiants et professionnels de rester informes en
-                temps reel sans effort manuel.
+                Discord dédié, permettant aux étudiants et professionnels de rester informés en
+                temps réel sans effort manuel.
             </p>
         </div>
 
@@ -73,17 +73,17 @@
             <h3>Stack technique</h3>
             <ul>
                 <li><code>Python 3</code> — Langage principal</li>
-                <li><code>discord.py</code> — Bibliotheque d'interaction avec l'API Discord</li>
-                <li><code>asyncio</code> — Programmation asynchrone pour les taches concurrentes</li>
+                <li><code>discord.py</code> — Bibliothèque d'interaction avec l'API Discord</li>
+                <li><code>asyncio</code> — Programmation asynchrone pour les tâches concurrentes</li>
                 <li><code>feedparser</code> — Parsing des flux RSS/Atom</li>
-                <li><code>aiohttp</code> — Requetes HTTP asynchrones</li>
+                <li><code>aiohttp</code> — Requêtes HTTP asynchrones</li>
             </ul>
 
             <h3>Paradigme</h3>
             <p>
                 Architecture <strong>event-driven</strong> reposant sur des commandes slash et des
-                listeners d'evenements Discord. Les taches de collecte RSS s'executent en arriere-plan
-                via des boucles asynchrones, garantissant une reactivite constante du bot.
+                listeners d'événements Discord. Les tâches de collecte RSS s'exécutent en arrière-plan
+                via des boucles asynchrones, garantissant une réactivité constante du bot.
             </p>
         </div>
 
@@ -101,42 +101,42 @@
                 <tbody>
                     <tr>
                         <td>OWASP</td>
-                        <td>Securite applicative</td>
+                        <td>Sécurité applicative</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>CERT-FR</td>
-                        <td>Alertes securite nationales</td>
+                        <td>Alertes sécurité nationales</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>MSRC (Microsoft Security Response Center)</td>
-                        <td>Vulnerabilites Microsoft</td>
+                        <td>Vulnérabilités Microsoft</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>Krebs on Security</td>
-                        <td>Enquetes cybersecurite</td>
+                        <td>Enquêtes cybersécurité</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>Hacker News</td>
-                        <td>Actualites tech generales</td>
+                        <td>Actualités tech générales</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>The Register</td>
-                        <td>Actualites IT / securite</td>
+                        <td>Actualités IT / sécurité</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>BleepingComputer</td>
-                        <td>Malwares et vulnerabilites</td>
+                        <td>Malwares et vulnérabilités</td>
                         <td>RSS</td>
                     </tr>
                     <tr>
                         <td>Dark Reading</td>
-                        <td>Cybersecurite entreprise</td>
+                        <td>Cybersécurité entreprise</td>
                         <td>RSS</td>
                     </tr>
                 </tbody>
@@ -156,19 +156,19 @@
                 <tbody>
                     <tr>
                         <td><code>!veille</code></td>
-                        <td>Affiche la derniere veille publiee</td>
+                        <td>Affiche la dernière veille publiée</td>
                     </tr>
                     <tr>
                         <td><code>!ldap</code></td>
-                        <td>Articles lies a LDAP / Active Directory</td>
+                        <td>Articles liés à LDAP / Active Directory</td>
                     </tr>
                     <tr>
                         <td><code>!web</code></td>
-                        <td>Articles sur la securite web</td>
+                        <td>Articles sur la sécurité web</td>
                     </tr>
                     <tr>
                         <td><code>!news</code></td>
-                        <td>Actualites technologiques recentes</td>
+                        <td>Actualités technologiques récentes</td>
                     </tr>
                     <tr>
                         <td><code>!help</code></td>
@@ -178,59 +178,59 @@
             </table>
         </div>
 
-        <!-- ─── 5. Fonctionnalites ─── -->
-        <h2>5. Fonctionnalites</h2>
+        <!-- ─── 5. Fonctionnalités ─── -->
+        <h2>5. Fonctionnalités</h2>
         <div class="card">
             <ul>
-                <li><strong>Agregation multi-sources RSS</strong> — Collecte unifiee depuis l'ensemble des flux configures</li>
-                <li><strong>Filtrage par mots-cles</strong> — Tri intelligent des articles selon les thematiques pertinentes</li>
-                <li><strong>Publication automatique</strong> — Envoi dans les channels dedies sans intervention humaine</li>
-                <li><strong>Formatage rich embed Discord</strong> — Mise en forme avancee avec titres, descriptions, miniatures et liens</li>
-                <li><strong>Gestion des erreurs et retry</strong> — Mecanismes de reprise automatique en cas d'echec de requete</li>
-                <li><strong>Logs d'activite</strong> — Journalisation complete des actions du bot pour le suivi et le debug</li>
+                <li><strong>Agrégation multi-sources RSS</strong> — Collecte unifiée depuis l'ensemble des flux configurés</li>
+                <li><strong>Filtrage par mots-clés</strong> — Tri intelligent des articles selon les thématiques pertinentes</li>
+                <li><strong>Publication automatique</strong> — Envoi dans les channels dédiés sans intervention humaine</li>
+                <li><strong>Formatage rich embed Discord</strong> — Mise en forme avancée avec titres, descriptions, miniatures et liens</li>
+                <li><strong>Gestion des erreurs et retry</strong> — Mécanismes de reprise automatique en cas d'échec de requête</li>
+                <li><strong>Logs d'activité</strong> — Journalisation complète des actions du bot pour le suivi et le debug</li>
             </ul>
         </div>
 
-        <!-- ─── 6. Securite ─── -->
-        <h2>6. Securite</h2>
+        <!-- ─── 6. Sécurité ─── -->
+        <h2>6. Sécurité</h2>
         <div class="card">
             <ul>
-                <li><strong>Token bot securise</strong> — Stockage du token via variables d'environnement (<code>.env</code>), jamais en dur dans le code</li>
-                <li><strong>Rate limiting Discord API</strong> — Respect des limites imposees par l'API Discord pour eviter les bans</li>
-                <li><strong>Validation des sources RSS</strong> — Verification de l'integrite et de la disponibilite des flux avant traitement</li>
-                <li><strong>Sanitization des contenus</strong> — Nettoyage des donnees recues pour prevenir les injections dans les messages</li>
+                <li><strong>Token bot sécurisé</strong> — Stockage du token via variables d'environnement (<code>.env</code>), jamais en dur dans le code</li>
+                <li><strong>Rate limiting Discord API</strong> — Respect des limites imposées par l'API Discord pour éviter les bans</li>
+                <li><strong>Validation des sources RSS</strong> — Vérification de l'intégrité et de la disponibilité des flux avant traitement</li>
+                <li><strong>Sanitization des contenus</strong> — Nettoyage des données reçues pour prévenir les injections dans les messages</li>
             </ul>
         </div>
 
-        <!-- ─── 7. Competences BTS SIO ─── -->
-        <h2>7. Competences BTS SIO</h2>
+        <!-- ─── 7. Compétences BTS SIO ─── -->
+        <h2>7. Compétences BTS SIO</h2>
         <div class="card">
             <table>
                 <thead>
                     <tr>
-                        <th>Competence</th>
+                        <th>Compétence</th>
                         <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Gerer le patrimoine informatique</strong></td>
-                        <td>Mise en place et maintenance d'un outil de veille automatise</td>
+                        <td><strong>Gérer le patrimoine informatique</strong></td>
+                        <td>Mise en place et maintenance d'un outil de veille automatisé</td>
                     </tr>
                     <tr>
-                        <td><strong>Repondre aux incidents</strong></td>
-                        <td>Gestion des erreurs, retry et logging pour assurer la disponibilite</td>
+                        <td><strong>Répondre aux incidents</strong></td>
+                        <td>Gestion des erreurs, retry et logging pour assurer la disponibilité</td>
                     </tr>
                     <tr>
-                        <td><strong>Developper la presence en ligne</strong></td>
+                        <td><strong>Développer la présence en ligne</strong></td>
                         <td>Automatisation de la diffusion de contenu via Discord</td>
                     </tr>
                     <tr>
                         <td><strong>Travailler en mode projet</strong></td>
-                        <td>Conception, developpement et deploiement d'un bot complet</td>
+                        <td>Conception, développement et déploiement d'un bot complet</td>
                     </tr>
                     <tr>
-                        <td><strong>Mettre a disposition un service</strong></td>
+                        <td><strong>Mettre à disposition un service</strong></td>
                         <td>Bot accessible 24 h/24 pour l'ensemble des utilisateurs du serveur</td>
                     </tr>
                     <tr>
@@ -239,6 +239,20 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- ─── 8. Liens utiles ─── -->
+        <h2>8. Liens utiles</h2>
+        <div class="card">
+            <ul>
+                <li><a href="https://discordpy.readthedocs.io/" style="color: var(--accent);">Documentation discord.py</a></li>
+                <li><a href="https://discord.com/developers/docs/intro" style="color: var(--accent);">Discord Developer Portal</a></li>
+                <li><a href="https://docs.python.org/3/library/asyncio.html" style="color: var(--accent);">Documentation asyncio (Python)</a></li>
+                <li><a href="https://feedparser.readthedocs.io/" style="color: var(--accent);">Documentation feedparser</a></li>
+                <li><a href="https://docs.aiohttp.org/" style="color: var(--accent);">Documentation aiohttp</a></li>
+                <li><a href="https://owasp.org/" style="color: var(--accent);">OWASP — Open Web Application Security Project</a></li>
+                <li><a href="https://www.cert.ssi.gouv.fr/" style="color: var(--accent);">CERT-FR — Centre gouvernemental de veille et d'alerte</a></li>
+            </ul>
         </div>
 
         <div class="footer">

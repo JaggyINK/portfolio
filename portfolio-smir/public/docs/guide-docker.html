@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Docker &amp; Containers</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #0284c7; --accent2: #0ea5e9; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(2,132,199,0.15); color: var(--accent2); border: 1px solid rgba(14,165,233,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .badge.green { background: rgba(16,185,129,0.15); color: #10b981; border-color: rgba(16,185,129,0.3); }
+  .badge.purple { background: rgba(168,85,247,0.15); color: #a855f7; border-color: rgba(168,85,247,0.3); }
+  .badge.orange { background: rgba(251,146,60,0.15); color: #fb923c; border-color: rgba(251,146,60,0.3); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  .card-sm { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 1.25rem; }
+  .card-sm h4 { margin-top: 0; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { padding: 0.55rem 0.8rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(2,132,199,0.1); color: var(--accent2); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+  td code { font-size: 0.8rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(14,165,233,0.1); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+  pre { background: #0d1117; border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem; overflow-x: auto; margin: 1rem 0; position: relative; }
+  pre code { background: none; padding: 0; color: #c9d1d9; font-size: 0.82rem; line-height: 1.6; }
+  .code-label { display: inline-block; background: rgba(14,165,233,0.15); color: var(--accent2); font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 0 0 0.5rem 0; position: absolute; top: 0; right: 0; letter-spacing: 0.03em; text-transform: uppercase; }
+  .tip { background: rgba(14,165,233,0.06); border-left: 3px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .tip p { margin-bottom: 0; }
+  .tip strong { color: var(--accent2); }
+  .warning { background: rgba(250,204,21,0.06); border-left: 3px solid #facc15; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .warning p { margin-bottom: 0; }
+  .warning strong { color: #facc15; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin: 1rem 0; }
+  .stat-card { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 0.5rem; }
+  .stat-card .num { font-size: 1.6rem; font-weight: 800; color: var(--accent2); display: block; }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent2); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent2); }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+  @media (max-width: 700px) {
+    .card-grid { grid-template-columns: 1fr; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .meta { gap: 1rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    pre { padding: 1rem; font-size: 0.78rem; }
+    h1 { font-size: 1.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== HEADER ========== -->
+<h1>Docker &amp; Containers</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">Guide technique complet &mdash; Conteneurisation pour le d&eacute;veloppement</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Contexte :</strong> BTS SIO SLAM</div>
+  <div class="meta-item"><strong>Technologie :</strong> Docker Engine</div>
+  <div class="meta-item"><strong>Niveau :</strong> D&eacute;butant &agrave; interm&eacute;diaire</div>
+  <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+</div>
+
+<div style="margin-bottom:1.5rem;">
+  <span class="badge">Docker</span>
+  <span class="badge">Containers</span>
+  <span class="badge green">Docker Compose</span>
+  <span class="badge purple">DevOps</span>
+  <span class="badge orange">Infrastructure</span>
+</div>
+
+<!-- ========== STATS ========== -->
+<div class="stat-grid">
+  <div class="stat-card"><span class="num">10</span><span class="lbl">Sections</span></div>
+  <div class="stat-card"><span class="num">40+</span><span class="lbl">Commandes</span></div>
+  <div class="stat-card"><span class="num">8</span><span class="lbl">Exemples complets</span></div>
+  <div class="stat-card"><span class="num">3</span><span class="lbl">Cas pratiques</span></div>
+</div>
+
+<!-- ========== TABLE OF CONTENTS ========== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#introduction">Introduction &agrave; Docker</a></li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#concepts">Concepts fondamentaux</a></li>
+    <li><a href="#commandes">Commandes essentielles</a></li>
+    <li><a href="#dockerfile">Dockerfile</a></li>
+    <li><a href="#compose">Docker Compose</a></li>
+    <li><a href="#volumes">Volumes et persistance</a></li>
+    <li><a href="#reseau">R&eacute;seau Docker</a></li>
+    <li><a href="#bonnes-pratiques">Bonnes pratiques</a></li>
+    <li><a href="#cas-pratique">Cas pratique : Stack LAMP</a></li>
+  </ol>
+</div>
+
+<!-- ========================================================================== -->
+<!-- SECTION 1 : INTRODUCTION -->
+<!-- ========================================================================== -->
+<h2 id="introduction">1. Introduction &agrave; Docker</h2>
+
+<h3>Qu'est-ce que Docker ?</h3>
+<p>Docker est une plateforme open source qui permet de <strong>cr&eacute;er, d&eacute;ployer et ex&eacute;cuter des applications dans des conteneurs</strong>. Un conteneur est une unit&eacute; logicielle l&eacute;g&egrave;re et portable qui embarque tout le n&eacute;cessaire pour faire fonctionner une application : code source, runtime, biblioth&egrave;ques syst&egrave;me et param&egrave;tres de configuration.</p>
+
+<p>Lanc&eacute; en 2013, Docker a r&eacute;volutionn&eacute; le d&eacute;veloppement logiciel en permettant de garantir que <strong>&laquo; si &ccedil;a marche sur ma machine, &ccedil;a marchera partout &raquo;</strong>. Cette reproductibilit&eacute; &eacute;limine les probl&egrave;mes classiques d'incompatibilit&eacute; entre les environnements de d&eacute;veloppement, de test et de production.</p>
+
+<h3>Docker vs Machines Virtuelles</h3>
+
+<div class="card">
+<table>
+  <tr><th>Crit&egrave;re</th><th>Machine Virtuelle</th><th>Conteneur Docker</th></tr>
+  <tr><td><strong>Isolation</strong></td><td>OS complet virtualis&eacute;</td><td>Processus isol&eacute; sur le noyau h&ocirc;te</td></tr>
+  <tr><td><strong>Taille</strong></td><td>Plusieurs Go (OS + app)</td><td>Quelques Mo &agrave; centaines de Mo</td></tr>
+  <tr><td><strong>D&eacute;marrage</strong></td><td>Minutes</td><td>Secondes</td></tr>
+  <tr><td><strong>Performance</strong></td><td>Overhead de l'hyperviseur</td><td>Quasi-native</td></tr>
+  <tr><td><strong>Portabilit&eacute;</strong></td><td>Li&eacute;e &agrave; l'hyperviseur</td><td>Portable partout o&ugrave; Docker tourne</td></tr>
+  <tr><td><strong>Densit&eacute;</strong></td><td>Quelques VM par serveur</td><td>Des centaines de conteneurs par serveur</td></tr>
+</table>
+</div>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> Les conteneurs et les VM ne s'excluent pas mutuellement. En production, il est courant d'ex&eacute;cuter des conteneurs Docker <strong>&agrave; l'int&eacute;rieur</strong> de machines virtuelles pour combiner isolation mat&eacute;rielle et l&eacute;g&egrave;ret&eacute; applicative.</p>
+</div>
+
+<h3>Architecture de Docker Engine</h3>
+<p>Docker repose sur une architecture <strong>client-serveur</strong> compos&eacute;e de trois composants principaux :</p>
+
+<ul>
+  <li><strong>Docker Daemon (dockerd)</strong> &mdash; Le processus serveur qui g&egrave;re les objets Docker (images, conteneurs, r&eacute;seaux, volumes). Il &eacute;coute les requ&ecirc;tes de l'API Docker.</li>
+  <li><strong>Docker CLI (docker)</strong> &mdash; L'interface en ligne de commande utilis&eacute;e par le d&eacute;veloppeur pour interagir avec le daemon via l'API REST.</li>
+  <li><strong>Docker Registry</strong> &mdash; Un service de stockage et de distribution d'images Docker. <strong>Docker Hub</strong> est le registry public par d&eacute;faut.</li>
+</ul>
+
+<div class="card">
+<pre><code><span class="code-label">Architecture</span>
++------------------+       API REST       +------------------+
+|   Docker CLI     | -------------------&gt; |  Docker Daemon   |
+|   (docker)       |                      |  (dockerd)       |
++------------------+                      +--------+---------+
+                                                   |
+                                          +--------+---------+
+                                          |   Conteneurs     |
+                                          |   Images         |
+                                          |   Volumes        |
+                                          |   R&eacute;seaux       |
+                                          +------------------+
+                                                   |
+                                          +--------+---------+
+                                          | Docker Registry  |
+                                          | (Docker Hub)     |
+                                          +------------------+</code></pre>
+</div>
+
+<h3>Image vs Conteneur</h3>
+<p>La distinction fondamentale &agrave; comprendre :</p>
+<ul>
+  <li><strong>Image</strong> &mdash; Un mod&egrave;le en lecture seule contenant les instructions pour cr&eacute;er un conteneur. C'est comme un <em>moule</em> ou un <em>plan de construction</em>.</li>
+  <li><strong>Conteneur</strong> &mdash; Une instance ex&eacute;cutable d'une image. C'est l'objet <em>vivant</em> qui tourne sur la machine. On peut cr&eacute;er plusieurs conteneurs &agrave; partir d'une m&ecirc;me image.</li>
+</ul>
+
+<!-- ========================================================================== -->
+<!-- SECTION 2 : INSTALLATION -->
+<!-- ========================================================================== -->
+<h2 id="installation">2. Installation</h2>
+
+<h3>Windows (Docker Desktop + WSL2)</h3>
+<p>Docker Desktop pour Windows utilise <strong>WSL2</strong> (Windows Subsystem for Linux 2) comme backend, offrant de bien meilleures performances que l'ancien backend Hyper-V.</p>
+
+<ol>
+  <li>Activer WSL2 dans les fonctionnalit&eacute;s Windows (PowerShell en admin) :</li>
+</ol>
+
+<pre><code><span class="code-label">PowerShell (Admin)</span>
+wsl --install
+wsl --set-default-version 2</code></pre>
+
+<ol start="2">
+  <li>T&eacute;l&eacute;charger et installer <strong>Docker Desktop</strong> depuis <a href="https://www.docker.com/products/docker-desktop/">docker.com</a></li>
+  <li>Dans les param&egrave;tres de Docker Desktop, activer <strong>&laquo; Use the WSL 2 based engine &raquo;</strong></li>
+  <li>Red&eacute;marrer la machine si n&eacute;cessaire</li>
+</ol>
+
+<h3>Linux (Ubuntu / Debian)</h3>
+<pre><code><span class="code-label">Bash</span>
+# Mise &agrave; jour des paquets
+sudo apt update &amp;&amp; sudo apt upgrade -y
+
+# Installation des pr&eacute;requis
+sudo apt install -y ca-certificates curl gnupg lsb-release
+
+# Ajout de la cl&eacute; GPG officielle Docker
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# Ajout du d&eacute;p&ocirc;t Docker
+echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+
+# Installation de Docker Engine
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io \
+  docker-buildx-plugin docker-compose-plugin
+
+# Ajouter l'utilisateur au groupe docker (pour &eacute;viter sudo)
+sudo usermod -aG docker $USER</code></pre>
+
+<div class="warning">
+  <p><strong>Attention :</strong> Apr&egrave;s avoir ajout&eacute; votre utilisateur au groupe <code>docker</code>, vous devez vous d&eacute;connecter et reconnecter (ou lancer <code>newgrp docker</code>) pour que le changement prenne effet.</p>
+</div>
+
+<h3>V&eacute;rification de l'installation</h3>
+<pre><code><span class="code-label">Terminal</span>
+# V&eacute;rifier la version install&eacute;e
+docker version
+
+# Afficher les informations syst&egrave;me Docker
+docker info
+
+# Tester avec le conteneur hello-world
+docker run hello-world</code></pre>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> La commande <code>docker run hello-world</code> t&eacute;l&eacute;charge automatiquement l'image si elle n'est pas pr&eacute;sente localement, la lance, affiche un message de confirmation, puis le conteneur s'arr&ecirc;te.</p>
+</div>
+
+<!-- ========================================================================== -->
+<!-- SECTION 3 : CONCEPTS FONDAMENTAUX -->
+<!-- ========================================================================== -->
+<h2 id="concepts">3. Concepts fondamentaux</h2>
+
+<p>Docker s'articule autour de cinq objets fondamentaux qu'il est essentiel de ma&icirc;triser :</p>
+
+<div class="card-grid">
+  <div class="card-sm">
+    <h4>Images</h4>
+    <p>Mod&egrave;les en lecture seule constitu&eacute;s de <strong>couches superpos&eacute;es</strong> (layers). Chaque instruction d'un Dockerfile cr&eacute;e une nouvelle couche. Les couches sont mises en cache pour acc&eacute;l&eacute;rer les builds.</p>
+  </div>
+  <div class="card-sm">
+    <h4>Conteneurs</h4>
+    <p>Instances ex&eacute;cutables d'images. Ils ajoutent une <strong>couche inscriptible</strong> au-dessus de l'image. Leur &eacute;tat est &eacute;ph&eacute;m&egrave;re par d&eacute;faut (supprim&eacute; avec le conteneur).</p>
+  </div>
+  <div class="card-sm">
+    <h4>Volumes</h4>
+    <p>M&eacute;canisme de <strong>persistance des donn&eacute;es</strong> g&eacute;r&eacute; par Docker. Les volumes survivent &agrave; la suppression des conteneurs et peuvent &ecirc;tre partag&eacute;s entre plusieurs conteneurs.</p>
+  </div>
+  <div class="card-sm">
+    <h4>R&eacute;seaux</h4>
+    <p>Permettent la <strong>communication entre conteneurs</strong> de mani&egrave;re isol&eacute;e. Docker cr&eacute;e par d&eacute;faut un r&eacute;seau bridge pour chaque conteneur.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h4>Registries</h4>
+  <p>Services de stockage et de distribution d'images Docker. <strong>Docker Hub</strong> est le registry public par d&eacute;faut, mais on peut utiliser des registries priv&eacute;s (GitHub Container Registry, AWS ECR, GitLab Registry, etc.).</p>
+</div>
+
+<h3>Cycle de vie d'un conteneur</h3>
+<pre><code><span class="code-label">Lifecycle</span>
+  docker create        docker start        docker stop
+[Image] --------&gt; [Created] --------&gt; [Running] --------&gt; [Stopped]
+                      |                    |   ^               |
+                      |    docker restart   |   |               |
+                      |                    +---+               |
+                      |                                        |
+                      |           docker rm                    |
+                      +----&gt; [Deleted] &lt;-----------------------+
+
+&Eacute;tats possibles :
+  - Created  : conteneur cr&eacute;&eacute; mais pas encore lanc&eacute;
+  - Running  : conteneur en cours d'ex&eacute;cution
+  - Paused   : conteneur mis en pause (docker pause)
+  - Stopped  : conteneur arr&ecirc;t&eacute; proprement
+  - Deleted  : conteneur supprim&eacute; d&eacute;finitivement</code></pre>
+
+<!-- ========================================================================== -->
+<!-- SECTION 4 : COMMANDES ESSENTIELLES -->
+<!-- ========================================================================== -->
+<h2 id="commandes">4. Commandes essentielles</h2>
+
+<h3>Gestion des images</h3>
+<table>
+  <tr><th>Commande</th><th>Description</th><th>Exemple</th></tr>
+  <tr><td><code>docker pull</code></td><td>T&eacute;l&eacute;charger une image depuis un registry</td><td><code>docker pull node:20-alpine</code></td></tr>
+  <tr><td><code>docker images</code></td><td>Lister les images locales</td><td><code>docker images</code></td></tr>
+  <tr><td><code>docker rmi</code></td><td>Supprimer une image</td><td><code>docker rmi node:20-alpine</code></td></tr>
+  <tr><td><code>docker build</code></td><td>Construire une image depuis un Dockerfile</td><td><code>docker build -t mon-app .</code></td></tr>
+  <tr><td><code>docker tag</code></td><td>Ajouter un tag &agrave; une image</td><td><code>docker tag mon-app user/mon-app:v1</code></td></tr>
+  <tr><td><code>docker push</code></td><td>Pousser une image vers un registry</td><td><code>docker push user/mon-app:v1</code></td></tr>
+</table>
+
+<h3>Gestion des conteneurs</h3>
+<table>
+  <tr><th>Commande</th><th>Description</th><th>Exemple</th></tr>
+  <tr><td><code>docker run</code></td><td>Cr&eacute;er et lancer un conteneur</td><td><code>docker run -d -p 3000:3000 mon-app</code></td></tr>
+  <tr><td><code>docker ps</code></td><td>Lister les conteneurs en cours</td><td><code>docker ps -a</code> (tous)</td></tr>
+  <tr><td><code>docker stop</code></td><td>Arr&ecirc;ter un conteneur</td><td><code>docker stop mon-conteneur</code></td></tr>
+  <tr><td><code>docker start</code></td><td>Red&eacute;marrer un conteneur arr&ecirc;t&eacute;</td><td><code>docker start mon-conteneur</code></td></tr>
+  <tr><td><code>docker rm</code></td><td>Supprimer un conteneur</td><td><code>docker rm mon-conteneur</code></td></tr>
+  <tr><td><code>docker logs</code></td><td>Voir les logs d'un conteneur</td><td><code>docker logs -f mon-conteneur</code></td></tr>
+  <tr><td><code>docker exec</code></td><td>Ex&eacute;cuter une commande dans un conteneur</td><td><code>docker exec -it mon-conteneur bash</code></td></tr>
+  <tr><td><code>docker inspect</code></td><td>D&eacute;tails complets d'un conteneur</td><td><code>docker inspect mon-conteneur</code></td></tr>
+</table>
+
+<h3>Flags importants de <code>docker run</code></h3>
+<table>
+  <tr><th>Flag</th><th>Description</th><th>Exemple</th></tr>
+  <tr><td><code>-d</code></td><td>Mode d&eacute;tach&eacute; (arri&egrave;re-plan)</td><td><code>docker run -d nginx</code></td></tr>
+  <tr><td><code>-p</code></td><td>Mapping de ports (h&ocirc;te:conteneur)</td><td><code>docker run -p 8080:80 nginx</code></td></tr>
+  <tr><td><code>-v</code></td><td>Monter un volume ou bind mount</td><td><code>docker run -v ./app:/app node</code></td></tr>
+  <tr><td><code>--name</code></td><td>Nommer le conteneur</td><td><code>docker run --name web nginx</code></td></tr>
+  <tr><td><code>--rm</code></td><td>Supprimer le conteneur &agrave; l'arr&ecirc;t</td><td><code>docker run --rm alpine echo ok</code></td></tr>
+  <tr><td><code>-it</code></td><td>Mode interactif + pseudo-TTY</td><td><code>docker run -it ubuntu bash</code></td></tr>
+  <tr><td><code>-e</code></td><td>D&eacute;finir une variable d'environnement</td><td><code>docker run -e NODE_ENV=prod node</code></td></tr>
+  <tr><td><code>--network</code></td><td>Connecter &agrave; un r&eacute;seau sp&eacute;cifique</td><td><code>docker run --network mon-reseau nginx</code></td></tr>
+</table>
+
+<h3>Nettoyage</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Supprimer tous les conteneurs arr&ecirc;t&eacute;s
+docker container prune
+
+# Supprimer toutes les images non utilis&eacute;es
+docker image prune -a
+
+# Nettoyage global (conteneurs, images, r&eacute;seaux, cache)
+docker system prune -a
+
+# Voir l'espace disque utilis&eacute; par Docker
+docker system df</code></pre>
+
+<div class="warning">
+  <p><strong>Attention :</strong> <code>docker system prune -a</code> supprime <strong>toutes</strong> les images non utilis&eacute;es par un conteneur actif. Utilisez cette commande avec pr&eacute;caution en production.</p>
+</div>
+
+<!-- ========================================================================== -->
+<!-- SECTION 5 : DOCKERFILE -->
+<!-- ========================================================================== -->
+<h2 id="dockerfile">5. Dockerfile</h2>
+
+<p>Un <strong>Dockerfile</strong> est un fichier texte contenant les instructions pour construire une image Docker. Chaque instruction cr&eacute;e une couche (layer) dans l'image finale.</p>
+
+<h3>Instructions principales</h3>
+<table>
+  <tr><th>Instruction</th><th>R&ocirc;le</th></tr>
+  <tr><td><code>FROM</code></td><td>Image de base (premi&egrave;re instruction obligatoire)</td></tr>
+  <tr><td><code>WORKDIR</code></td><td>D&eacute;finir le r&eacute;pertoire de travail dans le conteneur</td></tr>
+  <tr><td><code>COPY</code></td><td>Copier des fichiers de l'h&ocirc;te vers le conteneur</td></tr>
+  <tr><td><code>RUN</code></td><td>Ex&eacute;cuter une commande lors du build</td></tr>
+  <tr><td><code>EXPOSE</code></td><td>Documenter le port utilis&eacute; (informatif)</td></tr>
+  <tr><td><code>ENV</code></td><td>D&eacute;finir une variable d'environnement</td></tr>
+  <tr><td><code>CMD</code></td><td>Commande par d&eacute;faut au lancement du conteneur</td></tr>
+  <tr><td><code>ENTRYPOINT</code></td><td>Point d'entr&eacute;e du conteneur (non rempla&ccedil;able facilement)</td></tr>
+  <tr><td><code>ARG</code></td><td>Variable de build uniquement (pas disponible au runtime)</td></tr>
+  <tr><td><code>VOLUME</code></td><td>D&eacute;clarer un point de montage de volume</td></tr>
+</table>
+
+<h3>Exemple : Application Node.js</h3>
+<pre><code><span class="code-label">Dockerfile</span>
+# Image de base l&eacute;g&egrave;re avec Node.js 20
+FROM node:20-alpine
+
+# Cr&eacute;er le r&eacute;pertoire de travail
+WORKDIR /app
+
+# Copier les fichiers de d&eacute;pendances d'abord (cache Docker)
+COPY package.json package-lock.json ./
+
+# Installer les d&eacute;pendances
+RUN npm ci --only=production
+
+# Copier le reste du code source
+COPY . .
+
+# Documenter le port utilis&eacute;
+EXPOSE 3000
+
+# D&eacute;finir une variable d'environnement
+ENV NODE_ENV=production
+
+# Cr&eacute;er un utilisateur non-root pour la s&eacute;curit&eacute;
+RUN addgroup -S appgroup &amp;&amp; adduser -S appuser -G appgroup
+USER appuser
+
+# Commande de lancement
+CMD ["node", "server.js"]</code></pre>
+
+<h3>Exemple : Application Python / Flask</h3>
+<pre><code><span class="code-label">Dockerfile</span>
+# Image de base Python slim
+FROM python:3.12-slim
+
+# D&eacute;finir le r&eacute;pertoire de travail
+WORKDIR /app
+
+# Installer les d&eacute;pendances syst&egrave;me n&eacute;cessaires
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    gcc \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# Copier et installer les d&eacute;pendances Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copier le code source
+COPY . .
+
+# Cr&eacute;er un utilisateur non-root
+RUN useradd -m -r appuser
+USER appuser
+
+# Exposer le port Flask
+EXPOSE 5000
+
+# Variable d'environnement Flask
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+
+# Lancer l'application avec gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "app:app"]</code></pre>
+
+<h3>Multi-stage builds</h3>
+<p>Les builds multi-&eacute;tapes permettent de <strong>r&eacute;duire la taille de l'image finale</strong> en s&eacute;parant l'&eacute;tape de compilation de l'&eacute;tape d'ex&eacute;cution.</p>
+
+<pre><code><span class="code-label">Dockerfile (multi-stage)</span>
+# &Eacute;tape 1 : Build
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# &Eacute;tape 2 : Production (image finale l&eacute;g&egrave;re)
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]</code></pre>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> L'image finale ne contient que Nginx et les fichiers build&eacute;s. Toutes les d&eacute;pendances de build (Node.js, npm, node_modules) sont exclues, r&eacute;duisant la taille de l'image de plusieurs centaines de Mo &agrave; quelques dizaines de Mo.</p>
+</div>
+
+<h3>Fichier .dockerignore</h3>
+<p>Le fichier <code>.dockerignore</code> fonctionne comme <code>.gitignore</code> et emp&ecirc;che la copie de fichiers inutiles dans le contexte de build :</p>
+
+<pre><code><span class="code-label">.dockerignore</span>
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.*
+Dockerfile
+docker-compose.yml
+README.md
+.vscode
+coverage
+dist
+.DS_Store</code></pre>
+
+<h3>Bonnes pratiques Dockerfile</h3>
+<ul>
+  <li><strong>Exploiter le cache de couches</strong> &mdash; Copier <code>package.json</code> avant le code source pour que <code>npm install</code> ne soit relanc&eacute; que si les d&eacute;pendances changent.</li>
+  <li><strong>Utiliser des images de base minimales</strong> &mdash; Pr&eacute;f&eacute;rer <code>alpine</code> ou <code>slim</code> aux images compl&egrave;tes (ex: <code>node:20-alpine</code> fait ~50 Mo vs ~350 Mo pour <code>node:20</code>).</li>
+  <li><strong>Ex&eacute;cuter en non-root</strong> &mdash; Toujours cr&eacute;er et utiliser un utilisateur d&eacute;di&eacute; via <code>USER</code>.</li>
+  <li><strong>Combiner les commandes RUN</strong> &mdash; R&eacute;duire le nombre de couches en cha&icirc;nant les commandes avec <code>&amp;&amp;</code>.</li>
+  <li><strong>Nettoyer dans la m&ecirc;me couche</strong> &mdash; Supprimer les caches et fichiers temporaires dans le m&ecirc;me <code>RUN</code> que l'installation.</li>
+</ul>
+
+<!-- ========================================================================== -->
+<!-- SECTION 6 : DOCKER COMPOSE -->
+<!-- ========================================================================== -->
+<h2 id="compose">6. Docker Compose</h2>
+
+<p><strong>Docker Compose</strong> est un outil qui permet de d&eacute;finir et g&eacute;rer des applications multi-conteneurs &agrave; l'aide d'un fichier YAML. Au lieu de lancer chaque conteneur individuellement avec de longues commandes <code>docker run</code>, on d&eacute;crit toute l'infrastructure dans un seul fichier <code>docker-compose.yml</code>.</p>
+
+<h3>Exemple complet : Stack Web + MySQL + phpMyAdmin</h3>
+<pre><code><span class="code-label">docker-compose.yml</span>
+version: "3.8"
+
+services:
+  # ---- Application Web (Node.js) ----
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mon-app-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=app_user
+      - DB_PASSWORD=secret123
+      - DB_NAME=ma_base
+    volumes:
+      - ./src:/app/src       # Bind mount pour le dev (hot reload)
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # ---- Base de donn&eacute;es MySQL ----
+  db:
+    image: mysql:8.0
+    container_name: mon-app-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ma_base
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: secret123
+    volumes:
+      - db-data:/var/lib/mysql          # Volume nomm&eacute; pour persistance
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Script d'init
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  # ---- phpMyAdmin ----
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: mon-app-pma
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      - db
+    networks:
+      - app-network
+    restart: unless-stopped
+
+# ---- Volumes ----
+volumes:
+  db-data:
+    driver: local
+
+# ---- R&eacute;seaux ----
+networks:
+  app-network:
+    driver: bridge</code></pre>
+
+<h3>Commandes Docker Compose</h3>
+<table>
+  <tr><th>Commande</th><th>Description</th></tr>
+  <tr><td><code>docker compose up -d</code></td><td>Lancer tous les services en arri&egrave;re-plan</td></tr>
+  <tr><td><code>docker compose down</code></td><td>Arr&ecirc;ter et supprimer les conteneurs et r&eacute;seaux</td></tr>
+  <tr><td><code>docker compose down -v</code></td><td>Idem + supprimer les volumes</td></tr>
+  <tr><td><code>docker compose logs -f</code></td><td>Suivre les logs de tous les services en temps r&eacute;el</td></tr>
+  <tr><td><code>docker compose logs app</code></td><td>Logs d'un service sp&eacute;cifique</td></tr>
+  <tr><td><code>docker compose exec db bash</code></td><td>Ouvrir un shell dans le conteneur db</td></tr>
+  <tr><td><code>docker compose ps</code></td><td>Lister les services et leur &eacute;tat</td></tr>
+  <tr><td><code>docker compose build</code></td><td>Reconstruire les images des services</td></tr>
+  <tr><td><code>docker compose restart app</code></td><td>Red&eacute;marrer un service sp&eacute;cifique</td></tr>
+  <tr><td><code>docker compose pull</code></td><td>T&eacute;l&eacute;charger les derni&egrave;res versions des images</td></tr>
+</table>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> Depuis Docker Compose v2, la commande est <code>docker compose</code> (sans tiret), int&eacute;gr&eacute;e directement dans Docker CLI. L'ancienne syntaxe <code>docker-compose</code> avec tiret est encore fonctionnelle mais d&eacute;pr&eacute;ci&eacute;e.</p>
+</div>
+
+<h3>Variables d'environnement avec .env</h3>
+<p>Pour &eacute;viter de stocker des secrets directement dans le <code>docker-compose.yml</code>, utilisez un fichier <code>.env</code> :</p>
+
+<pre><code><span class="code-label">.env</span>
+MYSQL_ROOT_PASSWORD=rootpassword
+MYSQL_DATABASE=ma_base
+MYSQL_USER=app_user
+MYSQL_PASSWORD=secret123
+NODE_ENV=production</code></pre>
+
+<p>Puis r&eacute;f&eacute;rencez les variables dans le fichier Compose :</p>
+
+<pre><code><span class="code-label">docker-compose.yml (extrait)</span>
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}</code></pre>
+
+<div class="warning">
+  <p><strong>Attention :</strong> Ne versionnez <strong>jamais</strong> le fichier <code>.env</code> contenant des secrets dans Git. Ajoutez-le &agrave; votre <code>.gitignore</code> et fournissez un fichier <code>.env.example</code> avec des valeurs factices.</p>
+</div>
+
+<!-- ========================================================================== -->
+<!-- SECTION 7 : VOLUMES ET PERSISTANCE -->
+<!-- ========================================================================== -->
+<h2 id="volumes">7. Volumes et persistance</h2>
+
+<p>Par d&eacute;faut, les donn&eacute;es &eacute;crites dans un conteneur sont <strong>&eacute;ph&eacute;m&egrave;res</strong> : elles disparaissent &agrave; la suppression du conteneur. Docker propose deux m&eacute;canismes pour persister les donn&eacute;es.</p>
+
+<h3>Named Volumes vs Bind Mounts</h3>
+<div class="card">
+<table>
+  <tr><th>Crit&egrave;re</th><th>Named Volume</th><th>Bind Mount</th></tr>
+  <tr><td><strong>G&eacute;r&eacute; par</strong></td><td>Docker</td><td>L'utilisateur (syst&egrave;me de fichiers h&ocirc;te)</td></tr>
+  <tr><td><strong>Emplacement</strong></td><td><code>/var/lib/docker/volumes/</code></td><td>N'importe o&ugrave; sur l'h&ocirc;te</td></tr>
+  <tr><td><strong>Performance</strong></td><td>Optimale sur tous les OS</td><td>Variable (lent sur macOS/Windows)</td></tr>
+  <tr><td><strong>Cas d'usage</strong></td><td>Donn&eacute;es de BDD, fichiers persistants</td><td>Code source en dev, fichiers de config</td></tr>
+  <tr><td><strong>Backup</strong></td><td>Via commandes Docker</td><td>Acc&egrave;s direct au syst&egrave;me de fichiers</td></tr>
+  <tr><td><strong>Syntaxe</strong></td><td><code>-v mon-volume:/data</code></td><td><code>-v ./local:/data</code></td></tr>
+</table>
+</div>
+
+<h3>Commandes de gestion des volumes</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Cr&eacute;er un volume nomm&eacute;
+docker volume create mes-donnees
+
+# Lister tous les volumes
+docker volume ls
+
+# Inspecter un volume (voir son chemin r&eacute;el)
+docker volume inspect mes-donnees
+
+# Supprimer un volume
+docker volume rm mes-donnees
+
+# Supprimer tous les volumes non utilis&eacute;s
+docker volume prune</code></pre>
+
+<h3>Utilisation dans docker run</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Named volume : les donn&eacute;es MySQL persistent
+docker run -d \
+  --name ma-bdd \
+  -v mysql-data:/var/lib/mysql \
+  -e MYSQL_ROOT_PASSWORD=secret \
+  mysql:8.0
+
+# Bind mount : synchroniser le code local avec le conteneur
+docker run -d \
+  --name mon-dev \
+  -v $(pwd)/src:/app/src \
+  -p 3000:3000 \
+  node:20-alpine npm run dev</code></pre>
+
+<h3>Strat&eacute;gie de backup d'un volume</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Sauvegarder un volume dans une archive tar
+docker run --rm \
+  -v mysql-data:/source:ro \
+  -v $(pwd)/backups:/backup \
+  alpine tar czf /backup/mysql-backup-$(date +%Y%m%d).tar.gz -C /source .
+
+# Restaurer un volume depuis une archive
+docker run --rm \
+  -v mysql-data:/target \
+  -v $(pwd)/backups:/backup \
+  alpine tar xzf /backup/mysql-backup-20250315.tar.gz -C /target</code></pre>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> Pour les bases de donn&eacute;es, privil&eacute;giez les outils natifs (<code>mysqldump</code>, <code>pg_dump</code>) pour les backups plut&ocirc;t que de copier les fichiers bruts du volume, afin de garantir la coh&eacute;rence des donn&eacute;es.</p>
+</div>
+
+<!-- ========================================================================== -->
+<!-- SECTION 8 : RESEAU DOCKER -->
+<!-- ========================================================================== -->
+<h2 id="reseau">8. R&eacute;seau Docker</h2>
+
+<p>Docker g&egrave;re automatiquement le r&eacute;seau de ses conteneurs. Comprendre les diff&eacute;rents types de r&eacute;seaux est essentiel pour architecturer correctement ses applications.</p>
+
+<h3>Types de r&eacute;seaux</h3>
+<div class="card">
+<table>
+  <tr><th>Driver</th><th>Description</th><th>Cas d'usage</th></tr>
+  <tr><td><code>bridge</code></td><td>R&eacute;seau isol&eacute; par d&eacute;faut. Les conteneurs sur le m&ecirc;me bridge communiquent entre eux.</td><td>Environnement local, multi-conteneurs</td></tr>
+  <tr><td><code>host</code></td><td>Le conteneur partage le r&eacute;seau de l'h&ocirc;te directement. Pas d'isolation r&eacute;seau.</td><td>Performance maximale, debugging</td></tr>
+  <tr><td><code>none</code></td><td>Aucun acc&egrave;s r&eacute;seau. Le conteneur est totalement isol&eacute;.</td><td>Traitements offline, s&eacute;curit&eacute;</td></tr>
+  <tr><td><code>overlay</code></td><td>R&eacute;seau distribu&eacute; entre plusieurs h&ocirc;tes Docker (Swarm).</td><td>Cluster Docker Swarm</td></tr>
+</table>
+</div>
+
+<h3>Communication inter-conteneurs</h3>
+<p>Dans un r&eacute;seau bridge personnalis&eacute;, les conteneurs peuvent se joindre <strong>par leur nom</strong> gr&acirc;ce au DNS interne de Docker :</p>
+
+<pre><code><span class="code-label">Terminal</span>
+# Cr&eacute;er un r&eacute;seau personnalis&eacute;
+docker network create mon-reseau
+
+# Lancer un conteneur MySQL sur ce r&eacute;seau
+docker run -d \
+  --name ma-bdd \
+  --network mon-reseau \
+  -e MYSQL_ROOT_PASSWORD=secret \
+  mysql:8.0
+
+# Lancer un conteneur Node.js sur le m&ecirc;me r&eacute;seau
+# Il peut acc&eacute;der &agrave; MySQL via le nom "ma-bdd"
+docker run -d \
+  --name mon-app \
+  --network mon-reseau \
+  -e DB_HOST=ma-bdd \
+  -p 3000:3000 \
+  mon-app-image</code></pre>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> Utilisez toujours un r&eacute;seau bridge <strong>personnalis&eacute;</strong> plut&ocirc;t que le bridge par d&eacute;faut. Le bridge par d&eacute;faut ne supporte pas la r&eacute;solution DNS par nom de conteneur &mdash; seules les adresses IP fonctionnent.</p>
+</div>
+
+<h3>Mapping de ports</h3>
+<p>Le mapping de ports permet d'exposer un service du conteneur vers l'h&ocirc;te :</p>
+
+<pre><code><span class="code-label">Terminal</span>
+# Syntaxe : -p [IP_HOTE:]PORT_HOTE:PORT_CONTENEUR[/PROTOCOLE]
+
+# Mapper le port 80 du conteneur vers le port 8080 de l'h&ocirc;te
+docker run -p 8080:80 nginx
+
+# Mapper uniquement sur localhost (non accessible depuis l'ext&eacute;rieur)
+docker run -p 127.0.0.1:8080:80 nginx
+
+# Mapper un port UDP
+docker run -p 53:53/udp dns-server
+
+# Laisser Docker choisir un port h&ocirc;te al&eacute;atoire
+docker run -p 80 nginx
+docker port mon-conteneur   # voir le port attribu&eacute;</code></pre>
+
+<h3>Commandes r&eacute;seau</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Lister les r&eacute;seaux
+docker network ls
+
+# Inspecter un r&eacute;seau (voir les conteneurs connect&eacute;s)
+docker network inspect mon-reseau
+
+# Connecter un conteneur existant &agrave; un r&eacute;seau
+docker network connect mon-reseau mon-conteneur
+
+# D&eacute;connecter un conteneur d'un r&eacute;seau
+docker network disconnect mon-reseau mon-conteneur
+
+# Supprimer un r&eacute;seau
+docker network rm mon-reseau
+
+# Supprimer les r&eacute;seaux non utilis&eacute;s
+docker network prune</code></pre>
+
+<!-- ========================================================================== -->
+<!-- SECTION 9 : BONNES PRATIQUES -->
+<!-- ========================================================================== -->
+<h2 id="bonnes-pratiques">9. Bonnes pratiques</h2>
+
+<h3>S&eacute;curit&eacute;</h3>
+<div class="card">
+<ul>
+  <li><strong>Ne jamais ex&eacute;cuter en root</strong> &mdash; Utiliser <code>USER</code> dans le Dockerfile pour cr&eacute;er un utilisateur d&eacute;di&eacute;. Un conteneur compromis avec les droits root peut acc&eacute;der &agrave; l'h&ocirc;te.</li>
+  <li><strong>Scanner les images</strong> &mdash; Utiliser <code>docker scout</code> ou des outils comme Trivy pour d&eacute;tecter les vuln&eacute;rabilit&eacute;s dans les images.</li>
+  <li><strong>Utiliser des images officielles</strong> &mdash; Privil&eacute;gier les images marqu&eacute;es &laquo; Docker Official Image &raquo; sur Docker Hub.</li>
+  <li><strong>Pinner les versions</strong> &mdash; Utiliser <code>node:20.11-alpine</code> plut&ocirc;t que <code>node:latest</code> pour des builds reproductibles.</li>
+  <li><strong>Ne pas stocker de secrets dans l'image</strong> &mdash; Utiliser des variables d'environnement, des fichiers <code>.env</code> ou Docker Secrets.</li>
+  <li><strong>Limiter les capabilities</strong> &mdash; Utiliser <code>--cap-drop ALL</code> et n'ajouter que les capabilities n&eacute;cessaires.</li>
+</ul>
+</div>
+
+<pre><code><span class="code-label">Terminal</span>
+# Scanner une image pour les vuln&eacute;rabilit&eacute;s
+docker scout cves mon-app:latest
+
+# Lancer avec des capabilities r&eacute;duites
+docker run --cap-drop ALL --cap-add NET_BIND_SERVICE nginx</code></pre>
+
+<h3>Optimisation des images</h3>
+<div class="card">
+<ul>
+  <li><strong>Choisir des images de base l&eacute;g&egrave;res</strong> &mdash; Comparer les tailles :</li>
+</ul>
+<table>
+  <tr><th>Image</th><th>Taille approximative</th></tr>
+  <tr><td><code>ubuntu:22.04</code></td><td>~77 Mo</td></tr>
+  <tr><td><code>debian:bookworm-slim</code></td><td>~74 Mo</td></tr>
+  <tr><td><code>alpine:3.19</code></td><td>~7 Mo</td></tr>
+  <tr><td><code>node:20</code></td><td>~350 Mo</td></tr>
+  <tr><td><code>node:20-alpine</code></td><td>~50 Mo</td></tr>
+  <tr><td><code>python:3.12</code></td><td>~390 Mo</td></tr>
+  <tr><td><code>python:3.12-slim</code></td><td>~45 Mo</td></tr>
+</table>
+<ul>
+  <li><strong>Exploiter le cache de couches</strong> &mdash; Ordonner les instructions du plus stable au plus variable.</li>
+  <li><strong>Combiner les commandes RUN</strong> &mdash; Moins de couches = image plus l&eacute;g&egrave;re.</li>
+  <li><strong>Utiliser les multi-stage builds</strong> &mdash; S&eacute;parer la compilation de l'ex&eacute;cution.</li>
+  <li><strong>Toujours utiliser .dockerignore</strong> &mdash; Exclure <code>node_modules</code>, <code>.git</code>, fichiers temporaires.</li>
+</ul>
+</div>
+
+<h3>Limites de ressources</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Limiter la m&eacute;moire &agrave; 512 Mo et les CPUs &agrave; 1.5
+docker run -d \
+  --memory=512m \
+  --cpus=1.5 \
+  --name mon-app \
+  mon-image
+
+# Avec Docker Compose
+# services:
+#   app:
+#     deploy:
+#       resources:
+#         limits:
+#           cpus: "1.5"
+#           memory: 512M
+#         reservations:
+#           cpus: "0.5"
+#           memory: 256M</code></pre>
+
+<h3>Logging</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Voir les logs en temps r&eacute;el
+docker logs -f mon-conteneur
+
+# Limiter aux 100 derni&egrave;res lignes
+docker logs --tail 100 mon-conteneur
+
+# Logs avec horodatage
+docker logs -t mon-conteneur
+
+# Configurer la rotation des logs (docker run)
+docker run -d \
+  --log-driver json-file \
+  --log-opt max-size=10m \
+  --log-opt max-file=3 \
+  mon-app</code></pre>
+
+<!-- ========================================================================== -->
+<!-- SECTION 10 : CAS PRATIQUE STACK LAMP -->
+<!-- ========================================================================== -->
+<h2 id="cas-pratique">10. Cas pratique : Stack LAMP compl&egrave;te</h2>
+
+<p>Mettons en pratique l'ensemble des concepts vus dans ce guide en construisant une <strong>stack LAMP</strong> (Linux, Apache, PHP, MySQL) compl&egrave;te avec Docker Compose, id&eacute;ale pour le d&eacute;veloppement web en BTS SIO.</p>
+
+<h3>Structure du projet</h3>
+<pre><code><span class="code-label">Arborescence</span>
+mon-projet-lamp/
+  ├── docker-compose.yml
+  ├── .env
+  ├── .dockerignore
+  ├── php/
+  │   └── Dockerfile
+  ├── config/
+  │   ├── php.ini
+  │   └── vhost.conf
+  ├── src/
+  │   └── index.php
+  ├── sql/
+  │   └── init.sql
+  └── backups/</code></pre>
+
+<h3>&Eacute;tape 1 : Le fichier .env</h3>
+<pre><code><span class="code-label">.env</span>
+# Configuration MySQL
+MYSQL_ROOT_PASSWORD=rootsecret2025
+MYSQL_DATABASE=lamp_app
+MYSQL_USER=lamp_user
+MYSQL_PASSWORD=lampsecret2025
+
+# Configuration PHP
+PHP_VERSION=8.3
+
+# Ports
+WEB_PORT=8080
+PMA_PORT=8081
+DB_PORT=3306</code></pre>
+
+<h3>&Eacute;tape 2 : Dockerfile PHP personnalis&eacute;</h3>
+<pre><code><span class="code-label">php/Dockerfile</span>
+FROM php:8.3-apache
+
+# Activer les modules Apache n&eacute;cessaires
+RUN a2enmod rewrite headers
+
+# Installer les extensions PHP courantes
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    unzip \
+    &amp;&amp; docker-php-ext-configure gd --with-freetype --with-jpeg \
+    &amp;&amp; docker-php-ext-install -j$(nproc) \
+       pdo_mysql \
+       mysqli \
+       gd \
+       zip \
+       opcache \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# Copier la configuration PHP personnalis&eacute;e
+COPY ../config/php.ini /usr/local/etc/php/conf.d/custom.ini
+
+# D&eacute;finir le r&eacute;pertoire de travail
+WORKDIR /var/www/html
+
+# Exposer le port Apache
+EXPOSE 80</code></pre>
+
+<h3>&Eacute;tape 3 : Configuration PHP</h3>
+<pre><code><span class="code-label">config/php.ini</span>
+; Param&egrave;tres de d&eacute;veloppement
+display_errors = On
+error_reporting = E_ALL
+max_execution_time = 120
+memory_limit = 256M
+upload_max_filesize = 64M
+post_max_size = 64M
+date.timezone = Europe/Paris
+
+; OPcache pour les performances
+opcache.enable = 1
+opcache.memory_consumption = 128
+opcache.max_accelerated_files = 10000</code></pre>
+
+<h3>&Eacute;tape 4 : Script SQL d'initialisation</h3>
+<pre><code><span class="code-label">sql/init.sql</span>
+-- Script ex&eacute;cut&eacute; automatiquement au premier lancement
+CREATE TABLE IF NOT EXISTS utilisateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    mot_de_passe VARCHAR(255) NOT NULL,
+    date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO utilisateurs (nom, email, mot_de_passe) VALUES
+('Admin', 'admin@example.com', '$2y$10$abcdefghijklmnopqrstuuABCDEFGH'),
+('Utilisateur Test', 'user@example.com', '$2y$10$abcdefghijklmnopqrstuuABCDEFGH');
+
+SELECT 'Base de donn&eacute;es initialis&eacute;e avec succ&egrave;s !' AS message;</code></pre>
+
+<h3>&Eacute;tape 5 : docker-compose.yml complet</h3>
+<pre><code><span class="code-label">docker-compose.yml</span>
+version: "3.8"
+
+services:
+  # ---- Apache + PHP ----
+  web:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    container_name: lamp-web
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    volumes:
+      - ./src:/var/www/html          # Code source mont&eacute;
+      - ./config/php.ini:/usr/local/etc/php/conf.d/custom.ini
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+    networks:
+      - lamp-network
+    restart: unless-stopped
+
+  # ---- MySQL 8.0 ----
+  db:
+    image: mysql:8.0
+    container_name: lamp-db
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - lamp-network
+    restart: unless-stopped
+
+  # ---- phpMyAdmin ----
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: lamp-pma
+    ports:
+      - "${PMA_PORT:-8081}:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      UPLOAD_LIMIT: 64M
+    depends_on:
+      - db
+    networks:
+      - lamp-network
+    restart: unless-stopped
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  lamp-network:
+    driver: bridge</code></pre>
+
+<h3>&Eacute;tape 6 : Page PHP de test</h3>
+<pre><code><span class="code-label">src/index.php</span>
+&lt;?php
+// Connexion &agrave; la base de donn&eacute;es via les variables d'environnement
+$host = getenv('DB_HOST') ?: 'db';
+$db   = getenv('DB_NAME') ?: 'lamp_app';
+$user = getenv('DB_USER') ?: 'lamp_user';
+$pass = getenv('DB_PASS') ?: 'lampsecret2025';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8mb4", $user, $pass, [
+        PDO::ATTR_ERRMODE =&gt; PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE =&gt; PDO::FETCH_ASSOC,
+    ]);
+    $status = "Connect&eacute; &agrave; MySQL avec succ&egrave;s !";
+    $users = $pdo-&gt;query("SELECT id, nom, email FROM utilisateurs")-&gt;fetchAll();
+} catch (PDOException $e) {
+    $status = "Erreur de connexion : " . $e-&gt;getMessage();
+    $users = [];
+}
+?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Stack LAMP Docker&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Stack LAMP avec Docker&lt;/h1&gt;
+    &lt;p&gt;&lt;strong&gt;Statut :&lt;/strong&gt; &lt;?= htmlspecialchars($status) ?&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;strong&gt;PHP :&lt;/strong&gt; &lt;?= PHP_VERSION ?&gt;&lt;/p&gt;
+
+    &lt;?php if (!empty($users)): ?&gt;
+    &lt;h2&gt;Utilisateurs&lt;/h2&gt;
+    &lt;table border="1"&gt;
+        &lt;tr&gt;&lt;th&gt;ID&lt;/th&gt;&lt;th&gt;Nom&lt;/th&gt;&lt;th&gt;Email&lt;/th&gt;&lt;/tr&gt;
+        &lt;?php foreach ($users as $u): ?&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;?= $u['id'] ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= htmlspecialchars($u['nom']) ?&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;?= htmlspecialchars($u['email']) ?&gt;&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;?php endforeach; ?&gt;
+    &lt;/table&gt;
+    &lt;?php endif; ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h3>&Eacute;tape 7 : Lancer et tester</h3>
+<pre><code><span class="code-label">Terminal</span>
+# Se placer dans le r&eacute;pertoire du projet
+cd mon-projet-lamp
+
+# Construire et lancer la stack
+docker compose up -d --build
+
+# V&eacute;rifier que les 3 services tournent
+docker compose ps
+
+# Voir les logs en temps r&eacute;el
+docker compose logs -f
+
+# Acc&eacute;der aux services :
+#   Application web  : http://localhost:8080
+#   phpMyAdmin       : http://localhost:8081
+
+# Se connecter au conteneur PHP pour debug
+docker compose exec web bash
+
+# Se connecter directement &agrave; MySQL
+docker compose exec db mysql -u lamp_user -p lamp_app
+
+# Arr&ecirc;ter la stack (conserve les donn&eacute;es)
+docker compose down
+
+# Arr&ecirc;ter et supprimer les donn&eacute;es
+docker compose down -v</code></pre>
+
+<div class="tip">
+  <p><strong>Astuce :</strong> Utilisez <code>docker compose up -d --build</code> pour reconstruire les images modifi&eacute;es. Sans le flag <code>--build</code>, Docker Compose r&eacute;utilise les images en cache m&ecirc;me si le Dockerfile a chang&eacute;.</p>
+</div>
+
+<h3>R&eacute;sum&eacute; des acc&egrave;s</h3>
+<div class="card">
+<table>
+  <tr><th>Service</th><th>URL / Acc&egrave;s</th><th>Identifiants</th></tr>
+  <tr><td>Application PHP</td><td><code>http://localhost:8080</code></td><td>&mdash;</td></tr>
+  <tr><td>phpMyAdmin</td><td><code>http://localhost:8081</code></td><td>root / rootsecret2025</td></tr>
+  <tr><td>MySQL (CLI)</td><td><code>localhost:3306</code></td><td>lamp_user / lampsecret2025</td></tr>
+</table>
+</div>
+
+<div class="warning">
+  <p><strong>Attention :</strong> Les mots de passe utilis&eacute;s ici sont des exemples pour un environnement de d&eacute;veloppement. En production, utilisez des mots de passe forts g&eacute;n&eacute;r&eacute;s al&eacute;atoirement et stockez-les de mani&egrave;re s&eacute;curis&eacute;e (Docker Secrets, vault, etc.).</p>
+</div>
+
+<!-- ========== LIENS UTILES ========== -->
+<h2 id="liens-utiles">Liens utiles</h2>
+
+<div class="card-grid">
+  <div class="card-sm">
+    <h4>Documentation officielle Docker</h4>
+    <p>R&eacute;f&eacute;rence compl&egrave;te : guides de d&eacute;marrage, documentation de l'API, bonnes pratiques et tutoriels.</p>
+    <a href="https://docs.docker.com" target="_blank" rel="noopener">docs.docker.com &rarr;</a>
+  </div>
+  <div class="card-sm">
+    <h4>Docker Hub</h4>
+    <p>Registry public officiel : des milliers d'images pr&ecirc;tes &agrave; l'emploi (Node, Python, MySQL, Nginx, etc.).</p>
+    <a href="https://hub.docker.com" target="_blank" rel="noopener">hub.docker.com &rarr;</a>
+  </div>
+  <div class="card-sm">
+    <h4>Docker Compose Docs</h4>
+    <p>Documentation d&eacute;di&eacute;e &agrave; Docker Compose : sp&eacute;cification du fichier YAML, commandes et exemples.</p>
+    <a href="https://docs.docker.com/compose/" target="_blank" rel="noopener">docs.docker.com/compose &rarr;</a>
+  </div>
+  <div class="card-sm">
+    <h4>Play with Docker</h4>
+    <p>Laboratoire en ligne gratuit pour exp&eacute;rimenter Docker directement dans le navigateur, sans installation.</p>
+    <a href="https://labs.play-with-docker.com" target="_blank" rel="noopener">labs.play-with-docker.com &rarr;</a>
+  </div>
+</div>
+
+<div class="card">
+  <h4>Docker Security Best Practices</h4>
+  <p>Guide officiel de s&eacute;curit&eacute; Docker : images de confiance, utilisateur non-root, scan de vuln&eacute;rabilit&eacute;s, gestion des secrets et limitations de ressources.</p>
+  <a href="https://docs.docker.com/build/building/best-practices/" target="_blank" rel="noopener">docs.docker.com &mdash; Best Practices &rarr;</a>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  Guide technique &mdash; Docker &amp; Containers &mdash; Sagar MIR &mdash; 2025
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — FamiliDocs</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #8b5cf6; --accent2: #a78bfa; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; --gold: #d4af37; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(139,92,246,0.15); color: var(--accent2); border: 1px solid rgba(139,92,246,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(139,92,246,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>FamiliDocs</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Coffre administratif numérique familial</p>
+<div class="header-line"></div>
+
+<div>
+  <span class="badge">Python</span>
+  <span class="badge">Flask</span>
+  <span class="badge">SQLite</span>
+  <span class="badge">AES</span>
+  <span class="badge">pytest</span>
+</div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>FamiliDocs — Coffre administratif numérique familial</td></tr>
+  <tr><th>Commanditaire</th><td>Projet personnel — Épreuve U5 BTS SIO SLAM</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR</td></tr>
+  <tr><th>Date</th><td>2025 – 2026</td></tr>
+  <tr><th>Statut</th><td>En cours de développement</td></tr>
+  <tr><th>Type</th><td>Application web — Projet BTS SIO SLAM</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Les familles gèrent de nombreux documents administratifs (impôts, assurances, banque, santé, identité) dispersés entre supports papier, mails et drives. Aucune solution ne centralise tout avec un chiffrement fort et un partage granulaire.</td></tr>
+  <tr><th>Objectif principal</th><td>Permettre aux familles de centraliser, sécuriser et partager leurs documents administratifs dans un coffre numérique chiffré.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Chiffrement AES de bout en bout des documents</li>
+      <li>Versioning automatique des fichiers</li>
+      <li>Partage granulaire avec permissions temporaires</li>
+      <li>Système de tags et recherche avancée</li>
+      <li>Notifications en temps réel</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Gestion des documents</td><td>Upload, téléchargement, suppression, organisation par dossiers et tags. Support multi-formats.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Chiffrement AES</td><td>Chiffrement côté serveur de tous les documents stockés. Clés de chiffrement par utilisateur.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Versioning</td><td>Historique automatique des versions de chaque document. Restauration possible.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Partage granulaire</td><td>Partage par lien avec permissions (lecture/écriture), expiration temporelle configurable.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Authentification</td><td>Inscription, connexion sécurisée, gestion de sessions. Mots de passe hachés bcrypt.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Notifications</td><td>Alertes temps réel (partage reçu, document modifié, expiration imminente).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Recherche</td><td>Recherche par nom, tag, type de document, date. Filtres combinés.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Backend</td><td>Python 3 / Flask — Architecture MVC, 7 services métier, 8 blueprints</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Base de données</td><td>SQLite — 9 modèles de données relationnels</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sécurité</td><td>Chiffrement AES-256, bcrypt, CSRF tokens, headers sécurisés</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Tests</td><td>pytest — 41 tests unitaires et d'intégration</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Frontend</td><td>Templates Jinja2, HTML/CSS responsive</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Sécurité</td><td>Chiffrement obligatoire de tous les fichiers. Conformité OWASP Top 10.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Performance</td><td>Temps de réponse &lt; 2s pour les opérations courantes.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Accessibilité</td><td>Interface responsive, utilisable sur mobile et desktop.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Académique</td><td>Respect du référentiel BTS SIO SLAM — Épreuve U5.</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Application web</td><td>Code source Python/Flask déployé</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation technique</td><td>Architecture, modèles de données, API, guide d'installation</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Tests</td><td>Suite de 41 tests pytest avec rapports de couverture</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Dossier projet BTS</td><td>Documentation conforme au référentiel U5</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — FamiliDocs — Sagar MIR — 2025-2026</div>
+</div>
+</body>
+</html>

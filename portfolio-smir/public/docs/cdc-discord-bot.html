@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Bot Discord Veille Tech</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #4752c4; --accent2: #5865F2; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(88,101,242,0.15); color: var(--accent2); border: 1px solid rgba(88,101,242,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(88,101,242,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Bot Discord — Veille Tech</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Automatisation de veille technologique et sécurité</p>
+<div class="header-line"></div>
+
+<div><span class="badge">Python</span><span class="badge">Discord API</span><span class="badge">RSS</span><span class="badge">Automation</span></div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Bot Discord — Veille technologique automatisée</td></tr>
+  <tr><th>Commanditaire</th><td>Projet personnel — BTS SIO (veille technologique)</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR</td></tr>
+  <tr><th>Date</th><td>2025</td></tr>
+  <tr><th>Statut</th><td>En production (serveur Discord actif)</td></tr>
+  <tr><th>Type</th><td>Bot automatisé — Veille et diffusion d'informations</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Dans le cadre du BTS SIO, une veille technologique active est requise. Plutôt que de consulter manuellement plusieurs sources, l'idée est d'automatiser la collecte et la diffusion via un bot Discord accessible à toute la communauté.</td></tr>
+  <tr><th>Objectif principal</th><td>Automatiser la veille technologique 24h/24 en agrégeant des sources multiples et en diffusant les informations pertinentes sur Discord.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Agrégation multi-sources (OWASP, CERT-FR, MSRC, Krebs, Hacker News)</li>
+      <li>Publication automatique dans des channels dédiés</li>
+      <li>Commandes interactives pour la recherche à la demande</li>
+      <li>Focus sécurité applicative et développement web</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Agrégation RSS</td><td>Collecte automatique depuis OWASP, CERT-FR, MSRC, Krebs on Security, Hacker News.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Publication auto</td><td>Diffusion 24h/24 des nouvelles alertes dans les channels Discord dédiés.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Commandes</td><td>!veille, !ldap, !web, !news — Commandes interactives pour recherches ciblées.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Filtrage</td><td>Catégorisation automatique par thème (sécurité, dev web, infrastructure).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Formatage</td><td>Embeds Discord riches avec titre, résumé, lien source, date et catégorie.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Langage</td><td>Python 3 — discord.py</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sources</td><td>Flux RSS/Atom, APIs web, scraping HTML</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Planification</td><td>Tâches asynchrones avec asyncio, exécution périodique</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Déploiement</td><td>Serveur continu (process Python persistant)</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Disponibilité</td><td>Bot actif 24h/24, 7j/7. Reconnexion automatique en cas de déconnexion.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Pertinence</td><td>Filtrage pour éviter le spam. Seules les informations pertinentes sont publiées.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Rate limiting</td><td>Respect des limites de l'API Discord (pas de flood).</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Bot Discord</td><td>Code Python déployé et opérationnel</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Configuration</td><td>Sources RSS configurées, channels mappés</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation BTS</td><td>Rapport de veille technologique conforme au référentiel</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Bot Discord Veille Tech — Sagar MIR — 2025</div>
+</div>
+</body>
+</html>

@@ -7,7 +7,7 @@ export const INV = 1 / PHI;
 
 export const THEME = {
   bg: "#0b1020",
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",

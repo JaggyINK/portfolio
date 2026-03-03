@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Virtualisation — VirtualBox &amp; VMware</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #4f46e5; --accent2: #6366f1; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 940px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(79,70,229,0.15); color: var(--accent2); border: 1px solid rgba(99,102,241,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card h3:first-child { margin-top: 0; }
+
+  /* Meta */
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+
+  /* Header line */
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(79,70,229,0.12); color: var(--accent2); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+
+  /* Code */
+  code { background: rgba(99,102,241,0.12); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+  pre { background: #0d1117; border: 1px solid var(--border); border-radius: 0.6rem; padding: 1.2rem 1.4rem; overflow-x: auto; margin: 1rem 0; line-height: 1.6; }
+  pre code { background: none; padding: 0; color: #c9d1d9; font-size: 0.82rem; }
+  .code-label { display: inline-block; background: var(--accent); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 0.4rem 0.4rem 0 0; margin-bottom: -1px; position: relative; top: 1px; letter-spacing: 0.03em; }
+
+  /* Tip / Warning boxes */
+  .tip { background: rgba(79,70,229,0.07); border-left: 4px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .tip p { margin-bottom: 0; }
+  .tip-title { font-weight: 700; color: var(--accent2); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+  .warning { background: rgba(251,191,36,0.07); border-left: 4px solid #f59e0b; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .warning p { margin-bottom: 0; }
+  .warning-title { font-weight: 700; color: #fbbf24; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+
+  /* TOC */
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent2); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent2); }
+
+  /* Two columns */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+
+  /* Footer */
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .meta { gap: 1rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== HEADER ========== -->
+<h1>Guide de Virtualisation</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">VirtualBox &amp; VMware &mdash; Concepts, configuration, bonnes pratiques</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+  <div class="meta-item"><strong>Type :</strong> Guide technique</div>
+  <div class="meta-item"><strong>Niveau :</strong> Intermédiaire</div>
+</div>
+
+<div style="margin-bottom:2rem;">
+  <span class="badge">VirtualBox</span>
+  <span class="badge">VMware</span>
+  <span class="badge">Virtualization</span>
+  <span class="badge">Networking</span>
+  <span class="badge">Backup</span>
+</div>
+
+<div style="margin: 1.5rem 0;">
+  <a href="/docs/VM.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;background:rgba(79,70,229,0.15);color:var(--accent2);border:1px solid rgba(79,70,229,0.3);border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:all 0.2s;">
+    📄 Télécharger le PDF original
+  </a>
+</div>
+
+<!-- ========== TOC ========== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#intro">Introduction à la virtualisation</a></li>
+    <li><a href="#virtualbox">VirtualBox</a></li>
+    <li><a href="#vmware">VMware</a></li>
+    <li><a href="#comparatif">Comparatif VirtualBox vs VMware</a></li>
+    <li><a href="#composants">Composants d'une machine virtuelle</a></li>
+    <li><a href="#reseaux">Réseaux virtuels</a></li>
+    <li><a href="#snapshots">Snapshots</a></li>
+    <li><a href="#stockage">Optimisation du stockage</a></li>
+    <li><a href="#securite">Sécurité</a></li>
+    <li><a href="#backup">Backup &amp; Restauration</a></li>
+    <li><a href="#clonage">Clonage</a></li>
+    <li><a href="#pratiques">Bonnes pratiques</a></li>
+    <li><a href="#usages">Cas d'usage</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ol>
+</div>
+
+<!-- ========== 1. INTRODUCTION ========== -->
+<h2 id="intro">1. Introduction à la virtualisation</h2>
+
+<div class="card">
+  <p>La <strong>virtualisation</strong> permet d'exécuter plusieurs systèmes d'exploitation sur une seule machine physique grâce à un logiciel appelé <strong>hyperviseur</strong>. Celui-ci crée des couches d'abstraction entre le matériel réel et les machines virtuelles (VM), permettant à chacune de fonctionner comme si elle disposait de ses propres ressources dédiées.</p>
+
+  <h3>Pourquoi virtualiser ?</h3>
+  <ul>
+    <li><strong>Mutualisation des ressources</strong> &mdash; Exploiter pleinement le CPU, la RAM et le stockage d'un seul serveur physique pour héberger plusieurs environnements.</li>
+    <li><strong>Isolation des environnements</strong> &mdash; Chaque VM fonctionne de manière indépendante ; un crash ou une compromission d'une VM n'affecte pas les autres.</li>
+    <li><strong>Test et déploiement sans risque</strong> &mdash; Expérimenter des configurations, des mises à jour ou des logiciels sans impacter le système hôte.</li>
+    <li><strong>Flexibilité</strong> &mdash; Créer, dupliquer, sauvegarder et restaurer des environnements complets en quelques clics.</li>
+  </ul>
+
+  <h3>Les deux hyperviseurs majeurs</h3>
+  <p>Ce guide se concentre sur les deux solutions les plus répandues dans le monde professionnel et pédagogique :</p>
+  <ul>
+    <li><strong>Oracle VirtualBox</strong> &mdash; Hyperviseur de type 2, gratuit et open-source.</li>
+    <li><strong>VMware (Workstation / Player / ESXi)</strong> &mdash; Suite commerciale de virtualisation professionnelle.</li>
+  </ul>
+</div>
+
+<div class="tip">
+  <div class="tip-title">Tip</div>
+  <p>Un hyperviseur de <strong>type 1</strong> (bare-metal) s'installe directement sur le matériel (ex : VMware ESXi, Hyper-V). Un hyperviseur de <strong>type 2</strong> s'installe sur un OS hôte (ex : VirtualBox, VMware Workstation).</p>
+</div>
+
+<!-- ========== 2. VIRTUALBOX ========== -->
+<h2 id="virtualbox">2. VirtualBox</h2>
+
+<div class="card">
+  <p><strong>Oracle VirtualBox</strong> est un hyperviseur de type 2, gratuit et open-source, disponible sur Windows, macOS, Linux et Solaris. Il permet de créer et gérer des machines virtuelles de manière simple et accessible.</p>
+
+  <h3>Atouts</h3>
+  <ul>
+    <li><strong>Gratuit et open-source</strong> &mdash; Licence GPLv2, aucun coût de licence.</li>
+    <li><strong>Multiplateforme</strong> &mdash; Fonctionne sur Windows, macOS, Linux, Solaris.</li>
+    <li><strong>Large compatibilite OS invites</strong> &mdash; Supporte Windows, Linux, BSD, Solaris, macOS (avec limitations), et de nombreuses distributions exotiques.</li>
+    <li><strong>Extensible</strong> &mdash; L'<strong>Extension Pack</strong> ajoute le support USB 2.0/3.0, le boot PXE, le bureau à distance (RDP) et le chiffrement de disque.</li>
+    <li><strong>Interface intuitive</strong> &mdash; Prise en main rapide pour les débutants.</li>
+    <li><strong>CLI puissante</strong> &mdash; <code>VBoxManage</code> permet l'automatisation complète via scripts.</li>
+  </ul>
+
+  <h3>Limites</h3>
+  <ul>
+    <li>Performances inférieures à VMware, notamment en matière de CPU et d'I/O disque.</li>
+    <li>Support 3D limité (OpenGL partiel, pas de DirectX complet).</li>
+    <li>Moins stable sous de lourdes charges de travail ou avec de nombreuses VM simultanées.</li>
+    <li>Pas d'équivalent à VMware ESXi pour une utilisation en production bare-metal.</li>
+  </ul>
+</div>
+
+<!-- ========== 3. VMWARE ========== -->
+<h2 id="vmware">3. VMware</h2>
+
+<div class="card">
+  <p><strong>VMware</strong> est une suite de virtualisation commerciale et professionnelle, reconnue comme la référence en entreprise. Elle comprend plusieurs produits : <strong>Workstation Pro</strong> (poste de travail), <strong>Player</strong> (version allégée), et <strong>ESXi</strong> (hyperviseur bare-metal pour serveurs).</p>
+
+  <h3>Atouts</h3>
+  <ul>
+    <li><strong>Performances CPU supérieures</strong> &mdash; Meilleure gestion du scheduling et de la mémoire.</li>
+    <li><strong>Support 3D avancé</strong> &mdash; DirectX 11 et OpenGL 4.1 avec accélération GPU.</li>
+    <li><strong>Usage enterprise</strong> &mdash; ESXi pour la production, vSphere pour la gestion centralisée, vMotion pour la migration à chaud.</li>
+    <li><strong>Fonctionnalités avancées</strong> &mdash; Multi-snapshots branchés, clonage lié et complet, chiffrement de VM, réseaux virtuels avancés (vmnetManager).</li>
+    <li><strong>Stabilité</strong> &mdash; Éprouvé en production avec des charges lourdes.</li>
+    <li><strong>Intégration professionnelle</strong> &mdash; Support Ansible, Terraform, et API REST.</li>
+  </ul>
+
+  <h3>Limites</h3>
+  <ul>
+    <li><strong>Workstation Pro payant</strong> &mdash; Licence commerciale requise pour les fonctionnalités complètes.</li>
+    <li><strong>Player limité</strong> &mdash; Pas de snapshots, pas de clonage, pas de réseaux avancés.</li>
+    <li><strong>Propriétaire</strong> &mdash; Code source fermé, dépendance à un éditeur unique.</li>
+    <li>Moins de diversité d'OS invités que VirtualBox pour les systèmes anciens ou exotiques.</li>
+  </ul>
+</div>
+
+<!-- ========== 4. COMPARATIF ========== -->
+<h2 id="comparatif">4. Comparatif VirtualBox vs VMware</h2>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Critère</th>
+        <th>VirtualBox</th>
+        <th>VMware</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Coût</strong></td>
+        <td>Gratuit (open-source GPLv2)</td>
+        <td>Payant (Workstation Pro) / Player gratuit mais limité</td>
+      </tr>
+      <tr>
+        <td><strong>Performance</strong></td>
+        <td>Correcte</td>
+        <td>Excellente (CPU, I/O, mémoire)</td>
+      </tr>
+      <tr>
+        <td><strong>Snapshots</strong></td>
+        <td>Simples (linéaires)</td>
+        <td>Avancés (arborescence, branches multiples)</td>
+      </tr>
+      <tr>
+        <td><strong>Clonage</strong></td>
+        <td>Basique (clone complet)</td>
+        <td>Avancé (clone lié + clone complet)</td>
+      </tr>
+      <tr>
+        <td><strong>Réseau</strong></td>
+        <td>Basique (NAT, Bridge, Host-Only, Internal)</td>
+        <td>Avancé (vmnetManager, segments personnalisés)</td>
+      </tr>
+      <tr>
+        <td><strong>Virtualisation imbriquée</strong></td>
+        <td>Moyenne</td>
+        <td>Excellente</td>
+      </tr>
+      <tr>
+        <td><strong>Compatibilité OS</strong></td>
+        <td>Très large (anciens + exotiques)</td>
+        <td>Concentrée sur les OS récents</td>
+      </tr>
+      <tr>
+        <td><strong>Support 3D</strong></td>
+        <td>Limité (OpenGL partiel)</td>
+        <td>Supérieur (DirectX 11, OpenGL 4.1)</td>
+      </tr>
+      <tr>
+        <td><strong>Usage idéal</strong></td>
+        <td>Lab, formation, tests rapides</td>
+        <td>Production, développement lourd, entreprise</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tip">
+  <div class="tip-title">Tip</div>
+  <p>Pour un usage pédagogique (BTS SIO, TP réseaux, labs), <strong>VirtualBox</strong> est souvent le meilleur choix : gratuit, simple et suffisant. Pour du développement intensif ou de la production, <strong>VMware Workstation Pro</strong> offre des performances et des fonctionnalités supérieures.</p>
+</div>
+
+<!-- ========== 5. COMPOSANTS ========== -->
+<h2 id="composants">5. Composants d'une machine virtuelle</h2>
+
+<div class="card">
+  <p>Une machine virtuelle émule un ordinateur complet. Voici les composants virtuels qui la constituent :</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Composant</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>vCPU</strong></td>
+        <td>Processeur virtuel : nombre de cœurs et threads alloués depuis le CPU physique de l'hôte.</td>
+      </tr>
+      <tr>
+        <td><strong>RAM allouee</strong></td>
+        <td>Mémoire vive dédiée à la VM, prélevée sur la RAM physique de l'hôte.</td>
+      </tr>
+      <tr>
+        <td><strong>Contrôleurs virtuels</strong></td>
+        <td>IDE, SATA, NVMe, SCSI &mdash; définissent comment les disques sont connectés à la VM.</td>
+      </tr>
+      <tr>
+        <td><strong>Disques virtuels</strong></td>
+        <td>Fichiers représentant le stockage : <code>.vdi</code> (VirtualBox), <code>.vmdk</code> (VMware), <code>.vhd</code> (Hyper-V).</td>
+      </tr>
+      <tr>
+        <td><strong>Cartes reseau virtuelles (vNIC)</strong></td>
+        <td>Interfaces réseau émulées (Intel PRO/1000, virtio, E1000) connectées aux réseaux virtuels.</td>
+      </tr>
+      <tr>
+        <td><strong>BIOS / UEFI virtuel</strong></td>
+        <td>Firmware d'amorçage : BIOS legacy ou UEFI avec Secure Boot.</td>
+      </tr>
+      <tr>
+        <td><strong>Snapshots</strong></td>
+        <td>Captures de l'état complet de la VM (disque, RAM, configuration) à un instant T.</td>
+      </tr>
+      <tr>
+        <td><strong>Configuration 3D / VT-x / AMD-V</strong></td>
+        <td>Accélération graphique 3D, et extensions de virtualisation matérielle (VT-x Intel / AMD-V).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="warning">
+  <div class="warning-title">Attention</div>
+  <p>Toujours activer <strong>VT-x</strong> (Intel) ou <strong>AMD-V</strong> (AMD) dans le BIOS/UEFI de la machine hôte. Sans ces extensions, les performances des VM seront drastiquement réduites et certains OS invités 64 bits ne démarreront pas.</p>
+</div>
+
+<!-- ========== 6. RESEAUX VIRTUELS ========== -->
+<h2 id="reseaux">6. Réseaux virtuels</h2>
+
+<div class="card">
+  <p>Le choix du mode réseau est crucial pour la connectivité et la sécurité de vos VM. Voici les quatre modes principaux :</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Mode</th>
+        <th>Fonctionnement</th>
+        <th>Accès Internet</th>
+        <th>Visibilité LAN</th>
+        <th>Usage idéal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>NAT</strong></td>
+        <td>La VM utilise l'adresse IP de l'hôte via un routeur virtuel.</td>
+        <td>Oui</td>
+        <td>Non (isolée)</td>
+        <td>Navigation, mises à jour, usage général sécurisé</td>
+      </tr>
+      <tr>
+        <td><strong>Bridge (Pont)</strong></td>
+        <td>La VM obtient sa propre IP sur le même LAN que l'hôte.</td>
+        <td>Oui</td>
+        <td>Oui (visible)</td>
+        <td>Serveurs AD, Web, DHCP, DNS &mdash; communication avec le réseau physique</td>
+      </tr>
+      <tr>
+        <td><strong>Host-Only</strong></td>
+        <td>Communication uniquement entre l'hôte et la VM.</td>
+        <td>Non</td>
+        <td>Non</td>
+        <td>Labs isolés, tests locaux, développement</td>
+      </tr>
+      <tr>
+        <td><strong>Internal / LAN Segment</strong></td>
+        <td>Communication uniquement entre VM sur le même segment.</td>
+        <td>Non</td>
+        <td>Non</td>
+        <td>Pentest, isolation AD, labs de cybersécurité</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="two-col">
+  <div class="tip">
+    <div class="tip-title">Tip &mdash; Bridge</div>
+    <p>Le mode <strong>Bridge</strong> est idéal pour les labs Active Directory ou les serveurs web qui doivent être accessibles depuis d'autres machines du réseau physique.</p>
+  </div>
+  <div class="warning">
+    <div class="warning-title">Attention &mdash; NAT</div>
+    <p>En mode <strong>NAT</strong>, aucun accès entrant n'est possible par défaut. Si vous avez besoin d'un port forwarding, configurez-le manuellement dans les paramètres réseau de la VM.</p>
+  </div>
+</div>
+
+<!-- ========== 7. SNAPSHOTS ========== -->
+<h2 id="snapshots">7. Snapshots</h2>
+
+<div class="card">
+  <p>Un <strong>snapshot</strong> capture l'état complet d'une machine virtuelle à un instant donné : le contenu du disque, l'état de la RAM et la configuration matérielle. C'est un mécanisme essentiel pour sécuriser vos manipulations.</p>
+
+  <h3>Avantages</h3>
+  <ul>
+    <li><strong>Retour rapide en arrière</strong> &mdash; Restaurer un état stable en quelques secondes après un échec.</li>
+    <li><strong>Tests en toute sécurité</strong> &mdash; Expérimenter des configurations risquées (GPO, mises à jour, malwares en lab) avec la possibilité de revenir à l'état initial.</li>
+    <li><strong>Documentation d'états</strong> &mdash; Conserver des points de référence avant/après une modification majeure.</li>
+  </ul>
+
+  <h3>Bonnes pratiques</h3>
+  <ul>
+    <li>Ne pas conserver un seul snapshot trop longtemps &mdash; le fichier delta grossit et dégrade les performances.</li>
+    <li>Éviter les chaînes de snapshots trop longues (> 3-4 niveaux) &mdash; augmente la latence I/O.</li>
+    <li>Toujours prendre un snapshot <strong>avant</strong> une mise à jour système ou un changement de configuration.</li>
+    <li>Supprimer les snapshots obsolètes pour récupérer l'espace disque.</li>
+    <li>Nommer clairement chaque snapshot avec la date et la description du changement.</li>
+  </ul>
+</div>
+
+<div class="tip">
+  <div class="tip-title">Tip</div>
+  <p>Dans VMware, les snapshots supportent une arborescence (branches multiples). Dans VirtualBox, ils sont linéaires. Adaptez votre stratégie en conséquence.</p>
+</div>
+
+<!-- ========== 8. OPTIMISATION STOCKAGE ========== -->
+<h2 id="stockage">8. Optimisation du stockage</h2>
+
+<div class="card">
+  <h3>Formats de disques virtuels</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Format</th>
+        <th>Hyperviseur</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>.vdi</code></td>
+        <td>VirtualBox</td>
+        <td>Format natif VirtualBox, supporte l'allocation dynamique et fixe.</td>
+      </tr>
+      <tr>
+        <td><code>.vmdk</code></td>
+        <td>VMware</td>
+        <td>Format natif VMware, supporte le split en fichiers de 2 Go, compatible ESXi.</td>
+      </tr>
+      <tr>
+        <td><code>.vhd / .vhdx</code></td>
+        <td>Hyper-V</td>
+        <td>Format Microsoft, compatible VirtualBox en import.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Allocation dynamique vs fixe</h3>
+  <ul>
+    <li><strong>Dynamique</strong> &mdash; Le fichier grossit à mesure que des données sont écrites. Économise l'espace mais légèrement plus lent.</li>
+    <li><strong>Fixe</strong> &mdash; Le fichier occupe immédiatement la taille maximale définie. Meilleures performances I/O.</li>
+  </ul>
+
+  <h3>Compactage d'un disque VirtualBox</h3>
+  <p>Pour récupérer l'espace inutilisé dans un disque dynamique :</p>
+
+  <div class="code-label">Bash</div>
+  <pre><code># Defragmenter et compacter un disque VDI
+VBoxManage modifyhd /chemin/vers/disque.vdi --compact</code></pre>
+
+  <h3>Recommandations</h3>
+  <ul>
+    <li>Utiliser un <strong>SSD</strong> (idéalement NVMe) pour héberger les fichiers de disques virtuels &mdash; gain majeur en I/O.</li>
+    <li>Toujours activer <strong>VT-x / AMD-V</strong> dans le BIOS de l'hôte.</li>
+    <li>Éviter de stocker les VM sur un disque réseau (NAS via SMB) &mdash; latence trop élevée.</li>
+    <li>Vérifier régulièrement la fragmentation des disques virtuels.</li>
+  </ul>
+</div>
+
+<!-- ========== 9. SECURITE ========== -->
+<h2 id="securite">9. Sécurité</h2>
+
+<div class="card">
+  <h3>Isolation réseau</h3>
+  <ul>
+    <li>Utiliser le mode <strong>NAT</strong> ou <strong>Host-Only</strong> pour les VM non sécurisées, les labs de pentest ou les environnements de test de malwares.</li>
+    <li><strong>Ne jamais connecter en Bridge</strong> une VM vulnérable sur un réseau d'entreprise &mdash; risque de propagation.</li>
+    <li>Utiliser le mode <strong>Internal / LAN Segment</strong> pour isoler complètement un groupe de VM du réseau physique.</li>
+  </ul>
+
+  <h3>Protection des fichiers</h3>
+  <ul>
+    <li>Les fichiers <code>.vmdk</code> et <code>.vdi</code> contiennent l'intégralité du système de fichiers de la VM &mdash; les protéger avec les permissions appropriées.</li>
+    <li>Activer le <strong>chiffrement de VM</strong> dans VMware Workstation Pro ou via l'Extension Pack VirtualBox.</li>
+    <li>Ne pas laisser les fichiers de VM accessibles en partage reseau sans authentification.</li>
+  </ul>
+
+  <h3>Accès distant</h3>
+  <ul>
+    <li>Privilégier <strong>SSH</strong> (Linux) ou <strong>RDP</strong> (Windows) pour l'accès distant aux VM plutôt que les outils intégrés (console VirtualBox/VMware).</li>
+    <li>Configurer des clés SSH plutôt que des mots de passe pour les connexions automatisées.</li>
+  </ul>
+</div>
+
+<div class="warning">
+  <div class="warning-title">Attention</div>
+  <p>Un fichier <code>.vmdk</code> ou <code>.vdi</code> peut être monté directement sur un autre système pour en extraire les données. Chiffrez toujours les VM contenant des données sensibles.</p>
+</div>
+
+<!-- ========== 10. BACKUP & RESTAURATION ========== -->
+<h2 id="backup">10. Backup &amp; Restauration</h2>
+
+<div class="card">
+  <h3>Méthodes de sauvegarde</h3>
+
+  <h4>1. Export OVF / OVA</h4>
+  <p>Format portable et standardisé. Un fichier <code>.ova</code> contient la configuration et les disques dans une seule archive.</p>
+
+  <div class="code-label">Bash &mdash; VirtualBox</div>
+  <pre><code># Exporter une VM au format OVA
+VBoxManage export "NomDeLaVM" -o /chemin/vers/backup.ova</code></pre>
+
+  <div class="code-label">Bash &mdash; VMware (ovftool)</div>
+  <pre><code># Exporter une VM VMware au format OVA
+ovftool /chemin/vers/vm.vmx /chemin/vers/backup.ova</code></pre>
+
+  <h4>2. Copie du dossier complet</h4>
+  <p>Copier l'intégralité du dossier de la VM (<code>.vbox</code> + <code>.vdi</code> pour VirtualBox, <code>.vmx</code> + <code>.vmdk</code> pour VMware). Méthode simple mais volumineuse.</p>
+
+  <h4>3. Clone complet</h4>
+  <p>Créer un clone indépendant de la VM via l'interface graphique ou en ligne de commande.</p>
+
+  <div class="code-label">Bash &mdash; VirtualBox</div>
+  <pre><code># Cloner une VM (clone complet)
+VBoxManage clonevm "NomDeLaVM" --name "NomDeLaVM-backup" --register</code></pre>
+
+  <h3>Méthodes de restauration</h3>
+  <ul>
+    <li><strong>Import OVA</strong> &mdash; <code>VBoxManage import backup.ova</code> ou via l'interface graphique (Fichier &gt; Importer).</li>
+    <li><strong>Reconstruire depuis le disque</strong> &mdash; Créer une nouvelle VM et rattacher le fichier <code>.vdi</code> / <code>.vmdk</code> existant.</li>
+    <li><strong>Restaurer depuis un clone</strong> &mdash; Démarrer directement le clone comme remplacement.</li>
+  </ul>
+</div>
+
+<div class="tip">
+  <div class="tip-title">Tip</div>
+  <p>Automatisez vos exports OVA avec un script cron ou une tâche planifiée. Exemple : export hebdomadaire de toutes les VM critiques vers un NAS dédié.</p>
+</div>
+
+<!-- ========== 11. CLONAGE ========== -->
+<h2 id="clonage">11. Clonage</h2>
+
+<div class="card">
+  <h3>Clone complet (Full Clone)</h3>
+  <p>Copie intégrale et indépendante de la VM. Le clone ne dépend d'aucun fichier parent &mdash; il est totalement autonome. Occupe autant d'espace disque que l'original.</p>
+  <ul>
+    <li>Idéal pour les sauvegardes définitives.</li>
+    <li>Peut être déplacé sur un autre hôte sans dépendance.</li>
+    <li>Utilisable en production.</li>
+  </ul>
+
+  <h3>Clone lié (Linked Clone)</h3>
+  <p>Copie légère qui utilise un disque différentiel basé sur un snapshot du parent. Le clone ne contient que les modifications par rapport à l'état initial.</p>
+  <ul>
+    <li><strong>Avantage</strong> &mdash; Création très rapide, faible empreinte disque.</li>
+    <li><strong>Inconvénient</strong> &mdash; Dépend du disque parent ; si le parent est supprimé ou corrompu, le clone est inutilisable.</li>
+    <li><strong>Usage</strong> &mdash; Labs de formation, tests temporaires. À éviter en production.</li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Critère</th>
+        <th>Clone complet</th>
+        <th>Clone lie</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Taille disque</strong></td>
+        <td>Identique à l'original</td>
+        <td>Quelques Mo initialement</td>
+      </tr>
+      <tr>
+        <td><strong>Indépendance</strong></td>
+        <td>Totale</td>
+        <td>Dépend du parent</td>
+      </tr>
+      <tr>
+        <td><strong>Vitesse de creation</strong></td>
+        <td>Lente (copie complète)</td>
+        <td>Quasi instantanée</td>
+      </tr>
+      <tr>
+        <td><strong>Usage production</strong></td>
+        <td>Oui</td>
+        <td>Non recommandé</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tip">
+  <div class="tip-title">Tip</div>
+  <p>Le clonage lié est parfait pour les salles de formation : créez une VM de référence, puis générez 20 clones liés en quelques minutes pour tous les postes élèves.</p>
+</div>
+
+<!-- ========== 12. BONNES PRATIQUES ========== -->
+<h2 id="pratiques">12. Bonnes pratiques</h2>
+
+<div class="card">
+  <p>Les <strong>10 règles</strong> pour une gestion saine de vos environnements virtualisés :</p>
+
+  <ol>
+    <li><strong>Allouer 2 à 4 Go de RAM minimum</strong> par VM &mdash; en dessous, les OS modernes (Windows 10/11, Ubuntu Desktop) seront inutilisables.</li>
+    <li><strong>Stocker les VM sur un SSD NVMe</strong> &mdash; les performances I/O sont le facteur limitant principal en virtualisation.</li>
+    <li><strong>Nommer clairement les VM</strong> &mdash; Convention : <code>OS-Role-Version</code> (ex : <code>Win11-DC-v2</code>, <code>Ubuntu22-WebSrv</code>).</li>
+    <li><strong>Documenter l'architecture réseau</strong> &mdash; Schéma des sous-réseaux virtuels, modes réseau, adresses IP.</li>
+    <li><strong>Prendre un snapshot avant chaque modification</strong> &mdash; Mise à jour, changement de configuration, installation de logiciel.</li>
+    <li><strong>Exporter régulièrement en OVA</strong> &mdash; Au minimum une fois par semaine pour les VM critiques.</li>
+    <li><strong>Éviter les cascades de snapshots</strong> &mdash; 3 niveaux maximum ; consolider régulièrement.</li>
+    <li><strong>Utiliser des vNIC cohérentes</strong> &mdash; Standardiser sur Intel PRO/1000 MT Desktop pour la meilleure compatibilité.</li>
+    <li><strong>Éteindre proprement avant export</strong> &mdash; Un shutdown propre (pas de force stop) garantit l'intégrité des données.</li>
+    <li><strong>Vérifier la fragmentation disque</strong> &mdash; Défragmenter et compacter les disques dynamiques périodiquement.</li>
+  </ol>
+</div>
+
+<!-- ========== 13. CAS D'USAGE ========== -->
+<h2 id="usages">13. Cas d'usage</h2>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Environnements Active Directory</h3>
+    <p><strong>Mode réseau :</strong> Bridge</p>
+    <p>Déployer un domaine AD complet avec DC, serveur membre et clients joints. Utiliser le mode Bridge pour simuler un LAN réaliste. Toujours prendre un snapshot avant l'application de GPO complexes.</p>
+    <p><strong>Stack type :</strong> Windows Server 2022 (DC) + Windows 11 Pro (clients)</p>
+  </div>
+  <div class="card">
+    <h3>Serveurs de développement</h3>
+    <p><strong>Hyperviseur :</strong> VMware (performances)</p>
+    <p>Héberger des environnements de développement complets (LAMP, Node.js, Docker) avec de meilleures performances I/O. Utiliser les clones liés pour multiplier les environnements de test.</p>
+    <p><strong>Stack type :</strong> Ubuntu Server 22.04 + Docker + VS Code Remote</p>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3>Labs de cybersécurité</h3>
+    <p><strong>Mode réseau :</strong> Internal Network</p>
+    <p>Isoler complètement les VM du réseau physique avec le mode Internal Network de VirtualBox. Idéal pour le pentest, l'analyse de malwares et les CTF. Prendre un snapshot avant chaque exercice pour un retour rapide à l'état initial.</p>
+    <p><strong>Stack type :</strong> Kali Linux + Metasploitable + Windows vuln</p>
+  </div>
+  <div class="card">
+    <h3>Tests multi-OS</h3>
+    <p><strong>Hyperviseur :</strong> VirtualBox (variété)</p>
+    <p>Tester la compatibilité d'une application sur différents systèmes d'exploitation. VirtualBox excelle ici grâce à sa large compatibilité OS et la rapidité de création de VM.</p>
+    <p><strong>Stack type :</strong> Windows 10/11, Ubuntu, Debian, CentOS, FreeBSD</p>
+  </div>
+</div>
+
+<!-- ========== 14. CONCLUSION ========== -->
+<h2 id="conclusion">14. Conclusion</h2>
+
+<div class="card">
+  <p>La virtualisation est une compétence fondamentale pour tout professionnel de l'informatique. Qu'il s'agisse de monter un lab de formation, de développer dans des environnements isolés ou de gérer une infrastructure de production, la maîtrise de <strong>VirtualBox</strong> et <strong>VMware</strong> ouvre des possibilités considérables.</p>
+
+  <p>Retenez les principes essentiels :</p>
+  <ul>
+    <li><strong>VirtualBox</strong> pour la simplicité, la gratuité et la polyvalence &mdash; idéal pour l'apprentissage et les labs.</li>
+    <li><strong>VMware</strong> pour la performance, la stabilité et les fonctionnalités enterprise &mdash; idéal pour la production et le développement intensif.</li>
+    <li>Toujours <strong>planifier le réseau</strong>, <strong>sauvegarder régulièrement</strong> et <strong>documenter</strong> vos environnements.</li>
+    <li>Les <strong>snapshots</strong> et les <strong>exports OVA</strong> sont vos filets de sécurité &mdash; utilisez-les systématiquement.</li>
+  </ul>
+
+  <p>Maîtrisez ces outils, appliquez les bonnes pratiques de ce guide, et vous disposerez d'une base solide pour toute infrastructure virtualisée.</p>
+</div>
+
+<!-- ========== LIENS UTILES ========== -->
+<h2 id="liens">Liens utiles</h2>
+
+<div class="two-col">
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">📦 VirtualBox &mdash; Site officiel</h4>
+    <p style="font-size:0.85rem;">Télécharger Oracle VirtualBox (gratuit, open-source) pour Windows, macOS et Linux.</p>
+    <a href="https://www.virtualbox.org/" target="_blank" style="font-size:0.85rem;">Télécharger &rarr;</a>
+  </div>
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">📘 VirtualBox &mdash; Documentation</h4>
+    <p style="font-size:0.85rem;">Manuel utilisateur officiel de VirtualBox (configuration, réseaux, CLI, etc.).</p>
+    <a href="https://www.virtualbox.org/manual/" target="_blank" style="font-size:0.85rem;">Consulter &rarr;</a>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">💾 VMware Workstation Player</h4>
+    <p style="font-size:0.85rem;">Télécharger VMware Workstation Player (version gratuite pour usage personnel).</p>
+    <a href="https://www.vmware.com/products/desktop-hypervisor/workstation-and-fusion" target="_blank" style="font-size:0.85rem;">Télécharger &rarr;</a>
+  </div>
+  <div class="card" style="text-align:center;">
+    <h4 style="margin-top:0;">📋 VMware &mdash; Documentation</h4>
+    <p style="font-size:0.85rem;">Documentation officielle VMware (Workstation, ESXi, vSphere, guides techniques).</p>
+    <a href="https://docs.vmware.com/" target="_blank" style="font-size:0.85rem;">Consulter &rarr;</a>
+  </div>
+</div>
+
+<div class="card" style="text-align:center; max-width:460px;">
+  <h4 style="margin-top:0;">🖥️ Proxmox VE &mdash; Alternative open-source</h4>
+  <p style="font-size:0.85rem;">Plateforme de virtualisation bare-metal open-source (KVM + LXC), alternative gratuite à VMware ESXi.</p>
+  <a href="https://www.proxmox.com/en/proxmox-virtual-environment/overview" target="_blank" style="font-size:0.85rem;">Découvrir &rarr;</a>
+</div>
+
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  Guide technique &mdash; Virtualisation &mdash; Sagar MIR &mdash; 2025
+</div>
+
+</div><!-- /.container -->
+</body>
+</html>

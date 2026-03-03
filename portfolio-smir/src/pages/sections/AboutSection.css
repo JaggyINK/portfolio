@@ -14,7 +14,7 @@
 /* ===== SECTION ===== */
 .about-section {
   min-height: 100svh;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   color: #e6ecf8;
   display: flex;
   align-items: center;
@@ -37,7 +37,7 @@
 .about-header-card {
   width: 100%;
   text-align: center;
-  background: rgba(11, 16, 32, 0.78);
+  background: rgba(11, 16, 32, 0.62);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 215, 0, 0.12);
   border-radius: 1rem;
@@ -129,7 +129,7 @@
 }
 
 .about-kpi-card {
-  background: rgba(11, 16, 32, 0.78);
+  background: rgba(11, 16, 32, 0.62);
   backdrop-filter: blur(10px);
   border: 1px solid;
   border-radius: 0.75rem;
@@ -181,7 +181,7 @@
 
 .about-col-left,
 .about-col-right {
-  background: rgba(11, 16, 32, 0.78);
+  background: rgba(11, 16, 32, 0.62);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 215, 0, 0.12);
   border-radius: 0.75rem;
@@ -266,7 +266,7 @@
 /* ===== BLOC D — TECH BADGES GROUPED ===== */
 .about-tech-grouped {
   width: 100%;
-  background: rgba(11, 16, 32, 0.78);
+  background: rgba(11, 16, 32, 0.62);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 215, 0, 0.12);
   border-radius: 0.75rem;

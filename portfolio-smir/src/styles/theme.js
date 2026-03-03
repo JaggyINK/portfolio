@@ -12,7 +12,7 @@ export const COLORS = {
   bg: {
     primary: "#0b1020",
     secondary: "#080d18",
-    card: "rgba(11,16,32,0.78)",
+    card: "rgba(11,16,32,0.62)",
     glass: "rgba(15,23,42,0.65)",
   },
 

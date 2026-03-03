@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Clés USB Bootables</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #ca8a04; --accent2: #eab308; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 920px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(202,138,4,0.15); color: var(--accent2); border: 1px solid rgba(234,179,8,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+
+  /* Meta */
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { padding: 0.55rem 0.8rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(202,138,4,0.12); color: var(--accent2); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+
+  /* Header line */
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+
+  /* Inline code */
+  code { background: rgba(202,138,4,0.1); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', monospace; }
+
+  /* Code blocks */
+  pre { background: #0d1117; border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.25rem 1.5rem; margin: 1rem 0; overflow-x: auto; line-height: 1.6; }
+  pre code { background: none; padding: 0; color: #c9d1d9; font-size: 0.82rem; display: block; white-space: pre; }
+  .code-label { display: inline-block; background: rgba(202,138,4,0.15); color: var(--accent2); font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px 4px 0 0; margin-bottom: -1px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Tip box */
+  .tip { background: rgba(34,197,94,0.06); border-left: 3px solid #22c55e; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .tip::before { content: "Astuce"; display: block; font-weight: 700; color: #22c55e; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+  .tip p { margin-bottom: 0; }
+
+  /* Warning box */
+  .warning { background: rgba(239,68,68,0.06); border-left: 3px solid #ef4444; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .warning::before { content: "Attention"; display: block; font-weight: 700; color: #ef4444; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+  .warning p { margin-bottom: 0; }
+
+  /* Info box */
+  .info { background: rgba(202,138,4,0.06); border-left: 3px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .info::before { content: "Info"; display: block; font-weight: 700; color: var(--accent2); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+  .info p { margin-bottom: 0; }
+
+  /* Highlight box */
+  .highlight-box { background: rgba(202,138,4,0.06); border-left: 3px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .highlight-box p { margin-bottom: 0; }
+
+  /* Steps */
+  .step { display: flex; gap: 1rem; margin-bottom: 1.25rem; align-items: flex-start; }
+  .step-num { flex-shrink: 0; width: 2rem; height: 2rem; background: rgba(202,138,4,0.15); color: var(--accent2); border: 1px solid rgba(234,179,8,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-top: 0.1rem; }
+  .step-content { flex: 1; }
+  .step-content p { margin-bottom: 0.3rem; }
+
+  /* TOC */
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent2); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent2); }
+
+  /* Footer */
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .meta { gap: 1rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    pre { padding: 1rem; }
+    pre code { font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ========== HEADER ========== -->
+<h1>Guide : Cl&eacute;s USB Bootables</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">Cr&eacute;er, configurer et d&eacute;panner des cl&eacute;s USB bootables &mdash; Guide technique complet</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Cat&eacute;gorie :</strong> Maintenance &amp; Syst&egrave;me</div>
+  <div class="meta-item"><strong>Niveau :</strong> D&eacute;butant &agrave; Avanc&eacute;</div>
+  <div class="meta-item"><strong>Auteur :</strong> S. MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+</div>
+
+<div style="margin-bottom: 2rem;">
+  <span class="badge">USB Bootable</span>
+  <span class="badge">Rufus</span>
+  <span class="badge">Ventoy</span>
+  <span class="badge">UEFI</span>
+  <span class="badge">Recovery</span>
+</div>
+
+<div style="margin: 1.5rem 0;">
+  <a href="/docs/usb.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;background:rgba(202,138,4,0.15);color:var(--accent2);border:1px solid rgba(202,138,4,0.3);border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:all 0.2s;">
+    📄 Télécharger le PDF original
+  </a>
+</div>
+
+<!-- ========== TABLE OF CONTENTS ========== -->
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#comprendre">Comprendre la cl&eacute; USB bootable</a></li>
+    <li><a href="#formats">Formats et leur r&ocirc;le</a></li>
+    <li><a href="#outils">Outils de cr&eacute;ation</a></li>
+    <li><a href="#windows">Cr&eacute;er sous Windows avec Rufus</a></li>
+    <li><a href="#macos">Cr&eacute;er sous macOS</a></li>
+    <li><a href="#ventoy">Cl&eacute; multi-boot avec Ventoy</a></li>
+    <li><a href="#isos">Outils ISO utiles</a></li>
+    <li><a href="#verification">V&eacute;rification</a></li>
+    <li><a href="#depannage">D&eacute;pannage</a></li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ol>
+</div>
+
+<!-- ========== 1. COMPRENDRE ========== -->
+<h2 id="comprendre">1. Comprendre la cl&eacute; USB bootable</h2>
+
+<div class="card">
+  <p>Une cl&eacute; USB bootable est un support amovible capable de <strong>d&eacute;marrer un ordinateur</strong> ind&eacute;pendamment du syst&egrave;me d'exploitation install&eacute; sur le disque dur. Elle contient tout le n&eacute;cessaire pour lancer un OS, un outil de r&eacute;paration ou un programme de diagnostic.</p>
+
+  <h4>Composition d'une cl&eacute; bootable</h4>
+  <ul>
+    <li><strong>Bootloader</strong> &mdash; Le programme d'amor&ccedil;age qui s'ex&eacute;cute en premier au d&eacute;marrage. Il indique au BIOS/UEFI comment charger le syst&egrave;me contenu sur la cl&eacute;.</li>
+    <li><strong>Structure compatible BIOS/UEFI</strong> &mdash; La cl&eacute; doit &ecirc;tre format&eacute;e avec un syst&egrave;me de fichiers reconnu par le firmware de la carte m&egrave;re. Le <strong>FAT32</strong> est le format le plus universellement compatible avec l'UEFI.</li>
+    <li><strong>Image syst&egrave;me (ISO)</strong> &mdash; Le fichier <code>.iso</code> contient l'int&eacute;gralit&eacute; du syst&egrave;me d'exploitation ou de l'outil &agrave; d&eacute;marrer, compress&eacute; dans une archive standardis&eacute;e.</li>
+  </ul>
+</div>
+
+<div class="warning">
+  <p>Une image ISO doit &ecirc;tre <strong>&laquo; grav&eacute;e &raquo;</strong> (burn&eacute;e) sur la cl&eacute; USB &agrave; l'aide d'un outil sp&eacute;cialis&eacute;. Copier-coller le fichier <code>.iso</code> directement sur la cl&eacute; ne la rendra <strong>pas bootable</strong>. Le processus de gravure extrait le contenu de l'ISO et configure le bootloader n&eacute;cessaire.</p>
+</div>
+
+<!-- ========== 2. FORMATS ========== -->
+<h2 id="formats">2. Formats et leur r&ocirc;le</h2>
+
+<p>Le choix du syst&egrave;me de fichiers lors du formatage de la cl&eacute; USB a un impact direct sur la compatibilit&eacute; et les capacit&eacute;s de la cl&eacute; bootable.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Format</th>
+      <th>Compatibilit&eacute;</th>
+      <th>UEFI</th>
+      <th>Limite fichier</th>
+      <th>Cas d'usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>FAT32</strong></td>
+      <td>Maximale (Windows, Linux, macOS, BIOS, UEFI)</td>
+      <td style="color:#22c55e;">Oui</td>
+      <td>4 Go max par fichier</td>
+      <td>Choix par d&eacute;faut pour toute cl&eacute; bootable UEFI</td>
+    </tr>
+    <tr>
+      <td><strong>NTFS</strong></td>
+      <td>Windows principalement</td>
+      <td style="color:#ef4444;">Limit&eacute;e</td>
+      <td>Aucune limite pratique</td>
+      <td>ISO Windows &gt; 4 Go (install.wim volumineux)</td>
+    </tr>
+    <tr>
+      <td><strong>exFAT</strong></td>
+      <td>Mac &amp; Windows</td>
+      <td style="color:#f59e0b;">Pas toujours</td>
+      <td>Aucune limite pratique</td>
+      <td>&Eacute;change de fichiers Mac/PC, rarement bootable</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="tip">
+  <p><strong>FAT32 = choix le plus s&ucirc;r pour l'UEFI.</strong> En cas de doute, formatez toujours en FAT32. Rufus g&egrave;re automatiquement le fractionnement des fichiers &gt; 4 Go si n&eacute;cessaire.</p>
+</div>
+
+<!-- ========== 3. OUTILS ========== -->
+<h2 id="outils">3. Outils de cr&eacute;ation</h2>
+
+<p>Comparatif des principaux outils pour cr&eacute;er des cl&eacute;s USB bootables :</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Outil</th>
+      <th>Plateforme</th>
+      <th>Caract&eacute;ristiques</th>
+      <th>Id&eacute;al pour</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Rufus</strong></td>
+      <td>Windows</td>
+      <td>Rapide, fiable, options avanc&eacute;es (GPT/MBR, UEFI/BIOS)</td>
+      <td>Installation Windows &amp; Linux depuis un PC Windows</td>
+    </tr>
+    <tr>
+      <td><strong>Ventoy</strong></td>
+      <td>Windows, Linux</td>
+      <td>Multi-ISO, glisser-d&eacute;poser, pas de reformatage &agrave; chaque ISO</td>
+      <td>Cl&eacute; universelle technicien / r&eacute;paration</td>
+    </tr>
+    <tr>
+      <td><strong>BalenaEtcher</strong></td>
+      <td>Windows, macOS, Linux</td>
+      <td>Interface en 3 clics, tr&egrave;s simple d'utilisation</td>
+      <td>D&eacute;butants, gravure rapide et s&ucirc;re</td>
+    </tr>
+    <tr>
+      <td><strong>dd</strong></td>
+      <td>Linux, macOS</td>
+      <td>Copie brute bit-&agrave;-bit, universel, en ligne de commande</td>
+      <td>Utilisateurs avanc&eacute;s, scripts d'automatisation</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ========== 4. CREER SOUS WINDOWS ========== -->
+<h2 id="windows">4. Cr&eacute;er sous Windows avec Rufus</h2>
+
+<div class="card">
+  <h3>Proc&eacute;dure pas &agrave; pas</h3>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <p><strong>T&eacute;l&eacute;charger Rufus</strong></p>
+      <p>R&eacute;cup&eacute;rez la derni&egrave;re version sur <a href="https://rufus.ie" target="_blank">rufus.ie</a>. L'outil est portable (pas d'installation n&eacute;cessaire).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <p><strong>Brancher la cl&eacute; USB</strong></p>
+      <p>Ins&eacute;rez votre cl&eacute; USB (minimum 8 Go recommand&eacute;). Toutes les donn&eacute;es seront effac&eacute;es.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <p><strong>S&eacute;lectionner l'image ISO</strong></p>
+      <p>Dans Rufus, cliquez sur <strong>&laquo; S&eacute;lection &raquo;</strong> et choisissez votre fichier <code>.iso</code> (Windows, Ubuntu, etc.).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <p><strong>Configurer les options</strong></p>
+      <p>S&eacute;lectionnez le sch&eacute;ma de partition <strong>GPT</strong> et le syst&egrave;me cible <strong>UEFI (non-CSM)</strong>. Laissez le syst&egrave;me de fichiers sur <strong>FAT32</strong> (ou NTFS si l'ISO d&eacute;passe 4 Go).</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <p><strong>Lancer la gravure</strong></p>
+      <p>Cliquez sur <strong>&laquo; D&eacute;marrer &raquo;</strong>. Confirmez l'effacement de la cl&eacute;. Patientez quelques minutes.</p>
+    </div>
+  </div>
+</div>
+
+<div class="tip">
+  <p>Pour les ISO Windows 11, Rufus propose des options pour contourner les v&eacute;rifications TPM 2.0 et Secure Boot. Cochez ces options si vous installez sur du mat&eacute;riel ancien.</p>
+</div>
+
+<!-- ========== 5. CREER SOUS MACOS ========== -->
+<h2 id="macos">5. Cr&eacute;er sous macOS</h2>
+
+<div class="card">
+  <h3>M&eacute;thode 1 : BalenaEtcher (simple)</h3>
+  <p>T&eacute;l&eacute;chargez BalenaEtcher depuis <a href="https://etcher.balena.io" target="_blank">etcher.balena.io</a>, puis :</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content"><p><strong>Flash from file</strong> &mdash; S&eacute;lectionnez votre fichier ISO</p></div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content"><p><strong>Select target</strong> &mdash; Choisissez votre cl&eacute; USB</p></div>
+  </div>
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content"><p><strong>Flash!</strong> &mdash; Lancez la gravure et patientez</p></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>M&eacute;thode 2 : Terminal avec dd (avanc&eacute;)</h3>
+  <p>Pour les utilisateurs &agrave; l'aise avec le terminal :</p>
+
+  <span class="code-label">Terminal &mdash; Identifier le disque</span>
+  <pre><code>diskutil list</code></pre>
+  <p>Rep&eacute;rez votre cl&eacute; USB (par exemple <code>/dev/disk2</code>). V&eacute;rifiez la taille pour confirmer.</p>
+
+  <span class="code-label">Terminal &mdash; D&eacute;monter le disque</span>
+  <pre><code>diskutil unmountDisk /dev/disk2</code></pre>
+
+  <span class="code-label">Terminal &mdash; Graver l'ISO</span>
+  <pre><code>sudo dd if=/path/file.iso of=/dev/rdisk2 bs=1m</code></pre>
+  <p>Utilisez <code>/dev/rdisk2</code> (avec le pr&eacute;fixe <strong>r</strong>) pour une vitesse d'&eacute;criture bien sup&eacute;rieure.</p>
+</div>
+
+<div class="warning">
+  <p><strong>La commande <code>dd</code> &eacute;crase int&eacute;gralement le disque cible sans aucune confirmation.</strong> Une erreur sur le num&eacute;ro de disque (par ex. <code>/dev/disk0</code> au lieu de <code>/dev/disk2</code>) peut d&eacute;truire le syst&egrave;me d'exploitation de votre Mac. V&eacute;rifiez <strong>trois fois</strong> le disque cible avant d'ex&eacute;cuter la commande.</p>
+</div>
+
+<!-- ========== 6. VENTOY ========== -->
+<h2 id="ventoy">6. Cl&eacute; multi-boot avec Ventoy</h2>
+
+<div class="card">
+  <p><strong>Ventoy</strong> est la solution id&eacute;ale pour cr&eacute;er une <strong>cl&eacute; universelle multi-ISO</strong>. Le principe est radicalement diff&eacute;rent des outils classiques :</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <p><strong>Installer Ventoy une seule fois</strong></p>
+      <p>T&eacute;l&eacute;chargez Ventoy depuis <a href="https://www.ventoy.net" target="_blank">ventoy.net</a> et installez-le sur votre cl&eacute; USB. Cette op&eacute;ration formate la cl&eacute; et installe le bootloader Ventoy.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <p><strong>Copier-coller les ISO</strong></p>
+      <p>Ensuite, il suffit de <strong>glisser-d&eacute;poser</strong> vos fichiers <code>.iso</code> directement sur la cl&eacute; USB, comme sur une cl&eacute; ordinaire. Aucun outil de gravure n&eacute;cessaire.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <p><strong>D&eacute;marrer et choisir</strong></p>
+      <p>Au boot, Ventoy affiche un menu listant toutes les ISO pr&eacute;sentes. S&eacute;lectionnez celle que vous souhaitez lancer.</p>
+    </div>
+  </div>
+</div>
+
+<div class="tip">
+  <p><strong>Aucun reformatage n&eacute;cessaire pour ajouter ou supprimer des ISO.</strong> Ajoutez ou retirez simplement les fichiers. C'est la solution id&eacute;ale pour les techniciens et les cl&eacute;s de r&eacute;paration multi-outils.</p>
+</div>
+
+<!-- ========== 7. OUTILS ISO UTILES ========== -->
+<h2 id="isos">7. Outils ISO utiles</h2>
+
+<div class="card">
+  <h4>R&eacute;paration &amp; Sauvetage</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>ISO</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Hiren's BootCD PE</strong></td>
+        <td>Suite compl&egrave;te d'outils de diagnostic et r&eacute;paration sous environnement Windows PE</td>
+      </tr>
+      <tr>
+        <td><strong>SystemRescue</strong></td>
+        <td>Distribution Linux l&eacute;g&egrave;re pour la r&eacute;cup&eacute;ration syst&egrave;me et le partitionnement</td>
+      </tr>
+      <tr>
+        <td><strong>GParted Live</strong></td>
+        <td>&Eacute;diteur de partitions graphique bootable &mdash; redimensionnement, formatage, r&eacute;paration</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Installation d'OS</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>ISO</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Windows 10 / 11</strong></td>
+        <td>ISO officiel Microsoft via Media Creation Tool ou t&eacute;l&eacute;chargement direct</td>
+      </tr>
+      <tr>
+        <td><strong>Ubuntu / Linux Mint</strong></td>
+        <td>Distributions Linux grand public, id&eacute;ales pour d&eacute;buter</td>
+      </tr>
+      <tr>
+        <td><strong>Debian</strong></td>
+        <td>Distribution stable et fiable pour les serveurs et postes de travail</td>
+      </tr>
+      <tr>
+        <td><strong>Kali Linux</strong></td>
+        <td>Distribution orient&eacute;e s&eacute;curit&eacute; et tests de p&eacute;n&eacute;tration</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Diagnostic mat&eacute;riel</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>ISO</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>UBCD</strong></td>
+        <td>Ultimate Boot CD &mdash; collection d'outils de diagnostic mat&eacute;riel (CPU, RAM, disque)</td>
+      </tr>
+      <tr>
+        <td><strong>Memtest86</strong></td>
+        <td>Test de m&eacute;moire vive exhaustif, bootable, ind&eacute;pendant de l'OS</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========== 8. VERIFICATION ========== -->
+<h2 id="verification">8. V&eacute;rification</h2>
+
+<div class="card">
+  <p>Apr&egrave;s avoir cr&eacute;&eacute; votre cl&eacute; bootable, v&eacute;rifiez qu'elle fonctionne correctement :</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <p><strong>Red&eacute;marrer le PC</strong> avec la cl&eacute; USB branch&eacute;e.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <p><strong>Acc&eacute;der au Boot Menu</strong> en appuyant sur la touche correspondante d&egrave;s l'affichage du logo constructeur.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <p><strong>S&eacute;lectionner la cl&eacute; USB</strong> dans la liste des p&eacute;riph&eacute;riques de boot.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <p><strong>V&eacute;rifier que l'ISO d&eacute;marre</strong> correctement (menu d'installation, bureau live, etc.).</p>
+    </div>
+  </div>
+</div>
+
+<h3>Touches Boot Menu par constructeur</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Constructeur</th>
+      <th>Touche Boot Menu</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Dell</strong></td>
+      <td><code>F12</code></td>
+    </tr>
+    <tr>
+      <td><strong>HP</strong></td>
+      <td><code>F9</code></td>
+    </tr>
+    <tr>
+      <td><strong>Lenovo</strong></td>
+      <td><code>F12</code></td>
+    </tr>
+    <tr>
+      <td><strong>Acer</strong></td>
+      <td><code>F12</code></td>
+    </tr>
+    <tr>
+      <td><strong>ASUS</strong></td>
+      <td><code>F8</code> ou <code>Esc</code></td>
+    </tr>
+    <tr>
+      <td><strong>MSI</strong></td>
+      <td><code>F11</code></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="info">
+  <p>Si la touche ne fonctionne pas, essayez d'acc&eacute;der au <strong>BIOS/UEFI</strong> (g&eacute;n&eacute;ralement <code>F2</code> ou <code>Suppr</code>) et modifiez l'ordre de boot pour placer l'USB en premier.</p>
+</div>
+
+<!-- ========== 9. DEPANNAGE ========== -->
+<h2 id="depannage">9. D&eacute;pannage</h2>
+
+<div class="card">
+  <h4>&laquo; No bootable device found &raquo;</h4>
+  <ul>
+    <li><strong>Activer le mode UEFI</strong> dans le BIOS &mdash; Certains PC anciens sont configur&eacute;s en mode Legacy/CSM uniquement.</li>
+    <li><strong>D&eacute;sactiver le Secure Boot</strong> &mdash; Le Secure Boot peut rejeter les cl&eacute;s non sign&eacute;es. D&eacute;sactivez-le temporairement dans le BIOS.</li>
+    <li><strong>Reformater en FAT32</strong> &mdash; Si la cl&eacute; est en NTFS ou exFAT, reformatez-la en FAT32 et recommencez la gravure.</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4>L'ISO ne d&eacute;marre pas / &eacute;cran noir</h4>
+  <ul>
+    <li><strong>Gravure corrompue</strong> &mdash; L'ISO a peut-&ecirc;tre &eacute;t&eacute; mal grav&eacute;e. Refaites l'op&eacute;ration avec <strong>BalenaEtcher</strong> ou <strong>Rufus</strong>.</li>
+    <li><strong>ISO endommag&eacute;e</strong> &mdash; V&eacute;rifiez le hash SHA256 du fichier ISO t&eacute;l&eacute;charg&eacute; et comparez-le avec celui du site officiel.</li>
+    <li><strong>Mauvais mode de boot</strong> &mdash; Assurez-vous que le mode (UEFI vs Legacy) correspond au sch&eacute;ma de partition utilis&eacute; (GPT vs MBR).</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h4>La cl&eacute; USB n'est pas reconnue</h4>
+  <ul>
+    <li><strong>Essayer un autre port USB</strong> &mdash; Privil&eacute;giez les ports USB 2.0 (noirs) pour le boot, certains firmwares ne supportent pas bien l'USB 3.0 au d&eacute;marrage.</li>
+    <li><strong>Reformater la cl&eacute;</strong> &mdash; Utilisez <code>diskpart</code> (Windows) ou <code>diskutil</code> (macOS) pour nettoyer et reformater compl&egrave;tement la cl&eacute;.</li>
+    <li><strong>Tester avec une autre cl&eacute;</strong> &mdash; La cl&eacute; USB elle-m&ecirc;me peut &ecirc;tre d&eacute;fectueuse. Testez avec un autre mod&egrave;le.</li>
+  </ul>
+</div>
+
+<div class="warning">
+  <p>Avant toute manipulation BIOS/UEFI, notez les param&egrave;tres actuels. Un mauvais r&eacute;glage peut emp&ecirc;cher le d&eacute;marrage normal de votre syst&egrave;me.</p>
+</div>
+
+<!-- ========== 10. CONCLUSION ========== -->
+<h2 id="conclusion">10. Conclusion</h2>
+
+<div class="card">
+  <p>Savoir cr&eacute;er une cl&eacute; USB bootable est une <strong>comp&eacute;tence essentielle de maintenance informatique</strong>. Que ce soit pour installer un syst&egrave;me d'exploitation, r&eacute;parer un PC qui ne d&eacute;marre plus, ou lancer un diagnostic mat&eacute;riel, la cl&eacute; bootable reste l'outil de premier recours du technicien.</p>
+
+  <p style="margin-bottom: 0.5rem;">En r&eacute;sum&eacute; :</p>
+  <ul>
+    <li><strong>Rufus</strong> &mdash; La r&eacute;f&eacute;rence pour cr&eacute;er une cl&eacute; bootable simple sous Windows.</li>
+    <li><strong>BalenaEtcher</strong> &mdash; Le choix le plus accessible, multi-plateforme.</li>
+    <li><strong>Ventoy</strong> &mdash; La <strong>meilleure solution pour une cl&eacute; multi-ISO</strong> : installez-le une fois, puis glissez-d&eacute;posez autant d'ISO que la capacit&eacute; de la cl&eacute; le permet.</li>
+  </ul>
+</div>
+
+<div class="highlight-box">
+  <p><strong>Recommandation :</strong> Pour un technicien ou un passionn&eacute; d'informatique, la combinaison <strong>Ventoy + une cl&eacute; USB de 64 Go</strong> constitue la trousse &agrave; outils id&eacute;ale. Stockez-y Windows, une distribution Linux, Hiren's BootCD et Memtest86 &mdash; vous serez pr&ecirc;t &agrave; toute &eacute;ventualit&eacute;.</p>
+</div>
+
+<!-- ========== LIENS UTILES ========== -->
+<h2>Liens utiles</h2>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+  <div class="card">
+    <h4 style="margin-top:0;">Outils de cr&eacute;ation</h4>
+    <ul>
+      <li><a href="https://rufus.ie/" target="_blank">Rufus</a> &mdash; Outil rapide et fiable pour cr&eacute;er des cl&eacute;s bootables (Windows)</li>
+      <li><a href="https://www.ventoy.net/" target="_blank">Ventoy</a> &mdash; Solution multi-ISO : glisser-d&eacute;poser vos ISO sans reformatage</li>
+      <li><a href="https://etcher.balena.io/" target="_blank">BalenaEtcher</a> &mdash; Gravure simple et multi-plateforme en 3 clics</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Images ISO</h4>
+    <ul>
+      <li><a href="https://ubuntu.com/download/desktop" target="_blank">Ubuntu Desktop</a> &mdash; T&eacute;l&eacute;chargement officiel Ubuntu</li>
+      <li><a href="https://www.microsoft.com/fr-fr/software-download/windows11" target="_blank">Windows 11</a> &mdash; ISO officiel Microsoft</li>
+      <li><a href="https://www.kali.org/get-kali/" target="_blank">Kali Linux</a> &mdash; Distribution s&eacute;curit&eacute; offensive</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Outils de diagnostic</h4>
+    <ul>
+      <li><a href="https://www.hirensbootcd.org/" target="_blank">Hiren's BootCD PE</a> &mdash; Suite compl&egrave;te de diagnostic et r&eacute;paration</li>
+      <li><a href="https://www.system-rescue.org/" target="_blank">SystemRescue</a> &mdash; Distribution de sauvetage Linux</li>
+      <li><a href="https://www.memtest86.com/" target="_blank">Memtest86</a> &mdash; Test de m&eacute;moire vive bootable</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Documentation</h4>
+    <ul>
+      <li><a href="https://wiki.archlinux.org/title/USB_flash_installation_medium" target="_blank">Arch Wiki &mdash; USB Boot</a> &mdash; R&eacute;f&eacute;rence technique d&eacute;taill&eacute;e</li>
+      <li><a href="https://gparted.org/" target="_blank">GParted</a> &mdash; &Eacute;diteur de partitions graphique bootable</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  Guide technique &mdash; Cl&eacute;s USB bootables &mdash; Sagar MIR &mdash; 2025
+</div>
+
+</div>
+</body>
+</html>

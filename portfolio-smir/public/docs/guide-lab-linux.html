@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide Technique — Lab Virtualisé Linux (Kali / Ubuntu / Lubuntu)</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #0d9488; --accent2: #14b8a6; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 940px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.95rem; color: var(--accent2); margin: 1.2rem 0 0.4rem; opacity: 0.9; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  a { color: var(--accent2); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { color: var(--text); }
+
+  /* Badges */
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(13,148,136,0.15); color: var(--accent2); border: 1px solid rgba(13,148,136,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+
+  /* Cards */
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card h3:first-child { margin-top: 0; }
+
+  /* Meta */
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+
+  /* Header line */
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); }
+  th { background: rgba(13,148,136,0.1); color: var(--accent2); font-weight: 600; white-space: nowrap; }
+  td { color: var(--sub); }
+
+  /* Inline code */
+  code { background: rgba(13,148,136,0.1); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.82rem; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+
+  /* Code blocks */
+  pre { background: #0d1117; border: 1px solid var(--border); border-radius: 0.6rem; padding: 1.1rem 1.25rem; overflow-x: auto; margin: 1rem 0; position: relative; }
+  pre code { background: none; padding: 0; color: #c9d1d9; font-size: 0.82rem; line-height: 1.6; }
+  .code-label { position: absolute; top: 0; right: 0; background: rgba(13,148,136,0.2); color: var(--accent2); font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 0 0.55rem 0 0.4rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Tip / Warning boxes */
+  .tip { background: rgba(13,148,136,0.06); border-left: 3px solid var(--accent2); padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .tip p { margin-bottom: 0; }
+  .tip-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent2); margin-bottom: 0.3rem; }
+  .warning { background: rgba(251,191,36,0.06); border-left: 3px solid #fbbf24; padding: 1rem 1.25rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1rem 0; }
+  .warning p { margin-bottom: 0; }
+  .warning-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #fbbf24; margin-bottom: 0.3rem; }
+
+  /* TOC */
+  .toc { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem 2rem; margin: 2rem 0; }
+  .toc h3 { margin-top: 0; color: var(--accent2); }
+  .toc ol { margin-bottom: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--sub); font-size: 0.9rem; }
+  .toc a:hover { color: var(--accent2); }
+
+  /* Stat grid */
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1rem 0; }
+  .stat-card { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem 0.5rem; }
+  .stat-card .num { font-size: 1.6rem; font-weight: 800; color: var(--accent2); display: block; }
+  .stat-card .lbl { font-size: 0.72rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* Footer */
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .meta { gap: 1rem; }
+    table { font-size: 0.78rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+    pre { padding: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ============================================================ -->
+<!--  HEADER                                                       -->
+<!-- ============================================================ -->
+
+<h1>Lab Virtualisé Linux</h1>
+<p style="font-size:1.05rem; color:var(--sub); margin-bottom:0.3rem;">
+  Guide complet &mdash; Mise en place d'un laboratoire virtualisé avec Kali, Ubuntu &amp; Lubuntu sur VMware
+</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Type :</strong> Guide technique / Lab personnel</div>
+  <div class="meta-item"><strong>Hyperviseur :</strong> VMware Workstation Pro</div>
+  <div class="meta-item"><strong>OS hôte :</strong> Windows 10/11</div>
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Date :</strong> 2025</div>
+</div>
+
+<div class="tag-group">
+  <span class="badge">Linux</span>
+  <span class="badge">VMware</span>
+  <span class="badge">Kali</span>
+  <span class="badge">Ubuntu</span>
+  <span class="badge">Networking</span>
+</div>
+
+<div style="margin: 1.5rem 0;">
+  <a href="/docs/linux.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.2rem;background:rgba(13,148,136,0.15);color:var(--accent2);border:1px solid rgba(13,148,136,0.3);border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:600;transition:all 0.2s;">
+    📄 Télécharger le PDF original
+  </a>
+</div>
+
+<!-- ============================================================ -->
+<!--  STATS                                                        -->
+<!-- ============================================================ -->
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <span class="num">3</span>
+    <span class="lbl">Machines virtuelles</span>
+  </div>
+  <div class="stat-card">
+    <span class="num">~10 GB</span>
+    <span class="lbl">RAM totale allou&eacute;e</span>
+  </div>
+  <div class="stat-card">
+    <span class="num">150+ GB</span>
+    <span class="lbl">Espace disque</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  TABLE DES MATIERES                                           -->
+<!-- ============================================================ -->
+
+<div class="toc">
+  <h3>Sommaire</h3>
+  <ol>
+    <li><a href="#objectif">Objectif du laboratoire</a></li>
+    <li><a href="#prerequis">Pr&eacute;requis mat&eacute;riels et logiciels</a></li>
+    <li><a href="#iso">T&eacute;l&eacute;chargement des ISO</a></li>
+    <li><a href="#creation-vm">Cr&eacute;ation d'une VM type (VMware)</a></li>
+    <li><a href="#reseau">Configuration r&eacute;seau</a></li>
+    <li><a href="#install-kali">Installation de Kali Linux</a></li>
+    <li><a href="#install-ubuntu">Installation d'Ubuntu</a></li>
+    <li><a href="#install-lubuntu">Installation de Lubuntu</a></li>
+    <li><a href="#netplan">Configuration r&eacute;seau (Netplan)</a></li>
+    <li><a href="#optimisation">Optimisation des ressources</a></li>
+    <li><a href="#snapshots">Snapshots et bonnes pratiques</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<!--  1. OBJECTIF DU LABORATOIRE                                   -->
+<!-- ============================================================ -->
+
+<h2 id="objectif">1. Objectif du laboratoire</h2>
+
+<p>
+  Ce laboratoire virtualisé a pour but de fournir un environnement isolé et reproductible pour la pratique de la
+  <strong>cybersécurité</strong>, l'<strong>administration système Linux</strong> et le <strong>développement web</strong>.
+  Il repose sur trois machines virtuelles, chacune ayant un rôle distinct :
+</p>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>VM</th>
+        <th>Rôle</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Kali Linux</strong></td>
+        <td>Attaquant</td>
+        <td>Distribution offensive pour les tests d'intrusion, scans et exploitation</td>
+      </tr>
+      <tr>
+        <td><strong>Ubuntu</strong></td>
+        <td>Services</td>
+        <td>Serveur de services (web, bases de données, DNS, etc.)</td>
+      </tr>
+      <tr>
+        <td><strong>Lubuntu</strong></td>
+        <td>Cible vulnérable</td>
+        <td>Machine légère hébergeant des applications volontairement vulnérables</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Cas d'usage concrets</h3>
+<ul>
+  <li><strong>Simulation réseau :</strong> mise en place d'un LAN virtualisé pour tester les communications inter-VM</li>
+  <li><strong>Attaques contrôlées :</strong> injections SQL (SQLi), brute force, scans de ports (Nmap), exploitation de failles</li>
+  <li><strong>Administration Linux :</strong> installation, configuration, optimisation et sécurisation de systèmes</li>
+  <li><strong>Déploiement web :</strong> serveurs Apache/Nginx, PHP, MariaDB sur Ubuntu et Lubuntu</li>
+</ul>
+
+<div class="tip">
+  <div class="tip-label">Conseil</div>
+  <p>Ce lab est conçu pour un usage strictement pédagogique et éthique. N'utilisez jamais ces techniques sur des systèmes sans autorisation explicite.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  2. PREREQUIS                                                 -->
+<!-- ============================================================ -->
+
+<h2 id="prerequis">2. Prérequis matériels et logiciels</h2>
+
+<h3>Configuration de la machine hôte</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Composant</th>
+        <th>Minimum</th>
+        <th>Recommandé</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Système d'exploitation</td>
+        <td>Windows 10</td>
+        <td>Windows 11</td>
+      </tr>
+      <tr>
+        <td>Processeur</td>
+        <td>4 coeurs</td>
+        <td>6&ndash;8 coeurs</td>
+      </tr>
+      <tr>
+        <td>RAM</td>
+        <td>16 GB</td>
+        <td>16 GB+</td>
+      </tr>
+      <tr>
+        <td>Stockage</td>
+        <td>SSD 150 GB libre</td>
+        <td>SSD 200 GB+</td>
+      </tr>
+      <tr>
+        <td>Virtualisation</td>
+        <td colspan="2">VT-x (Intel) ou AMD-V activé dans le BIOS</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Hyperviseur</h3>
+<p>
+  <strong>VMware Workstation Pro</strong> (ou Player) est utilisé comme hyperviseur. Il offre une gestion avancée
+  des snapshots, du réseau virtuel et des VMware Tools pour une intégration optimale avec l'hôte.
+</p>
+
+<div class="warning">
+  <div class="warning-label">Attention</div>
+  <p>Assurez-vous que la virtualisation (VT-x / AMD-V) est bien activée dans les paramètres BIOS/UEFI de votre machine
+  avant d'installer VMware. Sans cela, les VM ne pourront pas démarrer.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  3. TELECHARGEMENT DES ISO                                    -->
+<!-- ============================================================ -->
+
+<h2 id="iso">3. Téléchargement des ISO</h2>
+
+<p>
+  Les images ISO sont organisées sur le disque hôte dans un dossier dédié pour faciliter la gestion :
+</p>
+
+<pre><code><span class="code-label">Structure</span>C:\ISO\
+  ├── kali/
+  │   └── kali-linux-2024.x-installer-amd64.iso
+  ├── ubuntu/
+  │   └── ubuntu-24.04-desktop-amd64.iso
+  └── lubuntu/
+      └── lubuntu-24.04-desktop-amd64.iso</code></pre>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Distribution</th>
+        <th>Source</th>
+        <th>Version</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Kali Linux</td>
+        <td><a href="https://www.kali.org/get-kali/" target="_blank">kali.org</a></td>
+        <td>64-bit Installer (amd64)</td>
+      </tr>
+      <tr>
+        <td>Ubuntu</td>
+        <td><a href="https://ubuntu.com/download/desktop" target="_blank">ubuntu.com</a></td>
+        <td>LTS 24.04</td>
+      </tr>
+      <tr>
+        <td>Lubuntu</td>
+        <td><a href="https://lubuntu.me/downloads/" target="_blank">lubuntu.me</a></td>
+        <td>24.04 LXQt</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tip">
+  <div class="tip-label">Conseil</div>
+  <p>Vérifiez toujours l'intégrité des ISO téléchargés via les checksums SHA-256 fournis sur les sites officiels.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  4. CREATION D'UNE VM TYPE                                    -->
+<!-- ============================================================ -->
+
+<h2 id="creation-vm">4. Création d'une VM type (VMware)</h2>
+
+<h3>Procédure de base</h3>
+<ol>
+  <li>Ouvrir VMware &rarr; <strong>Create a New Virtual Machine</strong></li>
+  <li>Choisir <strong>Typical (recommended)</strong></li>
+  <li>Sélectionner <strong>I will install the operating system later</strong></li>
+  <li>Guest OS : <strong>Linux</strong> &rarr; Version correspondante (Debian 11+, Ubuntu 64-bit)</li>
+  <li>Nommer la VM et choisir l'emplacement de stockage</li>
+  <li>Configurer le disque : <strong>Store virtual disk as a single file</strong></li>
+  <li>Cliquer sur <strong>Customize Hardware</strong> pour ajuster CPU, RAM et réseau</li>
+</ol>
+
+<h3>Paramètres recommandés par VM</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Paramètre</th>
+        <th>Kali Linux</th>
+        <th>Ubuntu</th>
+        <th>Lubuntu</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>vCPU</td>
+        <td>2&ndash;4</td>
+        <td>2&ndash;4</td>
+        <td>1&ndash;2</td>
+      </tr>
+      <tr>
+        <td>RAM</td>
+        <td>4 GB</td>
+        <td>4&ndash;8 GB</td>
+        <td>2 GB</td>
+      </tr>
+      <tr>
+        <td>Disque</td>
+        <td>40&ndash;60 GB</td>
+        <td>60&ndash;80 GB</td>
+        <td>20&ndash;40 GB</td>
+      </tr>
+      <tr>
+        <td>Réseau</td>
+        <td>Bridged</td>
+        <td>Bridged</td>
+        <td>Bridged</td>
+      </tr>
+      <tr>
+        <td>Stockage disque</td>
+        <td>Single file</td>
+        <td>Single file</td>
+        <td>Single file</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================ -->
+<!--  5. RESEAU                                                    -->
+<!-- ============================================================ -->
+
+<h2 id="reseau">5. Configuration réseau</h2>
+
+<h3>Mode Bridged (recommandé)</h3>
+<p>
+  En mode <strong>Bridged</strong>, chaque VM obtient une adresse IP directement sur le LAN physique de l'hôte,
+  comme si elle était une machine réelle connectée au même réseau. Cela permet une communication transparente
+  entre les VM et avec les autres machines du réseau local.
+</p>
+
+<div class="card">
+  <h3>Plan d'adressage IP</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Machine</th>
+        <th>Adresse IP</th>
+        <th>Rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Kali Linux</td>
+        <td><code>192.168.200.140</code></td>
+        <td>Attaquant</td>
+      </tr>
+      <tr>
+        <td>Lubuntu</td>
+        <td><code>192.168.200.130</code></td>
+        <td>Cible vulnérable</td>
+      </tr>
+      <tr>
+        <td>Ubuntu</td>
+        <td><code>192.168.200.150</code></td>
+        <td>Serveur de services</td>
+      </tr>
+      <tr>
+        <td>Passerelle (Gateway)</td>
+        <td><code>192.168.200.1</code></td>
+        <td>Routeur / box</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Alternative : mode Host-Only</h3>
+<p>
+  Pour un lab complètement isolé du réseau local (aucun accès internet, aucune visibilité externe), utilisez le mode
+  <strong>Host-Only</strong>. Cela crée un réseau privé entre l'hôte et les VM uniquement.
+  Idéal pour les tests offensifs agressifs sans risque de fuite réseau.
+</p>
+
+<div class="warning">
+  <div class="warning-label">Attention</div>
+  <p>En mode Bridged, vos VM sont visibles sur le réseau local. Ne lancez jamais d'attaques
+  depuis Kali vers des machines qui ne vous appartiennent pas.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  6. INSTALLATION KALI                                         -->
+<!-- ============================================================ -->
+
+<h2 id="install-kali">6. Installation de Kali Linux</h2>
+
+<h3>Procédure d'installation</h3>
+<ol>
+  <li>Monter l'ISO Kali dans le lecteur CD/DVD de la VM</li>
+  <li>Démarrer la VM et choisir <strong>Graphical Install</strong></li>
+  <li>Langue : <strong>Français</strong></li>
+  <li>Nom d'hôte : <code>kali-lab</code></li>
+  <li>Créer un utilisateur et définir le mot de passe</li>
+  <li>Partitionnement : <strong>Assisté - utiliser un disque entier</strong> (ext4)</li>
+  <li>Installer le chargeur d'amorçage <strong>GRUB</strong> sur le disque principal</li>
+  <li>Redémarrer après l'installation</li>
+</ol>
+
+<h3>Post-installation</h3>
+
+<pre><code><span class="code-label">bash</span># Mise a jour complete du systeme
+sudo apt update && sudo apt full-upgrade -y
+
+# Installation des VMware Tools pour l'integration hote
+sudo apt install -y open-vm-tools-desktop
+
+# Redemarrage
+sudo reboot</code></pre>
+
+<div class="tip">
+  <div class="tip-label">Conseil</div>
+  <p>Après le redémarrage, créez immédiatement un snapshot nommé <strong>&laquo; Kali &ndash; propre &raquo;</strong>
+  dans VMware. Ce point de restauration servira de base saine pour tous vos futurs tests.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  7. INSTALLATION UBUNTU                                       -->
+<!-- ============================================================ -->
+
+<h2 id="install-ubuntu">7. Installation d'Ubuntu</h2>
+
+<h3>Procédure d'installation</h3>
+<ol>
+  <li>Monter l'ISO Ubuntu dans le lecteur CD/DVD de la VM</li>
+  <li>Démarrer la VM et choisir <strong>Install Ubuntu</strong></li>
+  <li>Langue : <strong>Français</strong></li>
+  <li>Type d'installation : <strong>Installation normale</strong> (inclut les utilitaires et le navigateur)</li>
+  <li>Partitionnement guidé ou manuel</li>
+</ol>
+
+<h3>Partitionnement manuel recommandé</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Point de montage</th>
+        <th>Taille</th>
+        <th>Système de fichiers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>/</code></td>
+        <td>30&ndash;40 GB</td>
+        <td>ext4</td>
+      </tr>
+      <tr>
+        <td><code>/home</code></td>
+        <td>20&ndash;30 GB</td>
+        <td>ext4</td>
+      </tr>
+      <tr>
+        <td><code>swap</code></td>
+        <td>2&ndash;4 GB</td>
+        <td>linux-swap</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tip">
+  <div class="tip-label">Conseil</div>
+  <p>Séparer <code>/home</code> de <code>/</code> permet de réinstaller le système sans perdre les données utilisateur.
+  C'est une bonne pratique en environnement de lab comme en production.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  8. INSTALLATION LUBUNTU                                      -->
+<!-- ============================================================ -->
+
+<h2 id="install-lubuntu">8. Installation de Lubuntu</h2>
+
+<p>
+  Lubuntu est une distribution ultra-légère basée sur Ubuntu, utilisant l'environnement de bureau <strong>LXQt</strong>.
+  Son faible besoin en ressources en fait le choix idéal pour une <strong>cible vulnérable</strong> dans le lab.
+</p>
+
+<h3>Procédure d'installation</h3>
+<ol>
+  <li>Monter l'ISO Lubuntu dans le lecteur CD/DVD de la VM</li>
+  <li>Démarrer la VM et choisir <strong>Install Lubuntu</strong></li>
+  <li>Langue : <strong>Français</strong></li>
+  <li>Partitionnement : <strong>Assisté - utiliser un disque entier</strong></li>
+  <li>Finaliser l'installation et redémarrer</li>
+</ol>
+
+<h3>Déploiement de la stack vulnérable</h3>
+
+<pre><code><span class="code-label">bash</span># Mise a jour du systeme
+sudo apt update
+
+# Installation de la stack LAMP
+sudo apt install -y apache2 php php-mysqli mariadb-server
+
+# Verifier que les services sont actifs
+sudo systemctl status apache2
+sudo systemctl status mariadb</code></pre>
+
+<pre><code><span class="code-label">bash</span># Deployer l'application vulnerable dans le repertoire web
+sudo cp -r /chemin/vers/vulnerable_app /var/www/html/vulnerable_app
+
+# Definir les permissions
+sudo chown -R www-data:www-data /var/www/html/vulnerable_app
+sudo chmod -R 755 /var/www/html/vulnerable_app</code></pre>
+
+<div class="tip">
+  <div class="tip-label">Conseil</div>
+  <p>Vous pouvez utiliser des projets comme <strong>DVWA</strong> (Damn Vulnerable Web Application) ou
+  <strong>bWAPP</strong> comme application vulnérable de référence pour vos tests d'intrusion.</p>
+</div>
+
+<!-- ============================================================ -->
+<!--  9. CONFIGURATION RESEAU (NETPLAN)                            -->
+<!-- ============================================================ -->
+
+<h2 id="netplan">9. Configuration réseau (Netplan)</h2>
+
+<p>
+  Sur les distributions basées sur Ubuntu (y compris Lubuntu), la configuration réseau statique se fait via
+  <strong>Netplan</strong>. Le fichier de configuration se trouve dans <code>/etc/netplan/</code>.
+</p>
+
+<h3>Exemple : IP statique pour Lubuntu (192.168.200.130)</h3>
+
+<pre><code><span class="code-label">yaml</span># /etc/netplan/01-netcfg.yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    ens33:
+      dhcp4: no
+      addresses:
+        - 192.168.200.130/24
+      routes:
+        - to: default
+          via: 192.168.200.1
+      nameservers:
+        addresses:
+          - 1.1.1.1
+          - 8.8.8.8</code></pre>
+
+<h3>Appliquer la configuration</h3>
+
+<pre><code><span class="code-label">bash</span># Appliquer les modifications reseau
+sudo netplan apply
+
+# Verifier la nouvelle adresse IP
+ip addr show ens33
+
+# Tester la connectivite
+ping -c 4 192.168.200.1
+ping -c 4 1.1.1.1</code></pre>
+
+<div class="warning">
+  <div class="warning-label">Attention</div>
+  <p>L'indentation dans les fichiers YAML est critique (espaces uniquement, pas de tabulations).
+  Une erreur d'indentation dans Netplan empêchera l'application de la configuration réseau.</p>
+</div>
+
+<h3>Vérification de la connectivité inter-VM</h3>
+
+<pre><code><span class="code-label">bash</span># Depuis Kali (192.168.200.140), tester la connexion vers les autres VM :
+ping -c 4 192.168.200.130   # Lubuntu
+ping -c 4 192.168.200.150   # Ubuntu
+
+# Scan rapide depuis Kali pour confirmer la visibilite reseau :
+nmap -sn 192.168.200.0/24</code></pre>
+
+<!-- ============================================================ -->
+<!--  10. OPTIMISATION                                             -->
+<!-- ============================================================ -->
+
+<h2 id="optimisation">10. Optimisation des ressources</h2>
+
+<h3>Répartition sur un hôte 16 GB RAM</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Machine</th>
+        <th>RAM</th>
+        <th>vCPU</th>
+        <th>Note</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Kali Linux</td>
+        <td>4 GB</td>
+        <td>2</td>
+        <td>Outils offensifs, interface graphique</td>
+      </tr>
+      <tr>
+        <td>Ubuntu</td>
+        <td>4 GB</td>
+        <td>2</td>
+        <td>Serveur de services</td>
+      </tr>
+      <tr>
+        <td>Lubuntu</td>
+        <td>2 GB</td>
+        <td>1</td>
+        <td>Cible légère</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent2); font-weight:600;">Hote Windows</td>
+        <td style="color:var(--accent2); font-weight:600;">4&ndash;6 GB</td>
+        <td style="color:var(--accent2); font-weight:600;">&mdash;</td>
+        <td style="color:var(--accent2);">Restant pour l'OS hôte</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="tip">
+  <div class="tip-label">Conseil</div>
+  <p>Ne démarrez pas les 3 VM simultanément si votre hôte n'a que 16 GB de RAM.
+  Privilégiez le démarrage de 2 VM à la fois (ex. Kali + Lubuntu pour les tests offensifs).</p>
+</div>
+
+<h3>Installation des VMware Tools</h3>
+
+<p>Les VMware Tools améliorent les performances (graphiques, copier-coller, dossiers partagés) :</p>
+
+<pre><code><span class="code-label">bash</span># Installation sur toutes les VM basees Debian/Ubuntu
+sudo apt install -y open-vm-tools open-vm-tools-desktop
+
+# Redemarrer pour activer les outils
+sudo reboot</code></pre>
+
+<h3>Désactiver les services inutiles</h3>
+
+<p>
+  Pour économiser des ressources sur les VM, désactivez les services qui ne sont pas nécessaires en environnement lab :
+</p>
+
+<pre><code><span class="code-label">bash</span># Desactiver Bluetooth (inutile en VM)
+sudo systemctl disable bluetooth.service
+
+# Desactiver le service d'impression CUPS
+sudo systemctl disable cups.service
+
+# Desactiver le service de decouverte reseau Avahi
+sudo systemctl disable avahi-daemon.service
+
+# Verifier les services desactives
+sudo systemctl list-unit-files --state=disabled | grep -E "bluetooth|cups|avahi"</code></pre>
+
+<!-- ============================================================ -->
+<!--  11. SNAPSHOTS ET BONNES PRATIQUES                            -->
+<!-- ============================================================ -->
+
+<h2 id="snapshots">11. Snapshots et bonnes pratiques</h2>
+
+<p>
+  Les <strong>snapshots VMware</strong> sont essentiels dans un lab de cybersécurité. Ils permettent de capturer
+  l'état complet d'une VM à un instant T et d'y revenir instantanément après un test destructif.
+</p>
+
+<h3>Stratégie de snapshots recommandée</h3>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>VM</th>
+        <th>Nom du snapshot</th>
+        <th>Quand le créer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Kali</td>
+        <td><code>Kali &ndash; clean</code></td>
+        <td>Après l'installation + mise a jour + VMware Tools</td>
+      </tr>
+      <tr>
+        <td>Lubuntu</td>
+        <td><code>Lubuntu &ndash; vuln app installée</code></td>
+        <td>Après déploiement de l'application vulnérable</td>
+      </tr>
+      <tr>
+        <td>Ubuntu</td>
+        <td><code>Ubuntu &ndash; serveur OK</code></td>
+        <td>Après configuration des services (Apache, MariaDB, etc.)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3>Bonnes pratiques</h3>
+
+<ul>
+  <li><strong>Avant chaque test agressif :</strong> créez un snapshot pour pouvoir restaurer la VM en cas de corruption</li>
+  <li><strong>Nommez vos snapshots :</strong> utilisez des noms explicites (date + état) pour retrouver facilement un point de restauration</li>
+  <li><strong>Nettoyez les snapshots obsolètes :</strong> chaque snapshot consomme de l'espace disque supplémentaire</li>
+  <li><strong>Documentez vos tests :</strong> notez les manipulations effectuées entre chaque snapshot pour garder une trace</li>
+  <li><strong>Sauvegardez les VM :</strong> exportez périodiquement vos VM en OVA pour avoir une copie de secours complète</li>
+</ul>
+
+<div class="warning">
+  <div class="warning-label">Attention</div>
+  <p>Les snapshots ne remplacent pas une sauvegarde. Si le disque physique de l'hôte est endommagé,
+  les snapshots seront perdus. Exportez régulièrement vos VM en fichiers OVA sur un support externe.</p>
+</div>
+
+<h3>Commande rapide : créer un snapshot VMware en CLI</h3>
+
+<pre><code><span class="code-label">bash</span># Depuis l'hote Windows (vmrun doit etre dans le PATH)
+vmrun -T ws snapshot "C:\VMs\Kali\Kali.vmx" "Kali - clean"
+
+# Lister les snapshots existants
+vmrun -T ws listSnapshots "C:\VMs\Kali\Kali.vmx"
+
+# Restaurer un snapshot
+vmrun -T ws revertToSnapshot "C:\VMs\Kali\Kali.vmx" "Kali - clean"</code></pre>
+
+<!-- ============================================================ -->
+<!--  LIENS UTILES                                                 -->
+<!-- ============================================================ -->
+
+<h2>Liens utiles</h2>
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;">
+  <div class="card">
+    <h4 style="margin-top:0;">Distributions</h4>
+    <ul>
+      <li><a href="https://www.kali.org/" target="_blank">Kali Linux</a> &mdash; Distribution officielle pour les tests de pénétration</li>
+      <li><a href="https://ubuntu.com/download" target="_blank">Ubuntu</a> &mdash; Documentation et téléchargement officiel</li>
+      <li><a href="https://lubuntu.me/" target="_blank">Lubuntu</a> &mdash; Distribution légère basée sur Ubuntu</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Virtualisation</h4>
+    <ul>
+      <li><a href="https://docs.vmware.com/en/VMware-Workstation-Pro/index.html" target="_blank">VMware Workstation Pro</a> &mdash; Documentation officielle VMware</li>
+      <li><a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a> &mdash; Alternative open-source à VMware</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Documentation Linux</h4>
+    <ul>
+      <li><a href="https://man7.org/linux/man-pages/" target="_blank">Linux man pages</a> &mdash; Pages de manuel officielles Linux</li>
+      <li><a href="https://netplan.io/reference" target="_blank">Netplan</a> &mdash; Référence de configuration réseau</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4 style="margin-top:0;">Sécurité</h4>
+    <ul>
+      <li><a href="https://www.kali.org/tools/" target="_blank">Kali Tools</a> &mdash; Liste complète des outils Kali Linux</li>
+      <li><a href="https://owasp.org/" target="_blank">OWASP</a> &mdash; Référence en sécurité applicative</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!--  FOOTER                                                       -->
+<!-- ============================================================ -->
+
+<div class="footer">
+  <p>
+    Guide technique &mdash; <strong>Lab virtualisé Linux</strong> &mdash; Sagar MIR &mdash; 2025
+  </p>
+  <p style="margin-top:0.5rem;">
+    Kali Linux &middot; Ubuntu 24.04 LTS &middot; Lubuntu 24.04 LXQt &middot; VMware Workstation Pro
+  </p>
+</div>
+
+</div>
+</body>
+</html>

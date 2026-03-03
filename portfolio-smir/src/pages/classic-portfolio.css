@@ -11,7 +11,7 @@
 
   /* Couleurs du thème */
   --portfolio-bg: #0b1020;
-  --portfolio-card: rgba(11, 16, 32, 0.78);
+  --portfolio-card: rgba(11, 16, 32, 0.62);
   --portfolio-border: rgba(255, 215, 0, 0.12);
   --portfolio-text: #E6ECF8;
   --portfolio-sub: #C5D3E8;
@@ -58,7 +58,7 @@
 /* ===== SECTIONS COMMUNES ===== */
 .portfolio-section {
   min-height: 100svh;
-  scroll-snap-align: center;
+  scroll-snap-align: start;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -380,7 +380,7 @@
 
 /* ===== GLASSMORPHISM ===== */
 .glass {
-  background: rgba(11, 16, 32, 0.78);
+  background: rgba(11, 16, 32, 0.62);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 215, 0, 0.12);

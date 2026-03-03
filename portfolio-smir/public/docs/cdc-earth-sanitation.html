@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Earth Sanitation</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #059669; --accent2: #10b981; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(16,185,129,0.15); color: var(--accent2); border: 1px solid rgba(16,185,129,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(16,185,129,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Earth Sanitation</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Site vitrine & SEO pour entreprise d'assainissement 24h/24</p>
+<div class="header-line"></div>
+
+<div><span class="badge">Next.js</span><span class="badge">Tailwind CSS</span><span class="badge">SEO</span><span class="badge">React</span></div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Earth Sanitation — Site vitrine professionnel</td></tr>
+  <tr><th>Commanditaire</th><td>Earth Sanitation (entreprise d'assainissement)</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR (freelance)</td></tr>
+  <tr><th>Date</th><td>2025</td></tr>
+  <tr><th>Statut</th><td>En production — <a href="https://earth-sanitation.fr" style="color:var(--accent2);">earth-sanitation.fr</a></td></tr>
+  <tr><th>Type</th><td>Site vitrine professionnel avec SEO local</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Earth Sanitation est une entreprise de débouchage et assainissement opérant 24h/24 autour de Montpellier et Nîmes (rayon 100 km). Besoin d'un site professionnel pour générer des leads et apparaître dans les recherches locales.</td></tr>
+  <tr><th>Objectif principal</th><td>Créer un site vitrine performant avec un SEO local avancé pour capter les clients en urgence (débouchage, assainissement).</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>7 pages services détaillées</li>
+      <li>Formulaire de devis en ligne</li>
+      <li>Intégration WhatsApp pour contact rapide</li>
+      <li>SEO local : schema JSON-LD, annuaire 30+ villes</li>
+      <li>Design responsive et animations fluides</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Pages services</td><td>7 pages détaillées : débouchage, curage, assainissement, inspection caméra, pompage, entretien, urgences.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Formulaire de devis</td><td>Formulaire multi-étapes avec validation, envoi par email, confirmation automatique.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Contact WhatsApp</td><td>Bouton WhatsApp flottant pour contact direct en un clic.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">SEO local</td><td>Schema JSON-LD (LocalBusiness), meta tags optimisés, annuaire 30+ villes couvertes, sitemap XML.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Responsive design</td><td>Adapté mobile, tablette et desktop. Animations CSS fluides.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Framework</td><td>Next.js (React) — SSR/SSG pour performances SEO optimales</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Styles</td><td>Tailwind CSS — Design responsive utility-first</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">SEO</td><td>Schema JSON-LD, sitemap XML, meta tags dynamiques, Open Graph</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Déploiement</td><td>Vercel — CDN mondial, HTTPS, déploiement automatique</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Performance</td><td>Temps de chargement &lt; 2s (Core Web Vitals optimisés pour le SEO).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">SEO</td><td>Première page Google sur les requêtes locales ciblées (débouchage + ville).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Accessibilité</td><td>Contact en 1 clic (WhatsApp/téléphone) pour les situations d'urgence.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Couverture</td><td>Montpellier, Nîmes et 30+ villes dans un rayon de 100 km.</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Site web</td><td>Site Next.js déployé sur earth-sanitation.fr</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">SEO</td><td>Configuration complète SEO local, schema JSON-LD, sitemap</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation</td><td>Guide d'administration du contenu</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Earth Sanitation — Sagar MIR — 2025</div>
+</div>
+</body>
+</html>

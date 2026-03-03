@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Drainage Academy</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #b8960e; --accent2: #d4af37; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(212,175,55,0.15); color: var(--accent2); border: 1px solid rgba(212,175,55,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(212,175,55,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Drainage Academy</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Plateforme complète pour école de drainage lymphatique</p>
+<div class="header-line"></div>
+
+<div><span class="badge">React</span><span class="badge">Node.js</span><span class="badge">Auth</span><span class="badge">Admin Panel</span></div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Drainage Academy — Plateforme école de drainage lymphatique</td></tr>
+  <tr><th>Commanditaire</th><td>Dan Samama (fondateur Drainage Academy)</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR (freelance)</td></tr>
+  <tr><th>Date</th><td>2025</td></tr>
+  <tr><th>Statut</th><td>En production — <a href="https://drainage-academy.fr" style="color:var(--accent2);">drainage-academy.fr</a></td></tr>
+  <tr><th>Type</th><td>Application web fullstack — Site vitrine + back-office</td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Drainage Academy est une école spécialisée dans la formation au drainage lymphatique. Le fondateur Dan Samama avait besoin d'une plateforme complète pour présenter ses formations, gérer un annuaire de praticiens et administrer le contenu dynamiquement.</td></tr>
+  <tr><th>Objectif principal</th><td>Développer une plateforme fullstack avec site vitrine public, espace praticien sécurisé et back-office admin complet.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Site vitrine avec agenda des formations</li>
+      <li>Annuaire des praticiens diplômés</li>
+      <li>Témoignages vidéo intégrés</li>
+      <li>Espace praticien avec authentification</li>
+      <li>Back-office admin pour gestion dynamique du contenu</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Site vitrine</td><td>Présentation de l'école, formations, méthode, équipe. Design haut de gamme.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Agenda formations</td><td>Calendrier des prochaines sessions avec inscriptions en ligne.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Annuaire praticiens</td><td>Répertoire des praticiens diplômés avec fiches détaillées et localisation.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Témoignages vidéo</td><td>Section témoignages avec intégration vidéo et avis écrits.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Espace praticien</td><td>Authentification sécurisée. Accès aux ressources, profil modifiable.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Back-office admin</td><td>Gestion dynamique : blog, avis, photos, activation/désactivation de pages, gestion utilisateurs.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Frontend</td><td>React — Composants modulaires, animations, responsive design</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Backend</td><td>Node.js — API REST, middleware d'authentification</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Authentification</td><td>JWT — Espace praticien et admin sécurisés</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Back-office</td><td>Panel admin custom — CRUD complet sur tout le contenu</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Design</td><td>Image haut de gamme cohérente avec le positionnement premium de l'école.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Autonomie</td><td>Le client doit pouvoir gérer tout le contenu sans intervention technique.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sécurité</td><td>Espace praticien avec données personnelles. Authentification robuste.</td></tr>
+</table>
+
+<h2>6. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Site vitrine</td><td>Frontend React déployé</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">API backend</td><td>Serveur Node.js avec endpoints REST</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Back-office admin</td><td>Panel de gestion complet du contenu</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation</td><td>Guide d'utilisation du back-office</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Drainage Academy — Sagar MIR — 2025</div>
+</div>
+</body>
+</html>

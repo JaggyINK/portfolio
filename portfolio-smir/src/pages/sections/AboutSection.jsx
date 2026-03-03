@@ -5,13 +5,14 @@ import CodeFlipCard from "../../components/CodeFlipCard";
 import { TECH_DATA } from "../../components/TechData";
 import useReveal from "../../hooks/useReveal";
 import "./AboutSection.css";
+import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ===== Golden ratio ===== */
 const PHI = 1.618;
 const INV = 1 / PHI;
 
 const THEME = {
-  card: "rgba(11,16,32,0.78)",
+  card: "rgba(11,16,32,0.62)",
   border: "rgba(255,215,0,0.12)",
   text: "#E6ECF8",
   sub: "#C5D3E8",
@@ -35,7 +36,7 @@ const KPIS = [
 const STRENGTHS = [
   {
     title: "Fullstack op\u00e9rationnel",
-    desc: "Python 40%, Vue.js, Laravel 12, LDAP/AD",
+    desc: "Python, Vue.js, Laravel 12, LDAP/AD",
     color: THEME.brandFrom,
   },
   {
@@ -50,7 +51,7 @@ const STRENGTHS = [
   },
   {
     title: "Livraison document\u00e9e",
-    desc: "+Guides techniques,, tutoriels,  APIs REST,...",
+    desc: "Guides techniques, tutoriels, APIs REST",
     color: THEME.gold,
   },
 ];
@@ -59,7 +60,7 @@ const STRENGTHS = [
 const DOMAINS = [
   { label: "Frontend", chips: ["React", "Vue.js", "Tailwind CSS", "Three.js"] },
   { label: "Backend", chips: ["Python", "PHP", "Laravel", "Node.js"] },
-  { label: "Data & SI", chips: ["MySQL", "SQLite", "APIs REST", "LDAP"] },
+  { label: "Data & SI", chips: ["MySQL", "PostgreSQL", "SQLite", "APIs REST", "LDAP"] },
   { label: "DevOps", chips: ["Docker", "Git", "Vite", "CI/CD"] },
   { label: "E-commerce", chips: ["Shopify", "Liquid", "Custom apps"] },
   { label: "S\u00e9curit\u00e9", chips: ["OWASP", "Active Directory", "SSO"] },
@@ -82,6 +83,7 @@ const TECH_GROUPS = [
   ]},
   { label: "Data & SI", techs: [
     { name: "MySQL", color: "#4479A1" },
+    { name: "PostgreSQL", color: "#336791" },
     { name: "SQLite", color: "#003B57" },
     { name: "APIs REST", color: "#E10098" },
   ]},
@@ -292,6 +294,8 @@ export default function AboutSection() {
         <div className="about-flipcard">
           <CodeFlipCard />
         </div>
+
+        <ScrollDownHint targetId="bts" />
       </div>
     </section>
   );
