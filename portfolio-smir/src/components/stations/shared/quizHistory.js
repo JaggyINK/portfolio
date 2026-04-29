@@ -4,13 +4,24 @@
 const MAX_HISTORY_ITEMS = 50;
 
 /**
+ * Génère un identifiant unique pour un résultat (collision-safe)
+ */
+function makeResultId(quizType) {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `${quizType}_${crypto.randomUUID()}`;
+  }
+  // Fallback : timestamp + random base36 (substr remplacé par slice)
+  return `${quizType}_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
+}
+
+/**
  * Crée un gestionnaire d'historique pour un quiz spécifique
  * @param {string} quizType - Type de quiz (ex: 'php', 'python', 'javascript')
  */
 export const createQuizHistory = (quizType = 'quiz') => {
   const STORAGE_KEY = `${quizType}_quiz_history`;
 
-  return {
+  const api = {
     // Récupère tout l'historique
     getHistory: () => {
       try {
@@ -27,16 +38,24 @@ export const createQuizHistory = (quizType = 'quiz') => {
     addResult: (result) => {
       try {
         const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        
+
+        // Garde-fous : un score ne peut pas dépasser 100 % ni être négatif
+        const total = Math.max(0, Number(result.total) || 0);
+        const score = Math.max(0, Math.min(total, Number(result.score) || 0));
+        const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+
         const newResult = {
           ...result,
-          id: `${quizType}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+          score,
+          total,
+          percentage,
+          id: makeResultId(quizType),
           timestamp: Date.now()
         };
-        
+
         history.unshift(newResult);
         const trimmed = history.slice(0, MAX_HISTORY_ITEMS);
-        
+
         localStorage.setItem(STORAGE_KEY, JSON.stringify(trimmed));
         return newResult;
       } catch (error) {
@@ -163,34 +182,36 @@ export const createQuizHistory = (quizType = 'quiz') => {
       return categories.slice(0, limit);
     },
 
-    // Export stats
+    // Export stats — utilise les vraies fonctions (pas le localStorage brut)
     exportStats: () => {
-      const stats = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      const weak = this.getWeakCategories();
-      
+      const stats = api.getGlobalStats();
+      const weak = api.getWeakCategories();
+
       let text = `=== STATISTIQUES ${quizType.toUpperCase()} QUIZ ===\n\n`;
       text += `Total de quiz complétés : ${stats.totalQuizzes}\n`;
       text += `Score moyen global : ${stats.averageScore}%\n`;
       text += `Meilleur score : ${stats.bestScore}%\n`;
       text += `Temps total passé : ${Math.round(stats.totalTime / 60)} minutes\n\n`;
-      
+
       text += '--- Par niveau ---\n';
       Object.entries(stats.byDifficulty).forEach(([diff, data]) => {
         if (data.count > 0) {
           text += `${diff.toUpperCase()}: ${data.count} quiz, moyenne ${data.avgScore}%, record ${data.bestScore}%\n`;
         }
       });
-      
+
       if (weak.length > 0) {
         text += '\n--- Catégories à améliorer ---\n';
         weak.forEach(cat => {
           text += `${cat.name}: ${cat.percentage}% (${cat.correct}/${cat.total})\n`;
         });
       }
-      
+
       return text;
     }
   };
+
+  return api;
 };
 
 // ✨ Instances pré-créées pour tes 5 quiz

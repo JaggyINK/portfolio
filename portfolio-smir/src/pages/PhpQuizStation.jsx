@@ -167,6 +167,11 @@ export default function PhpQuizStation() {
     setGlobalStats(phpQuizHistory.getGlobalStats());
   }, []);
 
+  // Charge les stats au montage : sinon "Voir les stats complètes" avant le 1er quiz fini ne montre rien
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
+
   const total = questions.length;
   const currentQuestion = questions[currentIndex];
   const progress = total > 0 ? currentIndex / total : 0;
@@ -225,7 +230,8 @@ export default function PhpQuizStation() {
       setFinished(true);
       setIsRunning(false);
 
-      const finalScore = score + (isCorrect ? 1 : 0);
+      // `score` et `answers` sont déjà à jour grâce au re-render entre handleSelect et handleNext
+      const finalScore = score;
       const result = {
         difficulty,
         score: finalScore,

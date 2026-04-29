@@ -167,6 +167,11 @@ export default function DockerQuizStation() {
     setGlobalStats(dockerQuizHistory.getGlobalStats());
   }, []);
 
+  // Charge les stats au montage
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
+
   const total = questions.length;
   const currentQuestion = questions[currentIndex];
   const progress = total > 0 ? currentIndex / total : 0;
@@ -225,7 +230,8 @@ export default function DockerQuizStation() {
       setFinished(true);
       setIsRunning(false);
 
-      const finalScore = score + (isCorrect ? 1 : 0);
+      // `score` et `answers` sont déjà à jour grâce au re-render entre handleSelect et handleNext
+      const finalScore = score;
       const result = {
         difficulty,
         score: finalScore,
