@@ -404,11 +404,11 @@ async function authFetch(url, opts = {}) {
 
 function FlowDiagram() {
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-0 py-6">
+    <div className="flex flex-col items-center justify-center gap-2 py-6 sm:flex-row sm:gap-0">
       {FLOW_STEPS.map((step, i) => (
         <div key={step.label} className="flex items-center">
           <div
-            className="flex flex-col items-center text-center px-4 py-3 rounded-xl border transition-all hover:scale-105"
+            className="flex flex-col items-center px-4 py-3 text-center transition-all border rounded-xl hover:scale-105"
             style={{
               background: `${step.color}08`,
               borderColor: `${step.color}30`,
@@ -416,12 +416,12 @@ function FlowDiagram() {
               animation: `fadeSlideUp 0.5s ease-out ${i * 0.15}s both`,
             }}
           >
-            <span className="text-2xl mb-1">{step.icon}</span>
+            <span className="mb-1 text-2xl">{step.icon}</span>
             <span className="text-[0.8rem] font-bold" style={{ color: step.color }}>{step.label}</span>
             <span className="text-[0.65rem] mt-0.5" style={{ color: THEME.sub }}>{step.sub}</span>
           </div>
           {i < FLOW_STEPS.length - 1 && (
-            <div className="hidden sm:flex items-center mx-1">
+            <div className="items-center hidden mx-1 sm:flex">
               <div className="flex items-center gap-0.5">
                 {[0, 1, 2].map((d) => (
                   <span
@@ -446,7 +446,7 @@ function FlowDiagram() {
 
 function VeilleTimeline() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
       {VEILLE_STEPS.map((s, i) => (
         <div
           key={s.num}
@@ -508,7 +508,7 @@ export default function VeilleAuthSection() {
       <div className="w-full mx-auto" style={{ maxWidth: `${48 * PHI}rem` }}>
 
         {/* ── HEADER ── */}
-        <header className="text-center mb-8">
+        <header className="mb-8 text-center">
           <div className="inline-flex items-center gap-2 mb-3">
             <span
               className="px-3 py-1 text-[0.7rem] font-bold tracking-widest uppercase rounded-full"
@@ -543,7 +543,7 @@ export default function VeilleAuthSection() {
 
         {/* ── CONTEXTE JURY ── */}
         <div
-          className="mb-8 rounded-xl border px-5 py-4"
+          className="px-5 py-4 mb-8 border rounded-xl"
           style={{
             background: "linear-gradient(135deg, rgba(212,175,55,0.04), rgba(168,85,247,0.04))",
             borderColor: "rgba(212,175,55,0.15)",
@@ -597,11 +597,11 @@ export default function VeilleAuthSection() {
               className="hidden md:block absolute top-[2.2rem] left-0 right-0 h-px"
               style={{ background: "linear-gradient(90deg, rgba(212,175,55,0.05), rgba(212,175,55,0.4), rgba(212,175,55,0.05))" }}
             />
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
+            <div className="relative grid grid-cols-1 gap-3 md:grid-cols-5">
               {TIMELINE.map((t, i) => (
                 <div
                   key={t.year}
-                  className="rounded-xl border p-3 relative"
+                  className="relative p-3 border rounded-xl"
                   style={{
                     background: THEME.card,
                     borderColor: `${t.color}25`,
@@ -636,7 +636,7 @@ export default function VeilleAuthSection() {
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
             Solutions testées
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {SOLUTIONS.map((s, i) => (
               <div
                 key={s.name}
@@ -682,7 +682,7 @@ export default function VeilleAuthSection() {
                   animation: `fadeSlideUp 0.4s ease-out ${i * 0.07}s both`,
                 }}
               >
-                <span className="text-lg block mb-1">{p.icon}</span>
+                <span className="block mb-1 text-lg">{p.icon}</span>
                 <span className="text-[0.8rem] font-bold block" style={{ color: THEME.text }}>{p.title}</span>
                 <span className="text-[0.72rem] block mt-0.5 leading-snug" style={{ color: THEME.sub }}>{p.desc}</span>
               </div>
@@ -695,7 +695,7 @@ export default function VeilleAuthSection() {
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
             Comparatif des solutions
           </h3>
-          <div className="rounded-xl border overflow-hidden" style={{ background: THEME.card, borderColor: THEME.border }}>
+          <div className="overflow-hidden border rounded-xl" style={{ background: THEME.card, borderColor: THEME.border }}>
             <div className="overflow-x-auto">
               <table className="w-full text-[0.8rem]">
                 <thead>
@@ -739,11 +739,11 @@ export default function VeilleAuthSection() {
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
             Principaux acteurs du marché
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
             {ACTEURS.map((a, i) => (
               <div
                 key={a.cat}
-                className="rounded-xl border p-3"
+                className="p-3 border rounded-xl"
                 style={{
                   background: THEME.card,
                   borderColor: `${a.color}25`,
@@ -782,7 +782,7 @@ export default function VeilleAuthSection() {
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
             Tendances & vision future
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
             {TENDANCES.map((t, i) => (
               <div
                 key={t.title}
@@ -833,7 +833,7 @@ export default function VeilleAuthSection() {
 
           {/* Narratif */}
           <div
-            className="rounded-xl border px-5 py-4 mb-4"
+            className="px-5 py-4 mb-4 border rounded-xl"
             style={{
               background: "linear-gradient(135deg, rgba(34,211,238,0.05), rgba(168,85,247,0.04))",
               borderColor: "rgba(34,211,238,0.2)",
@@ -884,7 +884,7 @@ export default function VeilleAuthSection() {
             Prédictions chiffrées
           </h4>
           <div
-            className="rounded-xl border px-4 py-3 mb-5"
+            className="px-4 py-3 mb-5 border rounded-xl"
             style={{ background: THEME.card, borderColor: "rgba(255,255,255,0.06)" }}
           >
             <ul className="space-y-1.5">
@@ -904,7 +904,7 @@ export default function VeilleAuthSection() {
           <h4 className="text-[0.7rem] font-bold tracking-[0.14em] uppercase mb-2.5" style={{ color: THEME.sub }}>
             Sources & références
           </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
             {SOURCES_AVENIR.map((s, i) => (
               <a
                 key={s.url}
@@ -984,7 +984,7 @@ export default function VeilleAuthSection() {
             className="overflow-hidden transition-all duration-500"
             style={{ maxHeight: showCode ? "2000px" : "0", opacity: showCode ? 1 : 0 }}
           >
-            <div className="mt-3 rounded-xl border overflow-hidden" style={{ background: THEME.card, borderColor: THEME.border }}>
+            <div className="mt-3 overflow-hidden border rounded-xl" style={{ background: THEME.card, borderColor: THEME.border }}>
               {/* Tabs */}
               <div className="flex gap-1 px-4 py-2.5 border-b border-white/8">
                 {tabs.map((t) => (
@@ -1014,7 +1014,7 @@ export default function VeilleAuthSection() {
 
         {/* ── CONCLUSION ── */}
         <div
-          className="rounded-xl border px-5 py-4 text-center"
+          className="px-5 py-4 text-center border rounded-xl"
           style={{
             background: "linear-gradient(135deg, rgba(34,211,238,0.04), rgba(168,85,247,0.04))",
             borderColor: "rgba(34,211,238,0.15)",
@@ -1041,9 +1041,9 @@ export default function VeilleAuthSection() {
         </div>
 
         {/* ── SOURCES ── */}
-        <div className="mt-5 text-center space-y-1">
+        <div className="mt-5 space-y-1 text-center">
           <p className="text-[0.72rem]" style={{ color: THEME.sub }}>
-            Veille maintenue mensuellement — mise à jour : <strong>mars 2026</strong>
+            Veille maintenue mensuellement — mise à jour : <strong>mai 2026</strong>
           </p>
           <p className="text-[0.65rem]" style={{ color: THEME.sub, opacity: 0.7 }}>
             Sources : OWASP Top 10:2025 · NIST SP 800-63B · Laravel Security · HackerNews · BleepingComputer

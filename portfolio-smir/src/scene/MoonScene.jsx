@@ -8,6 +8,9 @@ import { BASE_RADIUS } from "@/constants/space";
 
 import Scene from "@/scenes/core/Scene";
 import buildStations from "@/scenes/stations/buildStations";
+import { isWebGLAvailable } from "@/utils/webglProbe";
+import WebGLFallback from "./WebGLFallback.jsx";
+import WebGLErrorBoundary from "./WebGLErrorBoundary.jsx";
 
 export default function MoonScene({
   onOpenStation,
@@ -18,6 +21,10 @@ export default function MoonScene({
   onNavConsumed,
 }) {
   const { settings } = useSettings();
+
+  // 🛡️ Détection précoce : si WebGL n'est pas dispo, on n'essaie même pas
+  // de monter le Canvas (sinon Three.js spam la console à chaque tentative).
+  const webglOk = useMemo(() => isWebGLAvailable(), []);
 
   const [canvasKey, setCanvasKey] = useState(0);
 
@@ -67,40 +74,47 @@ export default function MoonScene({
     cleanupListenersRef.current?.();
   }, [canvasKey]);
 
+  // 🛑 Pas de WebGL → on affiche le fallback au lieu de laisser Three.js boucler en erreur
+  if (!webglOk) {
+    return <WebGLFallback reason="WebGL non disponible côté navigateur (accélération matérielle désactivée ou GPU bloqué)." />;
+  }
+
   return (
-    <div className="fixed inset-0 bg-black">
-      <Canvas
-        key={canvasKey}
-        dpr={[1, 1.75]}
-        shadows={false}
-        gl={{
-          antialias: true,
-          alpha: false,
-          powerPreference: "high-performance",
-          depth: true,
-          stencil: false,
-          preserveDrawingBuffer: false,
-          failIfMajorPerformanceCaveat: false,
-        }}
-        camera={{ position: [0, 2.2, RADIUS * 3.2], fov: 42, near: 0.1, far: 1000 }}
-        onCreated={onCanvasCreated}
-        style={{ width: "100%", height: "100%", zIndex: 0, display: "block" }}
-      >
-        <Scene
-          RADIUS={RADIUS}
-          stations={stations}
-          onOpenStation={onOpenStation}
-          quality={quality ?? settings.quality}
-          
-          reduceMotion={(reduceMotion ?? settings.reduceMotion) || settings.presentation}
-          highContrast={settings.highContrast}
-          worldQuatRef={worldQuatRef}
-          zoomRef={zoomRef}
-          uiBlocked={uiBlocked}   // ✅ bloque l’interaction quand on est sur une page
-          navTarget={navTarget}
-          onNavConsumed={onNavConsumed}
-        />
-      </Canvas>
-    </div>
+    <WebGLErrorBoundary>
+      <div className="fixed inset-0 bg-black">
+        <Canvas
+          key={canvasKey}
+          dpr={[1, 1.75]}
+          shadows={false}
+          gl={{
+            antialias: true,
+            alpha: false,
+            powerPreference: "high-performance",
+            depth: true,
+            stencil: false,
+            preserveDrawingBuffer: false,
+            failIfMajorPerformanceCaveat: false,
+          }}
+          camera={{ position: [0, 2.2, RADIUS * 3.2], fov: 42, near: 0.1, far: 1000 }}
+          onCreated={onCanvasCreated}
+          style={{ width: "100%", height: "100%", zIndex: 0, display: "block" }}
+        >
+          <Scene
+            RADIUS={RADIUS}
+            stations={stations}
+            onOpenStation={onOpenStation}
+            quality={quality ?? settings.quality}
+
+            reduceMotion={(reduceMotion ?? settings.reduceMotion) || settings.presentation}
+            highContrast={settings.highContrast}
+            worldQuatRef={worldQuatRef}
+            zoomRef={zoomRef}
+            uiBlocked={uiBlocked}   // ✅ bloque l'interaction quand on est sur une page
+            navTarget={navTarget}
+            onNavConsumed={onNavConsumed}
+          />
+        </Canvas>
+      </div>
+    </WebGLErrorBoundary>
   );
 }
