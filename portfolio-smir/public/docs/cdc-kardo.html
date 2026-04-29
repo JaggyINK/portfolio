@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cahier des charges — Kardo</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #5b3df5; --accent2: #7C5CFC; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 960px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2rem; color: var(--accent2); margin-bottom: 0.3rem; }
+  h2 { font-size: 1.3rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  p { color: var(--sub); font-size: 0.95rem; margin-bottom: 1rem; }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(124,92,252,0.15); color: var(--accent2); border: 1px solid rgba(124,92,252,0.3); margin-right: 0.3rem; margin-bottom: 0.3rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.75rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(124,92,252,0.1); color: var(--accent2); font-weight: 600; width: 220px; white-space: nowrap; }
+  td { color: var(--sub); }
+  ul { padding-left: 1.2rem; margin: 0; }
+  li { margin-bottom: 0.3rem; color: var(--sub); }
+  .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.78rem; color: var(--sub); }
+  @media (max-width: 640px) { th { width: 130px; font-size: 0.8rem; } td { font-size: 0.85rem; } .container { padding: 2rem 1rem; } h1 { font-size: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem;">Cahier des charges</p>
+<h1>Kardo</h1>
+<p style="font-size:1.05rem; color:var(--sub);">Plateforme SaaS B2B de cartes de fidélité numériques (Apple Wallet + Google Wallet)</p>
+<div class="header-line"></div>
+
+<div>
+  <span class="badge">Laravel 13</span>
+  <span class="badge">PHP 8.4</span>
+  <span class="badge">Vue 3</span>
+  <span class="badge">PostgreSQL 16</span>
+  <span class="badge">Flutter</span>
+  <span class="badge">Apple Wallet</span>
+  <span class="badge">Google Wallet</span>
+  <span class="badge">FCM v1</span>
+  <span class="badge">APNs HTTP/2</span>
+  <span class="badge">Railway</span>
+</div>
+
+<h2>1. Informations générales</h2>
+<table>
+  <tr><th>Intitulé du projet</th><td>Kardo — Plateforme SaaS de cartes de fidélité numériques</td></tr>
+  <tr><th>Commanditaire</th><td>Projet personnel / SaaS B2B (auto-financé)</td></tr>
+  <tr><th>Développeur</th><td>Sagar MIR</td></tr>
+  <tr><th>Période</th><td>Janvier 2026 — Avril 2026 (4 mois)</td></tr>
+  <tr><th>Statut</th><td>Déployé en production sur Railway</td></tr>
+  <tr><th>Type</th><td>Application web SaaS (B2B) + app mobile Flutter (B2B) + pages publiques (B2C)</td></tr>
+  <tr><th>Utilisateurs cibles</th><td>Commerçants indépendants (B2B) + leurs clients finaux (B2C)</td></tr>
+  <tr><th>URL production</th><td><a href="https://kardo-production.up.railway.app" style="color:var(--accent2);">kardo-production.up.railway.app</a></td></tr>
+</table>
+
+<h2>2. Contexte et objectifs</h2>
+<table>
+  <tr><th>Contexte</th><td>Les programmes de fidélité existants reposent soit sur des cartes papier (perdues, sans données exploitables) soit sur des applications dédiées (friction massive d'adoption, faible rétention). Aucune solution existante en France ne combine zéro-friction client (wallet natif) + autopilot marketing puissant + analytics avancées à un prix accessible.</td></tr>
+  <tr><th>Objectif principal</th><td>Permettre à un commerçant indépendant de digitaliser intégralement son programme de fidélité en moins de 30 minutes, avec adoption client en 10 secondes via QR code et carte automatiquement ajoutée à Apple Wallet ou Google Wallet.</td></tr>
+  <tr><th>Objectifs secondaires</th><td>
+    <ul>
+      <li>Différencier par l'autopilot (9 automations natives vs 0 chez la concurrence)</li>
+      <li>Offrir des analytics niveau "agence marketing" (cohort retention, LTV, heatmap) au prix d'un outil grand public</li>
+      <li>Conformité RGPD/CNIL native (consentement, droit d'accès, anonymisation auto)</li>
+      <li>Prix d'entrée Free pour permettre l'adoption sans engagement</li>
+      <li>App mobile Flutter en complément du dashboard web pour le tamponnage en mobilité</li>
+    </ul>
+  </td></tr>
+</table>
+
+<h2>3. Périmètre fonctionnel</h2>
+<table>
+  <tr><th>Fonctionnalité</th><th style="width:auto;">Description</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Inscription client B2C</td><td>QR code sur comptoir → page mobile-first &lt; 50 KB → 4 champs + 2 checkboxes RGPD → carte ajoutée au Wallet en 10 secondes.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Tamponnage</td><td>Scan QR caméra du dashboard / app mobile, recherche manuelle (nom, téléphone, code parrain), montant optionnel, animation confirmation.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Apple Wallet (.pkpass)</td><td>Génération .pkpass signée, strip image dynamique avec tampons, push APNs HTTP/2 pour mises à jour, changeMessage natif.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Google Wallet</td><td>JWT RS256 signé avec service account, lien "Save to Google Wallet", Loyalty Object avec progression.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Autopilot Marketing</td><td>9 automations (proche récompense, reconquête, relance courte, bienvenue, première visite, milestone, récompense utilisée, parrainage, anniversaire) avec A/B testing, cooldown, plages horaires.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Notifications broadcast</td><td>Composer riche : 20 emojis, 6 variables auto, 5 segments intelligents + sélection manuelle, programmation date/heure, aperçu iOS/Android.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">CRM &amp; Analytics</td><td>5 onglets (Vue d'ensemble, Clients, Comportement, Campagnes, Avancé) avec rétention par cohorte, LTV, heatmap horaires, performance des campagnes 48h.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Paliers de récompenses</td><td>Multi-niveaux configurables (ex: 5 tampons = café offert, 10 = repas offert).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Système de parrainage</td><td>Code parrain unique auto-généré par carte, bonus +1 tampon parrain ET filleul au 1er achat du filleul.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Design de la carte</td><td>Upload logo + bannière, 12 palettes prédéfinies + couleurs custom, aperçu temps réel Apple / Google, qualité notée /100.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Journal d'audit (Pro+)</td><td>Traçabilité de 8 types d'actions (Tampon, Récompense, Statut, Broadcast, Export, Connexion, Design, Suppression) avec IP + user agent, verrou par mot de passe, conservation 30 jours.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">App mobile Flutter</td><td>iOS + Android, scanner QR natif, dashboard, broadcast, notifications FCM, secure storage du token.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">RGPD / CNIL</td><td>Consentement explicite, droit d'accès, droit de suppression, anonymisation auto &gt; 3 ans, mentions légales + politique + CGV, contact DPO.</td></tr>
+</table>
+
+<h2>4. Architecture technique</h2>
+<table>
+  <tr><th>Composant</th><th style="width:auto;">Technologie</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Backend</td><td>Laravel 13 (PHP 8.4) — 11 controllers, 65+ routes API REST, Sanctum bearer auth, queue (DB driver) + scheduler</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Frontend</td><td>Vue 3 Composition API + Pinia + Vite + Tailwind 4 — 13 vues, 20+ composants, 4 stores, 3 composables</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Base de données</td><td>PostgreSQL 16 — 10 tables, 17 migrations, UUID v7</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">App mobile</td><td>Flutter 3.x (Dart) — iOS + Android avec mobile_scanner et flutter_secure_storage</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Apple Wallet</td><td>passkit-generator (Node.js) appelé en CLI depuis Laravel + APNs HTTP/2 + GD pour strip image dynamique</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Google Wallet</td><td>JWT signé RS256 avec service account du projet kardo-492108</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Push Android</td><td>Firebase FCM v1 + OAuth2 access token cache</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Emails</td><td>Resend (templates Blade)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Hébergement</td><td>Railway (Dockerfile PHP 8.4 + Node + GD + pdo_pgsql) avec auto-deploy GitHub</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sécurité</td><td>bcrypt 12 rounds, rate limiting (5/min login, 60/min API), MIME validation, CSV injection prevention, multi-tenancy strict</td></tr>
+</table>
+
+<h2>5. Contraintes</h2>
+<table>
+  <tr><th>Contrainte</th><th style="width:auto;">Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Coût client final</td><td>0 € pour le client final (B2C) — pas d'app à télécharger, pas d'abonnement, pas de friction.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Performance</td><td>Inscription en &lt; 10s, page enrollment &lt; 50 KB, dashboard &lt; 2s en 3G, build Vite &lt; 2s.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Scalabilité</td><td>Supporter 50 commerçants × 5 000 clients (= 250 000 cartes) sur le plan Railway de base sans dégradation.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Conformité</td><td>RGPD strict (consentement, droits, anonymisation auto), CNIL, hébergement UE (Railway zone EU), pas de fuite IP vers tiers (Google Fonts self-hosted).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Sécurité</td><td>Aucun secret dans le repo, certificats Apple .p12 + Google service account injectés en env vars base64, HTTPS forcé en prod.</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Compatibilité Wallet</td><td>iOS ≥ 15, Android ≥ 8, support des cartes Wallet natifs (pas d'app Kardo côté client).</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Multi-tenancy</td><td>Isolation stricte des données — un commerçant ne doit JAMAIS pouvoir lire ou modifier les données d'un autre.</td></tr>
+</table>
+
+<h2>6. Plans tarifaires</h2>
+<table>
+  <tr><th>Plan</th><th>Prix / mois</th><th>Clients max</th><th>Broadcasts</th><th>Automations</th><th>CRM avancé</th><th>Audit</th></tr>
+  <tr><td style="color:var(--accent2); font-weight:600; width:auto;">Free</td><td>0 €</td><td>50</td><td>0</td><td>0</td><td>Non</td><td>Non</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600; width:auto;">Solo</td><td>19 €</td><td>300</td><td>2 / mois</td><td>1</td><td>Non</td><td>Non</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600; width:auto;">Pro</td><td>39 €</td><td>1 500</td><td>Illimité</td><td>4</td><td>Oui</td><td>Oui</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600; width:auto;">Business</td><td>79 €</td><td>Illimité</td><td>Illimité</td><td>Illimité</td><td>Oui</td><td>Oui</td></tr>
+</table>
+
+<h2>7. Livrables</h2>
+<table>
+  <tr><th>Livrable</th><th style="width:auto;">Format / Détail</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Application web (B2B)</td><td>SPA Vue 3 servie depuis Laravel — 13 vues, déployée sur kardo-production.up.railway.app</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">App mobile (B2B)</td><td>APK Android + bundle iOS Flutter — à publier sur Play Store + App Store</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Pages publiques (B2C)</td><td>Landing 9 sections + page enrollment + page carte client + 3 pages légales</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Documentation technique</td><td>CAHIER_DES_CHARGES.md, AVANCEMENT.md, GUIDE-ADMIN.md, ROADMAP.md</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Tests automatisés</td><td>28 tests Feature PHPUnit, 63 assertions, exécution &lt; 2s</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Infrastructure</td><td>Dockerfile multi-stage + docker-start.sh, déployable sur Railway / Hetzner / Render</td></tr>
+</table>
+
+<h2>8. Résultats attendus</h2>
+<table>
+  <tr><th>Indicateur</th><th style="width:auto;">Cible</th></tr>
+  <tr><td style="width:220px; color:var(--accent2); font-weight:600;">Inscription client</td><td>&lt; 10 secondes du scan QR à la carte ajoutée au Wallet</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Taux d'adoption</td><td>3 à 5× supérieur aux app dédiées (mesure : % de visiteurs comptoir qui s'inscrivent)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Onboarding commerçant</td><td>Compte créé + 1ère carte design + QR imprimé en &lt; 30 minutes</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Disponibilité</td><td>99.5 % grâce à Railway managed + auto-restart</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Tests automatisés</td><td>0 régression au déploiement (CI = npm run build + php artisan test)</td></tr>
+  <tr><td style="color:var(--accent2); font-weight:600;">Conformité RGPD</td><td>100 % conforme — droits exerçables sans intervention manuelle</td></tr>
+</table>
+
+<div class="footer">Cahier des charges — Kardo — Sagar MIR — 2026</div>
+</div>
+</body>
+</html>

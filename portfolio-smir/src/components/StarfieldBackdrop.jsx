@@ -65,12 +65,15 @@ export default function StarfieldBackdrop({ density = 8000 }) {
         const dt = (now - t0) / 1000;
         t0 = now;
 
-        for (const s of stars) {
-          s.y += (25 + 55 * s.z) * dt;
-          if (s.y > H) { s.y = -10; s.x = Math.random() * W; }
-        }
+        // Skip si onglet caché ou doc invisible (économise CPU/batterie)
+        if (document.visibilityState !== "hidden") {
+          for (const s of stars) {
+            s.y += (25 + 55 * s.z) * dt;
+            if (s.y > H) { s.y = -10; s.x = Math.random() * W; }
+          }
 
-        drawFrame(grads.g, grads.rad, grads.rad2);
+          drawFrame(grads.g, grads.rad, grads.rad2);
+        }
         raf = requestAnimationFrame(draw);
       };
       raf = requestAnimationFrame(draw);
@@ -82,8 +85,17 @@ export default function StarfieldBackdrop({ density = 8000 }) {
       grads = buildGradients();
       if (reduceMotion) drawFrame(grads.g, grads.rad, grads.rad2);
     };
+    const onVis = () => {
+      // Reset le timestamp quand on revient pour éviter un saut d'animation
+      if (document.visibilityState !== "hidden") t0 = performance.now();
+    };
     addEventListener("resize", onResize);
-    return () => { cancelAnimationFrame(raf); removeEventListener("resize", onResize); };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      cancelAnimationFrame(raf);
+      removeEventListener("resize", onResize);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, [density, reduceMotion]);
 
   return (

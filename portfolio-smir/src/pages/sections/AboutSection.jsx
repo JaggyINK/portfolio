@@ -1,7 +1,5 @@
 // src/pages/sections/AboutSection.jsx
 import React from "react";
-import { Link } from "react-router-dom";
-import CodeFlipCard from "../../components/CodeFlipCard";
 import { TECH_DATA } from "../../components/TechData";
 import useReveal from "../../hooks/useReveal";
 import "./AboutSection.css";
@@ -26,48 +24,64 @@ const THEME = {
 
 /* ===== KPI Data ===== */
 const KPIS = [
-  { value: "180+", label: "Utilisateurs quotidiens", color: THEME.brandFrom },
-  { value: "-60%", label: "Tickets IT en moins", color: THEME.green },
-  { value: "7+", label: "Années d'expérience pro", color: THEME.brandTo },
-  { value: "6+", label: "Applications livrées", color: THEME.gold },
+  { value: "180+", label: "Utilisateurs intranet CPMS", color: THEME.brandFrom },
+  { value: "3 ans", label: "Reporting & KPIs (banque)", color: THEME.green },
+  { value: "−60%", label: "Tickets IT en moins", color: THEME.brandTo },
+  { value: "Sept. 2026", label: "Alternance Data Analyst", color: THEME.gold },
 ];
 
 /* ===== What I bring ===== */
 const STRENGTHS = [
   {
-    title: "Fullstack opérationnel",
-    desc: "Python, Vue.js, Laravel 12, LDAP/AD",
+    title: "Sens du métier",
+    desc: "3 ans à La Banque Postale : KPIs commerciaux quotidiens, reporting hiérarchie, traduction besoin métier → indicateur",
+    color: THEME.gold,
+  },
+  {
+    title: "Data en projet réel",
+    desc: "SQL (HackerRank Basic→Advanced), pandas, modélisation MCD/MLD, contrôle qualité",
     color: THEME.brandFrom,
   },
   {
-    title: "Impact mesurable",
-    desc: "−60% tickets · 4 sites live · self-service 24/7",
-    color: THEME.green,
-  },
-  {
-    title: "Sécurité by design",
-    desc: "OWASP, bcrypt, AES, LDAP, SecNum 100%",
+    title: "Dataviz & BI",
+    desc: "Looker Studio + GA4 en prod sur Extazy.fr · Power BI en montée",
     color: THEME.brandTo,
   },
   {
-    title: "Livraison documentée",
-    desc: "Guides techniques, tutoriels, APIs REST",
-    color: THEME.gold,
+    title: "Livraison & impact",
+    desc: "Apps en prod (180+ users), e-commerce qui tourne, projets BTS qui aboutissent",
+    color: THEME.green,
   },
 ];
 
 /* ===== Domain chips ===== */
 const DOMAINS = [
-  { label: "Frontend", chips: ["React", "Vue.js", "Tailwind CSS", "Three.js"] },
-  { label: "Backend", chips: ["Python", "PHP", "Laravel", "Node.js"] },
-  { label: "Data & SI", chips: ["MySQL", "PostgreSQL", "SQLite", "APIs REST", "LDAP"] },
-  { label: "DevOps", chips: ["Docker", "Git", "Vite", "CI/CD"] },
-  { label: "E-commerce", chips: ["Shopify", "Liquid", "Custom apps"] },
-  { label: "Sécurité", chips: ["OWASP", "Active Directory", "SSO"] },
+  { label: "Data Analytics", chips: ["SQL avancé", "Python / pandas", "Power BI", "Looker Studio", "GA4", "Excel"] },
+  { label: "Modélisation & SI", chips: ["MCD / MLD", "Recueil de besoins", "Méthodes Agiles", "MySQL", "PostgreSQL", "ODBC"] },
+  { label: "Dev fullstack", chips: ["Python", "Vue.js", "Laravel 12", "React", "APIs REST"] },
+  { label: "E-commerce & marketing", chips: ["Shopify", "GA4", "Meta Ads", "SEO"] },
+  { label: "DevOps & outillage", chips: ["Git / GitHub", "Jira", "Docker", "Vite"] },
+  { label: "Sécurité", chips: ["Active Directory / LDAP", "OWASP", "RGPD", "SecNum 100%"] },
 ];
 
 /* ===== Grouped tech badges ===== */
 const TECH_GROUPS = [
+  { label: "Data Analytics", techs: [
+    { name: "SQL", color: "#336791" },
+    { name: "Python (pandas)", color: "#3776AB" },
+    { name: "Power BI", color: "#F2C811" },
+    { name: "Looker Studio", color: "#4285F4" },
+    { name: "Google Analytics 4", color: "#E37400" },
+    { name: "Excel", color: "#217346" },
+    { name: "MCD / MLD", color: "#a855f7" },
+  ]},
+  { label: "Bases & SI", techs: [
+    { name: "MySQL", color: "#4479A1" },
+    { name: "PostgreSQL", color: "#336791" },
+    { name: "SQLite", color: "#003B57" },
+    { name: "APIs REST", color: "#E10098" },
+    { name: "Active Directory", color: "#0078D4" },
+  ]},
   { label: "Frontend", techs: [
     { name: "React", color: "#61DAFB" },
     { name: "Vue.js", color: "#42B883" },
@@ -81,15 +95,10 @@ const TECH_GROUPS = [
     { name: "Laravel", color: "#FF2D20" },
     { name: "Node.js", color: "#339933" },
   ]},
-  { label: "Data & SI", techs: [
-    { name: "MySQL", color: "#4479A1" },
-    { name: "PostgreSQL", color: "#336791" },
-    { name: "SQLite", color: "#003B57" },
-    { name: "APIs REST", color: "#E10098" },
-  ]},
-  { label: "DevOps", techs: [
-    { name: "Docker", color: "#2496ED" },
+  { label: "DevOps & outillage", techs: [
     { name: "Git", color: "#F05032" },
+    { name: "Jira", color: "#0052CC" },
+    { name: "Docker", color: "#2496ED" },
     { name: "Vite", color: "#646CFF" },
   ]},
   { label: "E-commerce", techs: [
@@ -97,7 +106,6 @@ const TECH_GROUPS = [
   ]},
   { label: "Sécurité", techs: [
     { name: "OWASP", color: "#E34F26" },
-    { name: "Active Directory", color: "#0078D4" },
   ]},
 ];
 
@@ -169,31 +177,65 @@ export default function AboutSection() {
         {/* ========== BLOC A — HEADER + SITUATION ========== */}
         <header className="about-header-card">
           <h2 className="about-name">Sagar Mir</h2>
-          <p className="about-role">Développeur Fullstack</p>
+          <p className="about-role">Futur Data Analyst &middot; Développeur Fullstack</p>
           <div className="mx-auto mt-2 mb-3 h-[2px] w-32" style={{ background: THEME.line }} />
 
-          {/* En poste pill */}
-          <div className="about-status-pill">
-            <span className="about-status-dot" />
-            <span>En poste</span>
+          {/* Pill recherche alternance */}
+          <div
+            className="about-status-pill"
+            style={{
+              background: "rgba(212,175,55,0.1)",
+              borderColor: "rgba(212,175,55,0.3)",
+              color: THEME.gold,
+            }}
+          >
+            <span className="about-status-dot" style={{ background: THEME.gold, boxShadow: `0 0 8px ${THEME.gold}` }} />
+            <span>🎯 Recherche alternance</span>
             <span className="about-status-sep">|</span>
-            <span>Alternance CPMS &middot; depuis avril 2025</span>
+            <span>Data Analyst / Business Analyst &middot; rentrée septembre 2026</span>
           </div>
 
-          {/* Stack actuel */}
+          {/* Stack data */}
           <p className="about-stack-line">
-            Python &middot; Vue.js &middot; Laravel &middot; LDAP &middot; MySQL
+            SQL &middot; Python &middot; Power BI &middot; Looker Studio &middot; GA4
             <span className="about-stack-dash">&mdash;</span>
-            Intranet 180+ collaborateurs
+            <span style={{ color: THEME.brandFrom }}>Stack data orientée métier</span>
+          </p>
+
+          {/* Poste actuel */}
+          <p className="about-stack-line" style={{ color: THEME.sub }}>
+            <span className="about-status-dot" style={{ background: THEME.green, marginRight: "0.4rem", display: "inline-block", verticalAlign: "middle" }} />
+            <strong style={{ color: THEME.text }}>En alternance chez CPMS</strong> (gestionnaire de mutuelle) depuis avril 2025
+            <span className="about-stack-dash">&mdash;</span>
+            Intranet Laravel/Vue.js, requêtes MySQL/ODBC, dashboards KPIs direction
           </p>
 
           {/* Formation */}
           <p className="about-edu-line">
-            BTS SIO SLAM &middot; Digital School of Paris &middot; Diplôme en juin 2026
+            BTS SIO SLAM &middot; Digital School of Paris &middot; Juin 2026
             <span className="about-stack-dash">&mdash;</span>
-            <span style={{ color: THEME.brandFrom }}>Objectif : M2 Big Data &amp; IA</span>
+            <span style={{ color: THEME.brandFrom }}>Bachelor Data &amp; IA &middot; PSTB Paris &middot; Sept. 2026</span>
           </p>
         </header>
+
+        {/* ========== BLOC A.bis — Pitch Data Analyst ========== */}
+        <div
+          className="rounded-xl border px-4 py-3 my-3 mx-auto max-w-3xl text-center"
+          style={{
+            background: "linear-gradient(135deg, rgba(34,211,238,0.05), rgba(168,85,247,0.04))",
+            borderColor: "rgba(34,211,238,0.18)",
+          }}
+        >
+          <p className="text-[0.85rem] leading-relaxed" style={{ color: THEME.text }}>
+            Je viens de la <strong style={{ color: THEME.gold }}>relation client</strong> (3 ans à La Banque Postale),
+            je passe aujourd&apos;hui par un <strong style={{ color: THEME.brandFrom }}>BTS SIO SLAM en alternance</strong>{" "}
+            chez CPMS, et je m&apos;oriente vers <strong style={{ color: THEME.brandTo }}>l&apos;analyse de données</strong>.
+            <br />
+            <span style={{ color: THEME.sub, fontStyle: "italic" }}>
+              Ce n&apos;est pas un virage : c&apos;est l&apos;aboutissement logique d&apos;un parcours toujours mis face à des chiffres, des KPIs et des décisions à prendre à partir de données.
+            </span>
+          </p>
+        </div>
 
         {/* ========== BLOC B — KPI STRIP ========== */}
         <div className="about-kpi-grid">
@@ -261,9 +303,9 @@ export default function AboutSection() {
           <a href="/cv.pdf" className="about-cta-btn about-cta-btn-primary">
             Télécharger mon CV
           </a>
-          <Link to="/Contact" className="about-cta-btn about-cta-btn-secondary">
+          <a href="mailto:jaggyinkgraph@gmail.com" className="about-cta-btn about-cta-btn-secondary">
             Me contacter
-          </Link>
+          </a>
           <a
             href="https://www.linkedin.com/in/mir-sagar/"
             target="_blank"
@@ -290,12 +332,7 @@ export default function AboutSection() {
           </a>
         </div>
 
-        {/* FlipCard */}
-        <div className="about-flipcard">
-          <CodeFlipCard />
-        </div>
-
-        <ScrollDownHint targetId="bts" />
+        <ScrollDownHint targetId="parcours" />
       </div>
     </section>
   );

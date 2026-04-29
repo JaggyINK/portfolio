@@ -20,7 +20,7 @@ export default defineConfig({
           "three-core": ["three"],
           "three-fiber": ["@react-three/fiber", "@react-three/drei"],
           "vendor": ["react", "react-dom", "react-router-dom"],
-          "MoonScene": ["./src/scene/MoonScene.jsx"],
+          "MoonScene": [path.resolve(__dirname, "src/scene/MoonScene.jsx")],
         }
       }
     }

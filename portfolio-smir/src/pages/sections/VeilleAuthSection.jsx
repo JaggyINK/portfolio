@@ -79,6 +79,258 @@ const VEILLE_STEPS = [
   { num: "04", title: "Documenter", desc: "Portfolio, Discord privé, synthèse mensuelle", icon: "📝", color: "#10b981" },
 ];
 
+/* ============ Pourquoi ce thème ============ */
+const POURQUOI = [
+  {
+    icon: "🎯",
+    title: "Pertinence métier",
+    desc: "Mon alternance chez CPMS impose une intégration Active Directory : le sujet est directement opérationnel.",
+  },
+  {
+    icon: "⚖️",
+    title: "Enjeu réglementaire",
+    desc: "Les données de santé exigent une auth conforme RGPD + OWASP A07 — sujet prioritaire pour la DSI.",
+  },
+  {
+    icon: "💡",
+    title: "Sujet en pleine mutation",
+    desc: "MFA, Passkeys, Zero Trust : le domaine évolue vite, idéal pour exercer la veille (épreuve E6).",
+  },
+  {
+    icon: "🚀",
+    title: "Compétence valorisable",
+    desc: "Maîtrise rare et recherchée (DevSecOps, IAM) — différenciation sur le marché du travail.",
+  },
+];
+
+/* ============ Évolution du domaine (timeline) ============ */
+const TIMELINE = [
+  {
+    year: "1960s–1990s",
+    title: "Mots de passe statiques",
+    desc: "Login/MDP en clair, puis MD5/SHA-1. Failles fréquentes (rejeu, dictionnaire).",
+    color: "#94a3b8",
+  },
+  {
+    year: "2000s",
+    title: "Hash + sel + LDAP",
+    desc: "bcrypt, Active Directory, LDAP en standard de l'entreprise. Pas encore de second facteur.",
+    color: "#22d3ee",
+  },
+  {
+    year: "2010s",
+    title: "MFA & SSO Cloud",
+    desc: "OAuth2, OIDC, SAML, Auth0/Okta, Google/Microsoft Identity. SMS OTP puis TOTP (Authenticator).",
+    color: "#a855f7",
+  },
+  {
+    year: "2020–2024",
+    title: "WebAuthn & FIDO2",
+    desc: "Clés physiques (YubiKey), biométrie locale, Passkeys (Apple/Google/Microsoft, 2022–2024).",
+    color: "#f59e0b",
+  },
+  {
+    year: "2025+",
+    title: "Zero Trust & Passwordless",
+    desc: "Vérification continue, contexte (device, géo, comportement), suppression du mot de passe.",
+    color: "#22c55e",
+  },
+];
+
+/* ============ Principaux acteurs ============ */
+const ACTEURS = [
+  {
+    cat: "Standards & régulateurs",
+    color: "#d4af37",
+    items: [
+      { name: "NIST", role: "Référentiel SP 800-63B (USA)" },
+      { name: "ANSSI", role: "Recommandations FR (RGS, OIV)" },
+      { name: "CNIL", role: "Conformité RGPD côté FR" },
+      { name: "FIDO Alliance", role: "Standards Passkeys / WebAuthn" },
+      { name: "OpenID Foundation", role: "OIDC, OAuth2" },
+    ],
+  },
+  {
+    cat: "Éditeurs entreprise (IAM)",
+    color: "#22d3ee",
+    items: [
+      { name: "Microsoft", role: "Active Directory, Entra ID (ex-Azure AD)" },
+      { name: "Okta", role: "Leader SaaS IAM/SSO/MFA" },
+      { name: "Auth0", role: "Plateforme dev-friendly (Okta group)" },
+      { name: "Ping Identity", role: "IAM grands comptes" },
+      { name: "Keycloak", role: "Open-source (Red Hat)" },
+    ],
+  },
+  {
+    cat: "Plateformes cloud",
+    color: "#a855f7",
+    items: [
+      { name: "Google", role: "Identity Platform, Passkeys" },
+      { name: "Apple", role: "Sign in with Apple, Passkeys iCloud" },
+      { name: "AWS Cognito", role: "Auth managée AWS" },
+      { name: "Cloudflare Access", role: "Zero Trust Network Access" },
+    ],
+  },
+  {
+    cat: "Outils dev & frameworks",
+    color: "#22c55e",
+    items: [
+      { name: "Laravel Sanctum / Passport", role: "Auth PHP API/SPA" },
+      { name: "NextAuth.js", role: "Auth Next.js multi-providers" },
+      { name: "Spring Security", role: "Auth Java/Spring" },
+      { name: "Passport.js", role: "Auth Node.js" },
+      { name: "Lucia / better-auth", role: "Nouvelles libs minimalistes" },
+    ],
+  },
+];
+
+/* ============ Tendances & futur ============ */
+const TENDANCES = [
+  {
+    icon: "🔑",
+    title: "Passwordless / Passkeys",
+    horizon: "2024–2027",
+    desc: "Disparition progressive des mots de passe au profit de WebAuthn/FIDO2. Apple, Google, Microsoft alignés.",
+    impact: "Plus de phishing, plus de fuite de bases de mots de passe.",
+    color: "#22c55e",
+  },
+  {
+    icon: "🛡️",
+    title: "Zero Trust Architecture",
+    horizon: "2024–2030",
+    desc: "« Never trust, always verify ». Vérification continue (device posture, géoloc, heure, comportement).",
+    impact: "Plus de périmètre VPN — chaque requête est ré-évaluée.",
+    color: "#22d3ee",
+  },
+  {
+    icon: "🤖",
+    title: "Auth comportementale (IA)",
+    horizon: "2025–2028",
+    desc: "ML qui détecte l'utilisateur via frappe clavier, mouvements souris, contexte. Auth implicite.",
+    impact: "Friction réduite + meilleure détection des comptes compromis.",
+    color: "#a855f7",
+  },
+  {
+    icon: "🆔",
+    title: "Identité décentralisée (DID/SSI)",
+    horizon: "2026–2032",
+    desc: "Wallets d'identité (eIDAS 2.0 EU, mDL US), W3C DID, vérifiable credentials. L'utilisateur reprend la main.",
+    impact: "Auth sans tiers de confiance, données minimisées.",
+    color: "#f59e0b",
+  },
+  {
+    icon: "🔐",
+    title: "Cryptographie post-quantique",
+    horizon: "2027–2035",
+    desc: "Algorithmes résistants au quantique (NIST a standardisé Kyber, Dilithium). Migration progressive.",
+    impact: "Anticipation de la rupture quantique sur RSA/ECC.",
+    color: "#ef4444",
+  },
+  {
+    icon: "🧠",
+    title: "Auth contre l'IA générative",
+    horizon: "2025–2027",
+    desc: "Deepfakes voix/visage cassent la biométrie classique. Émergence de la « liveness detection » avancée.",
+    impact: "Course armement entre détection deepfake et attaques.",
+    color: "#ec4899",
+  },
+];
+
+/* ============ Avenir & jalons attendus ============ */
+const AVENIR_NARRATIF =
+  "L'authentification sécurisée converge vers trois grands principes : suppression du mot de passe (Passkeys/FIDO2), vérification continue plutôt que ponctuelle (Zero Trust), et reprise de contrôle par l'utilisateur sur ses données (identité décentralisée, eIDAS 2.0). Sur 5 à 10 ans, les éditeurs convergent vers un modèle où l'identité devient un service portable, vérifiable et résistant à la fois aux attaques quantiques et aux deepfakes générés par IA.";
+
+const JALONS = [
+  {
+    year: "2025",
+    title: "Passkeys grand public",
+    desc: "Apple, Google et Microsoft poussent les Passkeys par défaut. Adoption B2C dépasse 30 % sur les services majeurs.",
+    color: "#22c55e",
+  },
+  {
+    year: "2026",
+    title: "EU Digital Identity Wallet (eIDAS 2.0)",
+    desc: "Wallet d'identité européen obligatoire pour les États membres : ID, permis, diplômes, ordonnances dans une app contrôlée par l'utilisateur.",
+    color: "#22d3ee",
+  },
+  {
+    year: "2027",
+    title: "Zero Trust mainstream",
+    desc: "Disparition progressive du modèle « VPN d'entreprise » au profit d'une vérification continue à chaque requête (ZTNA, BeyondCorp).",
+    color: "#a855f7",
+  },
+  {
+    year: "2028–2030",
+    title: "Auth biométrique anti-deepfake",
+    desc: "Liveness detection avancée (3D, signaux vitaux, IA défensive) pour contrer les deepfakes voix et visage.",
+    color: "#ec4899",
+  },
+  {
+    year: "2030+",
+    title: "Cryptographie post-quantique généralisée",
+    desc: "Migration vers Kyber/Dilithium (NIST PQC) sur les chaînes TLS, JWT, signatures. Les anciens certificats deviennent vulnérables.",
+    color: "#f59e0b",
+  },
+  {
+    year: "2030+",
+    title: "Identité décentralisée (SSI/DID)",
+    desc: "Wallets W3C DID, vérifiable credentials. L'utilisateur prouve un attribut (« +18 ans ») sans révéler le reste.",
+    color: "#d4af37",
+  },
+];
+
+const PREDICTIONS = [
+  "À l'horizon 2027, plus de 50 % des entreprises auront adopté un modèle Zero Trust pour l'accès distant (Gartner).",
+  "Plus de 1 milliard d'utilisateurs auront activé au moins une Passkey en 2025 (FIDO Alliance, World Passkey Day 2024).",
+  "L'authentification multifacteur classique (SMS OTP) sera dépréciée car vulnérable au SIM-swap et au phishing temps réel.",
+  "Les mots de passe persisteront en interne (legacy / SI critique) pendant ≥ 10 ans malgré la transition.",
+  "L'IA défensive (détection comportementale) deviendra un standard, mais l'IA offensive (deepfake en direct) restera un risque actif.",
+  "L'Europe imposera l'EUDI Wallet à 450 M+ citoyens d'ici 2026, redessinant la gestion d'identité côté usagers.",
+];
+
+const SOURCES_AVENIR = [
+  {
+    label: "FIDO Alliance — State of Passkey Deployments 2024",
+    url: "https://fidoalliance.org/research-the-state-of-passkey-deployments-2024/",
+    org: "FIDO Alliance",
+  },
+  {
+    label: "NIST SP 800-63-4 (Digital Identity Guidelines, public draft 2024)",
+    url: "https://pages.nist.gov/800-63-4/",
+    org: "NIST",
+  },
+  {
+    label: "Règlement eIDAS 2.0 — EU Digital Identity Wallet",
+    url: "https://digital-strategy.ec.europa.eu/en/policies/eudi-wallet",
+    org: "Commission européenne",
+  },
+  {
+    label: "NIST Post-Quantum Cryptography Standardization (FIPS 203/204/205)",
+    url: "https://csrc.nist.gov/projects/post-quantum-cryptography",
+    org: "NIST PQC",
+  },
+  {
+    label: "Microsoft Digital Defense Report 2024 — section Identity",
+    url: "https://www.microsoft.com/en-us/security/security-insider/microsoft-digital-defense-report-2024",
+    org: "Microsoft Security",
+  },
+  {
+    label: "ANSSI — Recommandations relatives à l'authentification multifacteur",
+    url: "https://cyber.gouv.fr/publications/recommandations-relatives-lauthentification-multifacteur-et-aux-mots-de-passe",
+    org: "ANSSI",
+  },
+  {
+    label: "OWASP Top 10:2025 — A07 Identification & Authentication Failures",
+    url: "https://owasp.org/Top10/",
+    org: "OWASP",
+  },
+  {
+    label: "Gartner — Top Trends in Cybersecurity 2025",
+    url: "https://www.gartner.com/en/articles/cybersecurity-trends",
+    org: "Gartner",
+  },
+];
+
 /* ============ Code tabs ============ */
 const CODE_TABS = [
   { key: "backend", label: "API Laravel" },
@@ -309,6 +561,68 @@ export default function VeilleAuthSection() {
           </p>
         </div>
 
+        {/* ── POURQUOI CE THÈME ── */}
+        <div className="mb-8">
+          <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
+            Pourquoi ce thème ?
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            {POURQUOI.map((p, i) => (
+              <div
+                key={p.title}
+                className="rounded-xl border px-3.5 py-3 transition-all hover:bg-white/[0.02]"
+                style={{
+                  background: THEME.card,
+                  borderColor: "rgba(255,255,255,0.06)",
+                  animation: `fadeSlideUp 0.4s ease-out ${i * 0.07}s both`,
+                }}
+              >
+                <span className="text-xl block mb-1.5">{p.icon}</span>
+                <span className="text-[0.82rem] font-bold block" style={{ color: THEME.text }}>{p.title}</span>
+                <span className="text-[0.72rem] block mt-1 leading-snug" style={{ color: THEME.sub }}>{p.desc}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── ÉVOLUTION DU DOMAINE (timeline) ── */}
+        <div className="mb-8">
+          <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
+            Évolution du domaine — 60 ans d&apos;authentification
+          </h3>
+          <div className="relative">
+            {/* Ligne horizontale décorative (desktop) */}
+            <div
+              aria-hidden
+              className="hidden md:block absolute top-[2.2rem] left-0 right-0 h-px"
+              style={{ background: "linear-gradient(90deg, rgba(212,175,55,0.05), rgba(212,175,55,0.4), rgba(212,175,55,0.05))" }}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
+              {TIMELINE.map((t, i) => (
+                <div
+                  key={t.year}
+                  className="rounded-xl border p-3 relative"
+                  style={{
+                    background: THEME.card,
+                    borderColor: `${t.color}25`,
+                    animation: `fadeSlideUp 0.4s ease-out ${i * 0.08}s both`,
+                  }}
+                >
+                  {/* Badge année */}
+                  <div
+                    className="inline-block px-2 py-0.5 rounded-full text-[0.62rem] font-bold mb-2"
+                    style={{ background: `${t.color}15`, color: t.color, border: `1px solid ${t.color}30` }}
+                  >
+                    {t.year}
+                  </div>
+                  <p className="text-[0.82rem] font-bold mb-1" style={{ color: t.color }}>{t.title}</p>
+                  <p className="text-[0.7rem] leading-snug" style={{ color: THEME.sub }}>{t.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* ── ARCHITECTURE FLOW ── */}
         <div className="mb-8">
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-2" style={{ color: THEME.sub }}>
@@ -420,6 +734,219 @@ export default function VeilleAuthSection() {
           </div>
         </div>
 
+        {/* ── PRINCIPAUX ACTEURS ── */}
+        <div className="mb-8">
+          <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
+            Principaux acteurs du marché
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {ACTEURS.map((a, i) => (
+              <div
+                key={a.cat}
+                className="rounded-xl border p-3"
+                style={{
+                  background: THEME.card,
+                  borderColor: `${a.color}25`,
+                  animation: `fadeSlideUp 0.4s ease-out ${i * 0.08}s both`,
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2.5">
+                  <span
+                    className="px-2 py-0.5 text-[0.62rem] font-bold tracking-wider uppercase rounded-full"
+                    style={{ background: `${a.color}15`, color: a.color, border: `1px solid ${a.color}30` }}
+                  >
+                    {a.cat}
+                  </span>
+                </div>
+                <ul className="space-y-1">
+                  {a.items.map((it) => (
+                    <li key={it.name} className="flex items-start gap-2 text-[0.78rem]">
+                      <span
+                        className="flex-shrink-0 mt-[0.32rem] w-1.5 h-1.5 rounded-full"
+                        style={{ background: a.color }}
+                      />
+                      <span>
+                        <strong style={{ color: THEME.text }}>{it.name}</strong>
+                        <span className="ml-1.5" style={{ color: THEME.sub }}>— {it.role}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── TENDANCES & VISION FUTURE ── */}
+        <div className="mb-8">
+          <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
+            Tendances & vision future
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {TENDANCES.map((t, i) => (
+              <div
+                key={t.title}
+                className="rounded-xl border p-3.5"
+                style={{
+                  background: THEME.card,
+                  borderColor: `${t.color}25`,
+                  animation: `fadeSlideUp 0.4s ease-out ${i * 0.07}s both`,
+                }}
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xl">{t.icon}</span>
+                  <span
+                    className="px-2 py-0.5 text-[0.6rem] font-bold tracking-wider rounded-md"
+                    style={{
+                      background: `${t.color}10`,
+                      color: t.color,
+                      border: `1px solid ${t.color}25`,
+                    }}
+                  >
+                    {t.horizon}
+                  </span>
+                </div>
+                <p className="text-[0.85rem] font-bold mb-1" style={{ color: t.color }}>{t.title}</p>
+                <p className="text-[0.74rem] leading-relaxed mb-2" style={{ color: THEME.sub }}>
+                  {t.desc}
+                </p>
+                <div
+                  className="px-2.5 py-1.5 rounded-md text-[0.7rem] leading-snug"
+                  style={{
+                    background: `${t.color}06`,
+                    borderLeft: `2px solid ${t.color}40`,
+                    color: THEME.text,
+                  }}
+                >
+                  <strong style={{ color: t.color }}>Impact :</strong> {t.impact}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── AVENIR DE L'AUTH SÉCURISÉE ── */}
+        <div className="mb-8">
+          <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
+            Avenir de l&apos;authentification sécurisée — vision 2025-2035
+          </h3>
+
+          {/* Narratif */}
+          <div
+            className="rounded-xl border px-5 py-4 mb-4"
+            style={{
+              background: "linear-gradient(135deg, rgba(34,211,238,0.05), rgba(168,85,247,0.04))",
+              borderColor: "rgba(34,211,238,0.2)",
+            }}
+          >
+            <p className="text-[0.85rem] leading-relaxed" style={{ color: THEME.text }}>
+              {AVENIR_NARRATIF}
+            </p>
+          </div>
+
+          {/* Jalons attendus */}
+          <h4 className="text-[0.7rem] font-bold tracking-[0.14em] uppercase mb-2.5" style={{ color: THEME.sub }}>
+            Jalons attendus
+          </h4>
+          <div className="relative mb-5">
+            {/* Ligne décorative */}
+            <div
+              aria-hidden
+              className="hidden md:block absolute top-[2.2rem] left-0 right-0 h-px"
+              style={{ background: "linear-gradient(90deg, rgba(212,175,55,0.05), rgba(212,175,55,0.4), rgba(212,175,55,0.05))" }}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-2.5 relative">
+              {JALONS.map((j, i) => (
+                <div
+                  key={j.title}
+                  className="rounded-xl border p-2.5 relative"
+                  style={{
+                    background: THEME.card,
+                    borderColor: `${j.color}25`,
+                    animation: `fadeSlideUp 0.4s ease-out ${i * 0.07}s both`,
+                  }}
+                >
+                  <div
+                    className="inline-block px-1.5 py-0.5 rounded-full text-[0.6rem] font-bold mb-1.5"
+                    style={{ background: `${j.color}15`, color: j.color, border: `1px solid ${j.color}30` }}
+                  >
+                    {j.year}
+                  </div>
+                  <p className="text-[0.78rem] font-bold mb-1 leading-tight" style={{ color: j.color }}>{j.title}</p>
+                  <p className="text-[0.68rem] leading-snug" style={{ color: THEME.sub }}>{j.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Prédictions chiffrées */}
+          <h4 className="text-[0.7rem] font-bold tracking-[0.14em] uppercase mb-2.5" style={{ color: THEME.sub }}>
+            Prédictions chiffrées
+          </h4>
+          <div
+            className="rounded-xl border px-4 py-3 mb-5"
+            style={{ background: THEME.card, borderColor: "rgba(255,255,255,0.06)" }}
+          >
+            <ul className="space-y-1.5">
+              {PREDICTIONS.map((p, i) => (
+                <li key={i} className="flex items-start gap-2.5 text-[0.8rem] leading-snug" style={{ color: THEME.sub }}>
+                  <span
+                    className="flex-shrink-0 mt-[0.3rem] w-1.5 h-1.5 rounded-full"
+                    style={{ background: THEME.brandFrom }}
+                  />
+                  <span style={{ color: THEME.text }}>{p}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Sources */}
+          <h4 className="text-[0.7rem] font-bold tracking-[0.14em] uppercase mb-2.5" style={{ color: THEME.sub }}>
+            Sources & références
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {SOURCES_AVENIR.map((s, i) => (
+              <a
+                key={s.url}
+                href={s.url}
+                target="_blank"
+                rel="noreferrer"
+                className="group flex items-start gap-2.5 px-3 py-2 rounded-lg border transition-all hover:bg-white/[0.03]"
+                style={{
+                  background: "rgba(255,255,255,0.02)",
+                  borderColor: "rgba(255,255,255,0.06)",
+                  animation: `fadeSlideUp 0.35s ease-out ${i * 0.04}s both`,
+                }}
+              >
+                <span
+                  className="flex-shrink-0 mt-[0.18rem] px-1.5 py-0.5 text-[0.58rem] font-bold tracking-wider uppercase rounded"
+                  style={{
+                    background: "rgba(34,211,238,0.1)",
+                    color: THEME.brandFrom,
+                    border: "1px solid rgba(34,211,238,0.2)",
+                  }}
+                >
+                  {s.org}
+                </span>
+                <span className="flex-1 min-w-0">
+                  <p
+                    className="text-[0.78rem] font-medium leading-snug group-hover:underline"
+                    style={{ color: THEME.text }}
+                  >
+                    {s.label}
+                  </p>
+                </span>
+                <span
+                  className="flex-shrink-0 mt-0.5 text-[0.7rem] opacity-50 group-hover:opacity-100 transition-opacity"
+                  style={{ color: THEME.brandFrom }}
+                >
+                  ↗
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* ── MA DÉMARCHE ── */}
         <div className="mb-8">
           <h3 className="text-center text-[0.72rem] font-bold tracking-[0.18em] uppercase mb-4" style={{ color: THEME.sub }}>
@@ -523,7 +1050,7 @@ export default function VeilleAuthSection() {
           </p>
         </div>
 
-        <ScrollDownHint targetId="ecole" />
+        <ScrollDownHint targetId="user-story" />
       </div>
     </section>
   );

@@ -63,16 +63,8 @@ export default function useStationAiming({
     }
     aimingStationIdRef.current = id;
     qTargetRef.current = computeFrozenTarget(st);
-
-    // Log angle initial (forwardW vs dirSpin après SPIN)
-    const qSpin = TMP.qSpin.setFromAxisAngle(TMP.Y_AXIS, spinYRef?.current || 0);
-    const forwardW = TMP.TARGET_AXIS.clone().applyQuaternion(qWorldRef.current).normalize();
-    const dirSpin = TMP.dirSpin.copy(st.pos).normalize().applyQuaternion(qSpin).normalize();
-    const dot = THREE.MathUtils.clamp(forwardW.dot(dirSpin), -1, 1);
-    const angDeg = THREE.MathUtils.radToDeg(Math.acos(dot)).toFixed(1);
-    console.log(`[AIMING] Start → ${id} (angle=${angDeg}°)`);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [STATIONS, qWorldRef, spinYRef]); // TMP and computeFrozenTarget are stable
+  }, [STATIONS]); // computeFrozenTarget is stable
 
   // API: stopper l'alignement
   const stopAiming = useCallback(() => {
@@ -117,27 +109,12 @@ export default function useStationAiming({
       qWorld.copy(qTarget);
       aimingStationIdRef.current = null;
       qTargetRef.current = null;
-      console.log(`[AIMING] Done → ${id}`);
       return;
     }
 
     // step borné par maxAlignSpeed (rad/s)
     const maxStep = Math.min(0.999, (maxAlignSpeed * dt) / Math.max(angle, 1e-6));
     qWorld.slerp(qTarget, maxStep);
-
-    // --- Logs throttle : angle visuel restant (forwardW vs dirSpin après SPIN)
-    const now = performance.now();
-    if (now - TMP.lastLogTs > 300) {
-      TMP.lastLogTs = now;
-
-      const qSpin = TMP.qSpin.setFromAxisAngle(TMP.Y_AXIS, spinYRef?.current || 0);
-      const forwardLocal = TMP.TARGET_AXIS; // (0,0,1)
-      const dirView = TMP.dirSpin.copy(st.pos).normalize().applyQuaternion(qSpin).applyQuaternion(qWorld).normalize();
-
-      const dot = THREE.MathUtils.clamp(forwardLocal.dot(dirView), -1, 1);
-      const angDeg = THREE.MathUtils.radToDeg(Math.acos(dot));
-      console.log(`[AIMING] ${id}: angle=${angDeg.toFixed(1)}° step=${(maxStep*100).toFixed(1)}%`);
-    }
   });
 
   return {

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide utilisateur — Kardo</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #5b3df5; --accent2: #7C5CFC; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; --green: #4ade80; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 980px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.5rem; }
+  strong { color: var(--text); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(124,92,252,0.15); color: var(--accent2); border: 1px solid rgba(124,92,252,0.3); margin-right: 0.3rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(124,92,252,0.1); color: var(--accent2); font-weight: 600; }
+  td { color: var(--sub); }
+  code { background: rgba(124,92,252,0.12); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  .step { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent2); border-radius: 0.5rem; padding: 1rem 1.5rem; margin: 1rem 0; }
+  .step h4 { color: var(--accent2); font-size: 1rem; margin-bottom: 0.5rem; }
+  .tip { background: rgba(74,222,128,0.07); border: 1px solid rgba(74,222,128,0.2); border-radius: 0.5rem; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.88rem; color: var(--sub); }
+  .tip strong { color: var(--green); }
+  figure { margin: 1.5rem 0; }
+  figure img { width: 100%; border-radius: 0.75rem; border: 1px solid var(--border); display: block; }
+  figcaption { font-size: 0.8rem; color: var(--sub); text-align: center; margin-top: 0.5rem; font-style: italic; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent2); text-decoration: none; font-size: 0.92rem; }
+  .toc a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem; letter-spacing:0.1em; text-transform:uppercase;">Guide utilisateur</p>
+<h1>Kardo — Mode d'emploi</h1>
+<p style="font-size: 1.05rem; color: var(--sub);">Comment utiliser Kardo au quotidien — côté commerçant et côté client</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Public :</strong> Commerçants Kardo + clients finaux</div>
+  <div class="meta-item"><strong>Version :</strong> 1.0</div>
+  <div class="meta-item"><strong>Mise à jour :</strong> Avril 2026</div>
+</div>
+
+<h2>Sommaire</h2>
+<ol class="toc">
+  <li><a href="#commencer">1. Premiers pas — créer son compte commerçant</a></li>
+  <li><a href="#design">2. Personnaliser sa carte de fidélité</a></li>
+  <li><a href="#qr">3. Imprimer et afficher le QR code d'inscription</a></li>
+  <li><a href="#tampon">4. Tamponner un client</a></li>
+  <li><a href="#porteurs">5. Gérer ses porteurs (clients)</a></li>
+  <li><a href="#notif">6. Envoyer une notification (broadcast)</a></li>
+  <li><a href="#autopilot">7. Activer l'Autopilot Marketing</a></li>
+  <li><a href="#crm">8. Comprendre les statistiques (CRM)</a></li>
+  <li><a href="#audit">9. Consulter le journal d'audit</a></li>
+  <li><a href="#client">10. Côté client — comment ça se passe</a></li>
+  <li><a href="#faq">11. FAQ &amp; dépannage</a></li>
+</ol>
+
+<h2 id="commencer">1. Premiers pas — créer son compte commerçant</h2>
+
+<div class="step">
+<h4>Étape 1 — Inscription</h4>
+<p>Rendez-vous sur <a href="https://kardo-production.up.railway.app/register" style="color:var(--accent2);">kardo-production.up.railway.app/register</a> et remplissez :</p>
+<ul>
+  <li><strong>Nom du commerce</strong> (ex: Pizza Napoli)</li>
+  <li><strong>Email professionnel</strong></li>
+  <li><strong>Mot de passe</strong> — au moins 8 caractères, une majuscule, une minuscule et un chiffre</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Étape 2 — Onboarding (3 étapes)</h4>
+<p>Après l'inscription, un wizard vous guide :</p>
+<ol>
+  <li><strong>Type de commerce</strong> — restaurant, boulangerie, salon, café, autre</li>
+  <li><strong>Configuration de la carte</strong> — nombre de tampons (ex: 10), label de récompense (ex: "1 café offert")</li>
+  <li><strong>Couleurs</strong> — choix d'une palette parmi 12 ou couleurs custom</li>
+</ol>
+</div>
+
+<figure>
+  <img src="kardo-screenshots/01-login.png" alt="Page de connexion" />
+  <figcaption>Page de connexion Kardo.</figcaption>
+</figure>
+
+<div class="tip"><strong>Astuce :</strong> Vous démarrez automatiquement sur le plan <strong>Free</strong> (50 clients max, 0 broadcast). Vous pourrez upgrader à tout moment depuis Paramètres → Mon offre.</div>
+
+<h2 id="design">2. Personnaliser sa carte de fidélité</h2>
+
+<p>Allez dans <strong>Ma carte</strong> (icône palette dans la sidebar). C'est la page la plus importante car elle détermine ce que vos clients voient dans leur Wallet.</p>
+
+<div class="step">
+<h4>Logo et bannière</h4>
+<ul>
+  <li><strong>Logo</strong> — image carrée 512×512 px minimum, PNG ou JPG (pas de SVG). Apparaît en haut de la carte Wallet.</li>
+  <li><strong>Bannière</strong> — image rectangulaire 750×246 px recommandée. Apparaît au milieu de la carte derrière les tampons.</li>
+  <li>Bouton <strong>"🎨 Suggérer un thème depuis mon logo"</strong> — extrait automatiquement les couleurs dominantes de votre logo et les applique.</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Nom du programme et label de récompense</h4>
+<ul>
+  <li><strong>Nom du programme</strong> (ex: "Carte de fidélité", "Carte VIP")</li>
+  <li><strong>Label récompense</strong> — soyez spécifique : <strong>"1 café offert"</strong> convertit mieux que "1 cadeau offert" (générique).</li>
+  <li><strong>Nombre de tampons</strong> — entre 3 et 30. Recommandé : 10 pour un café/boulangerie, 8 pour un restaurant, 5 pour un service haut de gamme.</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Couleurs</h4>
+<ul>
+  <li>12 palettes prédéfinies (Mocha, Sunset, Ocean, Forest, Lavender, Neon, Mint, Rose, Gold, Navy, Kraft, Mono).</li>
+  <li>Ou couleurs custom : <strong>Fond</strong>, <strong>Texte</strong>, <strong>Labels</strong>.</li>
+  <li>Aperçu temps réel sur le côté droit (Apple Wallet / Google Wallet).</li>
+</ul>
+</div>
+
+<figure>
+  <img src="kardo-screenshots/08-design.png" alt="Page Design carte Wallet" />
+  <figcaption>Page "Ma carte" — éditeur de design avec aperçu temps réel.</figcaption>
+</figure>
+
+<div class="step">
+<h4>Paliers de récompenses (recommandé)</h4>
+<p>Au lieu d'une seule récompense au bout de 10 tampons, configurez plusieurs paliers progressifs :</p>
+<ul>
+  <li>5 tampons → "Café offert"</li>
+  <li>10 tampons → "Pâtisserie offerte"</li>
+  <li>15 tampons → "Petit-déjeuner complet"</li>
+</ul>
+<p>Cela <strong>augmente la rétention de ~35 %</strong> selon nos benchmarks.</p>
+</div>
+
+<div class="step">
+<h4>Règle d'attribution des tampons</h4>
+<ul>
+  <li><strong>Manuel</strong> (recommandé) — vous choisissez +1 / +2 / +3 à chaque scan</li>
+  <li><strong>Automatique</strong> — calcul depuis le montant payé (ex: 1 tampon par tranche de 10€)</li>
+</ul>
+</div>
+
+<h2 id="qr">3. Imprimer et afficher le QR code d'inscription</h2>
+
+<p>Sur le <strong>Tableau de bord</strong>, cliquez sur le bouton <strong>QR</strong> en haut à droite, ou utilisez la carte "QR Code d'inscription" en bas à droite.</p>
+
+<ul>
+  <li><strong>Imprimer</strong> — bouton "Imprimer" — format A5 / A6 idéal pour le comptoir</li>
+  <li><strong>Copier le lien</strong> — pour partager sur les réseaux sociaux ou par email</li>
+</ul>
+
+<div class="tip"><strong>Conseil placement :</strong> Mettez le QR à hauteur du regard sur le comptoir, avec un message clair : <em>"Carte de fidélité gratuite — Scannez pour rejoindre 🎁"</em>. Plus le QR est grand (10×10 cm minimum), mieux c'est.</div>
+
+<figure>
+  <img src="kardo-screenshots/02-dashboard.png" alt="Dashboard avec QR code" />
+  <figcaption>Tableau de bord — QR code d'inscription en bas à droite.</figcaption>
+</figure>
+
+<h2 id="tampon">4. Tamponner un client</h2>
+
+<p>Trois façons de tamponner :</p>
+
+<div class="step">
+<h4>Méthode 1 — Scanner QR (recommandé)</h4>
+<ol>
+  <li>Sidebar → <strong>Scanner</strong></li>
+  <li>Pointez la caméra vers le QR du client (sur sa carte Wallet)</li>
+  <li>La fiche client apparaît automatiquement</li>
+  <li>Cliquez sur les cercles tampons pour ajouter +1, +2, +3...</li>
+  <li>Saisissez le montant (optionnel) et validez</li>
+</ol>
+</div>
+
+<div class="step">
+<h4>Méthode 2 — Recherche manuelle</h4>
+<ul>
+  <li>Sur la page Scanner, sous le QR, tapez le nom, téléphone ou code parrain du client</li>
+  <li>Cliquez sur "Aller" pour ouvrir sa fiche</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Méthode 3 — Depuis Mes porteurs</h4>
+<ul>
+  <li>Sidebar → <strong>Mes porteurs</strong></li>
+  <li>Trouvez le client dans la liste et cliquez sur <strong>"Tamponner +1"</strong> directement</li>
+</ul>
+</div>
+
+<figure>
+  <img src="kardo-screenshots/03-scanner.png" alt="Page Scanner" />
+  <figcaption>Page Scanner avec QR caméra et recherche manuelle.</figcaption>
+</figure>
+
+<div class="tip"><strong>Mode rush hour :</strong> En haut de la page Scanner, activez "🔥 Rush" pendant les coups de feu — l'UI se simplifie pour aller plus vite.</div>
+
+<h2 id="porteurs">5. Gérer ses porteurs (clients)</h2>
+
+<figure>
+  <img src="kardo-screenshots/04-cards.png" alt="Liste des porteurs" />
+  <figcaption>Liste des porteurs avec filtres rapides et actions inline.</figcaption>
+</figure>
+
+<h3>Filtres rapides</h3>
+<ul>
+  <li><strong>👑 VIP</strong> — top 20 % de vos clients</li>
+  <li><strong>⚠️ À risque</strong> — inactifs depuis &gt; 30 jours</li>
+  <li><strong>🎁 Proche récompense</strong> — à 1 ou 2 tampons du palier</li>
+  <li><strong>🎂 Anniv. ce mois</strong> — anniversaire ce mois-ci</li>
+  <li><strong>🏆 Récompensés</strong> — ont déjà utilisé une récompense</li>
+</ul>
+
+<h3>Actions par client</h3>
+<ul>
+  <li><strong>Tamponner +1</strong> — tampon rapide sans ouvrir la fiche</li>
+  <li><strong>Notifier</strong> — envoie une notification individuelle</li>
+  <li><strong>Voir détail</strong> — ouvre la fiche complète (historique, code parrain, suppression)</li>
+  <li><strong>Appeler / SMS / WhatsApp</strong> — actions directes depuis le numéro de téléphone</li>
+</ul>
+
+<h3>Import CSV</h3>
+<p>Bouton <strong>"Importer CSV"</strong> en haut à droite — pour migrer vos clients existants depuis un autre outil. Format : <code>prenom,nom,telephone,email,date_naissance</code>.</p>
+
+<figure>
+  <img src="kardo-screenshots/14-card-detail.png" alt="Modale détail client" />
+  <figcaption>Modale détail client (ouverte depuis la liste).</figcaption>
+</figure>
+
+<h2 id="notif">6. Envoyer une notification (broadcast)</h2>
+
+<p>Sidebar → <strong>Notifications</strong> → onglet <strong>"✏️ Composer"</strong>.</p>
+
+<div class="step">
+<h4>Choisir un destinataire</h4>
+<ul>
+  <li><strong>📢 Tous</strong> — broadcast à tous vos porteurs actifs</li>
+  <li><strong>⚠️ Inactifs (+30j)</strong> — uniquement ceux qui ne sont pas venus depuis 30+ jours</li>
+  <li><strong>🎁 Proches récompense</strong> — ceux à 1 tampon du palier</li>
+  <li><strong>🆕 Nouveaux (7j)</strong> — inscrits dans les 7 derniers jours</li>
+  <li><strong>⭐ VIP (top 20)</strong> — vos meilleurs clients</li>
+  <li><strong>👤 Sélection manuelle</strong> — choisissez vous-même les clients</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Rédiger le message</h4>
+<ul>
+  <li>Maximum 120 caractères (notification standard)</li>
+  <li>Insérez des <strong>emojis</strong> depuis la barre dédiée (20 disponibles)</li>
+  <li>Utilisez les <strong>variables auto-remplies</strong> : <code>{{prenom}}</code>, <code>{{tampons}}</code>, <code>{{tampons_restants}}</code>, <code>{{recompense}}</code>, <code>{{commerce}}</code></li>
+  <li>Aperçu en temps réel sur la droite (basculez entre iOS et Android)</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Envoyer ou programmer</h4>
+<ul>
+  <li><strong>Test</strong> — vous l'envoie uniquement à vous (pour vérifier le rendu)</li>
+  <li><strong>Brouillon</strong> — sauvegarde pour plus tard</li>
+  <li><strong>Programmer</strong> — choisissez date + heure d'envoi</li>
+  <li><strong>Envoyer</strong> — envoie immédiatement à tous les destinataires</li>
+</ul>
+</div>
+
+<figure>
+  <img src="kardo-screenshots/05-notifications.png" alt="Composer notification" />
+  <figcaption>Composer notification avec emojis, variables et aperçu.</figcaption>
+</figure>
+
+<div class="tip"><strong>Conseils marketing :</strong> Personnalisez avec le prénom (+26 % d'engagement) — Soyez spécifique ("−20 %" convertit 2× plus que "promo") — Heure optimale : 17h-19h en semaine, 11h-13h le week-end — Espacez vos envois (max 1-2 par semaine).</div>
+
+<h2 id="autopilot">7. Activer l'Autopilot Marketing</h2>
+
+<p>L'Autopilot envoie des messages <strong>automatiques</strong> aux bons clients au bon moment, sans intervention de votre part.</p>
+
+<p>Sidebar → <strong>Autopilot</strong>. Activez chaque automation avec son toggle, personnalisez le message (avec variables) et sauvegardez.</p>
+
+<table>
+  <tr><th>Automation</th><th>À activer en priorité ?</th></tr>
+  <tr><td><strong>Bienvenue</strong></td><td>✅ Oui — message 24h après inscription, premier contact crucial</td></tr>
+  <tr><td><strong>Première visite</strong></td><td>✅ Oui — remerciement après le 1er tampon</td></tr>
+  <tr><td><strong>Proche récompense</strong></td><td>✅ Oui — déclenche la visite finale</td></tr>
+  <tr><td><strong>Anniversaire</strong></td><td>✅ Oui (si vous avez la date de naissance) — taux de retour énorme</td></tr>
+  <tr><td><strong>Reconquête</strong></td><td>⏸️ À tester — attention au cooldown pour ne pas spammer</td></tr>
+  <tr><td><strong>Relance courte</strong></td><td>⏸️ Plutôt pour les commerces à forte fréquence (boulangerie, café)</td></tr>
+  <tr><td><strong>Milestone</strong></td><td>⏸️ Pour les programmes longs (20+ tampons)</td></tr>
+  <tr><td><strong>Récompense utilisée</strong></td><td>⏸️ Optionnel — peut aussi être un sympatique geste oral</td></tr>
+  <tr><td><strong>Parrainage activé</strong></td><td>✅ Oui — entretient la dynamique parrainage</td></tr>
+</table>
+
+<figure>
+  <img src="kardo-screenshots/06-automations.png" alt="Page Autopilot" />
+  <figcaption>9 automations natives configurables individuellement.</figcaption>
+</figure>
+
+<div class="tip"><strong>A/B testing :</strong> Activez la case "🧪 A/B Testing" pour tester deux versions de message et identifier celle qui convertit le mieux.</div>
+
+<h2 id="crm">8. Comprendre les statistiques (CRM)</h2>
+
+<p>Sidebar → <strong>CRM &amp; Analytics</strong>. 5 onglets disponibles.</p>
+
+<table>
+  <tr><th>Onglet</th><th>Ce qu'on y trouve</th></tr>
+  <tr><td><strong>📊 Vue d'ensemble</strong></td><td>Clients à risque, proches récompense — actions à mener cette semaine</td></tr>
+  <tr><td><strong>👥 Clients</strong></td><td>Top 10 clients, distribution des tampons</td></tr>
+  <tr><td><strong>🔥 Comportement</strong></td><td>Fréquence de visite, panier moyen, heatmap heures (Pro+)</td></tr>
+  <tr><td><strong>📣 Campagnes</strong></td><td>Performance des broadcasts (Pro+)</td></tr>
+  <tr><td><strong>🧠 Avancé</strong></td><td>Rétention par cohorte, LTV, taux de redemption (Pro+)</td></tr>
+</table>
+
+<p>Bouton <strong>"📥 CSV"</strong> pour exporter toute la donnée filtrée (Pro+ uniquement).</p>
+
+<figure>
+  <img src="kardo-screenshots/07-crm.png" alt="Page CRM Analytics" />
+  <figcaption>CRM &amp; Analytics — vue d'ensemble.</figcaption>
+</figure>
+
+<h2 id="audit">9. Consulter le journal d'audit (Pro+)</h2>
+
+<p>Sidebar → <strong>Journal</strong>. Le journal contient toutes les actions sensibles : tampons, récompenses utilisées, broadcasts, exports, connexions, modifications design.</p>
+
+<p>Pour des raisons de sécurité, il est <strong>verrouillé par mot de passe</strong> : saisissez votre mot de passe de connexion pour déverrouiller (la session reste ouverte 30 minutes).</p>
+
+<figure>
+  <img src="kardo-screenshots/12-audit.png" alt="Journal d'audit" />
+  <figcaption>Journal d'audit — filtres, export CSV, IP et user agent.</figcaption>
+</figure>
+
+<p>Filtrez par type d'action et / ou plage de dates, exportez en CSV avec le bouton <strong>"📥 Exporter"</strong>.</p>
+
+<div class="tip"><strong>Conservation :</strong> les logs sont conservés 30 jours pour respecter la RGPD (ne pas garder plus longtemps que nécessaire).</div>
+
+<h2 id="client">10. Côté client — comment ça se passe</h2>
+
+<p>Du point de vue de votre client, l'expérience est ultra-simple :</p>
+
+<div class="step">
+<h4>Étape 1 — Scan du QR</h4>
+<p>Le client scanne le QR avec l'appareil photo de son iPhone ou Android (pas besoin d'app). Une page web s'ouvre avec votre logo, vos couleurs et le formulaire d'inscription.</p>
+</div>
+
+<div class="step">
+<h4>Étape 2 — Inscription (10 secondes)</h4>
+<p>Le client remplit :</p>
+<ul>
+  <li>Prénom + Nom</li>
+  <li>Numéro de téléphone</li>
+  <li>Date de naissance</li>
+  <li>Code parrain (optionnel) — bonus +1 tampon pour lui ET son parrain</li>
+  <li>Coche les 2 cases RGPD (consentement données + consentement notifications)</li>
+</ul>
+</div>
+
+<div class="step">
+<h4>Étape 3 — Ajout au Wallet</h4>
+<p>Après validation, deux boutons apparaissent :</p>
+<ul>
+  <li><strong>"Ajouter à Apple Wallet"</strong> sur iPhone — la carte glisse directement dans le Wallet</li>
+  <li><strong>"Ajouter à Google Wallet"</strong> sur Android — idem côté Google</li>
+</ul>
+</div>
+
+<figure style="max-width:400px; margin: 1.5rem auto;">
+  <img src="kardo-screenshots/13-enrollment-mobile.png" alt="Page d'inscription mobile" />
+  <figcaption>Page d'inscription côté client (vue mobile).</figcaption>
+</figure>
+
+<div class="step">
+<h4>Au quotidien</h4>
+<ul>
+  <li>Le client présente sa carte Wallet à chaque passage — vous scannez le QR depuis votre dashboard</li>
+  <li>La carte se met à jour en temps réel (push APNs / Wallet update)</li>
+  <li>Le client reçoit des notifications natives (pas d'app à installer)</li>
+  <li>Quand il atteint le palier, une notification "🎉 Vous avez gagné votre récompense !" s'affiche</li>
+</ul>
+</div>
+
+<h2 id="faq">11. FAQ &amp; dépannage</h2>
+
+<h3>Le QR code n'est pas reconnu par mon appareil photo</h3>
+<ul>
+  <li>Imprimez le QR plus grand (10×10 cm minimum)</li>
+  <li>Vérifiez que l'éclairage est suffisant</li>
+  <li>Demandez au client de tenir son téléphone bien droit</li>
+</ul>
+
+<h3>Le client n'a pas reçu sa notification</h3>
+<ul>
+  <li>Vérifiez qu'il a coché "J'accepte de recevoir des notifications" à l'inscription</li>
+  <li>Sur iPhone, les notifications Wallet doivent être autorisées dans Réglages → Wallet</li>
+  <li>Sur Android, vérifiez que les notifications de l'app Google Wallet sont actives</li>
+</ul>
+
+<h3>J'ai dépassé ma limite de clients (plan Free)</h3>
+<ul>
+  <li>Allez dans Paramètres → Mon offre</li>
+  <li>Upgrade vers Solo (300 clients), Pro (1 500) ou Business (illimité)</li>
+</ul>
+
+<h3>Comment supprimer un client (RGPD)</h3>
+<ul>
+  <li>Mes porteurs → cliquez sur "Voir détail" → bouton "Supprimer"</li>
+  <li>Le client est anonymisé puis hard-deleted (RGPD compliant)</li>
+  <li>Côté client : sa carte disparaît automatiquement de son Wallet</li>
+</ul>
+
+<h3>Comment changer le design en cours de programme ?</h3>
+<ul>
+  <li>Vous pouvez modifier les couleurs, le logo et la bannière à tout moment</li>
+  <li>Les cartes existantes seront mises à jour automatiquement (push Wallet) en quelques minutes</li>
+</ul>
+
+<h3>Mes clients voient-ils les mêmes statistiques que moi ?</h3>
+<ul>
+  <li>Non. Le client voit uniquement <strong>sa propre progression</strong> dans son Wallet</li>
+  <li>Le dashboard CRM est strictement réservé à vous (multi-tenancy stricte)</li>
+</ul>
+
+<div class="footer">Guide utilisateur Kardo — Sagar MIR — 2026 — <a href="https://kardo-production.up.railway.app" style="color:var(--accent2);">kardo-production.up.railway.app</a></div>
+</div>
+</body>
+</html>

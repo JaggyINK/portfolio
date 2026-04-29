@@ -14,6 +14,8 @@ export default function useStationEvents({
   onOpenStation,
   openThresholdRad = 0.08, // ~4.6°, très précis
   focusedIdRef,
+  navTarget,         // 🔹 vient de TopNav via App → MoonScene → Scene
+  onNavConsumed,     // 🔹 callback pour reset navTarget après usage
 }) {
 
   const localFocusedRef = useRef(null);
@@ -116,6 +118,15 @@ export default function useStationEvents({
       window.removeEventListener("saga-open-station", onOpen);
     };
   }, [focusStation]);
+
+  // navTarget : déclenche focus + auto-open quand TopNav clique sur une station
+  useEffect(() => {
+    if (!navTarget) return;
+    if (navigatingRef.current) return;
+    dbg("navTarget changed → focusStation", { navTarget });
+    focusStation(navTarget, { queueOpen: true });
+    onNavConsumed?.();
+  }, [navTarget, focusStation, onNavConsumed]);
 
   const logDot = useMemo(
     () => throttleLog((payload) => dbg("align check", payload), 160),

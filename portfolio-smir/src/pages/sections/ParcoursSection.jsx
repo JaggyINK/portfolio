@@ -236,7 +236,7 @@ export default function ParcoursSection() {
           Progression continue du terrain au code
         </p>
 
-        <ScrollDownHint targetId="projets" />
+        <ScrollDownHint targetId="ecole" />
       </div>
     </section>
   );

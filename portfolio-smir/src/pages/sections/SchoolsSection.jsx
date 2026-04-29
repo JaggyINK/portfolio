@@ -196,7 +196,7 @@ export default function SchoolsSection() {
           Documents et attestations disponibles sur demande
         </p>
 
-        <ScrollDownHint targetId="user-story" />
+        <ScrollDownHint targetId="bts" />
       </div>
     </section>
   );

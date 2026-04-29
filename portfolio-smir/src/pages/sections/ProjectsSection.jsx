@@ -1,5 +1,6 @@
 // src/pages/sections/ProjectsSection.jsx
 import React, { useState, useMemo, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { ScrollDownHint } from "../../components/ScrollHint";
 
 /* ============================ */
@@ -28,6 +29,13 @@ const PROJECTS = [
     description: "Coffre administratif numerique familial — Projet U5 BTS SIO",
     detail:
       "Projet principal BTS SIO SLAM (epreuve U5). Application web Python/Flask permettant aux familles de centraliser et securiser leurs documents administratifs. 9 modeles de donnees, chiffrement AES, versioning, tags, partage granulaire avec permissions temporaires, notifications temps reel, 41 tests pytest. Architecture MVC complete avec 7 services metier et 8 blueprints.",
+    cejm: {
+      contexte: "Les familles perdent en moyenne 1 papier sur 3 lors d'une démarche (CAF, impôts, santé). Besoin : un coffre numérique partagé entre les membres du foyer.",
+      eco: "Gain de temps estimé 5h/an/foyer. Réduction des frais liés aux duplicatas (carte d'identité, justificatifs).",
+      juri: "Données personnelles sensibles → chiffrement AES, conformité RGPD, droit à l'oubli, partage avec consentement explicite.",
+      mana: "Méthode itérative, sprints mensuels, 41 tests automatisés, livraison documentée pour l'épreuve U5.",
+      valeur: "Coffre-fort numérique sécurisé, accessible 24/7, partage granulaire entre conjoints / parents / enfants majeurs.",
+    },
     tags: ["Python", "Flask", "SQLite", "AES", "pytest"],
     category: "projets",
     color: "#8b5cf6",
@@ -42,6 +50,13 @@ const PROJECTS = [
     description: "Administration & self-care pour 180+ collaborateurs",
     detail:
       "Plateforme self-service Laravel 12 + Vue 3 pour la CPMS : changement de mot de passe multi-systemes (Active Directory + AS400) en temps reel, deverrouillage de compte via questions de securite (bcrypt + leurres), dashboard admin avec stats temps reel, portail intranet centralise. V1 en production, V2 en developpement. Impact : -80% tickets IT, disponibilite 24/7.",
+    cejm: {
+      contexte: "CPMS (180+ collaborateurs, secteur santé/prévoyance) : équipe IT saturée par les demandes répétitives de mots de passe oubliés.",
+      eco: "−60 % de tickets IT — économie estimée ≈ 80 k€/an (équivalent 1,5 ETP libéré pour des missions à plus forte valeur).",
+      juri: "Données salariés et accès aux SI sensibles → conformité OWASP A07, RGPD, audit trail complet, recommandations ANSSI.",
+      mana: "V1 livrée en production en 3 mois, V2 en cours de déploiement, formation des admins, documentation transmise à la DSI.",
+      valeur: "Self-service MDP 24/7, déverrouillage compte sans appel IT, dashboard de pilotage temps réel pour la DSI.",
+    },
     tags: ["Laravel 12", "Vue 3", "LDAP", "AS400", "PHP"],
     category: "projets",
     color: "#22d3ee",
@@ -51,12 +66,45 @@ const PROJECTS = [
     cdcUrl: "/docs/cdc-cpms.html",
   },
   {
+    id: "kardo",
+    title: "Kardo",
+    date: "2025–2026",
+    description: "SaaS B2B — cartes de fidélité dématérialisées (Apple/Google Wallet)",
+    detail:
+      "Plateforme SaaS pour commerçants (restaurants, boulangeries, salons) : intégration Apple Wallet & Google Wallet sans application à télécharger côté client. Dashboard Vue 3 (13 vues), API Laravel 13 / PHP 8.4, base PostgreSQL 16 (UUID v7, 10 tables), application mobile Flutter, scanner QR intégré, autopilot marketing, CRM avec cohort retention, journal d'audit, paliers de récompenses configurables. Déployé sur Railway.",
+    cejm: {
+      contexte: "Marché de la fidélité commerçant : tampons papier perdus, applications dédiées que personne n'installe. Besoin : un programme zéro-friction.",
+      eco: "Modèle SaaS B2B avec 3 plans (Free / Pro / Business), augmente la fréquence de visite client (≈ +25 %) et le panier moyen.",
+      juri: "Données clients (nom, téléphone, anniversaire) → RGPD, consentement explicite, droit à l'oubli, contrats Apple/Google Wallet.",
+      mana: "Architecture monorepo (3 services), UUID v7 pour scalabilité, plans gardés via guards, équipe en mode produit.",
+      valeur: "Carte fidélité dans le Wallet en 10 secondes, sans app, marketing automatisé, statistiques fines pour le commerçant.",
+    },
+    tags: ["Laravel 13", "Vue 3", "Flutter", "PostgreSQL", "Wallet"],
+    category: "projets",
+    color: "#22c55e",
+    siteUrl: "https://kardo-production.up.railway.app",
+    docUrl: "/docs/kardo-doc.html",
+    pdfUrl: "/docs/kardo-doc.pdf",
+    cdcUrl: "/docs/cdc-kardo.html",
+    adminGuideUrl: "/docs/guide-admin-kardo.html",
+    adminGuidePdf: "/docs/guide-admin-kardo.pdf",
+    userGuideUrl: "/docs/guide-utilisateur-kardo.html",
+    userGuidePdf: "/docs/guide-utilisateur-kardo.pdf",
+  },
+  {
     id: "earth-sanitation",
     title: "Earth Sanitation",
     date: "2025",
     description: "Site vitrine & SEO pour entreprise d'assainissement 24h/24",
     detail:
       "Développement complet d'un site professionnel pour Earth Sanitation (débouchage & assainissement) : architecture Next.js + Tailwind CSS, 7 pages services détaillées, formulaire de devis, intégration WhatsApp, SEO local avancé (schema JSON-LD, annuaire 30+ villes), design responsive, animations fluides. Couverture Montpellier, Nîmes et 100 km autour.",
+    cejm: {
+      contexte: "TPE BTP urgentiste (assainissement 24h/24) sans visibilité Google sur Montpellier / Nîmes — concurrence locale très active.",
+      eco: "SEO local → captation de leads sans publicité payante, devis WhatsApp pour réduire le coût d'acquisition client.",
+      juri: "Mentions légales, conditions d'intervention, RGPD sur le formulaire de devis, données du sinistré.",
+      mana: "Cycle court (1 mois), validation client à chaque livrable, transfert de propriété documenté.",
+      valeur: "59+ pages SEO localisées, devis instantané, présence renforcée sur Google Maps et requêtes urgentes.",
+    },
     tags: ["Next.js", "Tailwind CSS", "SEO", "React"],
     category: "projets",
     color: "#10b981",
@@ -71,6 +119,13 @@ const PROJECTS = [
     description: "Plateforme complète pour école de drainage lymphatique",
     detail:
       "Développement fullstack front + back + middleware : site vitrine avec agenda, annuaire praticiens, témoignages vidéo. Espace praticien sécurisé avec authentification. Back-office admin complet permettant la gestion dynamique du contenu (blog, avis, photos, activation/désactivation de pages). Fondateur : Dan Samama.",
+    cejm: {
+      contexte: "École de formation de praticiens (drainage lymphatique) : besoin d'un annuaire vérifié + d'un espace praticien.",
+      eco: "Augmentation des inscriptions formations + visibilité des praticiens certifiés → revenus récurrents.",
+      juri: "Données de santé indirectes, certifications, RGPD, consentement témoignages vidéo (droit à l'image).",
+      mana: "Cahier des charges signé, jalons clairs (vitrine → admin → espace praticien), formation du fondateur.",
+      valeur: "Annuaire en libre service, agenda formations, back-office autonome (admin gère sans dev).",
+    },
     tags: ["React", "Node.js", "Auth", "Admin Panel"],
     category: "projets",
     color: "#d4af37",
@@ -85,6 +140,13 @@ const PROJECTS = [
     description: "Automatisation de veille technologique et sécurité",
     detail:
       "Bot Discord développé en Python pour automatiser la veille technologique : agrégation multi-sources (OWASP, CERT-FR, MSRC, Krebs, Hacker News), publication automatique 24h/24, commandes interactives (!veille, !ldap, !web, !news). Focus sécurité applicative et développement web pour le BTS SIO.",
+    cejm: {
+      contexte: "Veille techno BTS SIO : besoin de centraliser les sources fiables (OWASP, CERT-FR…) sans les rater.",
+      eco: "Coût marginal (gratuit, hébergé sur poste perso) ; gain de temps quotidien sur la veille (≈ 30 min/j).",
+      juri: "Conformité ToS Discord et des sites sources (RSS publics), citation des sources.",
+      mana: "Méthodo : collecter → trier → tester → documenter, restituée chaque mois en synthèse.",
+      valeur: "Veille passive 24/7, alerte communauté, support pour l'épreuve U6 (parcours pro).",
+    },
     tags: ["Python", "Discord API", "RSS", "Automation"],
     category: "projets",
     color: "#5865F2",
@@ -98,6 +160,13 @@ const PROJECTS = [
     description: "E-commerce cosmétique CBD — projet entrepreneurial",
     detail:
       "Site e-commerce Shopify complet : développement et modification intégrale du thème en Liquid, cahier des charges détaillé, workflows de commande optimisés, automatisations via webhooks, intégrations paiement. Gestion du packaging, identité visuelle et documentation complète.",
+    cejm: {
+      contexte: "Marque cosmétique CBD lancée par moi-même via H2O (SAS) — marché émergent, réglementation française stricte.",
+      eco: "Modèle DTC (direct to consumer) Shopify, marges contrôlées, automatisations pour réduire la masse salariale.",
+      juri: "CBD : conformité Code de la santé publique, taux THC, étiquetage, CGV, RGPD, DEEE/REP packaging.",
+      mana: "Posture entrepreneur : vision produit, fournisseurs, design, logistique, SAV — j'arbitre toute la chaîne.",
+      valeur: "Site e-commerce vivant, identité visuelle premium, automatisations qui font tourner la boutique seule.",
+    },
     tags: ["Shopify", "Liquid", "E-commerce", "Webhooks", "SEO"],
     category: "projets",
     color: "#f59e0b",
@@ -112,6 +181,13 @@ const PROJECTS = [
     description: "Marque de vêtements de luxe — vitrine & e-commerce",
     detail:
       "Site vitrine et boutique Shopify : développement et modification intégrale du thème en Liquid, architecture personnalisée, identité visuelle haut de gamme, fiches produits optimisées, SEO avancé. Société mère : H2O (SAS) regroupant ALAFRENCH et ALAFRENCH CARE. Documentation complète avec captures d'écran.",
+    cejm: {
+      contexte: "Marque de vêtements de luxe (ma société H2O — SAS), positionnement premium / Made in France.",
+      eco: "Marges luxe, panier moyen élevé, stratégie SEO + branding pour soutenir le prix de vente.",
+      juri: "Étiquetage textile, traçabilité, propriété intellectuelle (logo, modèles), CGV, RGPD.",
+      mana: "Cohérence avec la marque sœur ALAFRENCH CARE, pilotage par mes soins (associé fondateur).",
+      valeur: "Vitrine luxe cohérente, fiches produits soignées, identité visuelle qui justifie le prix.",
+    },
     tags: ["Shopify", "Liquid", "E-commerce", "Branding", "SEO"],
     category: "projets",
     color: "#a855f7",
@@ -126,6 +202,13 @@ const PROJECTS = [
     description: "Expérience immersive React + Three.js",
     detail:
       "Portfolio personnel en 3D temps réel : scènes interactives Three.js, optimisation WebGL avancée, architecture React modulaire, animations fluides, responsive design. Documentation technique complète avec captures d'écran et vidéos du rendu final.",
+    cejm: {
+      contexte: "Recruteurs et jurys reçoivent 100+ portfolios « classiques » : besoin de me différencier sans nuire au fond.",
+      eco: "Investissement temps personnel — retour sous forme d'opportunités (entretiens, alternance, freelance).",
+      juri: "Mentions légales, RGPD si formulaire, droits d'auteur sur visuels et codes utilisés.",
+      mana: "Double expérience (classique + 3D) pilotée seul, livraison continue (Vercel), versionnée Git.",
+      valeur: "Portfolio mémorable, démonstration des compétences en conditions réelles, support de candidature.",
+    },
     tags: ["React", "Three.js", "WebGL", "3D"],
     category: "projets",
     color: "#06b6d4",
@@ -139,6 +222,13 @@ const PROJECTS = [
     description: "Pentest hardware & développement firmware",
     detail:
       "Dossiers techniques et comptes-rendus de pentest matériel, documentation sur firmwares alternatifs, développement de scripts personnalisés et procédures de test. Approche pédagogique pour la sécurité matérielle.",
+    cejm: {
+      contexte: "Sensibilisation sécurité hardware (RFID, NFC, Sub-GHz) — exercices sur matériel personnel uniquement.",
+      eco: "Compétences valorisables en cybersécurité (consultant, pentester) — marché en tension.",
+      juri: "Strict respect Art. 323 Code pénal (intrusion / maintien frauduleux), périmètre limité au matériel possédé.",
+      mana: "Veille cadre légal continue, documentation systématique, restitution pédagogique.",
+      valeur: "Compréhension des protocoles radio, identification des risques, posture défensive.",
+    },
     tags: ["Hardware", "Pentest", "Firmware", "Security"],
     category: "projets",
     color: "#ef4444",
@@ -152,6 +242,13 @@ const PROJECTS = [
     description: "Plateforme d'annonces full-stack",
     detail:
       "Conception et développement complet : architecture CRUD robuste, recherche full-text optimisée, système d'upload sécurisé, authentification avancée, modération. Documentation fonctionnelle et technique fournie.",
+    cejm: {
+      contexte: "Mini-marketplace d'annonces (style Le Bon Coin allégé) — projet pédagogique full-stack PHP natif.",
+      eco: "Modèle freemium possible (annonces gratuites + mise en avant payante).",
+      juri: "Modération obligatoire (LCEN), CGU, RGPD, signalement, protection contre fraudes.",
+      mana: "MVC manuel sans framework, tests, déploiement, documentation utilisateur et admin.",
+      valeur: "Recherche full-text rapide, messagerie intégrée, modération opérationnelle.",
+    },
     tags: ["PHP", "MySQL", "Full-text", "Auth"],
     category: "projets",
     color: "#3b82f6",
@@ -273,6 +370,26 @@ const CATEGORIES = [
 ];
 
 /* ============================ */
+function CejmBox({ label, color, text }) {
+  return (
+    <div
+      className="rounded-md px-1.5 py-1 overflow-hidden"
+      style={{
+        background: `${color}10`,
+        border: `1px solid ${color}25`,
+      }}
+    >
+      <p className="text-[8.5px] font-bold tracking-wider uppercase leading-none" style={{ color }}>
+        {label}
+      </p>
+      <p className="mt-0.5 text-[10px] leading-snug" style={{ color: THEME.text }}>
+        {text}
+      </p>
+    </div>
+  );
+}
+
+/* ============================ */
 function ProjectCard({ p }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -304,9 +421,9 @@ function ProjectCard({ p }) {
             isFlipped ? "[transform:rotateY(180deg)]" : ""
           }`}
         >
-          {/* ===== RECTO ===== */}
+          {/* ===== RECTO — Vue CEJM (lecture économique / juridique / managériale) ===== */}
           <div
-            className="absolute inset-0 p-5 overflow-hidden border-2 rounded-2xl backdrop-blur-xl"
+            className="absolute inset-0 p-4 overflow-hidden border-2 rounded-2xl backdrop-blur-xl"
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
@@ -316,16 +433,26 @@ function ProjectCard({ p }) {
             }}
           >
             <div className="flex flex-col h-full">
-              {/* Header */}
-              <div className="flex items-start justify-between mb-4">
-                <span className="text-xs font-semibold" style={{ color: THEME.sub }}>
+              {/* Header — date + pill CEJM */}
+              <div className="flex items-start justify-between mb-1.5">
+                <span
+                  className="px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase rounded"
+                  style={{
+                    background: `${p.color}15`,
+                    color: p.color,
+                    border: `1px solid ${p.color}30`,
+                  }}
+                >
+                  CEJM · vue métier
+                </span>
+                <span className="text-[10px] font-semibold" style={{ color: THEME.sub }}>
                   {p.date}
                 </span>
               </div>
 
               {/* Titre */}
               <h3
-                className="mb-2 text-xl font-extrabold leading-tight"
+                className="mb-1 text-base font-extrabold leading-tight"
                 style={{
                   color: p.color,
                   fontFamily: "OrbitronLocal, Orbitron, system-ui, sans-serif",
@@ -334,18 +461,35 @@ function ProjectCard({ p }) {
                 {p.title}
               </h3>
 
-              {/* Description */}
-              <p className="flex-1 mb-3 text-sm leading-relaxed" style={{ color: THEME.text }}>
-                {p.description}
-              </p>
+              {p.cejm ? (
+                <>
+                  {/* Contexte */}
+                  <p className="text-[11px] italic leading-snug mb-2" style={{ color: THEME.sub }}>
+                    {p.cejm.contexte}
+                  </p>
+
+                  {/* 4 mini-cartes CEJM */}
+                  <div className="grid grid-cols-2 gap-1.5 flex-1 overflow-hidden">
+                    <CejmBox label="Économique" color="#22c55e" text={p.cejm.eco} />
+                    <CejmBox label="Juridique" color="#f59e0b" text={p.cejm.juri} />
+                    <CejmBox label="Managérial" color="#a855f7" text={p.cejm.mana} />
+                    <CejmBox label="Valeur livrée" color={p.color} text={p.cejm.valeur} />
+                  </div>
+                </>
+              ) : (
+                /* Fallback : description courte (projets sans CEJM) */
+                <p className="flex-1 mb-2 text-sm leading-relaxed" style={{ color: THEME.text }}>
+                  {p.description}
+                </p>
+              )}
 
               {/* Tags */}
               {p.tags && (
-                <div className="flex flex-wrap gap-1.5 mb-3">
+                <div className="flex flex-wrap gap-1 mt-2">
                   {p.tags.slice(0, 4).map((tag, i) => (
                     <span
                       key={i}
-                      className="px-2 py-1 text-[10px] font-semibold rounded"
+                      className="px-1.5 py-0.5 text-[9px] font-semibold rounded"
                       style={{
                         background: `${p.color}20`,
                         color: p.color,
@@ -359,9 +503,9 @@ function ProjectCard({ p }) {
               )}
 
               {/* Footer */}
-              <div className="pt-3 mt-auto border-t" style={{ borderColor: `${p.color}30` }}>
-                <p className="text-xs italic text-center transition-all group-hover:scale-105" style={{ color: THEME.sub }}>
-                  Cliquer pour voir les détails
+              <div className="pt-2 mt-2 border-t" style={{ borderColor: `${p.color}30` }}>
+                <p className="text-[10px] italic text-center transition-all group-hover:scale-105" style={{ color: THEME.sub }}>
+                  Cliquer pour voir le détail technique →
                 </p>
               </div>
             </div>
@@ -513,6 +657,80 @@ function ProjectCard({ p }) {
                     Cahier des charges
                   </a>
                 )}
+                {(p.adminGuideUrl || p.userGuideUrl) && (
+                  <div className="flex flex-col gap-1.5">
+                    {p.adminGuideUrl && (
+                      <div className="flex gap-1.5">
+                        <a
+                          href={p.adminGuideUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex-1 py-2 text-xs font-semibold text-center transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                          style={{
+                            background: `rgba(34,211,238,0.12)`,
+                            color: "#22d3ee",
+                            border: `1px solid rgba(34,211,238,0.3)`,
+                          }}
+                        >
+                          Guide admin
+                        </a>
+                        {p.adminGuidePdf && (
+                          <a
+                            href={p.adminGuidePdf}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="px-3 py-2 text-xs font-bold text-center transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                            style={{
+                              background: `rgba(34,211,238,0.06)`,
+                              color: "#22d3ee",
+                              border: `1px solid rgba(34,211,238,0.25)`,
+                            }}
+                            aria-label="Guide admin (PDF)"
+                          >
+                            PDF
+                          </a>
+                        )}
+                      </div>
+                    )}
+                    {p.userGuideUrl && (
+                      <div className="flex gap-1.5">
+                        <a
+                          href={p.userGuideUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="flex-1 py-2 text-xs font-semibold text-center transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                          style={{
+                            background: `rgba(34,197,94,0.12)`,
+                            color: "#22c55e",
+                            border: `1px solid rgba(34,197,94,0.3)`,
+                          }}
+                        >
+                          Guide utilisateur
+                        </a>
+                        {p.userGuidePdf && (
+                          <a
+                            href={p.userGuidePdf}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="px-3 py-2 text-xs font-bold text-center transition-all rounded-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/40"
+                            style={{
+                              background: `rgba(34,197,94,0.06)`,
+                              color: "#22c55e",
+                              border: `1px solid rgba(34,197,94,0.25)`,
+                            }}
+                            aria-label="Guide utilisateur (PDF)"
+                          >
+                            PDF
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -644,6 +862,22 @@ export default function ProjectsSection() {
             Projets professionnels, scolaires et personnels — fullstack, sécurité, infrastructure
           </p>
           <div className="mx-auto mt-3 h-[2px] w-32" style={{ background: THEME.line }} />
+
+          {/* CTA — Tableau de synthèse E5 */}
+          <Link
+            to="/synthese-e5"
+            className="inline-flex items-center gap-2 mt-4 px-4 py-2 text-[0.82rem] font-bold rounded-xl border transition-all hover:scale-[1.03]"
+            style={{
+              background: "linear-gradient(135deg, rgba(212,175,55,0.1), rgba(168,85,247,0.08))",
+              borderColor: "rgba(212,175,55,0.3)",
+              color: "#d4af37",
+              boxShadow: "0 4px 16px rgba(212,175,55,0.1)",
+            }}
+          >
+            <span>📋</span>
+            <span>Voir le Tableau de synthèse E5</span>
+            <span style={{ color: "#a855f7" }}>↗</span>
+          </Link>
         </header>
 
         {/* Catégories ou contenu */}
@@ -707,7 +941,7 @@ export default function ProjectsSection() {
           {PROJECTS.length} projets au total — cliquer sur une carte pour les détails
         </p>
 
-        <ScrollDownHint targetId="certifications" />
+        <ScrollDownHint targetId="veille" />
       </div>
     </section>
   );

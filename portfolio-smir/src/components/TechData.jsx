@@ -99,4 +99,38 @@ export const TECH_DATA = {
     description: "Mise en place de systèmes d'authentification sécurisés : SSO, Active Directory, gestion des sessions, réinitialisation de mots de passe.",
     projects: ["Intranet CPMS", "Projets avec login"]
   },
+
+  // ===== DATA ANALYTICS =====
+  SQL: {
+    description: "Langage de requêtage relationnel utilisé en projet réel : jointures multiples, agrégations (GROUP BY/HAVING), sous-requêtes corrélées, fonctions de fenêtrage. Certifications HackerRank Basic + Intermediate + Advanced validées.",
+    projects: ["Dashboards KPIs CPMS", "Requêtes ODBC sources métier", "FamiliDocs", "Annonz"]
+  },
+  "Python (pandas)": {
+    description: "Manipulation de données en notions solides : DataFrames, nettoyage, agrégations, jointures, contrôle qualité avant restitution. Utilisé sur projets perso pour la partie data.",
+    projects: ["FamiliDocs (contrôle qualité données)", "Scripts d'analyse"]
+  },
+  "Power BI": {
+    description: "Outil de BI Microsoft. Notions en cours de montée en compétence : création de dashboards, mesures DAX simples, sources relationnelles, partage Power BI Service.",
+    projects: ["Apprentissage en cours", "Visée alternance Data Analyst"]
+  },
+  "Looker Studio": {
+    description: "Outil de dataviz Google (ex-Data Studio) utilisé en production sur Extazy.fr : suivi e-commerce, taux de conversion, sources d'acquisition, rapports clients.",
+    projects: ["Extazy.fr (e-commerce CBD)", "Reporting Meta Ads / GA4"]
+  },
+  "Google Analytics 4": {
+    description: "Suivi web GA4 utilisé en production sur Extazy.fr : événements custom, parcours utilisateur, audiences, intégration Google Ads / Meta Ads.",
+    projects: ["Extazy.fr", "ALAFRENCH / ALAFRENCH CARE"]
+  },
+  Excel: {
+    description: "Tableurs avancés : tableaux croisés dynamiques, RECHERCHEX, formules conditionnelles, mise en forme conditionnelle. Reporting commercial 3 ans à La Banque Postale.",
+    projects: ["Reporting bancaire (3 ans)", "Tableaux de bord pro"]
+  },
+  "MCD / MLD": {
+    description: "Modélisation de données : conception MCD/MLD/MPD, normalisation (3FN), dictionnaire de données, recueil de besoins métier auprès des équipes RH/IT.",
+    projects: ["FamiliDocs (9 tables)", "Schémas CPMS", "Annonz"]
+  },
+  Jira: {
+    description: "Outil de suivi projet (Atlassian). Gestion des tickets, sprints, intégration via API REST avec l'intranet CPMS pour création/suivi automatique.",
+    projects: ["Intégration CPMS ↔ Jira", "Gestion sprints alternance"]
+  },
 };

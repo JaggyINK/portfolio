@@ -495,7 +495,7 @@ export default function BTSSection() {
           ))}
         </div>
 
-        <ScrollDownHint targetId="parcours" />
+        <ScrollDownHint targetId="synthese" />
       </div>
     </section>
   );

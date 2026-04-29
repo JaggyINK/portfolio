@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guide administrateur — Kardo</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #5b3df5; --accent2: #7C5CFC; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; --green: #4ade80; --orange: #f59e0b; --red: #ef4444; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 980px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.2rem; color: var(--accent2); margin-bottom: 0.5rem; }
+  h2 { font-size: 1.4rem; color: var(--accent2); margin: 2.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.1rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+  h4 { font-size: 0.98rem; color: var(--accent2); margin: 1rem 0 0.4rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  strong { color: var(--text); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin: 1rem 0 2rem; }
+  .badge { display: inline-block; padding: 0.25rem 0.7rem; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; background: rgba(124,92,252,0.15); color: var(--accent2); border: 1px solid rgba(124,92,252,0.3); margin-right: 0.3rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(124,92,252,0.1); color: var(--accent2); font-weight: 600; }
+  td { color: var(--sub); }
+  code { background: rgba(124,92,252,0.12); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  pre { background: #0a0f1f; border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; }
+  pre code { background: none; padding: 0; color: var(--sub); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin: 1rem 0; }
+  .warn { background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.2); border-radius: 0.5rem; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.88rem; color: var(--sub); }
+  .warn strong { color: var(--orange); }
+  .danger { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); border-radius: 0.5rem; padding: 0.8rem 1rem; margin: 1rem 0; font-size: 0.88rem; color: var(--sub); }
+  .danger strong { color: var(--red); }
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent2); text-decoration: none; font-size: 0.92rem; }
+  .toc a:hover { text-decoration: underline; }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem; letter-spacing:0.1em; text-transform:uppercase;">Guide administrateur</p>
+<h1>Kardo — Administration &amp; Déploiement</h1>
+<p style="font-size: 1.05rem; color: var(--sub);">Hébergement, configuration, gestion des commerçants, maintenance.</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Public :</strong> Administrateur Kardo</div>
+  <div class="meta-item"><strong>Version :</strong> 1.0</div>
+  <div class="meta-item"><strong>Mise à jour :</strong> Avril 2026</div>
+</div>
+
+<h2>Sommaire</h2>
+<ol class="toc">
+  <li><a href="#hebergement">1. Hébergement — Railway, Hetzner, Render</a></li>
+  <li><a href="#env">2. Variables d'environnement</a></li>
+  <li><a href="#deploiement">3. Déploiement production (checklist)</a></li>
+  <li><a href="#certs">4. Configuration des certificats Apple &amp; Google</a></li>
+  <li><a href="#supervisor">5. Configuration Supervisor (queue + scheduler)</a></li>
+  <li><a href="#commercants">6. Gestion des commerçants (pros)</a></li>
+  <li><a href="#plans">7. Limites par plan</a></li>
+  <li><a href="#dns">8. Domaine, DNS, Resend</a></li>
+  <li><a href="#maintenance">9. Maintenance courante</a></li>
+  <li><a href="#commandes">10. Commandes artisan utiles</a></li>
+  <li><a href="#securite">11. Audit de sécurité (état + actions)</a></li>
+  <li><a href="#troubleshoot">12. Dépannage</a></li>
+</ol>
+
+<h2 id="hebergement">1. Hébergement — Railway, Hetzner, Render</h2>
+
+<h3>Option 1 — Railway (recommandé pour démarrer)</h3>
+<p><strong>Prix :</strong> 0 $ → ~5 $ / mois au début, scale à la demande.</p>
+<ul>
+  <li>PostgreSQL inclus (gratuit jusqu'à 1 GB)</li>
+  <li>Deploy automatique depuis GitHub</li>
+  <li>SSL automatique</li>
+  <li>Queue worker intégré dans le même container</li>
+</ul>
+
+<pre><code># 1. Créer un compte sur railway.app
+# 2. Connecter le repo GitHub
+# 3. Ajouter un service PostgreSQL
+# 4. Configurer les variables d'environnement (voir section 2)
+# 5. Push sur main → deploy auto
+
+# Railway CLI (optionnel)
+npm install -g @railway/cli
+railway login &amp;&amp; railway init &amp;&amp; railway up</code></pre>
+
+<h3>Option 2 — Hetzner VPS (le moins cher long terme)</h3>
+<p><strong>Prix :</strong> 4.51 € / mois (CX22 — 2 vCPU, 4 GB RAM, 40 GB SSD).</p>
+
+<pre><code>sudo apt update &amp;&amp; sudo apt upgrade -y
+sudo apt install -y php8.4 php8.4-fpm php8.4-pgsql php8.4-mbstring \
+  php8.4-xml php8.4-curl php8.4-gd php8.4-zip nginx postgresql \
+  nodejs npm supervisor certbot
+
+sudo -u postgres createuser kardo -P
+sudo -u postgres createdb kardo -O kardo
+
+# Cloner le repo, configurer .env, php artisan migrate, npm run build
+# Configurer supervisor pour queue:work et schedule:work
+# Certbot pour SSL</code></pre>
+
+<h3>Option 3 — Render</h3>
+<p><strong>Prix :</strong> 0 $ (free tier) → 7 $ / mois (starter). Similaire à Railway, avec un free tier généreux.</p>
+
+<h3>Quand scaler ?</h3>
+<table>
+  <tr><th>Nb pros</th><th>Nb clients total</th><th>Hébergement recommandé</th></tr>
+  <tr><td>1-10</td><td>&lt; 5 000</td><td>Railway free / Hetzner CX22</td></tr>
+  <tr><td>10-50</td><td>5 000-50 000</td><td>Hetzner CX32 (8 € / mois)</td></tr>
+  <tr><td>50-200</td><td>50 000-200 000</td><td>Hetzner CX42 + PostgreSQL dédié</td></tr>
+  <tr><td>200+</td><td>200 000+</td><td>CX52 + PostgreSQL dédié + Redis cache</td></tr>
+</table>
+
+<h2 id="env">2. Variables d'environnement</h2>
+
+<p>Toutes les variables sont à définir dans le panel Railway (ou <code>.env</code> en local / Hetzner).</p>
+
+<pre><code>APP_NAME=Kardo
+APP_ENV=production
+APP_KEY=base64:...                 # généré avec: php artisan key:generate
+APP_DEBUG=false
+APP_URL=https://kardo.fr
+APP_TIMEZONE=Europe/Paris
+APP_LOCALE=fr
+
+# Base de données
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1                  # ou URL du service PostgreSQL Railway
+DB_PORT=5432
+DB_DATABASE=kardo
+DB_USERNAME=kardo
+DB_PASSWORD=...                    # mot de passe fort
+
+# Queue
+QUEUE_CONNECTION=database
+
+# Apple Wallet
+APPLE_PASS_TYPE_ID=pass.fr.kardo
+APPLE_TEAM_ID=6DKW9Y76F7
+APPLE_CERT_PATH=storage/certs/pass-cert.p12
+APPLE_CERT_PASSWORD=...
+PASS_CERT_P12_B64=...              # certificat .p12 encodé en base64
+WWDR_CERT_B64=...                  # WWDR cert encodé en base64
+
+# Google Wallet
+GOOGLE_WALLET_ISSUER_ID=3388000000023095407
+GOOGLE_SERVICE_ACCOUNT_JSON=storage/certs/google-service-account.json
+GOOGLE_SERVICE_ACCOUNT_B64=...     # JSON service account encodé en base64
+
+# Firebase (push Android)
+FCM_PROJECT_ID=kardo-492108
+
+# Email (Resend)
+MAIL_MAILER=resend
+MAIL_FROM_ADDRESS=jaggyinkgraph@gmail.com
+MAIL_FROM_NAME=Kardo
+RESEND_API_KEY=re_...</code></pre>
+
+<div class="warn"><strong>Attention :</strong> les variables <code>*_B64</code> sont obligatoires en prod sur Railway car les fichiers .p12 et .json ne peuvent pas être committés dans le repo. Le script <code>docker-start.sh</code> les décode au démarrage.</div>
+
+<h2 id="deploiement">3. Déploiement production (checklist)</h2>
+
+<pre><code># 1. Cloner le repo
+git clone &lt;repo&gt; kardo-app &amp;&amp; cd kardo-app
+
+# 2. Installer les dépendances
+composer install --optimize-autoloader --no-dev
+npm install &amp;&amp; npm run build
+cd node-services &amp;&amp; npm ci --omit=dev &amp;&amp; cd ..
+
+# 3. Configurer l'environnement
+cp .env.example .env
+# Éditer .env avec les valeurs de production
+
+# 4. Générer la clé d'app
+php artisan key:generate
+
+# 5. Migrer la base
+php artisan migrate --force
+
+# 6. Cacher la config
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 7. Créer le symlink storage
+php artisan storage:link
+
+# 8. Copier les certificats dans storage/certs/
+# pass-cert.p12, pass-signer-cert.pem, pass-signer-key.pem
+# google-service-account.json, wwdr-cert.pem
+
+# 9. Lancer les workers (via Supervisor en prod — voir section 5)</code></pre>
+
+<h2 id="certs">4. Configuration des certificats Apple &amp; Google</h2>
+
+<h3>Apple Pass Type ID + certificat .p12</h3>
+<ol>
+  <li>Aller sur <a href="https://developer.apple.com" style="color:var(--accent2);">developer.apple.com</a> → Certificates, Identifiers &amp; Profiles</li>
+  <li>Identifiers → + → Pass Type IDs → créer <code>pass.fr.kardo</code></li>
+  <li>Certificates → + → Pass Type ID Certificate → choisir <code>pass.fr.kardo</code></li>
+  <li>Générer un CSR avec Keychain (Mac) ou OpenSSL (Linux)</li>
+  <li>Télécharger le certificat <code>.cer</code>, l'importer dans Keychain</li>
+  <li>Exporter en <code>.p12</code> avec un mot de passe fort</li>
+  <li>Encoder en base64 : <code>base64 -w0 pass-cert.p12 &gt; pass-cert.p12.b64</code></li>
+  <li>Coller le contenu dans la variable d'env <code>PASS_CERT_P12_B64</code> sur Railway</li>
+</ol>
+
+<h3>Apple WWDR Intermediate Certificate</h3>
+<ol>
+  <li>Télécharger depuis <a href="https://www.apple.com/certificateauthority/" style="color:var(--accent2);">apple.com/certificateauthority</a> → "Worldwide Developer Relations - G4"</li>
+  <li>Le fichier est en format DER, encoder en base64 : <code>base64 -w0 AppleWWDRCAG4.cer &gt; wwdr.b64</code></li>
+  <li>Coller dans <code>WWDR_CERT_B64</code></li>
+</ol>
+
+<h3>Google Wallet Service Account</h3>
+<ol>
+  <li>Aller sur <a href="https://console.cloud.google.com" style="color:var(--accent2);">console.cloud.google.com</a> → projet <code>kardo-492108</code></li>
+  <li>Activer l'API "Google Wallet API"</li>
+  <li>IAM &amp; Admin → Service Accounts → créer <code>kardo-wallet@kardo-492108.iam.gserviceaccount.com</code></li>
+  <li>Rôles : "Google Wallet API Service Agent"</li>
+  <li>Clés → Ajouter une clé → JSON → télécharger</li>
+  <li>Encoder en base64 : <code>base64 -w0 google-service-account.json &gt; sa.b64</code></li>
+  <li>Coller dans <code>GOOGLE_SERVICE_ACCOUNT_B64</code></li>
+  <li>Aller sur <a href="https://pay.google.com/business/console/" style="color:var(--accent2);">pay.google.com/business/console</a> pour récupérer l'<strong>Issuer ID</strong></li>
+</ol>
+
+<h3>Firebase FCM (push Android)</h3>
+<ol>
+  <li>Lié au même projet Google Cloud <code>kardo-492108</code></li>
+  <li>Le FCM v1 utilise OAuth2 — le service account ci-dessus suffit (rôle "Firebase Cloud Messaging API Admin" supplémentaire)</li>
+  <li>Définir <code>FCM_PROJECT_ID=kardo-492108</code></li>
+</ol>
+
+<h2 id="supervisor">5. Configuration Supervisor (queue + scheduler)</h2>
+
+<p>Sur Railway, le script <code>docker-start.sh</code> lance directement queue:work + schedule:run en background. Sur un VPS (Hetzner), il faut configurer Supervisor.</p>
+
+<pre><code># /etc/supervisor/conf.d/kardo-worker.conf
+
+[program:kardo-queue]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/kardo/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+numprocs=2
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/www/kardo/storage/logs/worker.log
+
+[program:kardo-scheduler]
+command=/bin/bash -c "while true; do php /var/www/kardo/artisan schedule:run --no-interaction &gt;&gt; /dev/null 2&gt;&amp;1; sleep 60; done"
+autostart=true
+autorestart=true
+user=www-data
+redirect_stderr=true
+stdout_logfile=/var/www/kardo/storage/logs/scheduler.log</code></pre>
+
+<pre><code>sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start kardo-queue:*
+sudo supervisorctl start kardo-scheduler</code></pre>
+
+<h2 id="commercants">6. Gestion des commerçants (pros)</h2>
+
+<h3>Lister les pros</h3>
+<pre><code>php artisan kardo:merchants
+# Affiche : nom, email, plan, nombre de cartes</code></pre>
+
+<h3>Créer un pro manuellement</h3>
+<pre><code>php artisan tinker</code></pre>
+<pre><code>App\Models\Merchant::create([
+    'name' =&gt; 'Boulangerie Martin',
+    'email' =&gt; 'contact@boulangerie-martin.fr',
+    'password' =&gt; bcrypt('motdepasse-temporaire'),
+    'plan' =&gt; 'solo',  // free, solo, pro, business
+    'pass_design' =&gt; [
+        'program_name' =&gt; 'Carte Boulangerie Martin',
+        'reward_label' =&gt; '1 baguette offerte',
+        'max_stamps' =&gt; 10,
+        'background_color' =&gt; '#D4A574',
+        'foreground_color' =&gt; '#FFFFFF',
+        'label_color' =&gt; '#F5E6D3',
+    ],
+]);</code></pre>
+
+<h3>Changer le plan d'un pro</h3>
+<pre><code>php artisan kardo:set-plan contact@boulangerie-martin.fr pro</code></pre>
+
+<h3>Connexion psql Railway</h3>
+<pre><code>psql "postgresql://postgres:xxx@ballast.proxy.rlwy.net:38503/railway"
+
+UPDATE merchants SET plan = 'pro' WHERE email = 'email@commerce.fr';</code></pre>
+
+<h3>Supprimer un pro et toutes ses données</h3>
+<pre><code>php artisan tinker</code></pre>
+<pre><code>$merchant = App\Models\Merchant::where('email', 'email@example.com')-&gt;first();
+
+$merchant-&gt;cards()-&gt;each(function ($card) {
+    $card-&gt;purchases()-&gt;delete();
+    $card-&gt;rewards()-&gt;delete();
+    $card-&gt;pushTokens()-&gt;delete();
+    $card-&gt;forceDelete();
+});
+$merchant-&gt;notifications()-&gt;delete();
+$merchant-&gt;enrollmentLinks()-&gt;delete();
+$merchant-&gt;rewardTiers()-&gt;delete();
+DB::table('audit_logs')-&gt;where('merchant_id', $merchant-&gt;id)-&gt;delete();
+DB::table('automation_rules')-&gt;where('merchant_id', $merchant-&gt;id)-&gt;delete();
+$merchant-&gt;delete();</code></pre>
+
+<div class="danger"><strong>Attention :</strong> cette opération est <strong>irréversible</strong>. Toutes les cartes Wallet du commerçant seront invalidées et les clients ne pourront plus les utiliser.</div>
+
+<h2 id="plans">7. Limites par plan</h2>
+
+<table>
+  <tr><th>Feature</th><th>Free</th><th>Solo (19 €)</th><th>Pro (39 €)</th><th>Business (79 €)</th></tr>
+  <tr><td><strong>Clients max</strong></td><td>50</td><td>300</td><td>1 500</td><td>Illimité</td></tr>
+  <tr><td><strong>Broadcasts / mois</strong></td><td>0</td><td>2</td><td>Illimité</td><td>Illimité</td></tr>
+  <tr><td><strong>Automations</strong></td><td>0</td><td>1</td><td>4</td><td>Illimité</td></tr>
+  <tr><td><strong>CRM avancé</strong></td><td>Non</td><td>Non</td><td>Oui</td><td>Oui</td></tr>
+  <tr><td><strong>Export CSV</strong></td><td>Non</td><td>Non</td><td>Oui</td><td>Oui</td></tr>
+  <tr><td><strong>Journal d'audit</strong></td><td>Non</td><td>Non</td><td>Oui</td><td>Oui</td></tr>
+</table>
+
+<p>Les limites sont définies dans <code>config/kardo.php</code> et appliquées :</p>
+<ul>
+  <li><strong>Côté serveur :</strong> middleware de plan + validation dans les controllers</li>
+  <li><strong>Côté client :</strong> composable <code>usePlan()</code> qui masque les features non accessibles</li>
+</ul>
+
+<h2 id="dns">8. Domaine, DNS, Resend</h2>
+
+<h3>Acheter le domaine</h3>
+<ul>
+  <li><code>kardo.fr</code> sur OVH (~7 € / an) ou Namecheap</li>
+</ul>
+
+<h3>DNS</h3>
+<pre><code># Si Hetzner / VPS classique :
+A     @       → IP du serveur
+A     www     → IP du serveur
+
+# Si Railway :
+CNAME @       → kardo-production.up.railway.app
+CNAME www     → kardo-production.up.railway.app</code></pre>
+
+<h3>Resend — vérifier le domaine</h3>
+<ol>
+  <li><a href="https://resend.com/domains" style="color:var(--accent2);">resend.com/domains</a> → Add domain → <code>kardo.fr</code></li>
+  <li>Ajouter les records DNS fournis par Resend (SPF, DKIM, DMARC)</li>
+  <li>Attendre la vérification (~10 min)</li>
+</ol>
+
+<div class="warn"><strong>Important :</strong> tant que Resend n'est pas vérifié, les emails partent avec un domaine de fallback et risquent d'atterrir en spam.</div>
+
+<h2 id="maintenance">9. Maintenance courante</h2>
+
+<h3>Sauvegardes base de données</h3>
+<pre><code># Backup quotidien (cron)
+pg_dump -U kardo kardo &gt; /backups/kardo-$(date +%Y%m%d).sql
+
+# Restaurer
+psql -U kardo kardo &lt; /backups/kardo-20260414.sql</code></pre>
+
+<h3>Mise à jour du code (Hetzner)</h3>
+<pre><code>cd /var/www/kardo
+git pull origin main
+composer install --optimize-autoloader --no-dev
+npm install &amp;&amp; npm run build
+php artisan migrate --force
+php artisan config:cache &amp;&amp; php artisan route:cache &amp;&amp; php artisan view:cache
+sudo supervisorctl restart kardo-queue:*</code></pre>
+
+<p>Sur Railway : push sur <code>main</code> = redéploiement auto (~3 min).</p>
+
+<h3>Logs</h3>
+<pre><code># Logs Laravel
+tail -f storage/logs/laravel.log
+
+# Logs queue worker (Hetzner)
+tail -f storage/logs/worker.log
+
+# Logs Railway
+railway logs</code></pre>
+
+<h3>RGPD : nettoyage automatique</h3>
+<p>La commande <code>kardo:cleanup-inactive</code> tourne tous les jours à 03h00 et anonymise les cartes inactives depuis &gt; 3 ans. Rien à faire manuellement.</p>
+
+<h2 id="commandes">10. Commandes artisan utiles</h2>
+
+<table>
+  <tr><th>Commande</th><th>Description</th><th>Planification</th></tr>
+  <tr><td><code>kardo:merchants</code></td><td>Liste tous les commerçants</td><td>Manuel</td></tr>
+  <tr><td><code>kardo:set-plan {email} {plan}</code></td><td>Change le plan d'un commerçant</td><td>Manuel</td></tr>
+  <tr><td><code>kardo:process-automations</code></td><td>Exécute les règles d'autopilot</td><td>Toutes les heures</td></tr>
+  <tr><td><code>kardo:process-scheduled</code></td><td>Envoie les broadcasts programmés</td><td>Toutes les minutes</td></tr>
+  <tr><td><code>kardo:cleanup-inactive</code></td><td>Anonymise les cartes inactives &gt; 3 ans (CNIL)</td><td>Quotidien à 03h00</td></tr>
+</table>
+
+<pre><code># Debug
+php artisan queue:work --tries=1               # Lancer le queue worker manuellement
+php artisan schedule:work                      # Lancer le scheduler manuellement
+php artisan tinker                             # Console interactive
+
+# Build
+npm run build                                  # Build les assets Vue
+php artisan config:cache                       # Cacher la config
+php artisan route:cache                        # Cacher les routes</code></pre>
+
+<h2 id="securite">11. Audit de sécurité (état + actions)</h2>
+
+<h3>Protégé</h3>
+<table>
+  <tr><th>Élément</th><th>Status</th><th>Détail</th></tr>
+  <tr><td>Authentification</td><td style="color:var(--green);">OK</td><td>Sanctum bearer tokens, 24h expiration</td></tr>
+  <tr><td>Mots de passe</td><td style="color:var(--green);">OK</td><td>bcrypt 12 rounds, validation maj+min+chiffre</td></tr>
+  <tr><td>Isolation tenant</td><td style="color:var(--green);">OK</td><td>Ownership check sur chaque route</td></tr>
+  <tr><td>Rate limiting</td><td style="color:var(--green);">OK</td><td>5 / min login, 60 / min API</td></tr>
+  <tr><td>SQL injection</td><td style="color:var(--green);">OK</td><td>Eloquent, pas de raw queries</td></tr>
+  <tr><td>XSS</td><td style="color:var(--green);">OK</td><td>Vue.js échappe par défaut, pas de v-html</td></tr>
+  <tr><td>Upload fichiers</td><td style="color:var(--green);">OK</td><td>Validation MIME, SVG bloqué, max 4 MB</td></tr>
+  <tr><td>CSV injection</td><td style="color:var(--green);">OK</td><td>Préfixage des cellules à risque</td></tr>
+  <tr><td>HTTPS</td><td style="color:var(--green);">OK</td><td>URL::forceScheme + Railway SSL</td></tr>
+  <tr><td>Secrets dans repo</td><td style="color:var(--green);">OK</td><td>.gitignore + env vars base64</td></tr>
+  <tr><td>RGPD</td><td style="color:var(--green);">OK</td><td>Consentement, droits, anonymisation auto</td></tr>
+</table>
+
+<h3>À améliorer</h3>
+<table>
+  <tr><th>Élément</th><th>Risque</th><th>Action</th></tr>
+  <tr><td>APP_KEY de prod</td><td style="color:var(--orange);">Moyen</td><td>Régénérer une APP_KEY unique pour la prod</td></tr>
+  <tr><td>Pas de CSP headers</td><td style="color:var(--sub);">Faible</td><td>Ajouter Content-Security-Policy</td></tr>
+  <tr><td>Pas de 2FA pro</td><td style="color:var(--sub);">Faible</td><td>Ajouter authentification 2 facteurs</td></tr>
+  <tr><td>LOG_LEVEL en prod</td><td style="color:var(--sub);">Faible</td><td>Passer de debug à warning</td></tr>
+  <tr><td>Cert Apple expiration</td><td style="color:var(--sub);">Info</td><td>14/05/2027 — prévoir renouvellement</td></tr>
+</table>
+
+<h2 id="troubleshoot">12. Dépannage</h2>
+
+<h3>Les passes Apple ne se mettent pas à jour</h3>
+<ul>
+  <li>Vérifier que le queue worker tourne : <code>railway logs | grep queue</code></li>
+  <li>Vérifier le certificat .p12 : valide ? bon mot de passe ?</li>
+  <li>Vérifier la timezone : <code>config('app.timezone')</code> = <code>Europe/Paris</code> ?</li>
+  <li>Tester l'endpoint Apple : <code>curl -I https://kardo-production.up.railway.app/api/v1/...</code></li>
+</ul>
+
+<h3>Les notifications Android n'arrivent pas</h3>
+<ul>
+  <li>Vérifier <code>FCM_PROJECT_ID</code> et le service account JSON</li>
+  <li>Vérifier que le client a bien autorisé les notifs Google Wallet</li>
+  <li>Logs : <code>tail -f storage/logs/laravel.log | grep FCM</code></li>
+</ul>
+
+<h3>Les inscriptions ne s'enregistrent pas</h3>
+<ul>
+  <li>Vérifier le slug dans la table <code>enrollment_links</code></li>
+  <li>Vérifier la limite du plan : <code>php artisan kardo:merchants</code></li>
+  <li>Logs PostgreSQL pour repérer une violation de contrainte unique</li>
+</ul>
+
+<h3>Le serveur ne démarre pas</h3>
+<ul>
+  <li>Vérifier que <code>docker-start.sh</code> a bien décodé les certs (logs au démarrage)</li>
+  <li>Vérifier <code>APP_KEY</code> et <code>APP_DEBUG=false</code></li>
+  <li>Tester localement avec <code>composer run dev</code></li>
+</ul>
+
+<div class="footer">Guide administrateur Kardo — Sagar MIR — 2026 — <a href="https://kardo-production.up.railway.app" style="color:var(--accent2);">kardo-production.up.railway.app</a></div>
+</div>
+</body>
+</html>

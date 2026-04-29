@@ -6,8 +6,9 @@ import { SettingsProvider } from "./state/settings.jsx";
 import Landing from "./scene/Landing.jsx";
 import MoonScene from "./scene/MoonScene.jsx"; // import direct, pas lazy
 import ClassicPortfolio from "./pages/ClassicPortfolio.jsx";
+import SyntheseE5 from "./pages/SyntheseE5.jsx";
 
-import JavascriptQuizStation from "./pages/JavascriptQuizStation.jsx";  
+import JavascriptQuizStation from "./pages/JavascriptQuizStation.jsx";
 import PhpQuizStation from "./pages/PhpQuizStation.jsx";
 import PythonQuizStation from "./pages/PythonQuizStation.jsx";
 import SqlQuizStation from "./pages/SqlQuizStation.jsx";
@@ -129,6 +130,7 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       { index: true, element: <ClassicPortfolio /> },
+      { path: "synthese-e5", element: <SyntheseE5 /> },
       { path: "lunar", element: <></> },
       { path: "scene", element: <></> },
 
@@ -138,9 +140,46 @@ const router = createBrowserRouter([
       { path: "quiz-javascript", element: <JavascriptQuizStation /> },
       { path: "quiz-sql", element: <SqlQuizStation /> },
       { path: "quiz-docker", element: <DockerQuizStation /> },
+
+      // Catch-all 404
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);
+
+function NotFound() {
+  return (
+    <main
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column",
+        padding: "2rem",
+        color: "#E6ECF8",
+        textAlign: "center",
+      }}
+    >
+      <h1 style={{ fontSize: "clamp(2rem, 6vw, 4rem)", marginBottom: "0.5rem", color: "#22d3ee" }}>404</h1>
+      <p style={{ marginBottom: "1.5rem", color: "#C5D3E8" }}>Cette page n&apos;existe pas.</p>
+      <a
+        href="/"
+        style={{
+          padding: "0.6rem 1.2rem",
+          borderRadius: "0.6rem",
+          border: "1px solid rgba(34,211,238,0.4)",
+          background: "rgba(34,211,238,0.1)",
+          color: "#22d3ee",
+          textDecoration: "none",
+          fontWeight: 600,
+        }}
+      >
+        ← Retour au portfolio
+      </a>
+    </main>
+  );
+}
 
 export default function App() {
   return <RouterProvider router={router} future={{ v7_startTransition: true, v7_relativeSplatPath: true }} />;

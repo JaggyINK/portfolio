@@ -66,7 +66,8 @@
   <div class="meta-item"><strong>Date :</strong> 2025 - 2026</div>
   <div class="meta-item"><strong>Type :</strong> Projet BTS SIO SLAM &mdash; Épreuve E5</div>
   <div class="meta-item"><strong>Statut :</strong> <span style="color:#4ade80; font-weight:600;">Production</span></div>
-  <div class="meta-item"><strong>Version :</strong> <span class="version-badge v2">V2</span></div>
+  <div class="meta-item"><strong>Version :</strong> <span class="version-badge v2">V2.2</span></div>
+  <div class="meta-item"><strong>Demo :</strong> <a href="https://demo-intranet.cpms.services/" style="color:var(--accent2);">demo-intranet.cpms.services</a></div>
 </div>
 
 <div>
@@ -77,20 +78,24 @@
   <span class="badge">PHP 8.2+</span>
   <span class="badge">Sanctum</span>
   <span class="badge">LdapRecord</span>
-  <span class="badge">MySQL</span>
+  <span class="badge">MySQL / MariaDB</span>
   <span class="badge">Python 3</span>
   <span class="badge">pyodbc</span>
   <span class="badge">LDAPS</span>
   <span class="badge">AS400</span>
+  <span class="badge">Bcrypt</span>
+  <span class="badge">Espace RH</span>
+  <span class="badge">Chat interne</span>
 </div>
 
 <div class="stat-grid" style="margin-top:1.5rem;">
-  <div class="stat-card"><div class="value">21</div><div class="label">Vues Vue.js</div></div>
-  <div class="stat-card"><div class="value">4</div><div class="label">Composants</div></div>
-  <div class="stat-card"><div class="value">21</div><div class="label">Routes frontend</div></div>
-  <div class="stat-card"><div class="value">15+</div><div class="label">Endpoints API</div></div>
-  <div class="stat-card"><div class="value">4</div><div class="label">Services Laravel</div></div>
-  <div class="stat-card"><div class="value">7</div><div class="label">Tables BDD</div></div>
+  <div class="stat-card"><div class="value">33</div><div class="label">Vues Vue.js</div></div>
+  <div class="stat-card"><div class="value">15+</div><div class="label">Composants</div></div>
+  <div class="stat-card"><div class="value">29</div><div class="label">Routes frontend</div></div>
+  <div class="stat-card"><div class="value">50+</div><div class="label">Endpoints API</div></div>
+  <div class="stat-card"><div class="value">6</div><div class="label">Services Laravel</div></div>
+  <div class="stat-card"><div class="value">17</div><div class="label">Tables BDD</div></div>
+  <div class="stat-card"><div class="value">3</div><div class="label">Middlewares Auth</div></div>
   <div class="stat-card"><div class="value">50</div><div class="label">Entrees FAQ</div></div>
   <div class="stat-card"><div class="value">12</div><div class="label">Intégrations externes</div></div>
 </div>
@@ -102,17 +107,20 @@
 <h2>Sommaire</h2>
 <ol class="toc">
   <li><a href="#contexte">1. Contexte et objectifs</a></li>
-  <li><a href="#v1v2">2. Evolution V1 vers V2</a></li>
+  <li><a href="#v1v2">2. Evolution V1 vers V2 (V2.0 → V2.2)</a></li>
   <li><a href="#architecture">3. Architecture technique</a></li>
   <li><a href="#frontend">4. Frontend &mdash; Vue 3 SPA</a></li>
   <li><a href="#backend">5. Backend &mdash; Laravel 12 API</a></li>
   <li><a href="#base">6. Base de données</a></li>
   <li><a href="#fonctionnalites">7. Fonctionnalités détaillées</a></li>
-  <li><a href="#sécurité">8. Sécurité</a></li>
-  <li><a href="#routes">9. API et routes</a></li>
-  <li><a href="#intégrations">10. Intégrations externes</a></li>
-  <li><a href="#déploiement">11. Déploiement et CI/CD</a></li>
-  <li><a href="#bts">12. Compétences BTS SIO SLAM</a></li>
+  <li><a href="#espace-rh">8. Module Espace RH (V2.2)</a></li>
+  <li><a href="#chat">9. Module Chat interne (V2.2)</a></li>
+  <li><a href="#sécurité">10. Sécurité</a></li>
+  <li><a href="#routes">11. API et routes</a></li>
+  <li><a href="#intégrations">12. Intégrations externes</a></li>
+  <li><a href="#déploiement">13. Déploiement et CI/CD</a></li>
+  <li><a href="#bts">14. Compétences BTS SIO SLAM</a></li>
+  <li><a href="#captures">15. Captures d'écran de la solution</a></li>
 </ol>
 
 <!-- ================================================================ -->
@@ -153,10 +161,10 @@
 <!-- 2. EVOLUTION V1 VERS V2                                           -->
 <!-- ================================================================ -->
 
-<h2 id="v1v2">2. Evolution V1 vers V2</h2>
+<h2 id="v1v2">2. Evolution V1 vers V2 (V2.0 → V2.2)</h2>
 
 <div class="card">
-<h3>Comparaison des versions</h3>
+<h3>Comparaison V1 / V2</h3>
 <table>
   <tr><th>Critere</th><th>V1 <span class="version-badge v1">V1</span></th><th>V2 <span class="version-badge v2">V2</span></th></tr>
   <tr><td><strong>Architecture</strong></td><td>Monolithique (rendu serveur)</td><td>SPA decouplee (Vue 3 + API REST Laravel)</td></tr>
@@ -165,13 +173,35 @@
   <tr><td><strong>Routage</strong></td><td>Server-side routing</td><td>Client-side routing (Vue Router 4, history mode)</td></tr>
   <tr><td><strong>CSS</strong></td><td>CSS classique / Bootstrap</td><td>Tailwind CSS 3.4 utility-first + CSS custom</td></tr>
   <tr><td><strong>Documents</strong></td><td>Liens de telechargement</td><td>Visionneuse PDF inline avec accordeons, tags, recherche, tri</td></tr>
-  <tr><td><strong>Theme</strong></td><td>Theme clair uniquement</td><td>Mode clair/sombre avec persistance localStorage</td></tr>
+  <tr><td><strong>Theme</strong></td><td>Theme clair uniquement</td><td>Light par defaut, bascule clair/sombre avec persistance localStorage</td></tr>
   <tr><td><strong>FAQ</strong></td><td>Page statique</td><td>Chatbot interactif (50 questions, 11 catégories) + accordeon avec recherche</td></tr>
   <tr><td><strong>Favoris</strong></td><td>Aucun</td><td>Systeme de favoris drag-and-drop sur la homepage</td></tr>
   <tr><td><strong>Recherche</strong></td><td>Aucune</td><td>Recherche globale temps réel sur tous les outils</td></tr>
   <tr><td><strong>Admin</strong></td><td>Basique</td><td>Dashboard complet (KPI, comptes verrouillés/suspendus, historique, pagination)</td></tr>
   <tr><td><strong>Déploiement</strong></td><td>Manuel</td><td>CI/CD GitLab (install &rarr; build &rarr; deploy SCP)</td></tr>
   <tr><td><strong>Mot de passe</strong></td><td>AD uniquement</td><td>Multi-système (AD + AS400 + ODBC) avec jauge de force et politique 15 caracteres</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Sous-versions V2.0 &rarr; V2.2</h3>
+<table>
+  <tr><th>Version</th><th>Date</th><th>Apports majeurs</th></tr>
+  <tr>
+    <td><span class="version-badge v2">V2.0</span></td>
+    <td>2025-09</td>
+    <td>Refonte SPA Vue 3 + API Laravel 12, module questions de sécurité, dashboard admin, intégration AS400 via ODBC, audit complet, fusion WAD + JDBC + ODBC</td>
+  </tr>
+  <tr>
+    <td><span class="version-badge v2">V2.1</span></td>
+    <td>2025-12</td>
+    <td>Correctifs critiques (route /unlock-account, signature checkToken, contrôleur AccessController, IntraAccess), suppressions de fichiers à risque (phpinfo.php, test_user_bind.php), variables LDAP_UPN_DOMAIN/LOGIN_EMAIL_DOMAIN, documentation DEPLOYMENT.md / CLAUDE.md</td>
+  </tr>
+  <tr>
+    <td><span class="version-badge v2">V2.2</span></td>
+    <td>2026-02 → 2026-03</td>
+    <td><strong>Refonte UX complète :</strong> sidebar verticale + ContextualHeader + 5 pages de section, theme clair par défaut, layout responsive avec menu mobile.<br><strong>Module Espace RH :</strong> auth BDD bcrypt avec rôles DRH/RH, dashboard de gestion (annonces, alertes, événements), upload média polymorphique, reset password par lien, modale de changement de mot de passe forcée au premier login.<br><strong>Module Chat interne :</strong> messagerie d'équipe avec auth AD, profils (avatars, statuts), modération (soft-delete), recherche d'utilisateurs.<br><strong>Widgets Homepage :</strong> bandeau d'alertes RH, modale d'alerte, fil d'actualités, lien rapides.<br><strong>Modules en maintenance :</strong> changement MDP / déblocage compte / question sécurité (redirection vers /aide-support).</td>
+  </tr>
 </table>
 </div>
 
@@ -195,19 +225,25 @@
 <div class="arch-flow">
   <div style="width:120px"></div>
   <div class="arch-arrow" style="margin-left:8.5rem;">&searr;</div>
-  <div class="arch-box">MySQL<br><small>Questions &amp; Logs</small></div>
+  <div class="arch-box">MariaDB / MySQL<br><small>17 tables (sécurité, RH, Chat, audit)</small></div>
   <div class="arch-arrow">&searr;</div>
   <div class="arch-box">Middleware Python<br><small>pyodbc</small></div>
   <div class="arch-arrow">&rarr;</div>
   <div class="arch-box">AS400<br><small>IBM i ODBC</small></div>
 </div>
+<div class="arch-flow">
+  <div style="width:120px"></div>
+  <div class="arch-arrow" style="margin-left:8.5rem;">&searr;</div>
+  <div class="arch-box">Stockage local<br><small>storage/app/hr-media (uploads)</small></div>
+</div>
 
 <ul>
   <li><strong>Frontend (SPA) :</strong> application Vue 3 single-page servie en statique, communiquant exclusivement par requêtes HTTP avec l'API</li>
-  <li><strong>Backend (API) :</strong> API REST Laravel sans etat, authentifiant les admins par token Bearer (Sanctum) et les operations publiques par CSRF cookie</li>
-  <li><strong>Active Directory :</strong> connexion LDAPS (port 636) pour l'authentification admin, le changement de mot de passe AD et le déblocage de compte</li>
-  <li><strong>MySQL :</strong> base relationnelle stockant les questions de sécurité, les tentatives, les logs d'audit et les tokens d'administration</li>
+  <li><strong>Backend (API) :</strong> API REST Laravel sans état, authentifiant via 3 mécanismes selon le contexte (Bearer admin AD, Bearer RH bcrypt, Bearer chat AD) plus CSRF cookie pour les routes publiques</li>
+  <li><strong>Active Directory :</strong> connexion LDAPS (port 636) pour l'authentification admin, le module Chat, le changement de mot de passe AD et le déblocage de compte</li>
+  <li><strong>MariaDB / MySQL :</strong> base relationnelle stockant les questions de sécurité, les comptes RH (bcrypt), les annonces/alertes/événements RH, les messages du chat, les médias, les tokens et l'audit</li>
   <li><strong>Middleware ODBC :</strong> script Python appelant l'AS400 via pyodbc pour les changements de mot de passe IBM i</li>
+  <li><strong>Stockage de fichiers :</strong> dossier <code>storage/app/hr-media</code> exposé via lien symbolique <code>storage:link</code> pour les images/PDF uploadés depuis l'Espace RH</li>
 </ul>
 </div>
 
@@ -348,68 +384,127 @@ createApp(App).use(router).mount('#app')</code></pre>
 </div>
 
 <div class="card">
-<h3>Routeur &mdash; 21 routes</h3>
+<h3>Routeur &mdash; 29 routes (V2.2)</h3>
 <table>
-  <tr><th>Route</th><th>Composant</th><th>Chargement</th><th>Categorie</th></tr>
-  <tr><td><code>/</code></td><td>MainView</td><td>Eager</td><td>Homepage</td></tr>
-  <tr><td><code>/ma-protection</code></td><td>MaProtection</td><td>Eager</td><td>Documents</td></tr>
-  <tr><td><code>/mon-espace-cpms</code></td><td>MonEspaceCPMS</td><td>Eager</td><td>Documents</td></tr>
-  <tr><td><code>/mes-pointages-et-absences</code></td><td>MesPointagesAbsences</td><td>Eager</td><td>Documents + Videos</td></tr>
-  <tr><td><code>/epargne-salariale</code></td><td>EpargneSalariale</td><td>Eager</td><td>Documents</td></tr>
-  <tr><td><code>/aides-au-logement</code></td><td>AideLogement</td><td>Eager</td><td>Documents</td></tr>
-  <tr><td><code>/contact-rh</code></td><td>ContactRH</td><td>Eager</td><td>Contact</td></tr>
-  <tr><td><code>/changer-mot-de-passe</code></td><td>PasswordChange</td><td>Eager</td><td>Sécurité</td></tr>
-  <tr><td><code>/reactiver-compte</code></td><td>AccountUnlock</td><td>Eager</td><td>Sécurité</td></tr>
-  <tr><td><code>/definir-question</code></td><td>SecurityQuestionSetup</td><td>Eager</td><td>Sécurité</td></tr>
-  <tr><td><code>/admin</code></td><td>AdminLogin</td><td>Eager</td><td>Admin</td></tr>
-  <tr><td><code>/admin-dashboard</code></td><td>AdminDashboard</td><td>Lazy</td><td>Admin</td></tr>
-  <tr><td><code>/tuto-deskare</code></td><td>TutoDeskare</td><td>Eager</td><td>Outils</td></tr>
-  <tr><td><code>/jira</code></td><td>Jira</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/teale</code></td><td>Teale</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/paie</code></td><td>Paie</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/swile</code></td><td>Swile</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/swile-deplacement</code></td><td>SwileDeplacement</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/sirh</code></td><td>Sirh</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/outils-prevention</code></td><td>Outils</td><td>Lazy</td><td>Outils</td></tr>
-  <tr><td><code>/sécurité</code></td><td>Sécurité</td><td>Lazy</td><td>Outils</td></tr>
+  <tr><th>Route</th><th>Composant</th><th>Section sidebar</th><th>Chargement</th></tr>
+  <tr><td><code>/</code></td><td>MainView</td><td>Accueil</td><td>Eager</td></tr>
+  <tr><td><code>/mes-outils</code></td><td>SectionToolsView</td><td>Mes Outils</td><td>Eager</td></tr>
+  <tr><td><code>/documents-rh</code></td><td>SectionRHView</td><td>Documents RH</td><td>Eager</td></tr>
+  <tr><td><code>/sante-avantages</code></td><td>SectionBenefitsView</td><td>Sante &amp; Avantages</td><td>Eager</td></tr>
+  <tr><td><code>/aide-support</code></td><td>SectionSupportView</td><td>Aide &amp; Support</td><td>Eager</td></tr>
+  <tr><td><code>/acces-rapides</code></td><td>SectionQuickLinksView</td><td>Accès Rapides</td><td>Eager</td></tr>
+  <tr><td><code>/mes-pointages-et-absences</code></td><td>MesPointagesAbsences</td><td>Mes Outils</td><td>Eager</td></tr>
+  <tr><td><code>/swile</code></td><td>Swile</td><td>Mes Outils</td><td>Lazy</td></tr>
+  <tr><td><code>/tuto-deskare</code></td><td>TutoDeskare</td><td>Mes Outils</td><td>Eager</td></tr>
+  <tr><td><code>/swile-deplacement</code></td><td>SwileDeplacement</td><td>Mes Outils</td><td>Lazy</td></tr>
+  <tr><td><code>/jira</code></td><td>Jira</td><td>Mes Outils</td><td>Lazy</td></tr>
+  <tr><td><code>/sirh</code></td><td>Sirh</td><td>Mes Outils</td><td>Lazy</td></tr>
+  <tr><td><code>/mon-espace-cpms</code></td><td>MonEspaceCPMS</td><td>Documents RH</td><td>Eager</td></tr>
+  <tr><td><code>/paie</code></td><td>Paie</td><td>Documents RH</td><td>Lazy</td></tr>
+  <tr><td><code>/aides-au-logement</code></td><td>AideLogement</td><td>Documents RH</td><td>Eager</td></tr>
+  <tr><td><code>/ma-protection</code></td><td>MaProtection</td><td>Sante &amp; Avantages</td><td>Eager</td></tr>
+  <tr><td><code>/epargne-salariale</code></td><td>EpargneSalariale</td><td>Sante &amp; Avantages</td><td>Eager</td></tr>
+  <tr><td><code>/outils-prevention</code></td><td>Outils</td><td>Sante &amp; Avantages</td><td>Lazy</td></tr>
+  <tr><td><code>/securite</code></td><td>Securite</td><td>Sante &amp; Avantages</td><td>Lazy</td></tr>
+  <tr><td><code>/teale</code></td><td>Teale</td><td>Sante &amp; Avantages</td><td>Lazy</td></tr>
+  <tr><td><code>/contact-rh</code></td><td>ContactRH</td><td>Aide &amp; Support</td><td>Eager</td></tr>
+  <tr><td><code>/changer-mot-de-passe</code></td><td>&rarr; redirect <code>/aide-support</code></td><td>Maintenance</td><td>&mdash;</td></tr>
+  <tr><td><code>/reactiver-compte</code></td><td>&rarr; redirect <code>/aide-support</code></td><td>Maintenance</td><td>&mdash;</td></tr>
+  <tr><td><code>/definir-question</code></td><td>&rarr; redirect <code>/aide-support</code></td><td>Maintenance</td><td>&mdash;</td></tr>
+  <tr><td><code>/chat</code></td><td>ChatView</td><td>Chat</td><td>Lazy</td></tr>
+  <tr><td><code>/admin</code></td><td>AdminLogin</td><td>Admin</td><td>Eager</td></tr>
+  <tr><td><code>/admin-dashboard</code></td><td>AdminDashboard</td><td>Admin (auth)</td><td>Lazy</td></tr>
+  <tr><td><code>/rh</code></td><td>HrLogin</td><td>Espace RH</td><td>Lazy</td></tr>
+  <tr><td><code>/rh/reset/:token</code></td><td>HrResetPassword</td><td>Espace RH</td><td>Lazy</td></tr>
+  <tr><td><code>/rh-dashboard</code></td><td>HrDashboard</td><td>Espace RH (auth)</td><td>Lazy</td></tr>
 </table>
-<p><strong>Navigation guard :</strong> la route <code>/admin-dashboard</code> redirige vers <code>/admin</code> si aucun <code>admin_token</code> n'est present dans <code>localStorage</code>. La route catch-all <code>/:pathMatch(.*)*</code> redirige vers <code>/</code>.</p>
-<p><strong>Lazy loading :</strong> 10 vues chargees en differe (<code>() =&gt; import()</code>) pour optimiser le bundle initial et reduire le temps de premier affichage.</p>
+<p><strong>Navigation guards :</strong></p>
+<ul>
+  <li><code>/admin-dashboard</code> redirige vers <code>/admin</code> si <code>localStorage.admin_token</code> est absent</li>
+  <li>Routes <code>meta.requiresHrAuth: true</code> redirigent vers <code>/rh</code> si <code>localStorage.hr_token</code> est absent</li>
+  <li>Catch-all <code>/:pathMatch(.*)*</code> redirige vers <code>/</code></li>
+</ul>
+<p><strong>Lazy loading :</strong> 16 vues chargées en différé (<code>() =&gt; import()</code>) pour optimiser le bundle initial et réduire le temps de premier affichage.</p>
 </div>
 
 <div class="card">
-<h3>Composants &mdash; 4 composants reutilisables</h3>
-
-<h3><code>Header.vue</code> (898 lignes)</h3>
-<p>Banniere d'en-tete "Mon Portail RH" avec identite visuelle CPMS :</p>
+<h3>Layout responsive &mdash; AppSidebar + ContextualHeader</h3>
+<p>La V2.2 introduit un nouveau <strong>layout vertical responsive</strong> avec sidebar permanente sur desktop et menu hamburger sur mobile :</p>
 <ul>
-  <li><strong>Desktop</strong> (<code>hidden lg:block</code>) : illustration SVG inline pleine largeur 1920px avec 44 classes CSS, le texte "MON PORTAIL RH" et le slogan "RETROUVEZ L'ESSENTIEL DE VOS DOCUMENTS EN UN CLIC!" positionnes en absolu</li>
-  <li><strong>Mobile</strong> (<code>block lg:hidden</code>) : carte en degrade teal avec texte centre et icone document</li>
+  <li><strong><code>AppSidebar.vue</code></strong> : navigation verticale gauche, hierarchie a 2 niveaux (sections + enfants), bouton de réduction (<code>collapsed</code>), liens externes avec libellé partenaire (Nibelis, Lucca, Swile, Deskare, JIRA, Génération, AXA, Teale, Action Logement)</li>
+  <li><strong><code>ContextualHeader.vue</code></strong> : barre supérieure contextuelle avec breadcrumb dynamique, recherche globale (<code>GlobalSearch.vue</code>), widget meteo, indicateur online (<code>OnlineStatus.vue</code>), bouton thème (<code>ThemeToggle.vue</code>)</li>
+  <li><strong><code>HomeBanner.vue</code></strong> : banniere d'accueil affichée uniquement sur la homepage (<code>meta.showBanner</code>)</li>
+  <li><strong><code>SidebarItem.vue</code></strong> : composant générique d'item de menu, gere les sections rétractables, l'icône, le badge "RH" pour l'Espace RH, le badge "Maintenance" pour les modules désactivés</li>
+  <li><strong><code>AppFooter.vue</code></strong> : pied de page commun avec lien de réclamation</li>
+  <li><strong>Mobile :</strong> sidebar repliée par défaut, ouverture par bouton hamburger (<code>mobile-menu-btn</code>), retour automatique au layout pleine largeur</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Pages de section &mdash; nouveauté V2.2</h3>
+<p>Chaque grande section de la sidebar dispose desormais d'une <strong>page d'accueil dédiée</strong> qui présente les sous-pages sous forme de cartes :</p>
+<ul>
+  <li><code>SectionToolsView.vue</code> &mdash; <em>Mes Outils</em> : Pointages, Tickets Resto, Réservation bureau, Déplacement, JIRA, SIRH</li>
+  <li><code>SectionRHView.vue</code> &mdash; <em>Documents RH</em> : Mon Espace CPMS, Bulletins de paie, Aides au logement</li>
+  <li><code>SectionBenefitsView.vue</code> &mdash; <em>Sante &amp; Avantages</em> : Protection sociale, Épargne, Prévention, Sécurité, Teale</li>
+  <li><code>SectionSupportView.vue</code> &mdash; <em>Aide &amp; Support</em> : Contact RH, Mot de passe (maintenance), Déblocage compte (maintenance), Question sécurité (maintenance)</li>
+  <li><code>SectionQuickLinksView.vue</code> &mdash; <em>Accès Rapides</em> : 11 liens externes en grille (Nibelis, Lucca, Swile, Deskare, JIRA, Digiposte, Génération, AXA, Teale, Action Logement)</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Composants partagés &mdash; layout, FAQ, recherche</h3>
+
+<h3>Layout (<code>src/components/layout/</code>)</h3>
+<ul>
+  <li><code>AppSidebar.vue</code> &mdash; sidebar verticale responsive (desktop pleine largeur / mobile hamburger), 2 niveaux de hierarchie</li>
+  <li><code>SidebarItem.vue</code> &mdash; item de menu avec icone, badge (RH, Maintenance), lien externe, sous-menu retractable</li>
+  <li><code>ContextualHeader.vue</code> &mdash; barre supérieure contextuelle, breadcrumb dynamique, recherche, widgets utilitaires</li>
+  <li><code>HomeBanner.vue</code> &mdash; banniere d'accueil "Bienvenue sur l'Intranet CPMS" (homepage uniquement)</li>
+  <li><code>AppFooter.vue</code> &mdash; pied de page commun avec lien de réclamation</li>
 </ul>
 
-<h3><code>Footer.vue</code> (5 lignes)</h3>
-<p>Pied de page simple avec lien de reclamation vers <code>nbenouaich@cpms.fr</code>.</p>
-
-<h3><code>ChatBot.vue</code> (1077 lignes)</h3>
-<p>Chatbot FAQ interactif en overlay, actuellement commente dans <code>App.vue</code> mais entierement implemente :</p>
+<h3>Composants partagés (<code>src/components/shared/</code>)</h3>
 <ul>
-  <li><strong>Interface :</strong> bouton flottant avec badge non-lu + animation pulse CSS, fenetre de chat via <code>&lt;Teleport to="body"&gt;</code> avec transition slide-up</li>
-  <li><strong>Moteur de recherche :</strong> normalisation (minuscules, suppression diacritiques via <code>normalize('NFD')</code>), scoring pondere (question +10, réponse +3, phrase exacte +20), retourne les 5 meilleurs resultats</li>
+  <li><code>Breadcrumb.vue</code> &mdash; fil d'Ariane généré depuis <code>route.meta</code></li>
+  <li><code>GlobalSearch.vue</code> &mdash; recherche globale avec autosuggestions et raccourci clavier <kbd>/</kbd></li>
+  <li><code>OnlineStatus.vue</code> &mdash; indicateur en ligne / hors ligne en temps reel</li>
+  <li><code>ThemeToggle.vue</code> &mdash; bascule clair / sombre avec persistance dans <code>localStorage('intra.theme')</code></li>
+</ul>
+
+<h3>Widgets homepage (<code>src/components/widgets/</code>)</h3>
+<ul>
+  <li><code>HrAlertBanner.vue</code> &mdash; bandeau d'alertes RH affiché en haut, couleur par priorité (info/warning/urgent), dismissable</li>
+  <li><code>HrAlertModal.vue</code> &mdash; modale plein écran pour alerte critique</li>
+  <li><code>QuickLinksWidget.vue</code> &mdash; widget de liens rapides vers les services externes</li>
+  <li><code>ChatWidget.vue</code> &mdash; aperçu rapide du chat interne sur la homepage</li>
+</ul>
+
+<h3>Composants HR (<code>src/components/hr/</code>) &mdash; voir section 8</h3>
+<p>12 composants dédiés au dashboard RH : <code>HrAccountList</code>, <code>HrAccountForm</code>, <code>HrAnnouncementList</code>, <code>HrAnnouncementForm</code>, <code>HrAlertList</code>, <code>HrAlertForm</code>, <code>HrEventList</code>, <code>HrEventForm</code>, <code>HrColleagueList</code>, <code>HrColleagueForm</code>, <code>HrImageUpload</code>, <code>HrPasswordChangeModal</code>.</p>
+
+<h3><code>ChatBot.vue</code> (1077 lignes) &mdash; assistant FAQ</h3>
+<p>Chatbot FAQ interactif en overlay, intégré dans le layout principal et accessible depuis n'importe quelle page :</p>
+<ul>
+  <li><strong>Interface :</strong> bouton flottant violet (classe <code>chatbot-trigger</code>) avec badge non-lu + animation pulse CSS, fenêtre de chat via <code>&lt;Teleport to="body"&gt;</code> avec transition slide-up</li>
+  <li><strong>Moteur de recherche :</strong> normalisation (minuscules, suppression diacritiques via <code>normalize('NFD')</code>), scoring pondéré (question +10, réponse +3, phrase exacte +20), retourne les 5 meilleurs résultats</li>
   <li><strong>Types de messages :</strong> <code>text</code>, <code>suggestions</code>, <code>answer</code>, <code>no-result</code></li>
-  <li><strong>Boutons rapides :</strong> mutuelle, conges, paie, admin</li>
-  <li><strong>Persistance :</strong> historique sauvegarde dans <code>localStorage.chatHistory</code></li>
-  <li><strong>Raccourcis :</strong> Entree pour envoyer, Echap pour fermer, Ctrl+K pour ouvrir</li>
-  <li><strong>Rating :</strong> pouce haut/bas par réponse</li>
+  <li><strong>Boutons rapides :</strong> mutuelle, congés, paie, admin</li>
+  <li><strong>Persistance :</strong> historique sauvegardé dans <code>localStorage.chatHistory</code></li>
+  <li><strong>Raccourcis :</strong> <kbd>Entree</kbd> pour envoyer, <kbd>Echap</kbd> pour fermer, <kbd>Ctrl+K</kbd> pour ouvrir</li>
+  <li><strong>Rating :</strong> pouce haut / bas par réponse</li>
 </ul>
 
 <h3><code>FAQAccordion.vue</code> (246 lignes)</h3>
-<p>Composant FAQ integre dans <code>ContactRH.vue</code> :</p>
+<p>Composant FAQ intégré dans <code>ContactRH.vue</code> :</p>
 <ul>
-  <li>Bascule deployer/replier toute la section</li>
-  <li>Barre de recherche + filtre par categorie (8 catégories)</li>
-  <li>Accordeons individuels avec ouverture/fermeture</li>
-  <li>Liens rapides vers routes internes et <code>https://assure.génération.fr/</code></li>
+  <li>Bascule deployer / replier toute la section</li>
+  <li>Barre de recherche + filtre par catégorie (8 catégories)</li>
+  <li>Accordeons individuels avec ouverture / fermeture</li>
+  <li>Liens rapides vers routes internes et <code>https://assure.generation.fr/</code></li>
 </ul>
+
+<p style="margin-top:1rem;"><em>Note :</em> l'ancien composant <code>Header.vue</code> avec banniere SVG plein écran a été remplacé en V2.2 par le couple <code>HomeBanner.vue</code> + <code>ContextualHeader.vue</code>, plus modulaire et adapté au nouveau layout sidebar.</em></p>
 </div>
 
 <div class="card">
@@ -488,31 +583,65 @@ createApp(App).use(router).mount('#app')</code></pre>
 
 <div class="card">
 <h3>Architecture Service Layer</h3>
-<p>Le backend suit un pattern <strong>Controller &rarr; Service</strong> avec separation stricte entre la logique HTTP et la logique métier :</p>
+<p>Le backend suit un pattern <strong>Controller &rarr; Service</strong> avec separation stricte entre la logique HTTP et la logique métier. La V2.2 ajoute deux modules complets (Espace RH et Chat) avec leurs propres services et middlewares.</p>
 
-<h3>Controllers (4)</h3>
+<h3>Controllers — Cœur (4)</h3>
 <table>
   <tr><th>Controller</th><th>Responsabilite</th></tr>
   <tr><td><code>PasswordController</code></td><td>Changement de mot de passe multi-système (AD, AS400, ODBC) et déblocage de compte AD</td></tr>
-  <tr><td><code>SecurityQuestionController</code></td><td>CRUD questions de sécurité, vérification des réponses, gestion des challenges de déblocage</td></tr>
-  <tr><td><code>Admin\AuthController</code></td><td>Authentification admin via AD, génération de token Bearer, validation du groupe <code>Intranet-Admins</code></td></tr>
-  <tr><td><code>Admin\AdminDashboardController</code></td><td>Dashboard statistiques, listing comptes verrouillés/suspendus, déblocage admin, historique</td></tr>
+  <tr><td><code>Api\SecurityQuestionController</code></td><td>CRUD questions de sécurité, vérification des réponses, gestion des challenges de déblocage</td></tr>
+  <tr><td><code>Api\SecurityQuestionsBankController</code></td><td>Lecture de la banque de questions disponibles</td></tr>
+  <tr><td><code>AccessController</code></td><td>Vérification des droits d'accès au portail (V2.1)</td></tr>
 </table>
 
-<h3>Services (4)</h3>
+<h3>Controllers — Admin (2)</h3>
+<table>
+  <tr><th>Controller</th><th>Responsabilite</th></tr>
+  <tr><td><code>Api\Admin\AuthController</code></td><td>Authentification admin via AD, génération de token Bearer, validation du groupe <code>Intranet-Admins</code></td></tr>
+  <tr><td><code>Api\Admin\AdminDashboardController</code></td><td>Dashboard statistiques, listing comptes verrouillés / suspendus, déblocage admin, top failures, historique</td></tr>
+</table>
+
+<h3>Controllers — Espace RH (8) &mdash; nouveau V2.2</h3>
+<table>
+  <tr><th>Controller</th><th>Responsabilite</th></tr>
+  <tr><td><code>Api\Hr\HrAuthController</code></td><td>Login bcrypt, ping, changement mot de passe, génération/consommation de tokens reset</td></tr>
+  <tr><td><code>Api\Hr\HrAccountController</code></td><td>Gestion des comptes RH (CRUD), génération de lien reset (DRH uniquement), toggle actif</td></tr>
+  <tr><td><code>Api\Hr\AnnouncementController</code></td><td>CRUD annonces, toggle pin, reordonnancement</td></tr>
+  <tr><td><code>Api\Hr\AlertController</code></td><td>CRUD alertes, toggle actif, gestion des dates début / fin</td></tr>
+  <tr><td><code>Api\Hr\EventController</code></td><td>CRUD événements (date, heure, lieu Paris / Bezannes / Autre), reordonnancement</td></tr>
+  <tr><td><code>Api\Hr\ColleagueController</code></td><td>CRUD collaborateurs (arrivées et anniversaires) — désactivé temporairement</td></tr>
+  <tr><td><code>Api\Hr\HrMediaController</code></td><td>Upload polymorphique (max 10 Mo) et suppression (BDD + fichier)</td></tr>
+  <tr><td><code>Api\Hr\HrPublicController</code></td><td>5 endpoints publics : alertes actives, annonces publiées, événements à venir, collègues, anniversaires</td></tr>
+</table>
+
+<h3>Controllers — Chat (4) &mdash; nouveau V2.2</h3>
+<table>
+  <tr><th>Controller</th><th>Responsabilite</th></tr>
+  <tr><td><code>Api\Chat\ChatAuthController</code></td><td>Login Chat (auth AD), validation du token (ping)</td></tr>
+  <tr><td><code>Api\Chat\ChatProfileController</code></td><td>Show / store profil utilisateur, upload avatar (image)</td></tr>
+  <tr><td><code>Api\Chat\ChatMessageController</code></td><td>Liste, envoi (throttle 30/min), suppression (soft-delete), endpoint public <code>/latest</code></td></tr>
+  <tr><td><code>Api\Chat\ChatUserController</code></td><td>Recherche d'utilisateurs pour mention / message direct</td></tr>
+</table>
+
+<h3>Services (6)</h3>
 <table>
   <tr><th>Service</th><th>Responsabilite</th></tr>
   <tr><td><code>LdapService</code></td><td>Connexion LDAPS port 636, changement <code>unicodePwd</code> (UTF-16LE), déblocage de compte, authentification</td></tr>
   <tr><td><code>As400Service</code></td><td>Execution du script Python <code>change_password.py</code>, passage du mot de passe ancien via variable d'environnement</td></tr>
   <tr><td><code>AdAdminService</code></td><td>Authentification admin contre AD, vérification appartenance groupe, génération et validation de tokens</td></tr>
   <tr><td><code>AdDirectoryReader</code></td><td>Lecture des comptes AD : comptes verrouillés (<code>lockoutTime</code>), comptes suspendus (<code>userAccountControl</code>)</td></tr>
+  <tr><td><code>HrAuthService</code></td><td><strong>V2.2</strong> &mdash; auth BDD (Hash::check vs <code>hr_users</code>), émission de tokens (TTL 480 min), check token, gestion des rôles DRH/RH</td></tr>
+  <tr><td><code>ChatAuthService</code></td><td><strong>V2.2</strong> &mdash; auth AD pour le Chat, émission de tokens (<code>chat_api_tokens</code>), validation IP/UA</td></tr>
 </table>
 
-<h3>Middleware (1)</h3>
+<h3>Middlewares (3)</h3>
 <table>
-  <tr><th>Middleware</th><th>Responsabilite</th></tr>
-  <tr><td><code>AdminApiAuth</code></td><td>Verification du Bearer token sur chaque requête admin : validite du token, correspondance IP et User-Agent</td></tr>
+  <tr><th>Middleware</th><th>Alias</th><th>Responsabilite</th></tr>
+  <tr><td><code>AdminApiAuth</code></td><td><code>admin.auth</code></td><td>Verification du Bearer token admin : validité, IP, User-Agent</td></tr>
+  <tr><td><code>HrApiAuth</code></td><td><code>hr.auth</code></td><td><strong>V2.2</strong> &mdash; vérification du token RH, injection de <code>hr_login</code>, <code>hr_display</code>, <code>hr_role</code> sur la requête</td></tr>
+  <tr><td><code>ChatApiAuth</code></td><td><code>chat.auth</code></td><td><strong>V2.2</strong> &mdash; vérification du token Chat, injection de <code>chat_login</code>, <code>chat_display</code></td></tr>
 </table>
+<p><em>Note :</em> le middleware <code>AdminDevBypass</code> existe pour faciliter le développement local mais n'est <strong>jamais</strong> activé en production.</p>
 </div>
 
 <div class="card">
@@ -537,14 +666,39 @@ createApp(App).use(router).mount('#app')</code></pre>
 <h3>Configuration</h3>
 <table>
   <tr><th>Parametre</th><th>Valeur</th></tr>
-  <tr><td>SGBD</td><td>MySQL</td></tr>
+  <tr><td>SGBD</td><td>MariaDB / MySQL</td></tr>
   <tr><td>Base</td><td><code>intranet_unlock</code></td></tr>
   <tr><td>ORM</td><td>Eloquent (Laravel)</td></tr>
-  <tr><td>Migrations</td><td>7 migrations Laravel</td></tr>
+  <tr><td>Migrations</td><td>24 migrations Laravel (au 2026-03)</td></tr>
+  <tr><td>Tables</td><td>17 tables réparties en 3 modules</td></tr>
 </table>
 </div>
 
-<p>Le schema relationnel comporte <strong>7 tables</strong> dediees a la gestion des questions de sécurité, des tentatives de déblocage, de l'audit et de l'administration. Les documents PDF et videos sont servis en statique depuis le frontend (pas de stockage BDD).</p>
+<p>Le schéma relationnel comporte <strong>17 tables</strong> réparties sur trois domaines : <strong>Sécurité &amp; Admin</strong> (7 tables historiques V2.0/V2.1), <strong>Espace RH</strong> (7 tables V2.2) et <strong>Chat interne</strong> (3 tables V2.2). Les documents PDF et vidéos statiques restent servis depuis le frontend ; les médias uploadés depuis l'Espace RH sont stockés dans <code>storage/app/hr-media</code> et référencés par la table <code>hr_media</code> (relation polymorphique).</p>
+
+<div class="card">
+<h3>Vue d'ensemble &mdash; 17 tables</h3>
+<table>
+  <tr><th>Module</th><th>Table</th><th>Rôle</th></tr>
+  <tr><td rowspan="7"><strong>Sécurité<br>&amp; Admin</strong></td><td><code>security_questions_bank</code></td><td>Banque de questions prédéfinies</td></tr>
+  <tr><td><code>security_questions</code></td><td>Réponses utilisateurs (hash + sel)</td></tr>
+  <tr><td><code>security_questions_attempts</code></td><td>Tentatives de vérification (anti-brute-force)</td></tr>
+  <tr><td><code>security_questions_audit</code></td><td>Piste d'audit CRUD</td></tr>
+  <tr><td><code>account_unlock_logs</code></td><td>Journal des déblocages AD</td></tr>
+  <tr><td><code>admin_api_tokens</code></td><td>Tokens admin Bearer + IP + UA</td></tr>
+  <tr><td><code>intra_access</code></td><td>Droits d'accès au portail</td></tr>
+  <tr><td rowspan="7"><strong>Espace RH<br>(V2.2)</strong></td><td><code>hr_users</code></td><td>Comptes RH (login, password bcrypt, role DRH/RH, must_change_password)</td></tr>
+  <tr><td><code>hr_api_tokens</code></td><td>Tokens RH Bearer (TTL 480min, role)</td></tr>
+  <tr><td><code>hr_password_resets</code></td><td>Tokens de réinitialisation par lien (DRH génère, RH consomme)</td></tr>
+  <tr><td><code>hr_announcements</code></td><td>Annonces (titre, contenu HTML, catégorie, statut, pin, end_date, sort_order)</td></tr>
+  <tr><td><code>hr_alerts</code></td><td>Alertes (priorité info/warning/urgent, dates début/fin, sort_order)</td></tr>
+  <tr><td><code>hr_events</code></td><td>Événements (date, heure, lieu, sort_order, end_date)</td></tr>
+  <tr><td><code>hr_media</code></td><td>Médias polymorphiques (mediable_type, mediable_id, fichier, taille)</td></tr>
+  <tr><td rowspan="3"><strong>Chat<br>(V2.2)</strong></td><td><code>chat_api_tokens</code></td><td>Tokens Chat Bearer (auth AD)</td></tr>
+  <tr><td><code>chat_profiles</code></td><td>Profil utilisateur (avatar_url, display_name)</td></tr>
+  <tr><td><code>chat_messages</code></td><td>Messages avec soft-delete (<code>deleted_at</code>)</td></tr>
+</table>
+</div>
 
 <div class="card">
 <h3>Table <code>security_questions_bank</code></h3>
@@ -855,10 +1009,147 @@ createApp(App).use(router).mount('#app')</code></pre>
 </div>
 
 <!-- ================================================================ -->
-<!-- 8. SECURITE                                                       -->
+<!-- 8. ESPACE RH (V2.2)                                               -->
 <!-- ================================================================ -->
 
-<h2 id="sécurité">8. Sécurité</h2>
+<h2 id="espace-rh">8. Module Espace RH (V2.2)</h2>
+
+<p>L'Espace RH est un <strong>back-office complet</strong> permettant aux ressources humaines (DRH et équipe RH) de publier annonces, alertes et événements visibles sur la homepage, sans intervention IT. Il introduit une <strong>authentification BDD distincte de l'AD</strong> (bcrypt) avec rôles DRH / RH.</p>
+
+<div class="card">
+<h3>8.a Authentification &mdash; comptes locaux bcrypt</h3>
+<ul>
+  <li><strong>Modèle :</strong> <code>App\Models\Hr\HrUser</code> &mdash; champs <code>login</code>, <code>password</code> (bcrypt), <code>display_name</code>, <code>role</code> (<code>drh</code> | <code>rh</code>), <code>is_active</code>, <code>must_change_password</code></li>
+  <li><strong>Service :</strong> <code>HrAuthService</code> &mdash; <code>validateCredentials()</code> via <code>Hash::check</code>, <code>issueToken()</code> avec TTL 480 minutes (8 h), <code>checkToken()</code> validant token + IP + UA</li>
+  <li><strong>Endpoints :</strong> <code>POST /api/hr/login</code> (throttle 10/min), <code>GET /api/hr/ping</code> (whoami), <code>POST /api/hr/change-password</code></li>
+  <li><strong>Middleware :</strong> <code>HrApiAuth</code> (alias <code>hr.auth</code>) injecte <code>hr_login</code>, <code>hr_display</code> et <code>hr_role</code> sur la requête</li>
+  <li><strong>Frontend :</strong> <code>HrLogin.vue</code> avec design teal, stockage du token dans <code>localStorage.hr_token</code> et du nom dans <code>hr_display</code></li>
+  <li><strong>Forçage :</strong> au premier login (<code>must_change_password = true</code>), ouverture automatique de <code>HrPasswordChangeModal.vue</code> qui bloque l'usage du dashboard tant que le mot de passe par défaut n'a pas été changé</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>8.b Reset de mot de passe par lien</h3>
+<p>Mécanisme inspiré de Laravel Password Broker mais piloté par les <strong>DRH eux-mêmes</strong> (pas d'envoi d'email automatique &mdash; le lien est fourni à l'utilisateur en main propre ou via un canal interne sécurisé) :</p>
+<ol>
+  <li>Le DRH ouvre la liste des comptes RH dans le dashboard, clique sur "Générer un lien de réinitialisation" sur la fiche d'un compte</li>
+  <li>Le backend (<code>HrAccountController::generateResetLink</code>) crée une entrée dans <code>hr_password_resets</code> avec un token aléatoire de 64 caractères et une <code>expires_at</code> à +24 h</li>
+  <li>Le DRH copie le lien <code>https://intranet.cpms.services/rh/reset/&lt;token&gt;</code> et le transmet à l'utilisateur</li>
+  <li>L'utilisateur ouvre le lien &rarr; route <code>/rh/reset/:token</code> &rarr; <code>HrResetPassword.vue</code></li>
+  <li>Le frontend appelle <code>POST /api/hr/reset/check</code> pour vérifier la validité (throttle 10/min)</li>
+  <li>L'utilisateur saisit son nouveau mot de passe &rarr; <code>POST /api/hr/reset/confirm</code> (throttle 5/min) qui rehache et invalide le token</li>
+</ol>
+<p>Les tokens sont consommables une seule fois et expirent au bout de 24 h. Tout token invalide ou expiré renvoie une erreur générique pour ne pas fuiter d'information sur l'existence d'un compte.</p>
+</div>
+
+<div class="card">
+<h3>8.c Dashboard RH &mdash; <code>HrDashboard.vue</code></h3>
+<p>Tableau de bord central de l'Espace RH, structuré en <strong>4 onglets principaux</strong> + 1 onglet réservé au DRH :</p>
+<table>
+  <tr><th>Onglet</th><th>Visibilité</th><th>Composants liste / form</th><th>Actions</th></tr>
+  <tr><td>Annonces</td><td>RH + DRH</td><td><code>HrAnnouncementList</code> + <code>HrAnnouncementForm</code></td><td>Créer, éditer, épingler, supprimer, planifier (date publication / fin), upload d'images</td></tr>
+  <tr><td>Alertes</td><td>RH + DRH</td><td><code>HrAlertList</code> + <code>HrAlertForm</code></td><td>Créer, choisir priorité, fixer dates début/fin, toggle actif</td></tr>
+  <tr><td>Événements</td><td>RH + DRH</td><td><code>HrEventList</code> + <code>HrEventForm</code></td><td>Créer, choisir lieu (Paris / Bezannes / Autre), lien externe, reordonner</td></tr>
+  <tr><td>Collaborateurs</td><td>RH + DRH (désactivé en demo)</td><td><code>HrColleagueList</code> + <code>HrColleagueForm</code></td><td>Créer arrivées et anniversaires, type, service</td></tr>
+  <tr><td>Comptes</td><td><strong>DRH uniquement</strong></td><td><code>HrAccountList</code> + <code>HrAccountForm</code></td><td>Créer compte, changer rôle, toggle actif, générer lien reset, supprimer</td></tr>
+</table>
+<p><strong>Sécurité côté contrôleur :</strong> chaque action de l'onglet "Comptes" vérifie <code>request->attributes->get('hr_role') === 'drh'</code> avant exécution, retournant 403 dans le cas contraire.</p>
+<p><strong>UX :</strong> modales en overlay (<code>&lt;Teleport to="body"&gt;</code>), drag-and-drop d'images via <code>HrImageUpload.vue</code> (preview, suppression, upload vers <code>POST /api/hr/media/upload</code>), recherche par champ, badges de statut.</p>
+</div>
+
+<div class="card">
+<h3>8.d Widgets homepage alimentés par l'Espace RH</h3>
+<p>Le composable <code>src/composables/useHrPublic.js</code> fetch en parallèle les 3 endpoints publics actifs (<code>/api/hr/public/alerts</code>, <code>/api/hr/public/announcements</code>, <code>/api/hr/public/events</code>) et expose des <code>ref</code> réactives consommées par les widgets :</p>
+<ul>
+  <li><code>HrAlertBanner.vue</code> &mdash; bandeau en haut de page avec couleur dynamique selon priorité (bleu = info, ambre = warning, rouge = urgent), bouton <em>dismiss</em> persisté</li>
+  <li><code>HrAlertModal.vue</code> &mdash; modale plein écran déclenchée pour les alertes <code>urgent</code> non encore vues</li>
+  <li><code>HrNewsSection.vue</code> &mdash; grille de cartes "Dernieres Actualites" avec catégorie colorée, date, extrait HTML tronqué, bouton "lire la suite"</li>
+  <li><code>HrEventsWidget.vue</code> &mdash; timeline des événements à venir, badge lieu (Paris / Bezannes), jour + mois en gros, lien externe optionnel</li>
+  <li><code>HrColleaguesWidget.vue</code> &mdash; deux sections "Bienvenue !" (nouveaux arrivants avec avatar initiales) et "Anniversaires du mois" (désactivé temporairement)</li>
+</ul>
+<p>Les annonces et alertes ne s'affichent que si elles sont publiées (statut = <code>published</code>) et dans leur fenêtre temporelle (entre <code>start_date</code> et <code>end_date</code>). Tout est filtré côté serveur.</p>
+</div>
+
+<div class="card">
+<h3>8.e Médias &mdash; relation polymorphique</h3>
+<p>Le système de médias est conçu pour être <strong>réutilisable</strong> par tous les types de contenu RH :</p>
+<ul>
+  <li><strong>Modèle :</strong> <code>HrMedia</code> avec relation <code>morphTo('mediable')</code></li>
+  <li><strong>Tables liées :</strong> <code>Announcement</code>, <code>Alert</code>, <code>Event</code>, <code>Colleague</code> exposent <code>morphMany(HrMedia::class, 'mediable')</code></li>
+  <li><strong>Upload :</strong> <code>POST /api/hr/media/upload</code> en multipart, validation max 10 Mo, types autorisés image/* + application/pdf</li>
+  <li><strong>Stockage :</strong> <code>storage/app/hr-media/&lt;mediable_type&gt;/&lt;uuid&gt;.&lt;ext&gt;</code>, exposé en lecture via <code>storage:link</code></li>
+  <li><strong>Suppression :</strong> <code>DELETE /api/hr/media/{id}</code> supprime à la fois la ligne BDD et le fichier sur disque (<code>Storage::delete</code>)</li>
+  <li><strong>Composant frontend :</strong> <code>HrImageUpload.vue</code> avec drag-and-drop, prévisualisation, indicateur de progression</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>8.f Comptes par defaut (à personnaliser avant production)</h3>
+<table>
+  <tr><th>Login</th><th>Mot de passe</th><th>Rôle</th><th>Nom affiché</th></tr>
+  <tr><td><code>rh1</code></td><td><code>RhPass1!</code></td><td>RH</td><td>RH 1</td></tr>
+  <tr><td><code>rh2</code></td><td><code>RhPass2!</code></td><td>RH</td><td>RH 2</td></tr>
+  <tr><td><code>rh3</code></td><td><code>RhPass3!</code></td><td>RH</td><td>RH 3</td></tr>
+  <tr><td><code>TESTESPACEDRH</code></td><td><code>CpmsRH2026!</code></td><td>DRH</td><td>Service RH</td></tr>
+</table>
+<p>Définis dans <code>database/seeders/HrUserSeeder.php</code>. Les mots de passe sont rehachés en bcrypt à l'exécution du seed.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 9. CHAT (V2.2)                                                    -->
+<!-- ================================================================ -->
+
+<h2 id="chat">9. Module Chat interne (V2.2)</h2>
+
+<p>Le module Chat ajoute une <strong>messagerie interne légère</strong> permettant aux collaborateurs d'échanger en temps quasi-réel (polling sur l'endpoint <code>/api/chat/public/latest</code>). L'authentification s'appuie sur l'Active Directory existant pour ne pas dupliquer les credentials.</p>
+
+<div class="card">
+<h3>9.a Architecture</h3>
+<ul>
+  <li><strong>Auth :</strong> <code>POST /api/chat/login</code> &rarr; <code>ChatAuthService</code> &rarr; <code>LdapService::bind</code> avec login Windows + mot de passe Windows &rarr; émission d'un token Bearer dans <code>chat_api_tokens</code></li>
+  <li><strong>Profil :</strong> à la première connexion, le frontend appelle <code>GET /api/chat/profile</code> qui crée la fiche dans <code>chat_profiles</code> (display_name dérivé du sAMAccountName, avatar_url null)</li>
+  <li><strong>Avatar :</strong> upload via <code>POST /api/chat/profile/avatar</code> (multipart, image), stocké dans <code>storage/app/chat-avatars/</code></li>
+  <li><strong>Messages :</strong> table <code>chat_messages</code> avec <code>sender_login</code>, <code>content</code>, <code>created_at</code>, <code>deleted_at</code> (soft-delete), index sur created_at</li>
+  <li><strong>Polling :</strong> <code>GET /api/chat/public/latest</code> renvoie les N derniers messages non supprimés, le frontend rafraîchit toutes les 5 secondes</li>
+  <li><strong>Modération :</strong> chaque utilisateur peut supprimer ses propres messages (soft-delete via <code>deleted_at</code>) ; les messages supprimés disparaissent de la liste publique</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>9.b Charte de modération &mdash; affichée à la connexion</h3>
+<p>Avant de saisir ses identifiants, l'utilisateur doit cocher l'acceptation d'une charte affichée sur <code>ChatView.vue</code> :</p>
+<ul>
+  <li>Respecter les collègues &mdash; pas d'insultes, propos discriminatoires ou harcèlement</li>
+  <li>Eviter le spam &mdash; pas de messages répétitifs ou hors sujet</li>
+  <li>Protéger la confidentialité &mdash; pas de mots de passe ni données clients sensibles</li>
+  <li>Rester professionnel &mdash; pas de contenu inapproprié</li>
+  <li>Assumer ses propos &mdash; chaque message est associé à l'identité Windows</li>
+</ul>
+<p>L'entreprise se réserve le droit de modérer ou supprimer tout message ne respectant pas ces règles.</p>
+</div>
+
+<div class="card">
+<h3>9.c Endpoints</h3>
+<table>
+  <tr><th>Méthode</th><th>Route</th><th>Auth</th><th>Description</th></tr>
+  <tr><td>POST</td><td><code>/api/chat/login</code></td><td>Public</td><td>Login AD (throttle 10/min)</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/ping</code></td><td>Bearer Chat</td><td>Whoami</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/profile</code></td><td>Bearer Chat</td><td>Récupérer son profil</td></tr>
+  <tr><td>POST</td><td><code>/api/chat/profile</code></td><td>Bearer Chat</td><td>Créer / mettre à jour le profil</td></tr>
+  <tr><td>POST</td><td><code>/api/chat/profile/avatar</code></td><td>Bearer Chat</td><td>Upload avatar (image)</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/messages</code></td><td>Bearer Chat</td><td>Liste paginée des messages</td></tr>
+  <tr><td>POST</td><td><code>/api/chat/messages</code></td><td>Bearer Chat</td><td>Envoyer un message (throttle 30/min)</td></tr>
+  <tr><td>DELETE</td><td><code>/api/chat/messages/{id}</code></td><td>Bearer Chat</td><td>Soft-delete d'un message</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/users/search</code></td><td>Bearer Chat</td><td>Recherche d'utilisateurs (mention)</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/public/latest</code></td><td>Public</td><td>Derniers messages (polling, sans auth pour faciliter le réveil après token expire)</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 10. SECURITE                                                      -->
+<!-- ================================================================ -->
+
+<h2 id="sécurité">10. Sécurité</h2>
 
 <p>La sécurité couvre l'ensemble des couches de l'application, de l'authentification Active Directory au chiffrement des mots de passe sur le fil.</p>
 
@@ -942,12 +1233,12 @@ createApp(App).use(router).mount('#app')</code></pre>
 </div>
 
 <!-- ================================================================ -->
-<!-- 9. API ET ROUTES                                                  -->
+<!-- 11. API ET ROUTES                                                 -->
 <!-- ================================================================ -->
 
-<h2 id="routes">9. API et routes</h2>
+<h2 id="routes">11. API et routes</h2>
 
-<p>L'API expose <strong>15+ endpoints</strong> prefixes par <code>/api</code>, repartis entre routes publiques (protegees par CSRF + rate limiting) et routes admin (protegees par Bearer token + middleware <code>AdminApiAuth</code>).</p>
+<p>L'API expose <strong>50+ endpoints</strong> préfixés par <code>/api</code>, répartis en 5 groupes : routes publiques sécurité, routes admin (Bearer token AD), routes RH (Bearer token bcrypt), routes Chat (Bearer token AD) et endpoints publics RH/Chat sans authentification.</p>
 
 <div class="card">
 <h3>Endpoints publics &mdash; Changement de mot de passe</h3>
@@ -999,18 +1290,70 @@ createApp(App).use(router).mount('#app')</code></pre>
 </div>
 
 <div class="card">
-<h3>Endpoint Sanctum</h3>
+<h3>Endpoints Espace RH (Bearer token bcrypt requis)</h3>
 <table>
-  <tr><th>Methode</th><th>Route</th><th>Description</th></tr>
+  <tr><th>Méthode</th><th>Route</th><th>Description</th><th>Rate limit</th></tr>
+  <tr><td>POST</td><td><code>/api/hr/login</code></td><td>Connexion RH (login + password bcrypt)</td><td>10/min</td></tr>
+  <tr><td>GET</td><td><code>/api/hr/ping</code></td><td>Validation token RH</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/change-password</code></td><td>Changer son propre mot de passe</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/reset/check</code></td><td>Vérifier la validité d'un token reset (public)</td><td>10/min</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/reset/confirm</code></td><td>Confirmer le reset par lien (public)</td><td>5/min</td></tr>
+  <tr><td colspan="4" style="background:rgba(13,148,136,0.05); font-style:italic; padding:0.4rem 1rem;">Gestion des comptes RH (DRH uniquement)</td></tr>
+  <tr><td>GET</td><td><code>/api/hr/accounts</code></td><td>Liste des comptes RH</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/accounts</code></td><td>Créer un compte RH</td><td>&mdash;</td></tr>
+  <tr><td>PUT</td><td><code>/api/hr/accounts/{id}</code></td><td>Modifier un compte</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/accounts/{id}/reset-link</code></td><td>Générer un lien de réinitialisation</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/accounts/{id}/toggle-active</code></td><td>Activer / désactiver un compte</td><td>&mdash;</td></tr>
+  <tr><td>DELETE</td><td><code>/api/hr/accounts/{id}</code></td><td>Supprimer un compte</td><td>&mdash;</td></tr>
+  <tr><td colspan="4" style="background:rgba(13,148,136,0.05); font-style:italic; padding:0.4rem 1rem;">Annonces, alertes, événements (DRH + RH)</td></tr>
+  <tr><td>GET / POST / PUT / DELETE</td><td><code>/api/hr/announcements[/{id}]</code></td><td>CRUD annonces + <code>toggle-pin</code> + <code>reorder</code></td><td>&mdash;</td></tr>
+  <tr><td>GET / POST / PUT / DELETE</td><td><code>/api/hr/alerts[/{id}]</code></td><td>CRUD alertes + <code>toggle-active</code></td><td>&mdash;</td></tr>
+  <tr><td>GET / POST / PUT / DELETE</td><td><code>/api/hr/events[/{id}]</code></td><td>CRUD événements + <code>reorder</code></td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/hr/media/upload</code></td><td>Upload média polymorphique (max 10 Mo)</td><td>&mdash;</td></tr>
+  <tr><td>DELETE</td><td><code>/api/hr/media/{id}</code></td><td>Suppression média (BDD + fichier)</td><td>&mdash;</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Endpoints publics RH (sans auth, alimentent la homepage)</h3>
+<table>
+  <tr><th>Méthode</th><th>Route</th><th>Description</th></tr>
+  <tr><td>GET</td><td><code>/api/hr/public/alerts</code></td><td>Alertes actives (statut + fenêtre temporelle)</td></tr>
+  <tr><td>GET</td><td><code>/api/hr/public/announcements</code></td><td>Annonces publiées triées par épingle puis date</td></tr>
+  <tr><td>GET</td><td><code>/api/hr/public/events</code></td><td>Evénements à venir triés par date</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Endpoints Chat (Bearer token AD requis)</h3>
+<table>
+  <tr><th>Méthode</th><th>Route</th><th>Description</th><th>Rate limit</th></tr>
+  <tr><td>POST</td><td><code>/api/chat/login</code></td><td>Connexion Chat (AD)</td><td>10/min</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/ping</code></td><td>Validation token Chat</td><td>&mdash;</td></tr>
+  <tr><td>GET / POST</td><td><code>/api/chat/profile</code></td><td>Lecture / écriture du profil</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/chat/profile/avatar</code></td><td>Upload avatar</td><td>&mdash;</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/messages</code></td><td>Liste paginée des messages</td><td>&mdash;</td></tr>
+  <tr><td>POST</td><td><code>/api/chat/messages</code></td><td>Envoyer un message</td><td>30/min</td></tr>
+  <tr><td>DELETE</td><td><code>/api/chat/messages/{id}</code></td><td>Soft-delete d'un message</td><td>&mdash;</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/users/search</code></td><td>Recherche utilisateurs</td><td>&mdash;</td></tr>
+  <tr><td>GET</td><td><code>/api/chat/public/latest</code></td><td>Polling des derniers messages (public)</td><td>&mdash;</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Endpoint Sanctum &amp; Health</h3>
+<table>
+  <tr><th>Méthode</th><th>Route</th><th>Description</th></tr>
   <tr><td>GET</td><td><code>/sanctum/csrf-cookie</code></td><td>Initialisation du cookie CSRF pour les endpoints publics</td></tr>
+  <tr><td>GET</td><td><code>/api/health</code></td><td>Endpoint de healthcheck (status: ok)</td></tr>
 </table>
 </div>
 
 <!-- ================================================================ -->
-<!-- 10. INTEGRATIONS EXTERNES                                         -->
+<!-- 12. INTEGRATIONS EXTERNES                                         -->
 <!-- ================================================================ -->
 
-<h2 id="intégrations">10. Intégrations externes</h2>
+<h2 id="intégrations">12. Intégrations externes</h2>
 
 <p>L'Intranet V2 sert de <strong>hub centralise</strong> vers <strong>12 services externes</strong> utilises par la CPMS. Chaque service dispose d'une page dediee avec guide d'utilisation, FAQ et liens d'accès rapide.</p>
 
@@ -1028,15 +1371,26 @@ createApp(App).use(router).mount('#app')</code></pre>
   <tr><td><strong>JIRA Service Desk</strong></td><td><code>opencpms.atlassian.net/servicedesk</code></td><td>Support informatique, tickets</td><td>Jira</td></tr>
   <tr><td><strong>AXA Epargne Entreprise</strong></td><td><code>www.axa-epargneentreprise.com</code></td><td>Epargne salariale (PEE)</td><td>EpargneSalariale</td></tr>
   <tr><td><strong>Action Logement</strong></td><td><code>www.actionlogement.fr</code></td><td>Aides au logement</td><td>AideLogement</td></tr>
-  <tr><td><strong>Active Directory</strong></td><td>LDAPS interne</td><td>Authentification, gestion comptes</td><td>Admin + PasswordChange</td></tr>
+  <tr><td><strong>Active Directory</strong></td><td>LDAPS interne</td><td>Authentification, gestion comptes</td><td>Admin + Chat + PasswordChange</td></tr>
 </table>
 </div>
 
+<div class="card">
+<h3>Environnement de demonstration</h3>
+<table>
+  <tr><th>URL</th><th>Description</th></tr>
+  <tr><td><code>https://demo-intranet.cpms.services/</code></td><td>Instance publique de démonstration de l'Intranet V2.2 (sans données sensibles)</td></tr>
+  <tr><td><code>https://intranet.cpms.services/</code></td><td>Instance de production interne CPMS</td></tr>
+  <tr><td><code>https://api-intranet.cpms.services/</code></td><td>API REST Laravel exposée publiquement (HTTPS uniquement)</td></tr>
+</table>
+<p>La démo permet la navigation publique (homepage, sections, pages outils, FAQ, chatbot). L'authentification AD, le dashboard admin et l'Espace RH sont accessibles avec des comptes de demonstration dédiés sans droits réels sur l'AD CPMS.</p>
+</div>
+
 <!-- ================================================================ -->
-<!-- 11. DEPLOIEMENT ET CI/CD                                          -->
+<!-- 13. DEPLOIEMENT ET CI/CD                                          -->
 <!-- ================================================================ -->
 
-<h2 id="déploiement">11. Déploiement et CI/CD</h2>
+<h2 id="déploiement">13. Déploiement et CI/CD</h2>
 
 <div class="card">
 <h3>Pipeline CI/CD GitLab</h3>
@@ -1115,10 +1469,10 @@ php artisan test     # Tests PHPUnit</code></pre>
 </div>
 
 <!-- ================================================================ -->
-<!-- 12. COMPETENCES BTS SIO                                           -->
+<!-- 14. COMPETENCES BTS SIO                                           -->
 <!-- ================================================================ -->
 
-<h2 id="bts">12. Compétences BTS SIO SLAM</h2>
+<h2 id="bts">14. Compétences BTS SIO SLAM</h2>
 
 <p>Le projet Intranet CPMS V2 mobilise l'ensemble des compétences du référentiel BTS SIO option SLAM, épreuve E5. Le tableau ci-dessous etablit la correspondance entre les fonctionnalites implementees et les blocs de compétences du référentiel.</p>
 
@@ -1227,13 +1581,82 @@ php artisan test     # Tests PHPUnit</code></pre>
 </div>
 
 <!-- ================================================================ -->
+<!-- 15. CAPTURES D'ECRAN                                              -->
+<!-- ================================================================ -->
+
+<h2 id="captures">15. Captures d'écran de la solution</h2>
+
+<p>Les captures suivantes ont été prises sur l'instance de démonstration <code>https://demo-intranet.cpms.services/</code> en avril 2026. Elles illustrent les principales pages et modules du portail.</p>
+
+<style>
+  .shot { margin: 1.5rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden; background: #fff; }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot .cap { padding: 0.6rem 1rem; font-size: 0.85rem; color: var(--sub); background: var(--card); border-top: 1px solid var(--border); }
+  .shot .cap strong { color: var(--text); }
+</style>
+
+<div class="card">
+<h3>15.a Layout, accueil et navigation</h3>
+
+<div class="shot"><img src="docs/screenshots/01_homepage.png" alt="Homepage"><div class="cap"><strong>Fig. 1</strong> &mdash; Homepage avec banniere, sidebar verticale, ContextualHeader (recherche, météo, online, theme)</div></div>
+<div class="shot"><img src="docs/screenshots/24_homepage-dark.png" alt="Homepage - mode sombre"><div class="cap"><strong>Fig. 2</strong> &mdash; Homepage en mode sombre (bascule via ThemeToggle)</div></div>
+<div class="shot"><img src="docs/screenshots/26_homepage-mobile.png" alt="Homepage - mobile"><div class="cap"><strong>Fig. 3</strong> &mdash; Vue mobile responsive avec sidebar repliée</div></div>
+<div class="shot"><img src="docs/screenshots/25_chatbot-open.png" alt="Chatbot"><div class="cap"><strong>Fig. 4</strong> &mdash; Chatbot FAQ ouvert (Ctrl+K) avec boutons rapides et suggestions</div></div>
+</div>
+
+<div class="card">
+<h3>15.b Pages de section</h3>
+
+<div class="shot"><img src="docs/screenshots/02_mes-outils.png" alt="Mes Outils"><div class="cap"><strong>Fig. 5</strong> &mdash; Section Mes Outils : grille de cartes Pointages, Tickets Resto, Réservation bureau, JIRA, SIRH...</div></div>
+<div class="shot"><img src="docs/screenshots/03_documents-rh.png" alt="Documents RH"><div class="cap"><strong>Fig. 6</strong> &mdash; Section Documents RH : Mon Espace CPMS, Bulletins Paie, Aides au Logement</div></div>
+<div class="shot"><img src="docs/screenshots/04_sante-avantages.png" alt="Sante &amp; Avantages"><div class="cap"><strong>Fig. 7</strong> &mdash; Section Santé &amp; Avantages : Protection sociale, Épargne, Prévention, Sécurité, Teale</div></div>
+<div class="shot"><img src="docs/screenshots/05_aide-support.png" alt="Aide &amp; Support"><div class="cap"><strong>Fig. 8</strong> &mdash; Section Aide &amp; Support avec modules en maintenance signalés visuellement</div></div>
+<div class="shot"><img src="docs/screenshots/06_acces-rapides.png" alt="Acces Rapides"><div class="cap"><strong>Fig. 9</strong> &mdash; Section Accès Rapides : 11 liens externes en grille</div></div>
+</div>
+
+<div class="card">
+<h3>15.c Modules outils</h3>
+
+<div class="shot"><img src="docs/screenshots/07_pointages.png" alt="Pointages et absences"><div class="cap"><strong>Fig. 10</strong> &mdash; Pointages et Absences : tutoriels vidéo collaborateur + manager</div></div>
+<div class="shot"><img src="docs/screenshots/08_swile.png" alt="Swile"><div class="cap"><strong>Fig. 11</strong> &mdash; Swile Tickets Restaurant : guide d'activation et FAQ</div></div>
+<div class="shot"><img src="docs/screenshots/09_deskare.png" alt="Deskare"><div class="cap"><strong>Fig. 12</strong> &mdash; Tutoriel Deskare (réservation de bureau / flex office)</div></div>
+<div class="shot"><img src="docs/screenshots/10_sirh.png" alt="SIRH Lucca"><div class="cap"><strong>Fig. 13</strong> &mdash; SIRH iLucca : guide première connexion, dossier RH, organigramme</div></div>
+<div class="shot"><img src="docs/screenshots/11_jira.png" alt="JIRA"><div class="cap"><strong>Fig. 14</strong> &mdash; JIRA Service Desk : types de tickets, priorités, SLA, workflow</div></div>
+</div>
+
+<div class="card">
+<h3>15.d Documents RH et Santé</h3>
+
+<div class="shot"><img src="docs/screenshots/12_mon-espace-cpms.png" alt="Mon Espace CPMS"><div class="cap"><strong>Fig. 15</strong> &mdash; Mon Espace CPMS : pattern Document Viewer (recherche, filtres, accordéons PDF)</div></div>
+<div class="shot"><img src="docs/screenshots/13_paie.png" alt="Paie"><div class="cap"><strong>Fig. 16</strong> &mdash; Paie / Digiposte : guide accès aux bulletins numériques</div></div>
+<div class="shot"><img src="docs/screenshots/14_aide-logement.png" alt="Aide au logement"><div class="cap"><strong>Fig. 17</strong> &mdash; Aides au Logement : 11 dispositifs Action Logement (Mobili-Jeune, Visale, Loca-Pass, etc.)</div></div>
+<div class="shot"><img src="docs/screenshots/15_ma-protection.png" alt="Ma Protection"><div class="cap"><strong>Fig. 18</strong> &mdash; Protection sociale : garanties santé / prévoyance et carte tiers payant</div></div>
+<div class="shot"><img src="docs/screenshots/16_epargne.png" alt="Epargne salariale"><div class="cap"><strong>Fig. 19</strong> &mdash; Épargne salariale : CET et PEE / AXA</div></div>
+<div class="shot"><img src="docs/screenshots/17_outils-prevention.png" alt="Outils prévention"><div class="cap"><strong>Fig. 20</strong> &mdash; Outils de prévention : signalement harcèlement, plateforme Teale, numéros d'urgence</div></div>
+<div class="shot"><img src="docs/screenshots/18_securite.png" alt="Securite"><div class="cap"><strong>Fig. 21</strong> &mdash; Sécurité incendie : guide CPMS 2025, charges évacuation, SST</div></div>
+<div class="shot"><img src="docs/screenshots/19_teale.png" alt="Teale"><div class="cap"><strong>Fig. 22</strong> &mdash; Teale : santé mentale, 3 piliers (bilan, ressources, suivi)</div></div>
+</div>
+
+<div class="card">
+<h3>15.e Authentification &amp; modules sécurisés</h3>
+
+<div class="shot"><img src="docs/screenshots/20_contact-rh.png" alt="Contact RH"><div class="cap"><strong>Fig. 23</strong> &mdash; Contact RH : 3 cartes contact + accordéon FAQ intégré</div></div>
+<div class="shot"><img src="docs/screenshots/21_admin-login.png" alt="Admin Login"><div class="cap"><strong>Fig. 24</strong> &mdash; Connexion administrateur (AD + groupe Intranet-Admins)</div></div>
+<div class="shot"><img src="docs/screenshots/22_rh-login.png" alt="HR Login"><div class="cap"><strong>Fig. 25</strong> &mdash; Connexion Espace RH (auth bcrypt locale, lien "Mot de passe oublié")</div></div>
+<div class="shot"><img src="docs/screenshots/23_chat.png" alt="Chat CPMS"><div class="cap"><strong>Fig. 26</strong> &mdash; Chat CPMS : charte de modération + connexion AD</div></div>
+</div>
+
+<!-- ================================================================ -->
 <!-- FOOTER                                                            -->
 <!-- ================================================================ -->
 
 <div class="footer">
-  <p>Intranet CPMS V2 &mdash; Mon Portail RH &mdash; Sagar MIR &mdash; BTS SIO SLAM 2025-2026</p>
+  <p>Intranet CPMS V2.2 &mdash; Mon Portail RH &mdash; Sagar MIR &mdash; BTS SIO SLAM 2025-2026</p>
   <p style="margin-top:0.5rem;">
-    Vue 3.3 &middot; Laravel 12 &middot; Tailwind CSS &middot; 21 vues &middot; 15+ endpoints &middot; 7 tables &middot; 12 intégrations
+    Vue 3.3 &middot; Laravel 12 &middot; Tailwind CSS &middot; 33 vues &middot; 50+ endpoints &middot; 17 tables &middot; 12 intégrations &middot; 3 middlewares Auth
+  </p>
+  <p style="margin-top:0.5rem;">
+    Démo : <a href="https://demo-intranet.cpms.services/" style="color:var(--accent2);">demo-intranet.cpms.services</a>
   </p>
 </div>
 

@@ -14,6 +14,8 @@ export default function MoonScene({
   uiBlocked = false,
   reduceMotion,
   quality,
+  navTarget,
+  onNavConsumed,
 }) {
   const { settings } = useSettings();
 
@@ -28,6 +30,8 @@ export default function MoonScene({
   const glRef = useRef(null);
   const lostOnceRef = useRef(false);
 
+  const cleanupListenersRef = useRef(null);
+
   const onCanvasCreated = useCallback(({ camera, gl }) => {
     camera.lookAt(0, 0, 0);
     gl.setClearColor("#050a16", 1);
@@ -36,13 +40,9 @@ export default function MoonScene({
     gl.toneMapping = THREE.ACESFilmicToneMapping;
     gl.toneMappingExposure = 1.0;
     glRef.current = gl;
-  }, []);
 
-  useEffect(() => {
-    const gl = glRef.current;
-    if (!gl) return;
+    // Attache le listener immédiatement (avant cela, il pouvait rater le cold start)
     const canvas = gl.domElement;
-
     const onLostCapture = (e) => {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -54,14 +54,17 @@ export default function MoonScene({
     const onRestored = () => {
       try { gl.resetState(); } catch (err) { console.error('[MoonScene] Error resetting WebGL state:', err); }
     };
-
     canvas.addEventListener("webglcontextlost", onLostCapture, { capture: true, passive: false });
     canvas.addEventListener("webglcontextrestored", onRestored, { passive: true });
 
-    return () => {
+    cleanupListenersRef.current = () => {
       canvas.removeEventListener("webglcontextlost", onLostCapture, true);
       canvas.removeEventListener("webglcontextrestored", onRestored);
     };
+  }, []);
+
+  useEffect(() => () => {
+    cleanupListenersRef.current?.();
   }, [canvasKey]);
 
   return (
@@ -81,7 +84,7 @@ export default function MoonScene({
         }}
         camera={{ position: [0, 2.2, RADIUS * 3.2], fov: 42, near: 0.1, far: 1000 }}
         onCreated={onCanvasCreated}
-        style={{ width: "100vw", height: "100vh", zIndex: 0, display: "block" }}
+        style={{ width: "100%", height: "100%", zIndex: 0, display: "block" }}
       >
         <Scene
           RADIUS={RADIUS}
@@ -94,6 +97,8 @@ export default function MoonScene({
           worldQuatRef={worldQuatRef}
           zoomRef={zoomRef}
           uiBlocked={uiBlocked}   // ✅ bloque l’interaction quand on est sur une page
+          navTarget={navTarget}
+          onNavConsumed={onNavConsumed}
         />
       </Canvas>
     </div>

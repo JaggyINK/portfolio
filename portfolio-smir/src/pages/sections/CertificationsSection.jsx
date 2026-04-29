@@ -24,6 +24,7 @@ const CERTS = [
     id: "secnum",
     title: "SecNum Académie",
     provider: "ANSSI",
+    family: "cyber",
     track: "Sensibilisation cybersécurité",
     description: "Parcours officiel ANSSI : hygiène informatique, menaces, bonnes pratiques, RGPD.",
     detail: "4 modules validés avec 100% de réussite : Panorama SSI, Sécurité de l'Authentification, Sécurité sur Internet, Sécurité du Poste de Travail et Nomadisme. Attestation délivrée le 23 janvier 2026.",
@@ -35,6 +36,108 @@ const CERTS = [
     link: "https://secnumacademie.gouv.fr/",
     docUrl: "/docs/secnum.pdf",
     tags: ["socle", "général", "conformité"],
+  },
+  {
+    id: "hr_css",
+    title: "CSS",
+    provider: "HackerRank",
+    family: "hackerrank",
+    track: "Front-end · Skill Certification",
+    description: "Sélecteurs, propriétés, Flexbox, Grid, animations, responsive, pseudo-classes.",
+    detail: "Certification CSS HackerRank — épreuve technique chronométrée validée. Couvre layout (Flex/Grid), animations, transitions, media queries, sélecteurs avancés et pseudo-éléments.",
+    duration: "60–90 min",
+    cost: "Gratuit",
+    level: "Intermédiaire",
+    status: "done",
+    color: "#06B6D4",
+    link: "https://www.hackerrank.com/skills-verification/css",
+    docUrl: "/docs/css certificate.pdf",
+    tags: ["frontend", "css", "ui"],
+  },
+  {
+    id: "hr_python",
+    title: "Python (Basic)",
+    provider: "HackerRank",
+    family: "hackerrank",
+    track: "Programming · Skill Certification",
+    description: "Syntaxe, types, structures de contrôle, fonctions, collections, exceptions.",
+    detail: "Certification Python Basic HackerRank — épreuve algorithmique validée. Couvre conditions, boucles, listes, dictionnaires, gestion d'erreurs et bases de la POO.",
+    duration: "90 min",
+    cost: "Gratuit",
+    level: "Débutant",
+    status: "done",
+    color: "#3776AB",
+    link: "https://www.hackerrank.com/skills-verification/python_basic",
+    docUrl: "/docs/python_basic certificate.pdf",
+    tags: ["python", "algo", "backend"],
+  },
+  {
+    id: "hr_rest",
+    title: "REST API (Intermediate)",
+    provider: "HackerRank",
+    family: "hackerrank",
+    track: "Back-end · Skill Certification",
+    description: "Consommation d'APIs REST : pagination, filtres, parsing JSON, gestion d'erreurs HTTP.",
+    detail: "Certification REST API Intermediate HackerRank — épreuve pratique de consommation d'APIs : requêtes paginées, agrégation de résultats, parsing complexe de réponses JSON.",
+    duration: "90 min",
+    cost: "Gratuit",
+    level: "Intermédiaire",
+    status: "done",
+    color: "#E10098",
+    link: "https://www.hackerrank.com/skills-verification/rest_api_intermediate",
+    docUrl: "/docs/rest_api_intermediate certificate.pdf",
+    tags: ["api", "http", "json"],
+  },
+  {
+    id: "hr_sql_basic",
+    title: "SQL (Basic)",
+    provider: "HackerRank",
+    family: "hackerrank",
+    track: "Data · Skill Certification",
+    description: "SELECT, WHERE, ORDER BY, fonctions agrégat, filtres simples.",
+    detail: "Certification SQL Basic HackerRank — épreuve technique validée. Sélection de données, filtres conditionnels, tri, agrégations basiques (COUNT, SUM, AVG).",
+    duration: "60 min",
+    cost: "Gratuit",
+    level: "Débutant",
+    status: "done",
+    color: "#4479A1",
+    link: "https://www.hackerrank.com/skills-verification/sql_basic",
+    docUrl: "/docs/sql_basic certificate.pdf",
+    tags: ["sql", "data"],
+  },
+  {
+    id: "hr_sql_intermediate",
+    title: "SQL (Intermediate)",
+    provider: "HackerRank",
+    family: "hackerrank",
+    track: "Data · Skill Certification",
+    description: "JOIN multiples, GROUP BY, sous-requêtes, fonctions de fenêtrage simples.",
+    detail: "Certification SQL Intermediate HackerRank — JOIN INNER/LEFT/RIGHT, GROUP BY avec HAVING, sous-requêtes corrélées, manipulation de plusieurs tables.",
+    duration: "60–90 min",
+    cost: "Gratuit",
+    level: "Intermédiaire",
+    status: "done",
+    color: "#336791",
+    link: "https://www.hackerrank.com/skills-verification/sql_intermediate",
+    docUrl: "/docs/sql_intermediate certificate.pdf",
+    tags: ["sql", "joins", "data"],
+  },
+  {
+    id: "hr_sql_advanced",
+    title: "SQL (Advanced)",
+    provider: "HackerRank",
+    family: "hackerrank",
+    track: "Data · Skill Certification",
+    description: "Window functions, CTE, requêtes complexes, optimisation, indexation.",
+    detail: "Certification SQL Advanced HackerRank — CTE récursives, fonctions de fenêtrage (ROW_NUMBER, RANK, LAG/LEAD), requêtes analytiques, optimisation de plans d'exécution.",
+    duration: "90 min",
+    cost: "Gratuit",
+    level: "Avancé",
+    status: "done",
+    color: "#003B57",
+    link: "https://www.hackerrank.com/skills-verification/sql_advanced",
+    docUrl: "/docs/sql_advanced certificate.pdf",
+    tags: ["sql", "window", "cte", "advanced"],
   },
   {
     id: "nse1",
@@ -349,7 +452,7 @@ export default function CertificationsSection() {
             Certifications
           </h2>
           <p className="mt-1.5 text-[0.88rem]" style={{ color: THEME.sub }}>
-            Cybersécurité & réseaux — gratuites et accessibles
+            Cybersécurité, dev & data — vérifiables et reconnues
           </p>
           <div className="mx-auto mt-3 h-[2px] w-32" style={{ background: THEME.line }} />
         </header>
@@ -398,12 +501,51 @@ export default function CertificationsSection() {
               </span>
             </div>
 
-            {/* Grille de cartes */}
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {activeCerts.map((c) => (
-                <CertCard key={c.id} c={c} />
-              ))}
-            </div>
+            {/* Grille de cartes — groupée par famille pour la vue "done" */}
+            {activeCategory === "done" ? (
+              <div className="space-y-6">
+                {(() => {
+                  const families = [
+                    { key: "hackerrank", label: "HackerRank — Skill Verification", color: "#1ba94c" },
+                    { key: "cyber", label: "Cybersécurité & réseaux", color: "#0ea5e9" },
+                  ];
+                  return families.map((fam) => {
+                    const list = activeCerts.filter((c) => (c.family || "cyber") === fam.key);
+                    if (!list.length) return null;
+                    return (
+                      <div key={fam.key}>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span
+                            className="px-2.5 py-0.5 text-[0.7rem] font-bold tracking-wider uppercase rounded-full"
+                            style={{
+                              background: `${fam.color}15`,
+                              color: fam.color,
+                              border: `1px solid ${fam.color}30`,
+                            }}
+                          >
+                            {fam.label}
+                          </span>
+                          <span className="text-[0.72rem]" style={{ color: THEME.sub }}>
+                            ({list.length})
+                          </span>
+                        </div>
+                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                          {list.map((c) => (
+                            <CertCard key={c.id} c={c} />
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  });
+                })()}
+              </div>
+            ) : (
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {activeCerts.map((c) => (
+                  <CertCard key={c.id} c={c} />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -411,7 +553,7 @@ export default function CertificationsSection() {
           Cliquer sur une carte pour voir les détails
         </p>
 
-        <ScrollDownHint targetId="veille" />
+        <ScrollDownHint targetId="entreprise" />
       </div>
     </section>
   );

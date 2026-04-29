@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 const SettingsContext = createContext(null);
 
@@ -11,14 +11,19 @@ export function SettingsProvider({ children }) {
     presentation: false,
     language: "fr",
   });
+  const hydratedRef = useRef(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("sagario_settings");
     if (saved) {
       try { setSettings(JSON.parse(saved)); } catch (err) { console.error('[Settings] Error parsing saved settings:', err); }
     }
+    hydratedRef.current = true;
   }, []);
+
   useEffect(() => {
+    // Évite d'écraser le localStorage avec les defaults avant la lecture initiale
+    if (!hydratedRef.current) return;
     localStorage.setItem("sagario_settings", JSON.stringify(settings));
   }, [settings]);
 

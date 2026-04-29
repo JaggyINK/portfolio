@@ -1,5 +1,5 @@
 // src/pages/ClassicHero.jsx
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSettings } from "../state/settings.jsx";
 
 /* ===== Golden ratio ===== */
@@ -21,6 +21,7 @@ export default function ClassicHero() {
     const ctx = canvas.getContext("2d");
 
     let raf = 0;
+    let visible = true; // pause le RAF quand le hero sort du viewport (perf)
     let W = (canvas.width = window.innerWidth);
     let H = (canvas.height = window.innerHeight);
     let t0 = performance.now();
@@ -86,21 +87,33 @@ export default function ClassicHero() {
         const dt = (now - t0) / 1000;
         t0 = now;
 
-        drawFrame(grads.g, grads.rad, grads.rad2);
+        if (visible) {
+          drawFrame(grads.g, grads.rad, grads.rad2);
 
-        // animate star positions
-        for (let i = 0; i < stars.length; i++) {
-          const s = stars[i];
-          s.y += (25 + 55 * s.z) * dt;
-          if (s.y > H) {
-            s.y = -10;
-            s.x = Math.random() * W;
+          // animate star positions
+          for (let i = 0; i < stars.length; i++) {
+            const s = stars[i];
+            s.y += (25 + 55 * s.z) * dt;
+            if (s.y > H) {
+              s.y = -10;
+              s.x = Math.random() * W;
+            }
           }
         }
 
         raf = requestAnimationFrame(draw);
       }
       raf = requestAnimationFrame(draw);
+    }
+
+    // Pause le rendu quand le hero sort du viewport (économise la batterie / le GPU)
+    let io = null;
+    if (heroRef.current && typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        ([entry]) => { visible = entry.isIntersecting; },
+        { threshold: 0 }
+      );
+      io.observe(heroRef.current);
     }
 
     function onResize() {
@@ -114,6 +127,7 @@ export default function ClassicHero() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      if (io) io.disconnect();
     };
   }, [reduceMotion]);
 
@@ -183,6 +197,7 @@ export default function ClassicHero() {
           {/* hint scroll */}
           <button
             type="button"
+            aria-label="Aller à la section À propos"
             onClick={() => {
               const next = document.getElementById("about");
               if (next) next.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -323,8 +338,15 @@ function SpotlightOverlay({ containerRef }) {
 
     let W, H;
     function resize() {
-      W = canvas.width = container.offsetWidth;
-      H = canvas.height = container.offsetHeight;
+      // Gère retina + dimensions live (au cas où le layout change)
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = container.offsetWidth;
+      H = container.offsetHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = `${W}px`;
+      canvas.style.height = `${H}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resize();
 
@@ -438,11 +460,19 @@ function SpotlightOverlay({ containerRef }) {
     container.addEventListener("mouseleave", onLeave);
     window.addEventListener("resize", onResize);
 
+    // ResizeObserver : capte aussi les changements de layout (sidebar, fonts qui chargent…)
+    let ro = null;
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(() => onResize());
+      ro.observe(container);
+    }
+
     return () => {
       cancelAnimationFrame(raf);
       container.removeEventListener("mousemove", onMove);
       container.removeEventListener("mouseleave", onLeave);
       window.removeEventListener("resize", onResize);
+      if (ro) ro.disconnect();
     };
   }, [containerRef]);
 

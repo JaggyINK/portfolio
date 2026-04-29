@@ -45,6 +45,7 @@ const asRef = (maybeRef) =>
 
 export default function Scene({
   RADIUS,
+  stations,           // 🔹 fourni par MoonScene (évite un double buildStations)
   navTarget,          // 🔹 vient de TopNav (MoonScene)
   onNavConsumed,      // 🔹 callback pour reset navTarget
   onOpenStation,      // 🔹 déclenché quand une station s'ouvre
@@ -54,7 +55,7 @@ export default function Scene({
   worldQuatRef,
   zoomRef,
   focusedStationIdRef, // 🔹 ref externe (MoonScene) pour persister le focus
-  uiBlocked = false,  
+  uiBlocked = false,
 }) {
   useThree();
   const input = useInput();
@@ -77,8 +78,11 @@ export default function Scene({
   const spinSpeed  = 0.02;
   const spinYRef   = useRef(0);
 
-  // Stations (repère local, avant spin)
-  const STATIONS = useMemo(() => buildStations(RADIUS), [RADIUS]);
+  // Stations (repère local, avant spin) — utilise le prop si fourni
+  const STATIONS = useMemo(
+    () => stations || buildStations(RADIUS),
+    [stations, RADIUS]
+  );
 
   // Contrôles inertiels + saut/poussière
   const { vxRef, vyRef, applyTo } = useInputInertia(input);
@@ -143,13 +147,14 @@ export default function Scene({
     tickJump(input.jump, clock, dt);
   });
 
-  // Visuels (thrusters/lean)
-  const leanX = THREE.MathUtils.clamp(-vxRef.current * 0.15, -0.25, 0.25);
-  const leanY = THREE.MathUtils.clamp( vyRef.current * 0.12, -0.22, 0.22);
-  const thrusterPower = clamp(
-    Math.abs(vxRef.current) + Math.abs(vyRef.current) + (alt > 0 ? 0.8 : 0),
-    0, 1
-  );
+  // Visuels (thrusters/lean) — calculés en useFrame côté Astronaut/Thruster via refs
+  const thrusterPowerRef = useRef(0);
+  useFrame(() => {
+    thrusterPowerRef.current = clamp(
+      Math.abs(vxRef.current) + Math.abs(vyRef.current) + (alt > 0 ? 0.8 : 0),
+      0, 1
+    );
+  });
 
   const qLow = quality === "low";
   const rockCount = qLow ? Math.floor(ROCK_COUNT * 0.5) : ROCK_COUNT;
@@ -215,9 +220,9 @@ export default function Scene({
       <Astronaut
         RADIUS={RADIUS}
         alt={alt}
-        leanX={leanX}
-        leanY={leanY}
-        thrusterPower={thrusterPower}
+        vxRef={vxRef}
+        vyRef={vyRef}
+        thrusterPowerRef={thrusterPowerRef}
       />
 
       {/* Drag rotatif : désactivé automatiquement pendant l'auto-aim */}

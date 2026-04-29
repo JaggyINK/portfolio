@@ -1,6 +1,7 @@
 // src/scenes/actors/Astronaut.jsx
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 import Thruster from "./Thruster";
 
 /**
@@ -17,6 +18,10 @@ export default function Astronaut({
   leanX = 0,
   leanY = 0,
   thrusterPower = 0,
+  // Refs live pour lecture en useFrame sans re-render
+  vxRef,
+  vyRef,
+  thrusterPowerRef,
   facing = "plusZ",     // "plusZ" (recommandé) ou "minusZ"
   debugAxes = false,    // affiche un repère local pour debug
 }) {
@@ -26,6 +31,16 @@ export default function Astronaut({
   // Sécurité : on limite un peu les lean pour éviter des postures bizarres
   const clampedLeanX = THREE.MathUtils.clamp(leanX, -0.35, 0.35);
   const clampedLeanY = THREE.MathUtils.clamp(leanY, -0.30, 0.30);
+
+  // Si on a les refs live, on applique la rotation imperatively chaque frame
+  const rootRef = useRef();
+  useFrame(() => {
+    if (!rootRef.current || !vxRef || !vyRef) return;
+    const lx = THREE.MathUtils.clamp(-vxRef.current * 0.15, -0.25, 0.25);
+    const ly = THREE.MathUtils.clamp(vyRef.current * 0.12, -0.22, 0.22);
+    rootRef.current.rotation.x = lx;
+    rootRef.current.rotation.z = ly;
+  });
 
   // Repère local pour debug (facultatif)
   const axes = useMemo(() => {
@@ -56,7 +71,7 @@ export default function Astronaut({
 
   return (
     // IMPORTANT : pas de rotation Y "cachée", on contrôle via 'facing' uniquement
-    <group position={[0, 0, RADIUS + alt]} rotation={[clampedLeanX, yawFacing, clampedLeanY]}>
+    <group ref={rootRef} position={[0, 0, RADIUS + alt]} rotation={[clampedLeanX, yawFacing, clampedLeanY]}>
       {/* Ombre/halo au sol */}
       <mesh position={[0, -0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[0.12, 24]} />
@@ -88,13 +103,13 @@ export default function Astronaut({
         </mesh>
 
         {/* Backpack */}
-        <group position={[0, 0.12, 0.12]}>
+        <mesh position={[0, 0.12, 0.12]}>
           <boxGeometry args={[0.16, 0.22, 0.1]} />
           <meshStandardMaterial color="#5b6678" roughness={0.7} />
-        </group>
+        </mesh>
 
         {/* Propulseur */}
-        <Thruster power={thrusterPower} />
+        <Thruster power={thrusterPower} powerRef={thrusterPowerRef} />
       </group>
     </group>
   );

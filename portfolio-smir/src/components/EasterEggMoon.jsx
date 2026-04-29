@@ -48,12 +48,13 @@ export default function EasterEggMoon() {
   if (!isVisible) return null;
 
   return (
-    <div
-      className="fixed bottom-6 left-6 z-[999] cursor-pointer select-none"
+    <button
+      type="button"
+      className="fixed bottom-6 left-6 z-[999] cursor-pointer select-none bg-transparent border-0 p-0"
       onClick={() => navigate("/lunar")}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      aria-label="Easter egg lunaire"
+      aria-label="Easter egg lunaire — explorer la scène 3D"
     >
       {/* halo / glow */}
       <div
@@ -92,6 +93,6 @@ export default function EasterEggMoon() {
       >
         “Regardez la lune…”
       </div>
-    </div>
+    </button>
   );
 }

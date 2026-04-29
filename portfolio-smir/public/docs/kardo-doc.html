@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Kardo — Plateforme SaaS de cartes de fidélité numériques</title>
+<style>
+  :root { --bg: #0b1020; --card: #111827; --accent: #5b3df5; --accent2: #7C5CFC; --text: #e6ecf8; --sub: #9aa7bf; --border: #1e293b; --green: #4ade80; --orange: #f59e0b; --red: #ef4444; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+  .container { max-width: 1040px; margin: 0 auto; padding: 3rem 1.5rem; }
+  h1 { font-size: 2.4rem; color: var(--accent2); margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.5rem; color: var(--accent2); margin: 3rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.15rem; color: var(--text); margin: 1.5rem 0 0.75rem; }
+  h4 { font-size: 1rem; color: var(--accent2); margin: 1rem 0 0.5rem; }
+  p, li { color: var(--sub); font-size: 0.95rem; }
+  p { margin-bottom: 1rem; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.4rem; }
+  strong { color: var(--text); }
+  .badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; background: rgba(124,92,252,0.15); color: var(--accent2); border: 1px solid rgba(124,92,252,0.3); margin-right: 0.4rem; margin-bottom: 0.4rem; }
+  .badge.green { background: rgba(74,222,128,0.12); color: var(--green); border-color: rgba(74,222,128,0.3); }
+  .badge.orange { background: rgba(245,158,11,0.12); color: var(--orange); border-color: rgba(245,158,11,0.3); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .meta { display: flex; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .meta-item { font-size: 0.85rem; color: var(--sub); }
+  .meta-item strong { color: var(--text); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th, td { padding: 0.6rem 1rem; text-align: left; border: 1px solid var(--border); vertical-align: top; }
+  th { background: rgba(124,92,252,0.1); color: var(--accent2); font-weight: 600; }
+  td { color: var(--sub); }
+  .header-line { width: 6rem; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 2rem; }
+  code { background: rgba(124,92,252,0.12); color: var(--accent2); padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.85rem; }
+  pre { background: #0a0f1f; border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; overflow-x: auto; margin: 1rem 0; font-size: 0.85rem; }
+  pre code { background: none; padding: 0; color: var(--sub); }
+  .footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--sub); }
+  .toc { list-style: none; padding-left: 0; }
+  .toc li { margin-bottom: 0.3rem; }
+  .toc a { color: var(--accent2); text-decoration: none; font-size: 0.92rem; }
+  .toc a:hover { text-decoration: underline; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.2rem; text-align: center; }
+  .stat-card .value { font-size: 1.8rem; font-weight: 800; color: var(--accent2); }
+  .stat-card .label { font-size: 0.78rem; color: var(--sub); margin-top: 0.3rem; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .three-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+  .arch-flow { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+  .arch-box { background: rgba(124,92,252,0.1); border: 1px solid rgba(124,92,252,0.3); border-radius: 0.5rem; padding: 0.5rem 1rem; font-size: 0.85rem; color: var(--accent2); font-weight: 600; text-align: center; }
+  .arch-arrow { color: var(--sub); font-size: 1.2rem; }
+  figure { margin: 1.5rem 0; }
+  figure img { width: 100%; border-radius: 0.75rem; border: 1px solid var(--border); display: block; }
+  figcaption { font-size: 0.8rem; color: var(--sub); text-align: center; margin-top: 0.5rem; font-style: italic; }
+  .feature-list { list-style: none; padding-left: 0; }
+  .feature-list li { padding: 0.6rem 0; border-bottom: 1px dashed var(--border); }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list strong { color: var(--accent2); display: block; margin-bottom: 0.2rem; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1rem; margin: 1rem 0; }
+  .pricing-card { background: var(--card); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.2rem; }
+  .pricing-card.featured { border-color: var(--accent2); box-shadow: 0 0 0 2px rgba(124,92,252,0.2); }
+  .pricing-card .name { font-size: 0.9rem; color: var(--sub); text-transform: uppercase; letter-spacing: 0.08em; }
+  .pricing-card .price { font-size: 1.8rem; font-weight: 800; color: var(--text); margin: 0.5rem 0; }
+  .pricing-card .price small { font-size: 0.8rem; color: var(--sub); font-weight: 400; }
+  .pricing-card ul { list-style: none; padding-left: 0; font-size: 0.82rem; }
+  .pricing-card li { padding: 0.25rem 0; border: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ================================================================ -->
+<!-- HEADER                                                            -->
+<!-- ================================================================ -->
+
+<p style="font-size:0.78rem; color:var(--sub); margin-bottom:0.5rem; letter-spacing:0.1em; text-transform:uppercase;">Documentation projet — Portfolio</p>
+<h1>Kardo</h1>
+<p style="font-size: 1.1rem; color: var(--sub); margin-bottom: 0.5rem;">Plateforme SaaS B2B de cartes de fidélité numériques — Apple Wallet &amp; Google Wallet</p>
+<div class="header-line"></div>
+
+<div class="meta">
+  <div class="meta-item"><strong>Auteur :</strong> Sagar MIR</div>
+  <div class="meta-item"><strong>Période :</strong> 2026 — Avril</div>
+  <div class="meta-item"><strong>Type :</strong> Projet personnel SaaS B2B</div>
+  <div class="meta-item"><strong>Statut :</strong> <span style="color:var(--green); font-weight:600;">En production</span></div>
+  <div class="meta-item"><strong>URL prod :</strong> <a href="https://kardo-production.up.railway.app" style="color:var(--accent2);">kardo-production.up.railway.app</a></div>
+</div>
+
+<div>
+  <span class="badge">Laravel 13</span>
+  <span class="badge">PHP 8.4</span>
+  <span class="badge">Vue 3</span>
+  <span class="badge">Pinia</span>
+  <span class="badge">Vite</span>
+  <span class="badge">Tailwind 4</span>
+  <span class="badge">PostgreSQL 16</span>
+  <span class="badge">Sanctum</span>
+  <span class="badge">Flutter</span>
+  <span class="badge">Apple Wallet</span>
+  <span class="badge">Google Wallet</span>
+  <span class="badge">APNs HTTP/2</span>
+  <span class="badge">FCM v1</span>
+  <span class="badge">Firebase</span>
+  <span class="badge">Resend</span>
+  <span class="badge">Railway</span>
+  <span class="badge">Docker</span>
+  <span class="badge">RGPD</span>
+</div>
+
+<div class="stat-grid" style="margin-top:1.5rem;">
+  <div class="stat-card"><div class="value">65+</div><div class="label">Routes API</div></div>
+  <div class="stat-card"><div class="value">13</div><div class="label">Vues Vue.js</div></div>
+  <div class="stat-card"><div class="value">10</div><div class="label">Modèles Eloquent</div></div>
+  <div class="stat-card"><div class="value">17</div><div class="label">Migrations</div></div>
+  <div class="stat-card"><div class="value">28</div><div class="label">Tests Feature</div></div>
+  <div class="stat-card"><div class="value">63</div><div class="label">Assertions</div></div>
+  <div class="stat-card"><div class="value">11</div><div class="label">Controllers API</div></div>
+  <div class="stat-card"><div class="value">4</div><div class="label">Plans tarifaires</div></div>
+  <div class="stat-card"><div class="value">9</div><div class="label">Automations</div></div>
+  <div class="stat-card"><div class="value">2</div><div class="label">Wallets natifs</div></div>
+</div>
+
+<!-- ================================================================ -->
+<!-- SOMMAIRE                                                          -->
+<!-- ================================================================ -->
+
+<h2>Sommaire</h2>
+<ol class="toc">
+  <li><a href="#contexte">1. Contexte et présentation</a></li>
+  <li><a href="#problematique">2. Problématique et solution</a></li>
+  <li><a href="#architecture">3. Architecture technique</a></li>
+  <li><a href="#stack">4. Stack technologique</a></li>
+  <li><a href="#bdd">5. Base de données</a></li>
+  <li><a href="#fonctionnalites">6. Fonctionnalités du dashboard</a></li>
+  <li><a href="#captures">7. Captures d'écran de l'application</a></li>
+  <li><a href="#wallet">8. Intégration Apple Wallet &amp; Google Wallet</a></li>
+  <li><a href="#autopilot">9. Autopilot Marketing — différenciateur clé</a></li>
+  <li><a href="#crm">10. CRM &amp; Analytics</a></li>
+  <li><a href="#mobile">11. App mobile Flutter (iOS + Android)</a></li>
+  <li><a href="#api">12. API REST — 65+ endpoints</a></li>
+  <li><a href="#securite">13. Sécurité &amp; tests</a></li>
+  <li><a href="#rgpd">14. Conformité RGPD / CNIL</a></li>
+  <li><a href="#tarifs">15. Plans tarifaires &amp; gating</a></li>
+  <li><a href="#deploiement">16. Déploiement production (Railway)</a></li>
+  <li><a href="#defis">17. Défis techniques rencontrés</a></li>
+  <li><a href="#bilan">18. Bilan &amp; roadmap</a></li>
+</ol>
+
+<!-- ================================================================ -->
+<!-- 1. CONTEXTE                                                       -->
+<!-- ================================================================ -->
+
+<h2 id="contexte">1. Contexte et présentation</h2>
+
+<p><strong>Kardo</strong> est une plateforme SaaS B2B permettant à des commerçants (restaurants, boulangeries, salons de coiffure, boutiques) de proposer un programme de fidélité 100&nbsp;% dématérialisé à leurs clients. Les cartes de fidélité sont intégrées directement dans <strong>Apple Wallet</strong> et <strong>Google Wallet</strong>, sans aucune application à télécharger pour le client final.</p>
+
+<p>Le projet a été conçu, développé et déployé en production de bout en bout, depuis l'analyse fonctionnelle jusqu'à la mise en ligne sur Railway, en passant par l'intégration Apple Developer (Pass Type ID, certificats .p12) et Google Cloud (Wallet API, service account JWT).</p>
+
+<div class="card">
+<h3>Vue d'ensemble fonctionnelle</h3>
+<ul>
+  <li><strong>Côté commerçant (B2B) :</strong> dashboard web complet (Vue 3 SPA) + app mobile Flutter, gestion des cartes, scanner QR intégré, autopilot marketing, CRM avancé avec cohort retention, journal d'audit, paliers de récompenses configurables.</li>
+  <li><strong>Côté client final (B2C) :</strong> inscription en moins de 10 secondes via QR code, ajout de la carte au Wallet natif (Apple ou Google), notifications push automatiques, code parrain unique, pas d'app à installer.</li>
+  <li><strong>Système de plans :</strong> Free / Solo (19€) / Pro (39€) / Business (79€) avec gating fin sur les features (broadcasts, automations, analytics avancées, journal d'audit).</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Public cible</h3>
+<ul>
+  <li><strong>Commerçants indépendants :</strong> restaurants, boulangeries, salons, cafés, food trucks — qui veulent fidéliser sans tampon papier ni application dédiée.</li>
+  <li><strong>Petites chaînes :</strong> 2 à 5 points de vente, qui ont besoin de stats centralisées et d'envoyer des broadcasts à toute leur base.</li>
+  <li><strong>Clients finaux :</strong> particuliers équipés d'iPhone ou Android, sans appétence pour télécharger une nouvelle app par commerce fréquenté.</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 2. PROBLEMATIQUE                                                  -->
+<!-- ================================================================ -->
+
+<h2 id="problematique">2. Problématique et solution</h2>
+
+<div class="card">
+<h3>La problématique du marché</h3>
+<p>Les programmes de fidélité traditionnels souffrent de trois défauts majeurs :</p>
+<ul>
+  <li><strong>Cartes papier :</strong> perdues, oubliées, lavées en machine — et surtout aucune donnée exploitable côté commerçant pour relancer les clients inactifs.</li>
+  <li><strong>Applications dédiées :</strong> chaque commerce demande au client de télécharger SON appli — friction massive, taux d'adoption très faible, désinstallation rapide.</li>
+  <li><strong>Manque d'analytics :</strong> les solutions existantes (Antepay, Fidel, Stamp Me) offrent peu d'analytics avancées et aucune automatisation marketing.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>La solution Kardo</h3>
+<ul>
+  <li><strong>Zéro friction client :</strong> le client scanne un QR code, remplit 4 champs (prénom, nom, téléphone, date de naissance), et sa carte apparaît directement dans Apple Wallet ou Google Wallet en 10 secondes chrono.</li>
+  <li><strong>Push natif :</strong> les notifications passent par les canaux natifs Apple (APNs) et Google (FCM v1), pas besoin d'autorisations spécifiques.</li>
+  <li><strong>Autopilot intégré :</strong> 9 automations marketing (proche récompense, win-back, bienvenue, anniversaire, milestone, parrainage, etc.) tournent en tâche de fond, paramétrables par le commerçant.</li>
+  <li><strong>Analytics business :</strong> rétention par cohorte, LTV, heatmap horaires, performance des campagnes 48h post-broadcast — réservés aux plans Pro+.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Différenciation concurrentielle</h3>
+<table>
+  <tr><th>Feature</th><th>Kardo</th><th>Antepay / Fidel / Stamp Me</th></tr>
+  <tr><td><strong>Autopilot Marketing</strong></td><td>9 automations natives</td><td>Manuel uniquement ou très limité</td></tr>
+  <tr><td><strong>Paliers multi-niveaux</strong></td><td>Personnalisables, illimités</td><td>Récompense unique</td></tr>
+  <tr><td><strong>Système de parrainage</strong></td><td>Intégré, bonus tampons</td><td>Absent ou payant en option</td></tr>
+  <tr><td><strong>Analytics avancées</strong></td><td>Cohort retention, LTV, heatmap</td><td>Basique</td></tr>
+  <tr><td><strong>Wallet natif</strong></td><td>Apple Wallet + Google Wallet</td><td>App propriétaire à télécharger</td></tr>
+  <tr><td><strong>Tarif d'entrée</strong></td><td>Free puis 19€/mois</td><td>30 à 50€/mois minimum</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 3. ARCHITECTURE                                                   -->
+<!-- ================================================================ -->
+
+<h2 id="architecture">3. Architecture technique</h2>
+
+<div class="card">
+<h3>Architecture monorepo en 3 services</h3>
+<p>Le projet est organisé en monorepo avec deux applications distinctes plus une documentation centralisée :</p>
+
+<pre><code>kardo/
+├── kardo-app/              ← Laravel 13 backend + Vue 3 SPA (single app)
+│   ├── app/                Controllers, Models, Services, Jobs, Commands
+│   ├── resources/js/       Vue 3 SPA (13 vues, 4 stores Pinia, 3 composables)
+│   ├── resources/views/    Blade : landing, enrollment, card client, légal
+│   ├── routes/api.php      65+ routes API REST
+│   ├── config/kardo.php    Plans, limites, config wallet
+│   ├── database/migrations/  17 migrations PostgreSQL
+│   ├── node-services/      passGenerator.cjs (Apple .pkpass)
+│   ├── Dockerfile          PHP 8.4 + GD + Node + PostgreSQL
+│   └── tests/              28 tests Feature PHPUnit
+├── kardo-pro/              ← App Flutter mobile (iOS + Android pour commerçants)
+└── docs/                   AVANCEMENT.md, CAHIER_DES_CHARGES.md, GUIDE-ADMIN.md</code></pre>
+</div>
+
+<div class="card">
+<h3>Architecture trois-tiers décentralisée</h3>
+<p>L'application suit une architecture <strong>SPA + API REST + Wallets externes</strong> avec séparation stricte des responsabilités :</p>
+
+<div class="arch-flow">
+  <div class="arch-box">Landing Blade<br><small>SSR public</small></div>
+  <div class="arch-arrow">+</div>
+  <div class="arch-box">Vue 3 SPA<br><small>Dashboard B2B</small></div>
+  <div class="arch-arrow">+</div>
+  <div class="arch-box">Flutter App<br><small>iOS + Android</small></div>
+</div>
+<div class="arch-flow">
+  <div class="arch-arrow" style="margin: 0 auto;">↓ HTTPS / Bearer Sanctum ↓</div>
+</div>
+<div class="arch-flow">
+  <div class="arch-box" style="background:rgba(74,222,128,0.1); color:var(--green); border-color:rgba(74,222,128,0.3);">API REST Laravel 13<br><small>65+ routes, 11 controllers</small></div>
+</div>
+<div class="arch-flow">
+  <div class="arch-box">PostgreSQL<br><small>10 tables, 17 migrations</small></div>
+  <div class="arch-arrow">·</div>
+  <div class="arch-box">Apple APNs<br><small>HTTP/2, .pkpass</small></div>
+  <div class="arch-arrow">·</div>
+  <div class="arch-box">FCM v1<br><small>OAuth2 service account</small></div>
+  <div class="arch-arrow">·</div>
+  <div class="arch-box">Resend<br><small>Emails transactionnels</small></div>
+</div>
+
+<ul style="margin-top:1rem;">
+  <li><strong>Frontend dashboard :</strong> Vue 3 single-page servie depuis Laravel, communique exclusivement par HTTP avec l'API. Pinia pour la gestion d'état (auth, cards, notifications, crm, automations).</li>
+  <li><strong>Backend API :</strong> Laravel 13 stateless authentifiant via Sanctum bearer tokens (24h expiration). Multi-tenancy stricte avec ownership check sur chaque route.</li>
+  <li><strong>Génération .pkpass :</strong> microservice Node.js (passkit-generator) appelé en CLI depuis Laravel pour signer les passes Apple avec le certificat .p12.</li>
+  <li><strong>Push iOS :</strong> APNs HTTP/2 avec certificat pass signing (corps vide = trigger refresh du pass).</li>
+  <li><strong>Push Android :</strong> FCM v1 avec OAuth2 service account, token caché en cache pour éviter les rate limits.</li>
+  <li><strong>Queue + Scheduler :</strong> queue:work + schedule:run lancés en background processes dans le même container Docker.</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 4. STACK                                                          -->
+<!-- ================================================================ -->
+
+<h2 id="stack">4. Stack technologique</h2>
+
+<table>
+  <tr><th>Couche</th><th>Technologie</th><th>Version / Détails</th></tr>
+  <tr><td><strong>Backend API</strong></td><td>Laravel</td><td>13.x sur PHP 8.4</td></tr>
+  <tr><td><strong>Base de données</strong></td><td>PostgreSQL</td><td>16.x (Railway managed)</td></tr>
+  <tr><td><strong>Frontend SPA</strong></td><td>Vue.js</td><td>3.x avec Composition API</td></tr>
+  <tr><td><strong>State management</strong></td><td>Pinia</td><td>4 stores (auth, cards, notifications, crm)</td></tr>
+  <tr><td><strong>Bundler</strong></td><td>Vite</td><td>Build ~1.3s</td></tr>
+  <tr><td><strong>Styling</strong></td><td>Tailwind CSS</td><td>4.x avec design system custom (variables CSS <code>--s-*</code>)</td></tr>
+  <tr><td><strong>App mobile</strong></td><td>Flutter</td><td>3.x — iOS + Android</td></tr>
+  <tr><td><strong>Authentification</strong></td><td>Laravel Sanctum</td><td>Bearer tokens, 24h expiration</td></tr>
+  <tr><td><strong>Emails</strong></td><td>Resend</td><td>API REST, templates Blade</td></tr>
+  <tr><td><strong>Push iOS</strong></td><td>Apple APNs</td><td>HTTP/2 + certificat .p12</td></tr>
+  <tr><td><strong>Push Android</strong></td><td>Firebase FCM v1</td><td>OAuth2 service account</td></tr>
+  <tr><td><strong>Wallet iOS</strong></td><td>Apple PassKit</td><td>passkit-generator (Node)</td></tr>
+  <tr><td><strong>Wallet Android</strong></td><td>Google Wallet API</td><td>JWT signé RS256</td></tr>
+  <tr><td><strong>Génération images</strong></td><td>PHP GD</td><td>Strip image dynamique avec cercles tampons</td></tr>
+  <tr><td><strong>Queue / Scheduler</strong></td><td>Laravel queue (DB driver)</td><td>queue:work + schedule:run en background</td></tr>
+  <tr><td><strong>Conteneurisation</strong></td><td>Docker</td><td>PHP 8.4-cli + GD + pdo_pgsql + Node 20</td></tr>
+  <tr><td><strong>Hébergement</strong></td><td>Railway</td><td>Auto-deploy GitHub, SSL auto, PostgreSQL géré</td></tr>
+  <tr><td><strong>Tests</strong></td><td>PHPUnit</td><td>28 Feature tests, SQLite in-memory</td></tr>
+  <tr><td><strong>Code formatting</strong></td><td>Laravel Pint</td><td>PSR-12 strict</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<!-- 5. BDD                                                            -->
+<!-- ================================================================ -->
+
+<h2 id="bdd">5. Base de données</h2>
+
+<p>Le schéma PostgreSQL repose sur 10 tables principales avec des relations Eloquent complètes. Tous les identifiants sont des <strong>UUID v7</strong> pour éviter les collisions et faciliter le sharding éventuel.</p>
+
+<table>
+  <tr><th>Table</th><th>Rôle</th><th>Particularités</th></tr>
+  <tr><td><strong>merchants</strong></td><td>Comptes commerçants (auth user)</td><td>JSON <code>pass_design</code>, plan enum, slug unique pour enrollment</td></tr>
+  <tr><td><strong>cards</strong></td><td>Cartes fidélité clients</td><td><strong>Hard delete</strong> (pas de SoftDeletes), serial unique pour Apple, code parrain auto-généré</td></tr>
+  <tr><td><strong>purchases</strong></td><td>Historique des achats / tampons</td><td>Lien vers card, montant optionnel, timestamp</td></tr>
+  <tr><td><strong>rewards</strong></td><td>Récompenses débloquées</td><td>Statut earned / redeemed, tier_id si paliers configurés</td></tr>
+  <tr><td><strong>reward_tiers</strong></td><td>Paliers de récompenses</td><td>Configurables par merchant (ex: 5 tampons = café, 10 = repas)</td></tr>
+  <tr><td><strong>notifications</strong></td><td>Broadcasts &amp; notifs ciblées</td><td>JSONB metadata, segments (at_risk, near_reward, vip), scheduling</td></tr>
+  <tr><td><strong>push_tokens</strong></td><td>Tokens APNs / FCM par device</td><td>Auto-cleanup des tokens invalides</td></tr>
+  <tr><td><strong>enrollment_links</strong></td><td>Liens publics d'inscription</td><td>Slug unique par merchant, stats Apple / Android</td></tr>
+  <tr><td><strong>automation_rules</strong></td><td>Règles d'autopilot marketing</td><td>9 types, cooldown configurable, A/B testing</td></tr>
+  <tr><td><strong>audit_logs</strong></td><td>Journal d'audit Pro+</td><td>IP + user agent enregistrés, conservé 30 jours</td></tr>
+</table>
+
+<div class="card">
+<h3>Choix techniques notables</h3>
+<ul>
+  <li><strong>UUID v7 :</strong> ordonnés temporellement, performants en index B-tree, ce qui évite la fragmentation des UUID v4 traditionnels.</li>
+  <li><strong>Pas de SoftDeletes sur Card :</strong> évite les conflits de contrainte unique au moment du re-enrollment d'un client supprimé. Suppression effective immédiate.</li>
+  <li><strong>JSONB pour <code>pass_design</code> :</strong> permet de stocker la config du wallet (couleurs, logo, banner, paliers, label) sans table dédiée et sans migration à chaque évolution.</li>
+  <li><strong>Indexation :</strong> indexes composites sur (merchant_id, created_at) pour les queries de dashboard et CRM, indexes uniques sur (serial), (slug), (apple_pass_type_id + serial).</li>
+  <li><strong>Multi-tenancy :</strong> chaque table contient <code>merchant_id</code> et un global scope Eloquent applique automatiquement le filtre quand un merchant est authentifié.</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 6. FONCTIONNALITES                                                -->
+<!-- ================================================================ -->
+
+<h2 id="fonctionnalites">6. Fonctionnalités du dashboard</h2>
+
+<p>Le dashboard web est une SPA Vue 3 contenant <strong>13 vues principales</strong> sous un layout authentifié avec sidebar responsive. Toutes les vues sont protégées par auth Sanctum et un guard de plan (les features Pro+ ne sont visibles que pour les plans correspondants).</p>
+
+<table>
+  <tr><th>Vue</th><th>Description</th><th>Plan requis</th></tr>
+  <tr><td><strong>Login / Register</strong></td><td>Auth Sanctum, validation visuelle (mot de passe renforcé : majuscule + minuscule + chiffre)</td><td>Public</td></tr>
+  <tr><td><strong>Onboarding</strong></td><td>Wizard 3 étapes pour configurer le programme à l'inscription</td><td>Tous</td></tr>
+  <tr><td><strong>Dashboard</strong></td><td>Stats du jour, graphique d'activité 12 semaines, top client, clients à risque, QR code d'inscription, objectif du mois</td><td>Tous</td></tr>
+  <tr><td><strong>Scanner</strong></td><td>QR scan caméra + recherche manuelle (nom, téléphone, code parrain) + mode rush hour</td><td>Tous</td></tr>
+  <tr><td><strong>Mes porteurs</strong></td><td>Liste paginée, filtres rapides (VIP, à risque, proche récompense, anniversaire), recherche, import CSV, actions de masse</td><td>Tous</td></tr>
+  <tr><td><strong>Détail carte</strong></td><td>Historique tampons, stamp +1 / +2 / +3 / +5, montant optionnel, suppression, code parrain, actions Appeler / SMS / WhatsApp</td><td>Tous</td></tr>
+  <tr><td><strong>Notifications</strong></td><td>Composer broadcast (segments + manuel), templates, emojis, variables auto-remplies, programmation, A/B preview iOS/Android</td><td>Solo+</td></tr>
+  <tr><td><strong>Autopilot</strong></td><td>9 automations avec toggle, message, modèles, A/B testing, cooldown, plage horaire</td><td>Solo+ (gating)</td></tr>
+  <tr><td><strong>CRM &amp; Analytics</strong></td><td>5 vues : overview, clients, comportement, campagnes, avancé (cohort retention, LTV, heatmap)</td><td>Pro+ pour avancé</td></tr>
+  <tr><td><strong>Ma carte (Design)</strong></td><td>Upload logo + bannière, palettes prédéfinies, couleurs custom, paliers de récompenses, aperçu Apple / Google Wallet</td><td>Tous</td></tr>
+  <tr><td><strong>Paramètres / Billing</strong></td><td>4 onglets : Profil, Mon offre, Sécurité, RGPD. Slug d'enrollment, plan actuel, grille tarifaire, export RGPD</td><td>Tous</td></tr>
+  <tr><td><strong>Journal d'audit</strong></td><td>Table filtrable + export CSV, déverrouillage par mot de passe (session 30 min), conservation 30 jours</td><td>Pro+</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<!-- 7. CAPTURES                                                       -->
+<!-- ================================================================ -->
+
+<h2 id="captures">7. Captures d'écran de l'application</h2>
+
+<p>Les captures ci-dessous proviennent de l'environnement de production (<code>kardo-production.up.railway.app</code>) avec le compte démo <code>demo@kardo.fr</code> sur le plan Business.</p>
+
+<figure>
+  <img src="kardo-screenshots/01-login.png" alt="Page de connexion Kardo" />
+  <figcaption>Fig. 1 — Page de connexion : design dark minimaliste inspiré Linear / Vercel, accent violet <code>#7C5CFC</code>.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/02-dashboard.png" alt="Dashboard principal Kardo" />
+  <figcaption>Fig. 2 — Dashboard principal : KPIs du jour (tampons, inscriptions, récompenses, chiffre estimé), bandeau "Rush du midi", objectif du mois, top client de la semaine, activité en direct, QR code d'inscription, graphique d'activité 12 semaines, grille de configuration onboarding.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/03-scanner.png" alt="Vue scanner QR" />
+  <figcaption>Fig. 3 — Page Scanner : caméra native pour QR + recherche manuelle. Mode rush hour pour service rapide, sons / confettis activables, bascule plein écran tablette comptoir.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/04-cards.png" alt="Liste des porteurs" />
+  <figcaption>Fig. 4 — Mes porteurs : liste paginée avec filtres rapides (VIP, à risque, proche récompense, anniversaire ce mois, récompensés), recherche multi-champs, import CSV, tri par tampons / visites / dernière visite, actions inline (Tamponner +1, Notifier, Voir détail).</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/14-card-detail.png" alt="Modale détail client" />
+  <figcaption>Fig. 5 — Modale détail client (pop-in depuis la liste) : tampons actuels, visites, total tampons, dépensé, code parrain, bouton Tamponner, bouton Supprimer.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/15-card-fullpage.png" alt="Détail carte pleine page" />
+  <figcaption>Fig. 6 — Vue détail carte pleine page : historique exhaustif des tampons (date, montant si saisi), code parrain unique, actions complètes.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/05-notifications.png" alt="Composer notifications" />
+  <figcaption>Fig. 7 — Composer notifications : 20 emojis insérables, 6 variables auto-remplies (prénom, tampons, restants, récompense, etc.), 5 segments intelligents (Tous, Inactifs +30j, Proches récompense, Nouveaux 7j, VIP top 20) + sélection manuelle, programmation date/heure, aperçu iOS / Android, conseils marketing.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/06-automations.png" alt="Page Autopilot" />
+  <figcaption>Fig. 8 — Autopilot Marketing : 9 automations natives (Proche récompense, Reconquête, Relance courte, Bienvenue, Première visite, Milestone, Récompense utilisée, Parrainage, Anniversaire) avec message personnalisable, A/B testing, plage horaire et cooldown configurable.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/07-crm.png" alt="CRM Analytics" />
+  <figcaption>Fig. 9 — CRM &amp; Analytics : 5 onglets (Vue d'ensemble, Clients, Comportement, Campagnes, Avancé), périodes (7j / 30j / 90j / 12m), export CSV, recherche client globale.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/08-design.png" alt="Page Design carte Wallet" />
+  <figcaption>Fig. 10 — Page "Ma carte" : éditeur de design wallet avec upload logo + bannière (auto-suggestion thème depuis le logo), 12 palettes prédéfinies (Mocha, Sunset, Ocean, Forest, Lavender, Neon, Mint, Rose, Gold, Navy, Kraft, Mono) + couleurs custom, aperçu temps réel Apple Wallet / Google Wallet avec slider de progression, paliers de récompenses, qualité du design notée /100.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/09-billing.png" alt="Page Paramètres - Profil" />
+  <figcaption>Fig. 11 — Paramètres : onglet Profil avec nom du commerce, email, slug d'inscription public.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/10-plans.png" alt="Page Mon offre / plans tarifaires" />
+  <figcaption>Fig. 12 — Paramètres : onglet "Mon offre" avec plan actuel (Business), grille tarifaire et features par palier.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/11-audit-lock.png" alt="Verrou journal d'audit" />
+  <figcaption>Fig. 13 — Journal d'audit : verrou par mot de passe (session déverrouillée 30 min). Le journal contient des données sensibles (IP, actions critiques) et n'est accessible qu'après ré-authentification explicite.</figcaption>
+</figure>
+
+<figure>
+  <img src="kardo-screenshots/12-audit.png" alt="Journal d'audit déverrouillé" />
+  <figcaption>Fig. 14 — Journal d'audit déverrouillé : 8 types d'actions (Tampon, Récompense utilisée, Changement de statut, Broadcast, Export, Connexion, Mise à jour design, delete_card), filtres par action et par dates, export CSV, IP + détails JSON.</figcaption>
+</figure>
+
+<figure style="max-width:400px; margin: 1.5rem auto;">
+  <img src="kardo-screenshots/13-enrollment-mobile.png" alt="Page d'inscription client mobile" />
+  <figcaption>Fig. 15 — Page d'inscription client (vue mobile, &lt; 50&nbsp;KB) : formulaire 4 champs + code parrain optionnel + 2 checkboxes RGPD (consentement données + consentement notifications). Mobile-first car 100% des inscriptions viennent du téléphone.</figcaption>
+</figure>
+
+<!-- ================================================================ -->
+<!-- 8. WALLET                                                         -->
+<!-- ================================================================ -->
+
+<h2 id="wallet">8. Intégration Apple Wallet &amp; Google Wallet</h2>
+
+<div class="card">
+<h3>Apple Wallet (.pkpass)</h3>
+<ul>
+  <li><strong>Compte Apple Developer :</strong> Team ID <code>6DKW9Y76F7</code>, Pass Type ID <code>pass.fr.kardo</code> créé spécifiquement pour Kardo.</li>
+  <li><strong>Certificat .p12 :</strong> généré sur Apple Developer Portal, stocké en base64 dans la variable d'env <code>PASS_CERT_P12_B64</code>, décodé au démarrage du container avec OpenSSL pour extraire le PEM cert + key.</li>
+  <li><strong>WWDR cert :</strong> Apple WWDR Intermediate G4 chargée depuis <code>WWDR_CERT_B64</code>, conversion DER→PEM en runtime.</li>
+  <li><strong>Génération .pkpass :</strong> microservice Node.js <code>passGenerator.cjs</code> appelé via PHP <code>Process::run()</code>, utilise la lib <code>passkit-generator</code> pour signer et zipper le pass.</li>
+  <li><strong>Strip image dynamique :</strong> générée à la volée avec PHP GD — fond personnalisé, nom client en outline blur, 10 cercles tampons en grille 2×5 (remplis selon progression), bannière custom uploadable par le commerçant.</li>
+  <li><strong>Champs visibles :</strong> tampons (X/Y), récompense, code parrain, visites. <strong>Au dos :</strong> message broadcast, code parrain + explication, infos client, programme.</li>
+  <li><strong>Push APNs :</strong> HTTP/2 avec certificat pass signing (corps vide = trigger refresh du pass dans le Wallet de l'utilisateur).</li>
+  <li><strong>Webservice endpoints :</strong> <code>/api/v1/...</code> avec 4 endpoints (<code>appleSerials</code>, <code>appleGet</code>, <code>appleRegister</code>, <code>appleUnregister</code>, <code>appleLog</code>) conformes au protocole PassKit.</li>
+  <li><strong>Fix timezone :</strong> Apple compare les <code>If-Modified-Since</code> en UTC alors que Laravel est en Europe/Paris — fix avec <code>->timezone(config('app.timezone'))</code>.</li>
+  <li><strong>changeMessage :</strong> sur les champs visibles pour déclencher la notification banner native Wallet.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Google Wallet (Loyalty Object)</h3>
+<ul>
+  <li><strong>Projet Google Cloud :</strong> <code>kardo-492108</code> avec Wallet API activée.</li>
+  <li><strong>Issuer ID :</strong> <code>3388000000023095407</code> obtenu après vérification Google.</li>
+  <li><strong>Service Account :</strong> clé JSON stockée en base64 dans <code>GOOGLE_SERVICE_ACCOUNT_B64</code>, décodée au démarrage.</li>
+  <li><strong>JWT RS256 :</strong> signé avec la clé privée du service account pour générer le lien "Save to Google Wallet".</li>
+  <li><strong>Loyalty Object :</strong> contient la progression des tampons, le label de récompense, les couleurs et le logo. Mis à jour par PATCH REST après chaque tampon (en cours d'amélioration).</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Push notifications</h3>
+<table>
+  <tr><th>Plateforme</th><th>Mécanisme</th><th>Cas d'usage</th></tr>
+  <tr><td><strong>iOS Wallet update</strong></td><td>APNs HTTP/2 + cert pass signing</td><td>Refresh du pass après tampon (corps vide)</td></tr>
+  <tr><td><strong>Android Wallet update</strong></td><td>Google Wallet REST PATCH</td><td>Mise à jour Loyalty Object</td></tr>
+  <tr><td><strong>Notification iOS visible</strong></td><td>changeMessage sur champ visible du pass</td><td>Bannière native Wallet</td></tr>
+  <tr><td><strong>Notification Android visible</strong></td><td>FCM v1 + OAuth2 service account</td><td>Push standard sur device</td></tr>
+</table>
+</div>
+
+<!-- ================================================================ -->
+<!-- 9. AUTOPILOT                                                      -->
+<!-- ================================================================ -->
+
+<h2 id="autopilot">9. Autopilot Marketing — différenciateur clé</h2>
+
+<p>L'<strong>Autopilot</strong> est le différenciateur principal de Kardo face à la concurrence. Il s'agit d'un moteur de campagnes automatiques qui tournent en tâche de fond et envoient le bon message au bon client au bon moment, sans intervention du commerçant.</p>
+
+<h3>Les 9 automations natives</h3>
+
+<table>
+  <tr><th>Automation</th><th>Déclencheur</th><th>Exemple de message</th></tr>
+  <tr><td><strong>Proche récompense</strong></td><td>Client à 1 tampon du palier</td><td>"{{prenom}}, plus que 1 tampon avant {{recompense}} !"</td></tr>
+  <tr><td><strong>Reconquête</strong></td><td>Inactif depuis N jours (ex: 30j)</td><td>"On pense à vous {{prenom}} 💜 cadeau sur..."</td></tr>
+  <tr><td><strong>Relance courte</strong></td><td>Inactif entre 7 et 14 jours</td><td>"Hello {{prenom}}, on vous attend bientôt..."</td></tr>
+  <tr><td><strong>Bienvenue</strong></td><td>24h après inscription</td><td>"Bienvenue {{prenom}} ! Merci de rejoindre {{commerce}}."</td></tr>
+  <tr><td><strong>Première visite</strong></td><td>Après le 1er tampon</td><td>"Merci {{prenom}} pour votre 1ère visite !"</td></tr>
+  <tr><td><strong>Milestone</strong></td><td>Tous les N tampons (ex: tous les 5)</td><td>"Bravo {{prenom}} ! Déjà {{tampons}} tampons !"</td></tr>
+  <tr><td><strong>Récompense utilisée</strong></td><td>Après une redemption</td><td>"Merci {{prenom}} ! Carte rechargée, on vous attend..."</td></tr>
+  <tr><td><strong>Parrainage activé</strong></td><td>Filleul vient de s'inscrire</td><td>"Bravo {{prenom}} ! Votre filleul vient de s'inscrire — +1 tampon offert."</td></tr>
+  <tr><td><strong>Anniversaire</strong></td><td>Date d'anniversaire du client</td><td>"Joyeux anniversaire {{prenom}} 🎂 ! Un cadeau vous attend chez {{commerce}}."</td></tr>
+</table>
+
+<div class="card">
+<h3>Architecture technique de l'Autopilot</h3>
+<ul>
+  <li><strong>Commande artisan <code>kardo:process-automations</code> :</strong> lancée toutes les heures par le scheduler. Parcourt les <code>automation_rules</code> actives, identifie les cibles éligibles, dispatch un job <code>BroadcastNotificationJob</code> par cible.</li>
+  <li><strong>Cooldown configurable :</strong> chaque automation a un cooldown en heures (1 à 720) qui empêche d'envoyer 2 fois le même message au même client trop rapidement.</li>
+  <li><strong>Plage horaire :</strong> chaque automation peut être restreinte à des plages (ex: 9h-19h) et des jours (lun-ven).</li>
+  <li><strong>Variables dynamiques :</strong> <code>{{prenom}}</code>, <code>{{nom}}</code>, <code>{{tampons}}</code>, <code>{{tampons_restants}}</code>, <code>{{recompense}}</code>, <code>{{commerce}}</code> remplacés à l'envoi.</li>
+  <li><strong>A/B testing :</strong> deux versions du message envoyées à 50/50 avec stats de retour (si activé sur le plan Pro+).</li>
+  <li><strong>Plan gating :</strong> Free=0 active, Solo=1, Pro=4, Business=illimité.</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 10. CRM                                                           -->
+<!-- ================================================================ -->
+
+<h2 id="crm">10. CRM &amp; Analytics</h2>
+
+<p>Le module CRM est divisé en 5 onglets, dont les 2 derniers (Campagnes et Avancé) sont réservés aux plans Pro et Business.</p>
+
+<table>
+  <tr><th>Onglet</th><th>Plan</th><th>Contenu</th></tr>
+  <tr><td><strong>Vue d'ensemble</strong></td><td>Tous</td><td>Porteurs actifs, tampons / semaine, rétention basique, clients à risque, clients proches récompense</td></tr>
+  <tr><td><strong>Clients</strong></td><td>Tous</td><td>Top 10 clients, distribution des tampons, segments (VIP, dormants, nouveaux)</td></tr>
+  <tr><td><strong>Comportement</strong></td><td>Pro+</td><td>Fréquence de visite moyenne, panier moyen estimé, distribution heures de venue (heatmap jour × heure)</td></tr>
+  <tr><td><strong>Campagnes</strong></td><td>Pro+</td><td>Performance des broadcasts (impact 48h post-envoi : tampons, redemptions, churn)</td></tr>
+  <tr><td><strong>Avancé</strong></td><td>Pro+</td><td>Rétention par cohorte (6 mois glissants), LTV par buckets, taux de redemption, taux de parrainage</td></tr>
+</table>
+
+<div class="card">
+<h3>Cohort Retention (calcul)</h3>
+<p>La rétention par cohorte est calculée pour chaque mois M0 à M+5 :</p>
+<pre><code>// Pour chaque cohorte (mois d'inscription)
+foreach ($cohorts as $cohort) {
+    $month0 = $cohort->cards->count(); // 100%
+
+    for ($n = 1; $n &lt;= 5; $n++) {
+        $monthN = $cohort->cards
+            ->filter(fn($c) =&gt; $c->purchases()
+                ->whereBetween('created_at', [
+                    $cohort->month-&gt;copy()-&gt;addMonths($n),
+                    $cohort->month-&gt;copy()-&gt;addMonths($n + 1),
+                ])
+                ->exists()
+            )
+            ->count();
+
+        $retention[$cohort->month][$n] = $monthN / $month0 * 100;
+    }
+}</code></pre>
+</div>
+
+<!-- ================================================================ -->
+<!-- 11. MOBILE                                                        -->
+<!-- ================================================================ -->
+
+<h2 id="mobile">11. App mobile Flutter (iOS + Android)</h2>
+
+<p>L'app mobile <strong>Kardo Pro</strong> (dossier <code>kardo-pro/</code>) est destinée aux commerçants qui veulent tamponner directement depuis leur smartphone, sans tablette comptoir.</p>
+
+<table>
+  <tr><th>Module</th><th>Détails</th></tr>
+  <tr><td><strong>Auth</strong></td><td>Login email + password, stockage du token Sanctum dans <code>flutter_secure_storage</code> (Keychain iOS / EncryptedSharedPreferences Android)</td></tr>
+  <tr><td><strong>Dashboard</strong></td><td>Stats porteurs actifs, tampons, récompenses, broadcasts ce mois</td></tr>
+  <tr><td><strong>Scanner</strong></td><td>QR scan natif via <code>mobile_scanner</code>, recherche manuelle avec debounce</td></tr>
+  <tr><td><strong>Flow tampon</strong></td><td>Scan → fiche client → cercles tampons individuels cliquables → animation confirmation → push automatique sur Wallet</td></tr>
+  <tr><td><strong>Liste porteurs</strong></td><td>Pagination, recherche debounce, barre de progression, badges statut (actif / proche / inactif)</td></tr>
+  <tr><td><strong>Broadcast</strong></td><td>Envoi push sans quitter l'app</td></tr>
+  <tr><td><strong>Push reçues</strong></td><td>FCM intégrée pour notifications systèmes (nouveau client, milestone)</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<!-- 12. API                                                           -->
+<!-- ================================================================ -->
+
+<h2 id="api">12. API REST — 65+ endpoints</h2>
+
+<p>L'API REST suit les conventions Laravel resourceful avec Sanctum bearer auth. Toutes les routes authentifiées sont scopées sous <code>/api/merchants/{merchant}/</code> avec ownership check automatique.</p>
+
+<h3>Routes publiques (10)</h3>
+<table>
+  <tr><th>Méthode</th><th>Endpoint</th><th>Rôle</th></tr>
+  <tr><td>POST</td><td><code>/api/auth/register</code></td><td>Création compte commerçant</td></tr>
+  <tr><td>POST</td><td><code>/api/auth/login</code></td><td>Login (rate limit 5/min)</td></tr>
+  <tr><td>GET</td><td><code>/enroll/{slug}</code></td><td>Page Blade publique d'inscription</td></tr>
+  <tr><td>POST</td><td><code>/api/enroll/{slug}</code></td><td>Inscription d'un client</td></tr>
+  <tr><td>GET</td><td><code>/api/customer/{serial}/data</code></td><td>RGPD : export des données du client</td></tr>
+  <tr><td>DELETE</td><td><code>/api/customer/{serial}/data</code></td><td>RGPD : anonymisation + suppression</td></tr>
+  <tr><td>GET</td><td><code>/api/v1/passes/.../{serial}</code></td><td>Apple PassKit : download .pkpass</td></tr>
+  <tr><td>POST</td><td><code>/api/v1/devices/.../registrations/...</code></td><td>Apple PassKit : register device</td></tr>
+  <tr><td>GET</td><td><code>/api/v1/devices/.../...</code></td><td>Apple PassKit : serials updated</td></tr>
+  <tr><td>POST</td><td><code>/api/v1/log</code></td><td>Apple PassKit : log errors</td></tr>
+</table>
+
+<h3>Routes authentifiées principales (sélection)</h3>
+<table>
+  <tr><th>Méthode</th><th>Endpoint</th><th>Rôle</th></tr>
+  <tr><td>GET</td><td><code>/api/merchants/{merchant}/cards</code></td><td>Liste paginée des cartes</td></tr>
+  <tr><td>POST</td><td><code>/api/merchants/{merchant}/cards/{card}/stamp</code></td><td>Tamponne une carte</td></tr>
+  <tr><td>POST</td><td><code>/api/merchants/{merchant}/cards/{card}/redeem</code></td><td>Utilise une récompense</td></tr>
+  <tr><td>GET</td><td><code>/api/merchants/{merchant}/cards/by-serial/{serial}</code></td><td>Recherche par serial QR</td></tr>
+  <tr><td>POST</td><td><code>/api/merchants/{merchant}/notifications/broadcast</code></td><td>Broadcast à un segment</td></tr>
+  <tr><td>POST</td><td><code>/api/merchants/{merchant}/notifications/individual</code></td><td>Notif ciblée</td></tr>
+  <tr><td>GET</td><td><code>/api/merchants/{merchant}/automations</code></td><td>Liste des règles autopilot</td></tr>
+  <tr><td>PUT</td><td><code>/api/merchants/{merchant}/automations/{rule}</code></td><td>Mise à jour d'une automation</td></tr>
+  <tr><td>GET</td><td><code>/api/merchants/{merchant}/crm/overview</code></td><td>KPIs CRM</td></tr>
+  <tr><td>GET</td><td><code>/api/merchants/{merchant}/crm/cohort-retention</code></td><td>Rétention par cohorte (Pro+)</td></tr>
+  <tr><td>GET</td><td><code>/api/merchants/{merchant}/audit</code></td><td>Journal d'audit (Pro+)</td></tr>
+  <tr><td>POST</td><td><code>/api/merchants/{merchant}/design/logo</code></td><td>Upload logo (validation MIME + max 4MB)</td></tr>
+  <tr><td>PATCH</td><td><code>/api/merchants/{merchant}/design</code></td><td>Mise à jour design (couleurs, label, paliers)</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<!-- 13. SECURITE                                                      -->
+<!-- ================================================================ -->
+
+<h2 id="securite">13. Sécurité &amp; tests</h2>
+
+<div class="card">
+<h3>Mesures de sécurité implémentées</h3>
+<table>
+  <tr><th>Mesure</th><th>Détail</th></tr>
+  <tr><td><strong>Isolation tenant</strong></td><td>Ownership check sur chaque route authentifiée — un commerçant ne peut jamais voir / modifier les données d'un autre</td></tr>
+  <tr><td><strong>Rate limiting</strong></td><td>5 req/min sur <code>/api/auth/login</code>, 60 req/min sur le reste de l'API</td></tr>
+  <tr><td><strong>Auth tokens</strong></td><td>Sanctum Bearer, expiration 24h, révocation à la déconnexion</td></tr>
+  <tr><td><strong>Mots de passe</strong></td><td>Min 8 chars, regex majuscule + minuscule + chiffre, bcrypt 12 rounds</td></tr>
+  <tr><td><strong>Upload fichiers</strong></td><td>Validation MIME stricte (png / jpg / webp uniquement), <strong>SVG bloqué</strong> (risque XSS), max 2-4 MB</td></tr>
+  <tr><td><strong>CSV injection</strong></td><td>Préfixage des cellules commençant par <code>=</code>, <code>+</code>, <code>-</code>, <code>@</code> à l'export</td></tr>
+  <tr><td><strong>Validation couleurs</strong></td><td>Regex hex stricte (anti CSS-injection sur le pass)</td></tr>
+  <tr><td><strong>QR codes</strong></td><td>Générés côté serveur (PHP, pas de fuite vers tiers Google Charts ou autre)</td></tr>
+  <tr><td><strong>Google Fonts</strong></td><td>Self-hosted (pas de fuite IP des visiteurs vers Google)</td></tr>
+  <tr><td><strong>Certificats</strong></td><td><code>storage/certs/</code> dans <code>.gitignore</code>, injectés via env vars base64 en prod</td></tr>
+  <tr><td><strong>Apple PassKit</strong></td><td>Validation token Authorization sur chaque requête webservice</td></tr>
+  <tr><td><strong>Google Wallet</strong></td><td>JWT signé RS256 avec service account</td></tr>
+  <tr><td><strong>FCM</strong></td><td>OAuth2 avec cache du token (1h) pour éviter les rate limits Google</td></tr>
+  <tr><td><strong>Audit log</strong></td><td>Verrou par mot de passe avec session 30 min, conservé 30 jours seulement</td></tr>
+  <tr><td><strong>HTTPS forcé</strong></td><td><code>URL::forceScheme('https')</code> en prod + Railway SSL automatique</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Tests automatisés (28 Feature tests, 63 assertions)</h3>
+<ul>
+  <li><strong>Auth :</strong> register, login, logout, credentials invalides, 401 sur routes protégées</li>
+  <li><strong>Cards :</strong> liste, stamp, reward, redeem, status, find by serial</li>
+  <li><strong>Enrollment :</strong> inscription, doublon, limite plan, consentement RGPD, parrainage avec bonus</li>
+  <li><strong>Tenant isolation :</strong> 5 scénarios cross-merchant (pas d'accès à card / merchant / audit d'un autre)</li>
+  <li><strong>RGPD :</strong> accès aux données, suppression, email invalide</li>
+  <li><strong>Stack de test :</strong> PHPUnit + SQLite in-memory, exécution complète en ~1.5s</li>
+</ul>
+</div>
+
+<!-- ================================================================ -->
+<!-- 14. RGPD                                                          -->
+<!-- ================================================================ -->
+
+<h2 id="rgpd">14. Conformité RGPD / CNIL</h2>
+
+<table>
+  <tr><th>Exigence</th><th>Implémentation</th></tr>
+  <tr><td><strong>Mentions légales (LCEN)</strong></td><td>Page dédiée <code>/mentions-legales</code></td></tr>
+  <tr><td><strong>Politique de confidentialité</strong></td><td>Page complète <code>/politique-de-confidentialite</code> (collecte, finalités, durée, droits)</td></tr>
+  <tr><td><strong>CGV</strong></td><td>Page dédiée <code>/cgv</code></td></tr>
+  <tr><td><strong>Consentement explicite</strong></td><td>2 checkboxes obligatoires sur le formulaire d'inscription (données + notifications)</td></tr>
+  <tr><td><strong>Preuve de consentement</strong></td><td>Champs <code>consented_at</code> (timestamp) + <code>consent_notifications</code> (boolean) en base</td></tr>
+  <tr><td><strong>Droit d'accès</strong></td><td><code>GET /api/customer/{serial}/data</code> retourne toutes les données du client en JSON</td></tr>
+  <tr><td><strong>Droit de suppression</strong></td><td><code>DELETE /api/customer/{serial}/data</code> anonymise (nom → "anonyme", téléphone → null) puis hard-delete la card</td></tr>
+  <tr><td><strong>Rétention des données</strong></td><td>Auto-anonymisation des cartes inactives &gt; 3 ans via la commande <code>kardo:cleanup-inactive</code> (cron quotidien à 03h00)</td></tr>
+  <tr><td><strong>Sous-traitants documentés</strong></td><td>Resend (emails), Firebase / Google (push Android + Wallet), Apple (push iOS + Wallet), Railway (hébergement)</td></tr>
+  <tr><td><strong>Contact DPO</strong></td><td><code>dpo@kardo.fr</code> dans les emails et pages légales</td></tr>
+  <tr><td><strong>Footer RGPD email</strong></td><td>Lien politique + contact DPO + désabonnement dans tous les emails transactionnels</td></tr>
+</table>
+
+<!-- ================================================================ -->
+<!-- 15. TARIFS                                                        -->
+<!-- ================================================================ -->
+
+<h2 id="tarifs">15. Plans tarifaires &amp; gating</h2>
+
+<div class="pricing-grid">
+  <div class="pricing-card">
+    <div class="name">Free</div>
+    <div class="price">0€<small> / mois</small></div>
+    <ul>
+      <li>50 clients max</li>
+      <li>0 broadcasts</li>
+      <li>0 automation</li>
+      <li>CRM basique</li>
+      <li>Wallet Apple + Google</li>
+    </ul>
+  </div>
+  <div class="pricing-card">
+    <div class="name">Solo</div>
+    <div class="price">19€<small> / mois</small></div>
+    <ul>
+      <li>300 clients max</li>
+      <li>2 broadcasts / mois</li>
+      <li>1 automation</li>
+      <li>CRM basique</li>
+      <li>Code parrain</li>
+    </ul>
+  </div>
+  <div class="pricing-card featured">
+    <div class="name">Pro</div>
+    <div class="price">39€<small> / mois</small></div>
+    <ul>
+      <li>1 500 clients max</li>
+      <li>Broadcasts illimités</li>
+      <li>4 automations</li>
+      <li>CRM avancé</li>
+      <li>Export CSV</li>
+      <li>Journal d'audit</li>
+    </ul>
+  </div>
+  <div class="pricing-card">
+    <div class="name">Business</div>
+    <div class="price">79€<small> / mois</small></div>
+    <ul>
+      <li>Clients illimités</li>
+      <li>Broadcasts illimités</li>
+      <li>Automations illimitées</li>
+      <li>CRM avancé + cohort</li>
+      <li>Audit + export CSV</li>
+      <li>Support prioritaire</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+<h3>Implémentation du gating</h3>
+<p>Le gating est centralisé dans <code>config/kardo.php</code> et exposé côté frontend via le composable <code>usePlan()</code> :</p>
+<pre><code>// config/kardo.php
+'plans' => [
+    'free'     => ['cards' => 50,    'broadcasts' => 0,    'automations' => 0,  'crm_advanced' => false],
+    'solo'     => ['cards' => 300,   'broadcasts' => 2,    'automations' => 1,  'crm_advanced' => false],
+    'pro'      => ['cards' => 1500,  'broadcasts' => null, 'automations' => 4,  'crm_advanced' => true],
+    'business' => ['cards' => null,  'broadcasts' => null, 'automations' => null, 'crm_advanced' => true],
+],
+
+// composables/usePlan.js
+export function usePlan() {
+  const auth = useAuthStore();
+  const limit = (key) =&gt; PLANS[auth.merchant.plan][key];
+  const can = (feature) =&gt; limit(feature) === null || /* ... */;
+  return { limit, can };
+}</code></pre>
+</div>
+
+<!-- ================================================================ -->
+<!-- 16. DEPLOIEMENT                                                   -->
+<!-- ================================================================ -->
+
+<h2 id="deploiement">16. Déploiement production (Railway)</h2>
+
+<div class="card">
+<h3>Pourquoi Railway ?</h3>
+<ul>
+  <li><strong>PostgreSQL managé inclus :</strong> connexion interne low-latency, backups quotidiens, scaling vertical à la demande.</li>
+  <li><strong>Auto-deploy GitHub :</strong> push sur <code>main</code> = build Docker + redéploiement automatique en ~3 minutes.</li>
+  <li><strong>SSL automatique :</strong> certificats Let's Encrypt renouvelés sans intervention.</li>
+  <li><strong>Variables d'env chiffrées :</strong> stockage sécurisé des certificats Apple .p12 et Google service account JSON en base64.</li>
+  <li><strong>Container unique :</strong> queue worker + scheduler + serveur web dans le même container — simplification opérationnelle.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Dockerfile (résumé)</h3>
+<pre><code>FROM php:8.4-cli
+
+# Extensions PHP : pdo_pgsql, gd (avec freetype + jpeg + webp pour le strip image)
+RUN apt-get install -y libpq-dev libfreetype6-dev libjpeg-dev libwebp-dev libpng-dev nodejs npm \
+ &amp;&amp; docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
+ &amp;&amp; docker-php-ext-install pdo pdo_pgsql gd
+
+WORKDIR /var/www
+COPY . .
+
+RUN composer install --no-dev --optimize-autoloader \
+ &amp;&amp; cd node-services &amp;&amp; npm ci --omit=dev \
+ &amp;&amp; cd .. &amp;&amp; npm ci &amp;&amp; npm run build
+
+CMD ["./docker-start.sh"]</code></pre>
+</div>
+
+<div class="card">
+<h3>docker-start.sh (séquence de démarrage)</h3>
+<pre><code>#!/bin/bash
+set -e
+
+# 1. Décode les certs depuis les variables d'env base64
+echo "$PASS_CERT_P12_B64" | base64 -d &gt; storage/certs/pass-cert.p12
+echo "$WWDR_CERT_B64" | base64 -d &gt; storage/certs/wwdr-cert.der
+echo "$GOOGLE_SERVICE_ACCOUNT_B64" | base64 -d &gt; storage/certs/google-service-account.json
+
+# 2. Convertit le WWDR DER → PEM
+openssl x509 -inform DER -in storage/certs/wwdr-cert.der -out storage/certs/wwdr-cert.pem
+
+# 3. Extrait le PEM cert + key du .p12
+openssl pkcs12 -in storage/certs/pass-cert.p12 -clcerts -nokeys -out storage/certs/pass-signer-cert.pem -passin pass:"$APPLE_CERT_PASSWORD"
+openssl pkcs12 -in storage/certs/pass-cert.p12 -nocerts -nodes -out storage/certs/pass-signer-key.pem -passin pass:"$APPLE_CERT_PASSWORD"
+
+# 4. Migrations + cache
+php artisan migrate --force
+php artisan config:cache &amp;&amp; php artisan route:cache
+
+# 5. Lance queue worker + scheduler en background
+php artisan queue:work --sleep=3 --tries=3 --max-time=3600 &amp;
+while true; do php artisan schedule:run --no-interaction &gt;/dev/null 2&gt;&amp;1; sleep 60; done &amp;
+
+# 6. Lance le serveur web
+php artisan serve --host=0.0.0.0 --port=$PORT</code></pre>
+</div>
+
+<!-- ================================================================ -->
+<!-- 17. DEFIS                                                         -->
+<!-- ================================================================ -->
+
+<h2 id="defis">17. Défis techniques rencontrés</h2>
+
+<div class="card">
+<h3>Apple PassKit — webServiceURL et le préfixe /v1/</h3>
+<p><strong>Problème :</strong> Apple ajoute automatiquement <code>/v1/</code> au <code>webServiceURL</code> du pass. Si on configure <code>webServiceURL: /api/v1</code>, Apple appelle <code>/api/v1/v1/...</code> et tout casse.</p>
+<p><strong>Solution :</strong> mettre <code>webServiceURL: /api</code> dans le pass.json et router les endpoints sous <code>/api/v1/...</code> côté Laravel.</p>
+</div>
+
+<div class="card">
+<h3>Apple <code>If-Modified-Since</code> — fuseau horaire</h3>
+<p><strong>Problème :</strong> Apple envoie l'en-tête <code>If-Modified-Since</code> en UTC, alors que Laravel compare avec <code>updated_at</code> stocké en Europe/Paris dans la base. Conséquence : les passes ne se mettaient jamais à jour côté iPhone.</p>
+<p><strong>Solution :</strong> conversion explicite avec <code>$card->updated_at->timezone(config('app.timezone'))</code> avant comparaison.</p>
+</div>
+
+<div class="card">
+<h3>SoftDeletes vs unique constraint sur Card</h3>
+<p><strong>Problème :</strong> avec SoftDeletes, un client supprimé garde sa ligne en base avec <code>deleted_at</code>. Si le même client se réinscrit, la contrainte unique sur <code>(merchant_id, phone)</code> échoue.</p>
+<p><strong>Solution :</strong> hard delete des cards (avec cascade des purchases / rewards / push_tokens). La perte historique est acceptée car les données sont déjà anonymisées par RGPD.</p>
+</div>
+
+<div class="card">
+<h3>FCM v1 et OAuth2 token caching</h3>
+<p><strong>Problème :</strong> FCM v1 nécessite un access token OAuth2 frais à chaque requête. Sans cache, on dépasse vite le rate limit Google et on paie en latence.</p>
+<p><strong>Solution :</strong> cache du token avec TTL 55 min (Google le donne pour 60 min) via <code>Cache::remember('fcm_token', 55*60, ...)</code>.</p>
+</div>
+
+<div class="card">
+<h3>Génération de la strip image dynamique</h3>
+<p><strong>Problème :</strong> Apple ne permet pas de mettre à jour le visuel du pass sans re-signer le .pkpass complet. Il faut générer une strip image personnalisée (nom client + tampons remplis) côté serveur.</p>
+<p><strong>Solution :</strong> PHP GD avec <code>imagecreatetruecolor</code> + <code>imagettftext</code> pour le nom en outline blur, <code>imagefilledellipse</code> pour les 10 cercles tampons en grille 2×5, fusion avec la bannière custom uploadée par le commerçant. Le tout généré à chaque tampon avant push APNs.</p>
+</div>
+
+<!-- ================================================================ -->
+<!-- 18. BILAN                                                         -->
+<!-- ================================================================ -->
+
+<h2 id="bilan">18. Bilan &amp; roadmap</h2>
+
+<div class="card">
+<h3>Compétences mises en œuvre</h3>
+<ul>
+  <li><strong>Backend :</strong> Laravel 13 (controllers REST, services, jobs, commands, queues, scheduler, Sanctum, validation, policies)</li>
+  <li><strong>Frontend :</strong> Vue 3 Composition API, Pinia stores, Vue Router, Tailwind 4 + design system custom</li>
+  <li><strong>Mobile :</strong> Flutter 3, secure storage, scanner QR natif, FCM notifications</li>
+  <li><strong>DevOps :</strong> Docker multi-stage, Railway deployment, env vars chiffrées, queue + scheduler en production</li>
+  <li><strong>Intégrations :</strong> Apple Developer (PassKit, APNs HTTP/2, certificats .p12), Google Cloud (Wallet API, service account, JWT RS256), Firebase (FCM v1 OAuth2), Resend</li>
+  <li><strong>Sécurité :</strong> multi-tenancy, rate limiting, validation MIME, CSV injection, XSS, CSRF, secrets management</li>
+  <li><strong>RGPD :</strong> consentement explicite, droit d'accès, droit de suppression, anonymisation auto, contact DPO</li>
+  <li><strong>Tests :</strong> PHPUnit Feature tests, fixtures, factories, scénarios de tenant isolation</li>
+  <li><strong>Architecture :</strong> monorepo, SPA + API REST, microservice Node pour pkpass, jobs asynchrones</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Roadmap post-déploiement</h3>
+<ul>
+  <li>Achat du domaine <code>kardo.fr</code> + DNS + vérification Resend</li>
+  <li>Publication app Flutter sur Play Store + App Store</li>
+  <li>Intégration Stripe pour le paiement des plans en ligne</li>
+  <li>Apple VAS — inscription automatique au Wallet via paiement NFC (Apple Pay)</li>
+  <li>Connecteurs POS : Square, Lightspeed, Sumup</li>
+  <li>Multi-localisation pour les franchises (1 merchant = N points de vente)</li>
+  <li>API publique pour intégrateurs / partenaires</li>
+  <li>Mode "points" en complément du mode "tampons" (UI déjà prête, backend à implémenter)</li>
+  <li>Templates de cartes pré-définis par secteur (restaurant / boulangerie / salon / café)</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Chiffres clés du projet</h3>
+<table>
+  <tr><th>Métrique</th><th>Valeur</th></tr>
+  <tr><td>Lignes de code backend (PHP)</td><td>~3 500</td></tr>
+  <tr><td>Lignes de code frontend (Vue + CSS)</td><td>~4 000</td></tr>
+  <tr><td>Lignes de code mobile (Dart / Flutter)</td><td>~1 500</td></tr>
+  <tr><td>Lignes Blade (pages publiques)</td><td>~2 500</td></tr>
+  <tr><td>Migrations PostgreSQL</td><td>17</td></tr>
+  <tr><td>Modèles Eloquent</td><td>10</td></tr>
+  <tr><td>Controllers API</td><td>11</td></tr>
+  <tr><td>Routes API</td><td>65+</td></tr>
+  <tr><td>Vues Vue.js</td><td>13</td></tr>
+  <tr><td>Composants Vue.js</td><td>20+</td></tr>
+  <tr><td>Tests Feature</td><td>28 (63 assertions)</td></tr>
+  <tr><td>Temps de build Vite</td><td>~1.3s</td></tr>
+  <tr><td>Temps d'exécution des tests</td><td>~1.5s</td></tr>
+  <tr><td>Temps de déploiement Railway</td><td>~3 minutes</td></tr>
+</table>
+</div>
+
+<div class="footer">Documentation Kardo — Sagar MIR — 2026 — <a href="https://kardo-production.up.railway.app" style="color:var(--accent2);">kardo-production.up.railway.app</a></div>
+</div>
+</body>
+</html>

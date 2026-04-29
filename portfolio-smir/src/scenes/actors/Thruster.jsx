@@ -3,10 +3,11 @@ import { Sparkles } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { clamp } from "@/utils/math3d";
 
-export default function Thruster({ power = 0 }) {
+export default function Thruster({ power = 0, powerRef }) {
   const flame = useRef(), sparks = useRef();
   useFrame(({ clock }) => {
-    const p = clamp(power, 0, 1);
+    // Lit la valeur live via ref si fournie (évite les re-renders parents)
+    const p = clamp(powerRef ? powerRef.current : power, 0, 1);
     const t = clock.getElapsedTime();
     const s = 0.6 + 0.6 * p + 0.1 * Math.sin(t * 20);
     if (flame.current) {

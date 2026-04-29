@@ -5,13 +5,15 @@ import { useIsMobile } from "../hooks/useMediaQuery";
 const ITEMS = [
   { id: "hero",           label: "Accueil",               icon: "home" },
   { id: "about",          label: "À propos",              icon: "id" },
-  { id: "bts",            label: "BTS SIO",               icon: "layers" },
   { id: "parcours",       label: "Mon parcours",          icon: "road" },
-  { id: "projets",        label: "Mes projets",           icon: "briefcase" },
-  { id: "certifications", label: "Certifications",        icon: "award" },
-  { id: "veille",         label: "Veille techno globale", icon: "globe" },
-  { id: "veille-auth",    label: "Veille auth",           icon: "building" },
   { id: "ecole",          label: "Écoles",                icon: "school" },
+  { id: "bts",            label: "BTS SIO",               icon: "layers" },
+  { id: "synthese",       label: "Tableau de synthèse E5", icon: "clipboard" },
+  { id: "certifications", label: "Certifications",        icon: "award" },
+  { id: "entreprise",     label: "Entreprise (CPMS)",     icon: "building" },
+  { id: "projets",        label: "Mes projets",           icon: "briefcase" },
+  { id: "veille",         label: "Veille techno globale", icon: "globe" },
+  { id: "veille-auth",    label: "Veille auth",           icon: "shield" },
   { id: "user-story",     label: "Profil",                icon: "user" },
 ];
 
@@ -141,6 +143,52 @@ function Icon({ name, className = "w-5 h-5" }) {
           <path d="M18 21V8h2v13h-2Z" fill="currentColor" />
         </svg>
       );
+    case "clipboard":
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none">
+          <rect
+            x="6"
+            y="4"
+            width="12"
+            height="17"
+            rx="2"
+            stroke="currentColor"
+            strokeWidth="1.8"
+          />
+          <rect
+            x="9"
+            y="2"
+            width="6"
+            height="4"
+            rx="1"
+            stroke="currentColor"
+            strokeWidth="1.8"
+          />
+          <path
+            d="M9 11h6M9 14h6M9 17h4"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg className={className} viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 3l8 3v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-3Z"
+            stroke="currentColor"
+            strokeWidth="1.8"
+          />
+          <path
+            d="M9 12l2 2 4-4"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
     case "school":
       return (
         <svg className={className} viewBox="0 0 24 24" fill="none">
@@ -224,8 +272,14 @@ export default function LeftDockNav() {
     observeAll();
 
     // Surveiller l'ajout de nouvelles sections (lazy-load via Suspense)
+    // Une fois toutes les sections trouvées, on déconnecte pour ne plus surveiller le DOM.
     const mo = new MutationObserver(() => {
-      if (observed.size < ITEMS.length) observeAll();
+      if (observed.size < ITEMS.length) {
+        observeAll();
+      }
+      if (observed.size >= ITEMS.length) {
+        mo.disconnect();
+      }
     });
     mo.observe(scrollRoot, { childList: true, subtree: true });
 
@@ -256,10 +310,16 @@ export default function LeftDockNav() {
     if (!isMobileMenuOpen) return;
     const container = menuRef.current;
     if (!container) return;
-    const first = container.querySelector("button, a");
-    first?.focus();
+    // Attendre la 1ʳᵉ frame de peinture avant de focaliser (sinon le focus se perd)
+    const rafId = requestAnimationFrame(() => {
+      const first = container.querySelector("button, a");
+      first?.focus();
+    });
     document.addEventListener("keydown", onKeyDownTrap);
-    return () => document.removeEventListener("keydown", onKeyDownTrap);
+    return () => {
+      cancelAnimationFrame(rafId);
+      document.removeEventListener("keydown", onKeyDownTrap);
+    };
   }, [isMobileMenuOpen, onKeyDownTrap]);
 
   /* =========================
